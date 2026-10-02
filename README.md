@@ -309,19 +309,3 @@ The override moves Mastodon's ports out of the way and adds a Caddy proxy that s
 | INCONCLUSIVE | The application behaved correctly, but the test purpose could not be reached, or silence was permitted at that point. |
 | UNEXECUTABLE | Not a verdict. The tester could not carry out the run: a fault not confirmed, a step that could not be applied, a dead end. Fix the cause and run again. |
 
-## Citation
-
-If you use STORM, please cite:
-
-```bibtex
-@inproceedings{storm2027,
-  title     = {{STORM}: Behavioural Conformance Testing Under Real-World Disruptions},
-  author    = {TBD},
-  booktitle = {Proceedings of the 49th IEEE/ACM International Conference on Software Engineering (ICSE)},
-  year      = {2027}
-}
-```
-
-## Acknowledgements
-
-STORM builds on [CADP](https://cadp.inria.fr) and TESTOR (Marsso, Mateescu and Serwe, "TESTOR: A Modular Tool for On-the-Fly Conformance Test Case Generation", TACAS 2018).
