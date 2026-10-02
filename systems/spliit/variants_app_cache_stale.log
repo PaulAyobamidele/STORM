@@ -1,0 +1,10 @@
+# Spliit tc variants -- purpose: app_cache_stale -- 2026-10-01 22:56 -- rev 64b9e19 (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	93	93	6	FAIL	
+2	71	71	4	FAIL	
+3	71	71	5	FAIL	
+4	71	71	6	FAIL	
+5	49	49	3	FAIL	
+6	49	49	5	FAIL	
+7	49	49	3	FAIL	
+8	27	27	2	FAIL	

@@ -1,0 +1,3 @@
+# MedTimer tc variants -- purpose: edit_flip -- 2026-10-02 13:02 -- rev 05f0bee (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	158	257	124	FAIL	

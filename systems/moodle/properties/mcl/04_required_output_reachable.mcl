@@ -1,0 +1,12 @@
+(* The output the specification DOES require after the fault is reachable.
+   Expected: TRUE.
+
+   The guard against a vacuous property. If 03 returns FALSE only because
+   nothing at all is reachable after APP_PARTIAL_SUBMISSION, then the oracle
+   has nothing to observe and the test case cannot conclude anything. A FALSE
+   in 03 is only meaningful alongside a TRUE here: the specification forbids
+   SUBMITTED_FG and offers NO_SUBMISSION in its place.
+*)
+< true* . "APP_PARTIAL_SUBMISSION" .
+  (not "SAVE_SUBMISSION !CRS_0 !ASN_0 !PLACEHOLDER")* .
+  "SUBMISSION_STATUS !ASN_0 !NO_SUBMISSION" > true

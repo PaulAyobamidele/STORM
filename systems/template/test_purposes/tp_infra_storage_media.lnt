@@ -1,0 +1,102 @@
+module tp_infra_storage_media (sutname_types, sutname_fixture) is
+
+(* ===========================================================================
+   SHAPE    TWO-PHASE + INTERRUPT. Copy this file for a fault whose target
+            journey has a PRECONDITION that must be established first (a
+            record must exist before it can be opened), and where the fault
+            firing during the precondition phase would spoil the run.
+
+   TARGET   Infrastructure -- INFRA_STORAGE_MEDIA: the store becomes
+            unreadable while a persisted record is being read.
+
+   THE SUT MUST: surface an honest error, and not trap the user in it. Not
+            garbage, not a wrong record, not silence, not an OS crash dialog.
+            The strict extension (a recovery control must be offered) is
+            realised in the System Interface as a second observe after the
+            error element.
+
+   The specification places the fault as an interrupt of the record read --
+
+       disrupt VIEW (?rid); DETAIL (rid, ?id)
+       by      INFRA_STORAGE_MEDIA; INFRA_STORAGE_ERROR end disrupt
+
+   PHASE 1  (precondition) write one record, so there is a row to read. If
+            the target fault fires HERE it is too early: the medium stays
+            broken for the rest of the run and the read this purpose is
+            about can no longer be exercised -- not this trace, REFUSE.
+   PHASE 2  (target) open the record. ACCEPT when the fault interrupts it
+            and the error is shown; REFUSE if the read completes.
+   OUTER    any OTHER fault, in either phase, REFUSE.
+
+   Observable owed: INFRA_STORAGE_ERROR.
+
+   defaultRecord MUST be the record of defaultItem (sutname_fixture.lnt,
+   HOLE 14), or phase 1 writes one row and phase 2 opens another that does
+   not exist.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ItemId, CTX : Context, RID : RecordId in
+        IDF := defaultItem;
+        CTX := defaultContext;
+        RID := defaultRecord;
+        disrupt
+            -- PHASE 1: establish the precondition
+            disrupt
+                SEARCH  (IDF, LOCAL);
+                INFO    (IDF, ?any Value);
+                ADD     (CTX, IDF, VALID);
+                CONFIRM (COMMITTED, ?any StateBand, IDF)
+            by
+                -- the target fault fired before the read it is meant to
+                -- interrupt: not this trace
+                INFRA_STORAGE_MEDIA;
+                loop TP_REFUSE end loop
+            end disrupt;
+            -- PHASE 2: the target
+            disrupt
+                VIEW   (RID);
+                DETAIL (RID, IDF);
+                loop TP_REFUSE end loop
+            by
+                INFRA_STORAGE_MEDIA;
+                INFRA_STORAGE_ERROR;
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- any OTHER fault, in either phase: this purpose's own target
+            -- excluded
+            alt
+                UE_KILL
+            []  APP_EXTAPI_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_STORAGE_FULL
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

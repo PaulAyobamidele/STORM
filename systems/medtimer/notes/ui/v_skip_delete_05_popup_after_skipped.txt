@@ -1,0 +1,12 @@
+# v_skip_delete_05_popup_after_skipped  expect Taken / Re-raise / Delete
+
+<ViewGroup> {} clickable bounds=[32,282][810,1011]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorAcknowledgedButton'}  bounds=[116,354][119,357]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/takenButton', 'text': 'Taken'} clickable bounds=[205,357][520,504]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorTakenButton'}  bounds=[205,429][208,432]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorSkippedButton'}  bounds=[264,530][267,533]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/reraiseButton', 'text': 'Re-raise event'} clickable bounds=[284,573][714,720]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorReraiseButton'}  bounds=[284,645][287,648]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/deleteButton', 'text': 'Delete'} clickable bounds=[205,789][520,936]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorRescheduleButton'}  bounds=[264,760][267,763]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorDeleteButton'}  bounds=[205,861][208,864]

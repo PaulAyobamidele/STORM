@@ -1,0 +1,345 @@
+module specification_foodyou (foodyou_types)
+with ==
+is
+
+process USER [
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    UE1_KILL        : none,
+    UE2_STORAGEFULL : none
+] is
+    var
+        fid   : FoodId,
+        kcal  : Calorie,
+        meal  : MealType,
+        eid   : EntryId,
+        total : DailyTotal,
+        status : WriteStatus
+    in
+        fid   := food_apple;
+        kcal  := Calorie (0);
+        meal  := BREAKFAST;
+        eid   := entry_0;
+        total := EMPTY;
+
+        loop
+        disrupt
+            loop
+                alt
+                    -- select a food non-deterministically, and searches for the food.
+                    fid := any FoodId;
+                    SEARCH_FOOD (fid);
+                    -- get the calorie content of the desired food.
+                    FOOD_INFO (fid, ?kcal)
+                []
+                    -- or select a meal, add the food to the meal and get total calorie
+                    meal := any MealType;
+                    fid := any FoodId;
+                    ADD_ENTRY (meal, fid);
+                    CONFIRM_TOTAL (?status, ?total)
+                []
+                    -- or open a logged entry in the diary and read back its food
+                    eid := any EntryId;
+                    VIEW_DIARY (eid);
+                    DIARY_INFO (eid, ?fid)
+                []
+                    -- or remove a logged entry and observe the new total
+                    eid := any EntryId;
+                    REMOVE_ENTRY (eid);
+                    CONFIRM_TOTAL (?status, ?total)
+                end alt 
+            end loop
+        by
+            alt 
+                UE1_KILL 
+            [] 
+                UE2_STORAGEFULL 
+            end alt
+        end disrupt
+        end loop
+    end var
+end process
+
+
+process APP [
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    READ_FOOD       : SearchChannel,
+    FOOD_RECORD     : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    WRITE_ENTRY     : WriteEntryChannel,
+    ENTRY_PERSISTED : EntryPersistedChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    READ_DIARY      : ViewDiaryChannel,
+    DIARY_RECORD    : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    DELETE_ENTRY    : RemoveEntryChannel,
+    ENTRY_REMOVED   : EntryPersistedChannel,
+    EXTAPI_FAIL     : none,
+    CACHE_STALE     : none
+] is
+    var
+        fid         : FoodId,
+        kcal        : Calorie,
+        cached_kcal : Calorie,
+        meal        : MealType,
+        eid         : EntryId,
+        status      : WriteStatus,
+        total       : DailyTotal
+    in
+        fid         := food_apple;
+        kcal        := Calorie (0);
+        cached_kcal := Calorie (0);
+        meal        := BREAKFAST;
+        eid         := entry_0;
+        status      := COMMITTED;
+        total       := EMPTY;
+        loop
+            alt
+                -- search for food, query the database for the info, and forwards the info.
+                -- EXTAPI_FAIL: the external food-database lookup is aborted mid-flight;
+                -- the whole READ/RECORD/FOOD_INFO sequence is preempted, so no calorie
+                -- is forwarded for this search.
+                disrupt
+                    SEARCH_FOOD (?fid);
+                    READ_FOOD (fid);
+                    FOOD_RECORD (fid, ?kcal);
+                    cached_kcal := kcal; 
+                    FOOD_INFO (fid, kcal)
+                by
+                    EXTAPI_FAIL
+                end disrupt
+            []
+                -- CACHE_STALE: a stale cached_kcal is returned WITHOUT a fresh DB read,
+                -- so the search short-circuits the DATABASE entirely (no READ_FOOD).
+                SEARCH_FOOD (?fid);
+                CACHE_STALE;
+                FOOD_INFO (fid, cached_kcal)
+            []
+                -- LOG - receives, meal and food, and queries the DATABASE
+                ADD_ENTRY (?meal, ?fid);
+                WRITE_ENTRY (meal, fid);
+                ENTRY_PERSISTED (?status, ?total);
+                CONFIRM_TOTAL (status, total)
+            []
+                -- VIEW - receives an entry id, reads its food from the DATABASE
+                VIEW_DIARY (?eid);
+                READ_DIARY (eid);
+                DIARY_RECORD (eid, ?fid);
+                DIARY_INFO (eid, fid)
+            []
+                -- DELETE - receives an entry id, deletes it and reports the total
+                REMOVE_ENTRY (?eid);
+                DELETE_ENTRY (eid);
+                ENTRY_REMOVED (?status, ?total);
+                CONFIRM_TOTAL (status, total)
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    READ_FOOD       : SearchChannel,
+    FOOD_RECORD     : FoodInfoChannel,
+    WRITE_ENTRY     : WriteEntryChannel,
+    ENTRY_PERSISTED : EntryPersistedChannel,
+    READ_DIARY      : ViewDiaryChannel,
+    DIARY_RECORD    : DiaryInfoChannel,
+    DELETE_ENTRY    : RemoveEntryChannel,
+    ENTRY_REMOVED   : EntryPersistedChannel,
+    DISRUPTION_DB   : none,
+    DB_CORRUPT      : none,
+    FAULT_READY_ROLLBACK : none,
+    FAULT_READY_CORRUPT  : none
+] is
+    var
+        fid   : FoodId,
+        meal  : MealType,
+        eid   : EntryId,
+        total : DailyTotal
+    in
+        total := EMPTY;
+        loop
+            alt
+                -- reads the food and returns the value kcal()
+                READ_FOOD (?fid);
+                FOOD_RECORD (fid, kcal_of (fid))
+            []
+                -- saves food X into meal Y
+                WRITE_ENTRY (?meal, ?fid);
+                alt
+                    -- commit: climb one rung, then report the new total
+                    total := bump (total);
+                    ENTRY_PERSISTED (COMMITTED, total)
+                []
+                    -- rollback: anchor to FAULT_READY_ROLLBACK so DISRUPTOR Lane 1
+                    -- only fires DISRUPTION_DB at this exact protocol point
+                    FAULT_READY_ROLLBACK;
+                    DISRUPTION_DB;
+                    ENTRY_PERSISTED (ROLLED_BACK, total)
+                []
+                    -- corruption: anchor to FAULT_READY_CORRUPT; structurally
+                    -- unreachable until STORAGE_DEGRADED arms DISRUPTOR Lane 3
+                    FAULT_READY_CORRUPT;
+                    DB_CORRUPT;
+                    ENTRY_PERSISTED (CORRUPTED, total)
+                end alt
+            []
+                -- reads a logged entry and returns its (determinate) food
+                READ_DIARY (?eid);
+                DIARY_RECORD (eid, food_of (eid))
+            []
+                -- deletes a logged entry; symmetric to the WRITE path, the
+                -- total climbs one rung DOWN on commit (drop), unchanged on rollback
+                DELETE_ENTRY (?eid);
+                alt
+                    -- commit: drop one rung, then report the new total
+                    total := drop (total);
+                    ENTRY_REMOVED (COMMITTED, total)
+                []
+                    -- rollback: anchor to FAULT_READY_ROLLBACK so DISRUPTOR Lane 1
+                    -- only fires DISRUPTION_DB at this exact protocol point
+                    FAULT_READY_ROLLBACK;
+                    DISRUPTION_DB;
+                    ENTRY_REMOVED (ROLLED_BACK, total)
+                []
+                    -- corruption: anchor to FAULT_READY_CORRUPT; structurally
+                    -- unreachable until STORAGE_DEGRADED arms DISRUPTOR Lane 3
+                    FAULT_READY_CORRUPT;
+                    DB_CORRUPT;
+                    ENTRY_REMOVED (CORRUPTED, total)
+                end alt
+            end alt
+        end loop
+    end var
+end process
+
+process DISRUPTOR [
+    UE1_KILL, UE2_STORAGEFULL, DISRUPTION_DB, DB_CORRUPT,
+    EXTAPI_FAIL, CACHE_STALE,
+    NETWORK_DEGRADED, STORAGE_DEGRADED : none
+] is
+    loop
+        alt
+            -- No disruption (quiescence)
+            i
+        []
+            -- Directly offerable faults (always available)
+            UE1_KILL
+        []
+            UE2_STORAGEFULL
+        []
+            EXTAPI_FAIL
+        []
+            CACHE_STALE
+        []
+            -- Infrastructure-triggered cascades
+            NETWORK_DEGRADED;
+            -- Network degradation causes user-side faults (order non-deterministic)
+            alt
+                UE1_KILL; UE2_STORAGEFULL
+            []
+                UE2_STORAGEFULL; UE1_KILL
+            end alt
+        []
+            STORAGE_DEGRADED;
+            -- Storage degradation causes database faults
+            alt
+                DISRUPTION_DB; DB_CORRUPT
+            []
+                DB_CORRUPT; DISRUPTION_DB
+            end alt
+        end alt
+    end loop
+end process
+
+
+-- Infrastructure disruptor: offers the two degradation signals
+process INFRA_DISRUPTOR [NETWORK_DEGRADED, STORAGE_DEGRADED : none] is
+    loop
+        alt
+            i
+        []
+            NETWORK_DEGRADED
+        []
+            STORAGE_DEGRADED
+        end alt
+    end loop
+end process
+
+process SPEC [
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    READ_FOOD       : SearchChannel,
+    FOOD_RECORD     : FoodInfoChannel,
+    WRITE_ENTRY     : WriteEntryChannel,
+    ENTRY_PERSISTED : EntryPersistedChannel,
+    READ_DIARY      : ViewDiaryChannel,
+    DIARY_RECORD    : DiaryInfoChannel,
+    DELETE_ENTRY    : RemoveEntryChannel,
+    ENTRY_REMOVED   : EntryPersistedChannel,
+    DISRUPTION_DB   : none,
+    DB_CORRUPT      : none,
+    EXTAPI_FAIL     : none,
+    NETWORK_DEGRADED : none,
+    STORAGE_DEGRADED : none,
+    UE1_KILL        : none,
+    UE2_STORAGEFULL : none,
+    CACHE_STALE     : none,
+    FAULT_READY_ROLLBACK : none,
+    FAULT_READY_CORRUPT  : none,
+    FAULT_READY_EXTAPI   : none
+] is
+    -- Core synchronises with the disruptor subtree on fault gates and their
+    -- anchor channels. FAULT_READY_ROLLBACK / FAULT_READY_CORRUPT anchor
+    -- DATABASE's rollback/corrupt branches to DISRUPTOR Lanes 1/3.
+    -- FAULT_READY_EXTAPI anchors APP's external-API window to DISRUPTOR Lane 2.
+    -- NETWORK_DEGRADED / STORAGE_DEGRADED are internal to the disruptor subtree.
+    -- UE1_KILL / UE2_STORAGEFULL (USER) and CACHE_STALE (APP) are local disrupts.
+    par UE1_KILL, UE2_STORAGEFULL, DISRUPTION_DB, DB_CORRUPT,
+        EXTAPI_FAIL, CACHE_STALE in
+        par SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+            VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY in
+            USER [SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+                  VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY,
+                  UE1_KILL, UE2_STORAGEFULL]
+            ||
+            par READ_FOOD, FOOD_RECORD, WRITE_ENTRY, ENTRY_PERSISTED,
+                READ_DIARY, DIARY_RECORD, DELETE_ENTRY, ENTRY_REMOVED in
+                APP [SEARCH_FOOD, FOOD_INFO, READ_FOOD, FOOD_RECORD,
+                     ADD_ENTRY, WRITE_ENTRY, ENTRY_PERSISTED, CONFIRM_TOTAL,
+                     VIEW_DIARY, DIARY_INFO, READ_DIARY, DIARY_RECORD,
+                     REMOVE_ENTRY, DELETE_ENTRY, ENTRY_REMOVED,
+                     EXTAPI_FAIL, CACHE_STALE]
+                ||
+                DATABASE [READ_FOOD, FOOD_RECORD,WRITE_ENTRY,ENTRY_PERSISTED,READ_DIARY,    
+                            DIARY_RECORD, DELETE_ENTRY, ENTRY_REMOVED,DISRUPTION_DB,
+                            DB_CORRUPT, FAULT_READY_ROLLBACK,FAULT_READY_CORRUPT]
+            end par
+        end par
+        ||
+        -- Fault injection subsystem
+        par NETWORK_DEGRADED, STORAGE_DEGRADED in
+            DISRUPTOR [UE1_KILL, UE2_STORAGEFULL, DISRUPTION_DB, DB_CORRUPT,
+                       EXTAPI_FAIL, CACHE_STALE,
+                       NETWORK_DEGRADED, STORAGE_DEGRADED]
+            ||
+            INFRA_DISRUPTOR [NETWORK_DEGRADED, STORAGE_DEGRADED]
+        end par
+    end par
+end process
+
+end module

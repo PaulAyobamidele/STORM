@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.DS_Store
+systems/*/sut/
+systems/*/generated/build/
+systems/*/runs/
+*.bcg
+*.o
+CADP_LICENSE*
+.env
+.env.*

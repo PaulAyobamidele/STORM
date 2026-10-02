@@ -1,0 +1,5 @@
+# mastodon tc variants -- purpose: infra_storage_full -- 2026-09-30 15:30 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	46	46	6	PASS	injected=1 restored=1 
+2	34	34	7	PASS	injected=1 restored=1 
+3	22	22	7	PASS	injected=1 restored=1 

@@ -1,0 +1,52 @@
+diff --git a/Dockerfile b/Dockerfile
+index 87fdc29..3b813cd 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -13,7 +13,7 @@ COPY ./prisma ./prisma
+ 
+ RUN apk add --no-cache openssl && \
+     npm ci --ignore-scripts && \
+-    npx prisma generate
++    POSTGRES_PRISMA_URL=postgresql://localhost/dummy POSTGRES_URL_NON_POOLING=postgresql://localhost/dummy npx prisma generate
+ 
+ COPY ./src ./src
+ COPY ./messages ./messages
+diff --git a/compose.yaml b/compose.yaml
+index 248b2c4..675a076 100644
+--- a/compose.yaml
++++ b/compose.yaml
+@@ -13,7 +13,7 @@ services:
+       - spliit_network
+ 
+   db:
+-    image: postgres:latest
++    image: postgres:17
+     expose:
+       - 5432
+     env_file:
+diff --git a/package.json b/package.json
+index 0d96648..593d215 100644
+--- a/package.json
++++ b/package.json
+@@ -73,6 +73,9 @@
+     "vaul": "^1.1.2",
+     "zod": "^3.23.8"
+   },
++  "overrides": {
++    "@swc/helpers": "^0.5.23"
++  },
+   "devDependencies": {
+     "@testing-library/dom": "^10.4.0",
+     "@testing-library/jest-dom": "^6.4.8",
+diff --git a/tsconfig.json b/tsconfig.json
+index 799f436..c05513f 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -1,6 +1,6 @@
+ {
+   "compilerOptions": {
+-    "target": "es5",
++    "target": "es2015",
+     "lib": [
+       "dom",
+       "dom.iterable",

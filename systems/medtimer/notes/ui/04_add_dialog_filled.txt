@@ -1,0 +1,14 @@
+# 04_add_dialog_filled  
+
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/action_bar_root'}  bounds=[91,548][989,1096]
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[91,548][989,1096]
+<LinearLayoutCompat> {'resource-id': 'com.futsch1.medtimer:id/parentPanel'}  bounds=[91,548][989,1096]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/topPanel'}  bounds=[91,548][989,680]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/title_template'}  bounds=[91,548][989,680]
+<TextView> {'resource-id': 'com.futsch1.medtimer:id/alertTitle', 'text': 'Add medicine'}  bounds=[154,595][538,680]
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/customPanel'}  bounds=[91,680][989,896]
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/custom'}  bounds=[91,680][989,896]
+<EditText> {'resource-id': 'com.futsch1.medtimer:id/medicineName', 'text': 'Vitamin C'} clickable focused bounds=[133,736][947,854]
+<ScrollView> {'resource-id': 'com.futsch1.medtimer:id/buttonPanel'}  bounds=[91,896][989,1096]
+<Button> {'resource-id': 'android:id/button2', 'text': 'Cancel'} clickable bounds=[558,933][737,1059]
+<Button> {'resource-id': 'android:id/button1', 'text': 'OK'} clickable bounds=[758,933][926,1059]

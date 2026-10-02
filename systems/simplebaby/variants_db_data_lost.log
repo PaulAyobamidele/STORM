@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	43	67	105	FAIL	ERROR  State 40 waits for OBSERVE !EL_LOSS_FLAG — it never appeared and this state does NOT permit quiescence. The specification required an output here and non

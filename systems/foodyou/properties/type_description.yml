@@ -1,0 +1,152 @@
+# type_description.yml — Sampler contract for each abstract type.
+# Format per the paper's "Sampler" input file: every type has a `base`
+# of Integer | String | Enum, with the supported constraints
+# (Integer: >,<,>=,<=,=,!= ; String: regex,=,!= ; Enum: values,=,!=).
+# `abstract_values` give the interpretation I() of each enum value into the
+# concrete string the SUT shows / accepts; `origin` and `capture_at` tell the
+# concretization algorithm whether the tester supplies the value (input) or
+# captures it from an observation (output).
+
+FoodId:
+  base: Enum
+  values: [food_peanut, food_butter, food_oil]
+  origin: tester_generated
+  description: >
+    A food searched / logged in FoodYou. These are REAL products from the Swiss
+    Food Composition Database that the app imports from a CSV bundled in its own
+    APK -- not fixtures this project invented. Each query matches exactly one
+    product, so tapping the result row is unambiguous.
+  abstract_values:
+    food_peanut:  "Peanut butter"
+    food_butter:   "Cooking butter"
+    food_oil: "Corn germ oil"
+
+MealType:
+  base: Enum
+  values: [BREAKFAST, LUNCH, DINNER]
+  origin: tester_generated
+  description: The diary meal a food entry is logged under.
+  abstract_values:
+    BREAKFAST: "Breakfast"
+    LUNCH:     "Lunch"
+    DINNER:    "Dinner"
+
+Calorie:
+  base: Integer
+  origin: system_generated
+  capture_at: FOOD_INFO
+  constraints:
+    - ['>=', 0]
+    - ['<=', 1000]
+  description: >
+    Per-food energy (kcal_of in foodyou_types.lnt), read back from the search
+    result row at the 100 g reference portion. The FOOD_INFO oracle checks the
+    observed kcal against these, so a stale or corrupt value is a counter-example
+    rather than a captured (vacuous) pass.
+
+    THESE ARE THE APP'S OWN DATA. They were previously values seed_foods.sh
+    planted, so the oracle partly checked this project's own bookkeeping; now
+    they come from the Swiss catalogue the app ships, and a mismatch means the
+    app disagrees with its own database. They are duplicated here from the
+    Product table, so verify with:
+      adb shell "run-as com.maksimowiczm.foodyou sqlite3 \
+        databases/open_source_database.db \
+        \"SELECT name, CAST(energy AS INT) FROM Product WHERE sourceType=3 \
+          AND name IN ('Peanut butter','Cooking butter','Corn germ oil');\""
+
+    Spread deliberately (636 / 745 / 900): a total made of different foods cannot
+    then be correct by coincidence, which multiples of a single portion could not
+    rule out.
+
+    Chosen HIGH so that three meals can exceed the 2000 kcal goal. The previous
+    fixture topped out near 620 kcal, so the app's over-goal behaviour
+    ("Exceeded by N calories") was unreachable and that branch was never tested.
+    Now 3 x 636 = 1908 is under (92 left) and 636 + 636 + 745 = 2017 is over by
+    17 -- a margin tight enough that a rounding slip or a double-counted entry
+    crosses it.
+  abstract_values:
+    food_peanut: "636"
+    food_butter: "745"
+    food_oil:    "900"
+
+DailyTotal:
+  base: Enum
+  values: [EMPTY, LOW, MODERATE, HIGH, OVER]
+  origin: system_generated
+  capture_at: CONFIRM_TOTAL
+  description: >
+    Bucketed daily calories-consumed total, saturating (bump in
+    foodyou_types.lnt). `bump` counts COMMITTED ENTRIES, not calories -- one rung
+    per entry -- and the concrete oracle inverts that as
+    rung = round(observed_kcal / bucket_unit).
+
+    *** ONLY VALID WHILE EVERY LOGGED ENTRY IS THE SAME FOOD. ***
+
+    One rung = one portion of ONE food, so this cannot represent a diary holding
+    different foods. Logging peanut (636) + butter (745) + oil (900) gives 2281;
+    the scheme computes round(2281 / 636) = 4 -> OVER while the model counts
+    three entries -> HIGH. That is a guaranteed FALSE FAIL saying nothing about
+    FoodYou.
+
+    So a test purpose may SEARCH several foods -- searching does not touch the
+    diary, and checking three different real energies at FOOD_INFO is where a
+    wrong value would show -- but it must LOG only one. Mixed-food diaries need
+    the total modelled as a real sum instead of rungs.
+
+    REMAINING DEFECT (blindness): every total from ~3.5 rungs upward classifies
+    as OVER, so the check cannot separate 2017 from 5000. The two checks in the
+    concretization layer cover part of that gap and report separately from the
+    verdict: a total must be a whole number of portions, and a committed entry
+    must move it by exactly one portion.
+
+    FIXED 2026-08-14 (saturation): drop(OVER) used to return HIGH, guessing that
+    a removal took the diary below four entries. OVER means "four or more", so
+    the answer is "three or more" -- HIGH *or* OVER -- and the specification now
+    offers both. Committing to one produced variant 36's false IOCO.
+  # MUST equal defaultF: a rung is one portion of the food actually logged, so a
+  # purpose that logs a different food would be measured against the wrong unit
+  # and disagree with the model for no reason.
+  bucket_unit_from:               # one rung = one 100 g portion of defaultF
+    type:  Calorie
+    value: food_oil                 # = defaultF in foodyou_types.lnt
+  # Rungs implied by bucket_unit_from (Corn germ oil = 900 kcal / 100 g), listed
+  # for reporting only -- classification derives them, it does not read these.
+  # The 2000 kcal goal falls between MODERATE (1800, under) and HIGH (2700,
+  # over), so both sides of "Exceeded by N calories" are reachable with a single
+  # food across the three meals. With the old 155 kcal fixture the largest
+  # reachable total was 620 and that branch could never be tested.
+  abstract_values:
+    EMPTY:    "0"
+    LOW:      "900"
+    MODERATE: "1800"
+    HIGH:     "2700"
+    OVER:     "3600"
+
+DailyCalories:
+  base: Integer
+  origin: system_generated
+  constraints:
+    - ['>=', 0]
+    - ['<=', 5000]
+  description: >
+    Concrete kcal total backing DailyTotal. Sampling solves the inequalities and
+    picks a representative value per bucket (0 / 300 / 1000 / 1800 / 2200 above).
+
+WriteStatus:
+  base: Enum
+  values: [COMMITTED, ROLLED_BACK]
+  origin: system_generated
+  description: >
+    Outcome of the local entry-write transaction. Internal to the SUT and not
+    observed directly. Unlike MedTimer, it does NOT split CONFIRM_TOTAL into two
+    branches: FoodYou reads the authoritative total back, so COMMITTED yields a
+    bumped total and ROLLED_BACK (DISRUPTION_DB) yields the unchanged total —
+    both consistent. This read-back is why FoodYou is resilient to DISRUPTION_DB.
+
+EntryId:
+  base: Enum
+  values: [entry_0, entry_1, entry_2]
+  origin: system_generated
+  description: >
+    Identifier of a persisted diary entry. Present in the data model for write
+    bookkeeping; not part of the observable abstract alphabet.

@@ -1,0 +1,367 @@
+# concrete_domain.yml
+# Interpretation I() : maps the formal D_sys enum values used by the System
+# Interface (system_interface_foodyou.lnt) to runtime Android/Appium values.
+#   Route         -> a FoodYou screen
+#   Element       -> UiAutomator2 / Compose selector (resource-id / text)
+#   ConcreteValue -> the runtime string a `tap` targets (food row / meal add)
+#
+# FoodYou is a native Kotlin/Compose app (com.maksimowiczm.foodyou), so this is
+# the Appium (UiAutomator2) analogue of the Selenium CSS/URL concrete_domain.yml
+# used by the web SUTs. Selectors below are representative (marked (*)) and
+# should be confirmed against the running app with the Appium Inspector.
+
+routes:
+  rt_diary:  "diary"     # Home / diary tab: meals + daily nutrition progress
+  rt_search: "search"    # Add-food search screen (per-meal "+")
+
+elements:
+  # NOTE: FoodYou is Jetpack Compose — interactive nodes expose NO resource-id.
+  # Selectors below are text / content-desc based, verified via `uiautomator dump`
+  # in the 2026-07-10 emulator walkthrough.
+  el_calories:      'new UiSelector().textMatches("\d+\s*kcal")'      # food-detail "Energy  N kcal" value (single backslash: UiAutomator2 takes the regex literally)
+  el_daily_total:   'new UiSelector().textMatches("\d+ / \d+ kcal")'  # home summary "N / 2000 kcal"
+  # The three macronutrient totals in the same home summary, rendered as
+  # " N / GOAL g" (note the leading space) in the fixed order Proteins, Fats,
+  # Carbohydrates. Matched by instance because the labels sit in sibling nodes
+  # that UiAutomator cannot address relationally.
+  #
+  # NOT part of the specification -- DailyTotal models energy only. These are read
+  # by the concretization layer so it can cross-check the energy the model DOES
+  # constrain against the macros it does not. See _check_macro_consistency in
+  # algorithm.py, and TODO.md for the case for putting them in the model.
+  el_daily_protein: 'new UiSelector().textMatches("\s*\d+ / \d+ g").instance(0)'
+  el_daily_fat:     'new UiSelector().textMatches("\s*\d+ / \d+ g").instance(1)'
+  el_daily_carbs:   'new UiSelector().textMatches("\s*\d+ / \d+ g").instance(2)'
+  # Food name in the diary-entry bottom sheet header (observed at DIARY_INFO).
+  # Confirmed live: the sheet carries NO resource-ids -- the old
+  # resourceId("android:id/text1") matched nothing and the walk stalled here.
+  # While the sheet is open the Home screen is replaced by a "Close sheet"
+  # scrim, so the whole tree is 23 nodes and the seeded food name occurs exactly
+  # once; matching on the fixture's Test* prefix is therefore unambiguous.
+  el_entry_food:    'new UiSelector().textMatches("Peanut butter|Cooking butter|Corn germ oil")'
+  # Search field on the add-food screen. Confirmed live: arriving from the meal
+  # "+" the field is NOT focused and there is NO EditText in the tree -- one
+  # appears only after the bar is tapped. The old className("android.widget.EditText")
+  # therefore failed the wait_for that precedes every search. The bar itself is a
+  # View with content-desc "Search", present focused or not.
+  # (ENTER_TEXT does not use this selector: _enter_text locates the EditText or
+  #  the active element itself, clicks to focus, then types.)
+  el_search_input:  'new UiSelector().description("Search")'
+  # A result ROW's food name. Two constraints pull against each other, and this
+  # selector has been broken twice by satisfying only one:
+  #
+  #   * INTEGRITY-INDEPENDENT -- it must still match when DB_CORRUPT blanks the
+  #     energy and the row shows "missing required fields" instead of a kcal
+  #     value. That is why textContains("kcal") was abandoned.
+  #   * RESULT-SPECIFIC -- it must NOT match the query the tester just typed. The
+  #     search field echoes the query back, and the queries ARE the product names,
+  #     so a plain text match hits the EditText as well. A zero-result search then
+  #     satisfied `wait_for (el_search_results)`, the walk carried on into a state
+  #     that could not work, and the next step's failure was reported as a FoodYou
+  #     conformance violation -- the whole of the 45-variant false-FAIL result in
+  #     the 2026-08-12 sweep.
+  #
+  # className() satisfies both: a result row's name is a TextView, the search box
+  # is an EditText. Verified 2026-08-13 against two real trees, results present
+  # (uiautomator dump) and results absent (Appium page_source captured at the
+  # actual failure):
+  #     present -> 1 TextView match + 1 EditText (not matched)
+  #     absent  -> 0 TextView match + 1 EditText (not matched)
+  # Check BOTH trees before ever widening this again.
+  #
+  # "The search has run and the per-source counts are showing", waited on between
+  # submitting and tapping a source.
+  #
+  # LIMITATION, stated rather than hidden: this anchors on a source chip, and the
+  # chips are present before the search too -- so it proves the search screen is
+  # rendered, NOT that the query completed. Tightening it needs two dumps of the
+  # same screen, one before submitting and one after, to find an element that
+  # differs; the counts themselves are separate text nodes beside the labels, so
+  # a structural match on "label + count" is the likely candidate. Until then the
+  # real check is the wait_for (el_search_results) that follows the source tap.
+  el_source_counts:   'new UiSelector().text("Swiss Food Composition Database")'
+  # The old "Test" prefix let one pattern cover every food; real products share
+  # no prefix, so the three names are listed. textMatches is a FULL match, which
+  # is what keeps the query echo out even when it equals a product name: typing
+  # "Corn germ oil" puts that exact string in the EditText, and only className
+  # separates the two.
+  el_search_results:  'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn germ oil")'
+  el_home:          'Food You'  # App title text on Home screen
+  el_diary_entry_detail:  'new UiSelector().textContains("Delete entry")'      # entry context bottom-sheet anchor
+  el_delete_confirm:      'new UiSelector().textContains("deleted from your diary")'  # delete confirmation dialog
+  # The add-entry (measurement) screen is up. Confirmed live: it shows date
+  # chips, meal chips (Breakfast/Lunch/Dinner/Snacks), a quantity EditText and a
+  # content-desc "Save" control -- and NO kcal, which is why el_calories cannot
+  # serve as this anchor. Compose exposes no resource-id, so the old
+  # id/measureForm matched nothing.
+  el_measure_screen:      'new UiSelector().description("Save")'
+  # "The add-entry form is up", INDEPENDENT of whether it can be committed.
+  # el_measure_screen anchors on Save, which FoodYou withdraws whenever the
+  # amount is invalid, so it cannot serve the INPUT_INVALID branch. The nutrition
+  # header is present either way (confirmed live 2026-08-11: "Energy", "155 kcal"
+  # and the unit chips are in the tree for amounts "", "0", "abc" and "100").
+  el_add_entry_form:      'new UiSelector().text("Energy")'
+  el_update_product_form: 'com.maksimowiczm.foodyou:id/updateProductForm'  # (*) unused by SI
+  el_ingredient_added:    'com.maksimowiczm.foodyou:id/ingredientAdded'  # (*) unused by SI
+  # EXTAPI_FAIL observable — DISPROVED, retained as a record of the hypothesis.
+  # We expected a ⚠️ degraded marker Open Food Facts renders when the external
+  # API is unreachable. CONFIRMED 2026-09-03 against the live captures already
+  # on disk for all 34 raw-FAIL extapi_fail cases (not a sample): at the exact
+  # moment each timed out, the "Open Food Facts" source chip on the food-search
+  # screen reads "0", styled identically to every other source chip, with NO
+  # warning/error text or icon anywhere in the accessibility tree or the
+  # screenshot. FoodYou renders "external API unreachable" identically to
+  # "external API legitimately found nothing" -- it has no observable that
+  # distinguishes the two. The selector was never wrong; there is no target
+  # for any selector to find. These 34 FAILs are a confirmed finding, not a
+  # tooling artifact -- see THREATS_TO_VALIDITY.md item 1.
+  el_extapi_warning:      'new UiSelector().descriptionContains("warning")'  # UNUSED by the SI oracle (no such element exists) -- see comment above
+  # INPUT_INVALID observable — DISPROVED, retained as a record of the hypothesis.
+  # We expected an error/helper marker on the quantity field. Confirmed live
+  # 2026-08-11 (keyboard down, add-entry form, amounts "", "0", "abc"): FoodYou
+  # renders NO such text. It refuses by withdrawing the Save control instead, so
+  # the SI no longer waits on this element — see the INPUT_INVALID branch, which
+  # now checks the stronger property that the daily total is unchanged.
+  el_input_error:         'new UiSelector().textContains("Invalid")'  # UNUSED by the SI
+  # DB_CORRUPT observable (DB_CORRUPT_DETECTED): the app's detection of a corrupt
+  # record — an error/placeholder instead of a nutrition value. FoodYou likely has
+  # NO such marker (it trusts its Room DB), so this selector is expected to time
+  # out at runtime -> a counter-example (the strict oracle demands detection).
+  el_corrupt_error:       'new UiSelector().textContains("missing required fields")'  # CONFIRMED 2026-07-27: FoodYou DETECTS a NULL required field -> "Food is missing required fields" (resilient)
+  # STORAGE_MEDIA observable (STORAGE_ERROR_SHOWN): the app's honest surfacing of a
+  # storage read error when opening a diary entry (error/placeholder, not garbage or
+  # a crash). Like el_corrupt_error, FoodYou likely has NO such marker -> expected
+  # timeout at runtime -> a counter-example.
+  # CONFIRMED ON DEVICE 2026-08-23. The previous value, textContains("Unable to
+  # load"), was a guess -- the `(*)` beside it asked for exactly this check. With
+  # the database unreadable FoodYou shows a full-screen error boundary reading
+  # "Oops! Something went wrong", the SQLiteCantOpenDatabaseException stack trace,
+  # and a "Copy and open bug report" button. It does not show garbage, does not
+  # stay silent, and is not an OS crash dialog -- so STORAGE_ERROR_SHOWN is
+  # genuinely satisfied. Evidence: tmp/failure_artifacts/ storage_media dump.
+  #
+  # Worth recording separately: the failure is TOTAL. The whole UI is replaced;
+  # there is no degraded mode and no scoped "this entry could not be read". That
+  # is a qualitative resilience result, not an ioco verdict.
+  el_storage_error:       'new UiSelector().textContains("Something went wrong")'
+  # STRICT extension of STORAGE_ERROR_SHOWN (2026-09-25): surfacing the error is
+  # not enough, the user must not be trapped there -- a back/close control must
+  # be offered. Observed (an oracle), not tapped: its absence is FAIL, not
+  # UNEXECUTABLE. Confirmed absent on the real crash screen, whose only control
+  # is "Copy and open bug report".
+  el_recovery_control:    'new UiSelector().descriptionMatches("Go back|Close sheet")'
+
+concrete_values:
+  # The result ROW to tap, after a search returns it. Real products from the
+  # Swiss Food Composition Database, which the app imports from a CSV bundled in
+  # its own APK -- local, offline and deterministic, and their energies are the
+  # app's own data rather than values this fixture invented.
+  #
+  # 636 / 745 / 900 kcal per 100 g. Far enough apart that a daily total cannot
+  # come out right by coincidence, and high enough that three meals reach 2700
+  # against the 2000 kcal goal -- which is what makes the app's over-goal
+  # behaviour reachable at all. The previous fixture topped out near 620.
+  #
+  # className is not decoration: the query typed into the search field is the
+  # product's own name, so textContains alone matches the EditText holding the
+  # query as well as the result row. Tapping the EditText does nothing useful and
+  # the walk then fails somewhere later. Same trap as el_search_results below.
+  cv_peanut:  'new UiSelector().className("android.widget.TextView").textContains("Peanut butter")'
+  cv_butter:  'new UiSelector().className("android.widget.TextView").textContains("Cooking butter")'
+  cv_oil:     'new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")'
+  # Logged diary rows on Home (L_entry). Confirmed live from a uiautomator dump:
+  # the row is a clickable android.view.View with NO resource-id and NO
+  # content-desc, so its food-name TextView is the only handle. Tapping that
+  # TextView lands inside the row's bounds, which is what opens the entry sheet.
+  # Keying by food name (not position) matches food_of in foodyou_types.lnt:
+  # entry_0 = apple, entry_1 = rice, entry_2 = egg. Exact text, not textContains,
+  # so these cannot collide with search-result rows carrying the same name.
+  # PRECONDITION: the row exists only after that food has been logged today.
+  # A logged diary ROW, tapped to open its detail sheet (L_entry). Must match
+  # food_of in foodyou_types.lnt: entry_0 -> peanut, entry_1 -> butter,
+  # entry_2 -> oil. className keeps this off the search field, which holds the
+  # same text whenever the query is the product's own name.
+  cv_entry_0:    'new UiSelector().className("android.widget.TextView").text("Peanut butter")'
+  cv_entry_1:    'new UiSelector().className("android.widget.TextView").text("Cooking butter")'
+  cv_entry_2:    'new UiSelector().className("android.widget.TextView").text("Corn germ oil")'
+  # Per-meal "Add" (+) button on the Home diary — opens the search screen.
+  # NOTE: this is the meal row's ADD button, NOT the meal-name card (which opens
+  # the meal detail). The three Add buttons are ordered Breakfast/Lunch/Dinner.
+  # (Confirmed live: the meal add control is content-desc "Add", not visible text.)
+  cv_breakfast:  'new UiSelector().description("Add").instance(0)'
+  cv_lunch:      'new UiSelector().description("Add").instance(1)'
+  cv_dinner:     'new UiSelector().description("Add").instance(2)'
+  # Search-query text typed into el_search_input, then submitted with
+  # cv_search_submit. Each of these was checked against the device to match
+  # EXACTLY ONE product, so `tap (L_food (fid))` is unambiguous. "Almond" and
+  # "Banana" were rejected for matching several.
+  cv_q_peanut:    "Peanut butter"
+  cv_q_butter:     "Cooking butter"
+  cv_q_oil:   "Corn germ oil"
+  # SUBMIT = the keyboard's search key. This used to be the "Your food" CHIP,
+  # i.e. the same selector as cv_src_local below -- so the tester tapped that one
+  # chip twice and never submitted anything. The query then only ran via the
+  # app's live-as-you-type, which is timing-dependent, and that is the most
+  # likely source of the intermittent empty-result states.
+  # AndroidExecutor routes a KEYCODE_* selector to press_keycode() on a tap.
+  cv_search_submit:  'KEYCODE_ENTER'
+  # Source chips scoping a search (L_source). They are SINGLE-SELECT: tapping one
+  # deselects the others, so this is a state change rather than a toggle.
+  #   LOCAL    = the Swiss Food Composition Database. 1190 real products imported
+  #              from a CSV bundled in the APK into the same SQLite table -- local,
+  #              offline and deterministic, which is what the happy path needs.
+  #   EXTERNAL = Open Food Facts, fetched over the network. The only source the
+  #              specification says may fail.
+  cv_src_local:      'new UiSelector().text("Swiss Food Composition Database")'
+  cv_src_external:   'new UiSelector().text("Open Food Facts")'
+  # INPUT_INVALID: the invalid amount typed into the quantity field. Empty string
+  # = clear the field (an empty amount is unambiguously invalid — Save is refused).
+  # NB: this only became real on 2026-08-10 — AndroidExecutor._enter_text used to
+  # send_keys() WITHOUT clearing, so "" was a no-op and the form kept its 100 g
+  # default; the branch was testing a VALID amount. _enter_text now clears first.
+  # RESOLVED 2026-08-11: FoodYou does HIDE Save (content-desc absent, keyboard
+  # down) for "", "0" and "abc", and restores it at "100". The SI therefore no
+  # longer taps Save in this branch. "" is kept as the invalid value: it is
+  # unambiguously invalid, needs no assumption about the field's parser, and the
+  # quantity input is not numeric-only anyway (it accepted "abc").
+  cv_qty_invalid:    ""
+  cv_save:       'new UiSelector().descriptionContains("Save")'   # content-desc "Save"
+  cv_delete:     'new UiSelector().textContains("Delete entry")'  # sheet option (text, not desc)
+  # Confirm button in the delete dialog. Confirmed live: it is a TextView, NOT an
+  # android.widget.Button -- the old className("android.widget.Button") filter
+  # matched nothing. Exact text, so it cannot collide with the dialog's own
+  # "Delete entry" title.
+  cv_confirm_delete: 'new UiSelector().text("Delete")'
+  # L_back is ONE abstract value but TWO concrete controls, because the model
+  # uses it to leave both kinds of screen:
+  #   - the add-entry / search screens  -> toolbar arrow, content-desc "Go back"
+  #   - the diary-entry bottom sheet    -> full-screen scrim, desc "Close sheet"
+  # Confirmed live: the sheet has NO "Go back" anywhere, which is where the walk
+  # failed. descriptionMatches takes a regex, so one entry covers both.
+  cv_back:       'new UiSelector().descriptionMatches("Go back|Close sheet")'
+  cv_edit_food:         'new UiSelector().descriptionContains("Edit food")'  # (*)
+  cv_edit_product:      'new UiSelector().descriptionContains("Edit product")'  # (*)
+  cv_edit_ingredient:   'new UiSelector().descriptionContains("Edit ingredient")'  # (*)
+  cv_add_ingredient:    'new UiSelector().descriptionContains("Add ingredient")'  # (*)
+  # Interpretation of the abstract FoodId values themselves (used when a food is
+  # reported rather than tapped). The display names of the shipped Swiss products.
+  food_peanut:   "Peanut butter"
+  food_butter:    "Cooking butter"
+  food_oil:  "Corn germ oil"
+  BREAKFAST:    "Breakfast"
+  LUNCH:        "Lunch"
+  DINNER:       "Dinner"
+
+# ---------------------------------------------------------------------------
+# One element per screen that PROVES the SUT is on it.
+#
+# system_interface_foodyou.lnt maintains a `screen` variable, branches on it
+# (`if screen == SCR_HOME then ...`) and assigns to it (`screen := SCR_FOOD_SEARCH`).
+# Until these anchors existed the tester acted on that belief without ever
+# checking it, so a navigation that silently failed left the walk convinced it
+# had moved -- and the blame for the next failing step landed on FoodYou.
+#
+# Each anchor is an element that is present on its screen and absent on the
+# others, so "am I where I think I am?" is answerable. Names resolve through the
+# same interpretation I() as every other element.
+screen_anchors:
+  SCR_HOME:             el_home                 # "Food You" app-bar title
+  SCR_FOOD_SEARCH:      el_search_input         # content-desc "Search" bar
+  SCR_ADD_ENTRY:        el_add_entry_form       # "Energy" header -- present even
+                                                # when Save is withdrawn for an
+                                                # invalid amount, unlike
+                                                # el_measure_screen
+  SCR_VIEW_ENTRY_SHEET: el_diary_entry_detail   # "Delete entry" sheet anchor
+
+# ---------------------------------------------------------------------------
+# `unrealizable:` — abstract values this deployment cannot produce. NONE declared.
+#
+# EXTERNAL was briefly listed here (2026-08-13, morning) after the device showed
+# zero cached Open Food Facts products. That was the wrong conclusion: Open Food
+# Facts search is EXPECTED TO WORK, so an external search that fails is a
+# conformance failure to be reported, not a branch to exclude. Excluding it would
+# have suppressed exactly the counter-examples the suite exists to find.
+#
+# The empty cache had a simpler explanation available: EXTAPI_FAIL injects
+# `svc data disable ; svc wifi disable` and restores only on the normal path, so
+# an interrupted disruption run leaves the emulator offline and every later run
+# sees an unreachable remote source.
+#
+# THE GUARD THAT REPLACES IT is environmental, not model-level: a run must first
+# prove the device could reach the external source at all (see check_env.sh,
+# called by the sweep scripts). If it could not, the run is INCONCLUSIVE for
+# environment reasons. Without that check, "the emulator's wifi was off" and
+# "FoodYou's fetch is broken" produce an identical FAIL, and the verdict would be
+# about the laptop rather than the app.
+
+# ---------------------------------------------------------------------------
+# RETIRED 2026-08-13: external_dependencies (engaged_by: [cv_src_external]).
+#
+# It existed to stop the Open Food Facts branch producing false conformance
+# FAILs. The foods under test are synthetic fixtures seed_foods.sh writes to the
+# local database; they are not in Open Food Facts and never can be, so a search
+# there legitimately returns "No food found" and every step after it fails for
+# want of data rather than because FoodYou misbehaved.
+#
+# That guard is no longer needed, and keeping it would now be harmful. With
+# el_search_results fixed, the branch stops at its own precondition
+# (`wait_for (el_search_results)`), which the runtime classifies as the tester
+# failing to get where it was going — INCONCLUSIVE with a named reason, reached
+# by the general mechanism rather than a source-specific exception.
+#
+# Leaving it in place would mean ANY failure downstream of the external chip was
+# downgraded to INCONCLUSIVE, including a genuine one. The framework support in
+# algorithm.py stays (config-driven, inert when undeclared) for SUTs that need it.
+#
+# REINSTATED 2026-08-19. The retirement above rested on a premise that is false:
+# the external branch does NOT stop at `wait_for (el_search_results)`, because
+# that step is not on the external path in the composed test cases at all --
+#
+#     TAP !CV_SRC_EXTERNAL  ->  SEARCH_FOOD !FOOD_OIL !EXTERNAL
+#
+# with no WAIT_FOR between them. The label exists in the .aut, but only on the
+# LOCAL arms. So the branch sails past the source chip and stops later at
+# `wait_for (el_calories)` -- and el_calories also appears in an `observe`
+# block, which makes it an ORACLE selector, so its timeout is reported as a
+# conformance FAIL. That accounted for all 13 FAILs in the 102-variant sweep of
+# 2026-08-18, every one of them on an external search, with the app behaving
+# correctly: it displayed an honest count of 0 for Open Food Facts and 1 for the
+# Swiss database, and said "No food found".
+#
+# The missing `wait_for (el_search_results)` has since been added to the
+# EXTERNAL arm of the System Interface, but the concrete steps are composed into
+# the test cases at generation time, so that fix is inert until the .aut files
+# are regenerated on the CADP node. This block restores the correct verdict in
+# the meantime, using the framework support that was deliberately left in place.
+#
+# The cost named above is real and unchanged: any failure downstream of the
+# external chip is downgraded to INCONCLUSIVE, including a genuine one. It costs
+# nothing with the present fixture -- the foods under test are Swiss Food
+# Composition Database products and are not in Open Food Facts, so that branch
+# cannot produce evidence about the SUT either way. It does mean the external
+# branch must be reported as a COVERAGE GAP rather than as a pass.
+#
+# `cleared_by` lifts the guard when the walk selects a local source again, so a
+# single external search does not blanket the rest of the run.
+# WITHDRAWN 2026-08-23. Left here, disabled, because it has now been retired once
+# for a wrong reason and reinstated once for a right one, and the next person
+# deserves the history rather than a blank space.
+#
+# What it did: downgraded EVERY failure downstream of the external-source chip to
+# INCONCLUSIVE. That was scaffolding for defect D4 -- the external branch was
+# missing `wait_for (el_search_results)`, so it sailed past a "No food found"
+# screen and died at an ORACLE selector, reporting a conformance FAIL for an app
+# that had done nothing wrong.
+#
+# Why it goes now: D4 is fixed in the System Interface AND present in the
+# regenerated test cases, so the branch stops at its own precondition and the
+# runtime reports INCONCLUSIVE with a named reason through the general mechanism.
+# The guard is redundant -- and it masks defects by construction, on the one
+# branch that has never been tested. Keeping it would be keeping a blindfold.
+#
+# Re-enable ONLY if the external branch again produces failures traceable to the
+# environment rather than the app, and say so in the results if you do.
+#
+# external_dependencies:
+#   engaged_by: [cv_src_external]
+#   cleared_by: [cv_src_local]

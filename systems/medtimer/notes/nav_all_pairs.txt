@@ -1,0 +1,421 @@
+MEDTIMER all-pairs navigation paths (roots=overview/medicines/statistics tabs; gear->Settings; Back=Up)
+
+## FROM overviewFragment
+  -> medicinesFragment (1): overviewFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): overviewFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): overviewFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (2): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): overviewFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): overviewFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM medicinesFragment
+  -> overviewFragment (1): medicinesFragment  --[Overview tab]-->  overviewFragment
+  -> statisticsFragment (1): medicinesFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): medicinesFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (1): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (2): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (2): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (2): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (2): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (2): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (3): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (3): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (3): medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): medicinesFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM statisticsFragment
+  -> overviewFragment (1): statisticsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): statisticsFragment  --[Medicines tab]-->  medicinesFragment
+  -> preferencesFragment (1): statisticsFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (2): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): statisticsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): statisticsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM preferencesFragment
+  -> overviewFragment (1): preferencesFragment  --[Back]-->  overviewFragment
+  -> medicinesFragment (1): preferencesFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): preferencesFragment  --[Statistics tab]-->  statisticsFragment
+  -> editMedicineFragment (2): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): preferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (1): preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (1): preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (1): preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (1): preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (1): preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (1): preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (2): preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM editMedicineFragment
+  -> overviewFragment (1): editMedicineFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): editMedicineFragment  --[Back]-->  medicinesFragment
+  -> statisticsFragment (1): editMedicineFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment
+  -> calendarFragment (1): editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (1): editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (1): editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (1): editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (1): editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (2): editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (2): editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (2): editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): editMedicineFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM calendarFragment
+  -> overviewFragment (1): calendarFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): calendarFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): calendarFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): calendarFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (1): calendarFragment  --[Back]-->  editMedicineFragment
+  -> advancedReminderPreferencesRootFragment (2): calendarFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (2): calendarFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (2): calendarFragment  --[Back]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (2): calendarFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (3): calendarFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (3): calendarFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (3): calendarFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): calendarFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM advancedReminderPreferencesRootFragment
+  -> overviewFragment (1): advancedReminderPreferencesRootFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): advancedReminderPreferencesRootFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): advancedReminderPreferencesRootFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (1): advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (2): advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesStockFragment (2): advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (2): advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (2): advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (1): advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (1): advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (1): advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): advancedReminderPreferencesRootFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM advancedReminderPreferencesStockFragment
+  -> overviewFragment (1): advancedReminderPreferencesStockFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): advancedReminderPreferencesStockFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): advancedReminderPreferencesStockFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (1): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (2): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (2): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> stockSettingsFragment (1): advancedReminderPreferencesStockFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (2): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (3): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (3): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (3): advancedReminderPreferencesStockFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): advancedReminderPreferencesStockFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM stockSettingsFragment
+  -> overviewFragment (1): stockSettingsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): stockSettingsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): stockSettingsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (1): stockSettingsFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (2): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (2): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (2): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> medicineSettingsFragment (2): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (3): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (3): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (3): stockSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): stockSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM medicineSettingsFragment
+  -> overviewFragment (1): medicineSettingsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): medicineSettingsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): medicineSettingsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (1): medicineSettingsFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (2): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (2): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (2): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (2): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (3): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (3): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (3): medicineSettingsFragment  --[Back]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): medicineSettingsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM advancedReminderPreferencesInstructionsFragment
+  -> overviewFragment (1): advancedReminderPreferencesInstructionsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): advancedReminderPreferencesInstructionsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): advancedReminderPreferencesInstructionsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (2): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (3): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (1): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesStatusFragment (2): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (2): advancedReminderPreferencesInstructionsFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): advancedReminderPreferencesInstructionsFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM advancedReminderPreferencesStatusFragment
+  -> overviewFragment (1): advancedReminderPreferencesStatusFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): advancedReminderPreferencesStatusFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): advancedReminderPreferencesStatusFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (2): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (3): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (1): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (2): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesCyclicFragment (2): advancedReminderPreferencesStatusFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): advancedReminderPreferencesStatusFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM advancedReminderPreferencesCyclicFragment
+  -> overviewFragment (1): advancedReminderPreferencesCyclicFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): advancedReminderPreferencesCyclicFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): advancedReminderPreferencesCyclicFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (2): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment
+  -> calendarFragment (3): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (1): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Back]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (2): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (2): advancedReminderPreferencesCyclicFragment  --[Back]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> weekendModePreferencesFragment (2): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): advancedReminderPreferencesCyclicFragment  --[gear -> Settings]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM weekendModePreferencesFragment
+  -> overviewFragment (1): weekendModePreferencesFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): weekendModePreferencesFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): weekendModePreferencesFragment  --[Back]-->  preferencesFragment
+  -> editMedicineFragment (2): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): weekendModePreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> privacyPreferencesFragment (2): weekendModePreferencesFragment  --[Back]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): weekendModePreferencesFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): weekendModePreferencesFragment  --[Back]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): weekendModePreferencesFragment  --[Back]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): weekendModePreferencesFragment  --[Back]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): weekendModePreferencesFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM privacyPreferencesFragment
+  -> overviewFragment (1): privacyPreferencesFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): privacyPreferencesFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): privacyPreferencesFragment  --[Back]-->  preferencesFragment
+  -> editMedicineFragment (2): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): privacyPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): privacyPreferencesFragment  --[Back]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> notificationSettingsFragment (2): privacyPreferencesFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): privacyPreferencesFragment  --[Back]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): privacyPreferencesFragment  --[Back]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): privacyPreferencesFragment  --[Back]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): privacyPreferencesFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM notificationSettingsFragment
+  -> overviewFragment (1): notificationSettingsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): notificationSettingsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): notificationSettingsFragment  --[Back]-->  preferencesFragment
+  -> editMedicineFragment (2): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): notificationSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): notificationSettingsFragment  --[Back]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): notificationSettingsFragment  --[Back]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> displaySettingsFragment (2): notificationSettingsFragment  --[Back]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): notificationSettingsFragment  --[Back]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): notificationSettingsFragment  --[Back]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (1): notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM displaySettingsFragment
+  -> overviewFragment (1): displaySettingsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): displaySettingsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): displaySettingsFragment  --[Back]-->  preferencesFragment
+  -> editMedicineFragment (2): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): displaySettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): displaySettingsFragment  --[Back]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): displaySettingsFragment  --[Back]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): displaySettingsFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> alarmSettingsFragment (2): displaySettingsFragment  --[Back]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): displaySettingsFragment  --[Back]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): displaySettingsFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM alarmSettingsFragment
+  -> overviewFragment (1): alarmSettingsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): alarmSettingsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): alarmSettingsFragment  --[Back]-->  preferencesFragment
+  -> editMedicineFragment (2): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): alarmSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): alarmSettingsFragment  --[Back]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): alarmSettingsFragment  --[Back]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): alarmSettingsFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): alarmSettingsFragment  --[Back]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> snoozeSettingsFragment (2): alarmSettingsFragment  --[Back]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): alarmSettingsFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM snoozeSettingsFragment
+  -> overviewFragment (1): snoozeSettingsFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): snoozeSettingsFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): snoozeSettingsFragment  --[Back]-->  preferencesFragment
+  -> editMedicineFragment (2): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): snoozeSettingsFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): snoozeSettingsFragment  --[Back]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): snoozeSettingsFragment  --[Back]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (2): snoozeSettingsFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): snoozeSettingsFragment  --[Back]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): snoozeSettingsFragment  --[Back]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> repeatRemindersPreferencesFragment (3): snoozeSettingsFragment  --[Back]-->  preferencesFragment  --[Notification]-->  notificationSettingsFragment  --[Repeat reminders]-->  repeatRemindersPreferencesFragment
+
+## FROM repeatRemindersPreferencesFragment
+  -> overviewFragment (1): repeatRemindersPreferencesFragment  --[Overview tab]-->  overviewFragment
+  -> medicinesFragment (1): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment
+  -> statisticsFragment (1): repeatRemindersPreferencesFragment  --[Statistics tab]-->  statisticsFragment
+  -> preferencesFragment (1): repeatRemindersPreferencesFragment  --[gear -> Settings]-->  preferencesFragment
+  -> editMedicineFragment (2): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment
+  -> calendarFragment (3): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Calendar]-->  calendarFragment
+  -> advancedReminderPreferencesRootFragment (3): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment
+  -> advancedReminderPreferencesStockFragment (3): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Adv stock]-->  advancedReminderPreferencesStockFragment
+  -> stockSettingsFragment (3): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Stock]-->  stockSettingsFragment
+  -> medicineSettingsFragment (3): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Med settings]-->  medicineSettingsFragment
+  -> advancedReminderPreferencesInstructionsFragment (4): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Instructions]-->  advancedReminderPreferencesInstructionsFragment
+  -> advancedReminderPreferencesStatusFragment (4): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Status]-->  advancedReminderPreferencesStatusFragment
+  -> advancedReminderPreferencesCyclicFragment (4): repeatRemindersPreferencesFragment  --[Medicines tab]-->  medicinesFragment  --[medicine row / +Add]-->  editMedicineFragment  --[Advanced]-->  advancedReminderPreferencesRootFragment  --[Cyclic]-->  advancedReminderPreferencesCyclicFragment
+  -> weekendModePreferencesFragment (2): repeatRemindersPreferencesFragment  --[gear -> Settings]-->  preferencesFragment  --[Weekend]-->  weekendModePreferencesFragment
+  -> privacyPreferencesFragment (2): repeatRemindersPreferencesFragment  --[gear -> Settings]-->  preferencesFragment  --[Privacy]-->  privacyPreferencesFragment
+  -> notificationSettingsFragment (1): repeatRemindersPreferencesFragment  --[Back]-->  notificationSettingsFragment
+  -> displaySettingsFragment (2): repeatRemindersPreferencesFragment  --[gear -> Settings]-->  preferencesFragment  --[Display]-->  displaySettingsFragment
+  -> alarmSettingsFragment (2): repeatRemindersPreferencesFragment  --[gear -> Settings]-->  preferencesFragment  --[Alarm]-->  alarmSettingsFragment
+  -> snoozeSettingsFragment (2): repeatRemindersPreferencesFragment  --[gear -> Settings]-->  preferencesFragment  --[Snooze]-->  snoozeSettingsFragment

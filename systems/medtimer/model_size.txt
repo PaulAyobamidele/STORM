@@ -1,0 +1,19 @@
+2026-10-01 19:38:27
+./compose_medtimer.bcg:
+created by caesar
+	2887562 states
+	4117530 transitions
+	198 labels
+	initial state: 0
+	no deadlock state
+	branching factor: average = 1.43, minimal = 1, maximal = 22
+	no transition with a hidden label ("i")
+	non-deterministic behavior for:
+	   label "TAP !CV_TAB_MEDICINES" at state(s): 211 2412 2456 2508 2559 2646 2697 ... (4096 states in total)
+	   label "TAP !CV_ADD_MEDICINE" at state(s): 74 316 408 541 542 575 577 ... (58368 states in total)
+	   label "NAVIGATE !RT_HOME" at state(s): 74 211 316 408 541 542 575 ... (62464 states in total)
+	   label "TAP !CV_TAB_OVERVIEW" at state(s): 74 137 316 408 499 541 542 ... (66400 states in total)
+	   label "WAIT_FOR !EL_ROW_A1" at state(s): 211 2412 2456 2508 2559 2646 2697 ... (3072 states in total)
+	   label "WAIT_FOR !EL_ROW_A2" at state(s): 211 2412 2456 2508 2559 2646 2697 ... (3072 states in total)
+	   label "WAIT_FOR !EL_ROW_A3" at state(s): 211 2412 2456 2508 2559 2646 2697 ... (3072 states in total)
+	   label "WAIT_FOR !EL_ROW_B" at state(s): 211 2412 2456 2508 2559 2646 2697 ... (3072 states in total)

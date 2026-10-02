@@ -1,0 +1,42 @@
+module foodyou_tp_lib (foodyou_types) is
+
+(* ---------------------------------------------------------------------------
+   TEST-PURPOSE HELPERS ONLY.
+
+   Nothing defined here may be referenced by specification_foodyou_copy.lnt or
+   system_interface_foodyou_copy.lnt. These functions encode TEST SELECTION,
+   not system behaviour: using them in the specification would make the model
+   assert things about FoodYou that are not true (e.g. "the app only permits
+   apple at breakfast"), under-approximating the SUT and producing false FAILs.
+
+   Because the spec imports only foodyou_types, that independence is structural
+   rather than a matter of discipline -- the spec cannot see these names at all.
+   --------------------------------------------------------------------------- *)
+
+(* The food under test, shared by every test purpose so the sweep produces one
+   comparable results matrix.
+
+   FoodYou's open-source build ships NO stock products (verified on the
+   emulator: the Product table holds exactly the 3 rows seeded by
+   seed_foods.sh), so the app's food set IS the fixture's food set. defaultF
+   must name one of the seeded foods: an unseeded food has no entry in
+   Calorie.abstract_values, and _validate_food_info then SILENTLY SKIPS instead
+   of checking, turning every run into a vacuous pass.
+
+   Retarget the whole sweep by editing this one return. *)
+function defaultF : FoodId is
+    return food_oil               (* "Corn germ oil" 900 kcal / 100 g *)
+end function
+
+(* Pins each food to exactly one meal, so MealType acts as a WITNESS of FoodId
+   on gates that carry only the meal. A SELECTION device: food_peanut ->
+   BREAKFAST is arbitrary, not a property of FoodYou. *)
+function id2Type (fid : FoodId) : MealType is
+    case fid in
+        food_peanut  -> return BREAKFAST
+      | food_butter   -> return LUNCH
+      | food_oil -> return DINNER
+    end case
+end function
+
+end module

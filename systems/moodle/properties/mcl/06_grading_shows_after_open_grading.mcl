@@ -1,0 +1,34 @@
+(* DIAGNOSTIC. CLOSED as a false alarm on 2026-08-27.
+
+   Original question: why do seven of nine sweep cases die identically right
+   after OPEN_GRADING? Hypothesis: GRADING_SHOWS can't follow it.
+
+   WHAT ACTUALLY HAPPENED: the first version of this file used the BARE gate
+   names -- "OPEN_GRADING" and "GRADING_SHOWS" with no parameters -- as MCL
+   string literals. A quoted MCL action string is an EXACT match against the
+   WHOLE label text. Both gates carry parameters in every real label
+   ("OPEN_GRADING !CRS_0 !ASN_0", "GRADING_SHOWS !ASN_0 !PLACEHOLDER"/"!FINAL"),
+   so the bare literal matched NOTHING, and the formula returned FALSE for a
+   reason that had nothing to do with reachability -- the exact literal-vs-
+   regex trap this model's own history already warned about
+   (00_calibration_true.mcl), fallen into again on this one formula. The other
+   properties in this directory are unaffected: their gates
+   (APP_PARTIAL_SUBMISSION, WRITE_ERROR_SHOWN, etc.) are genuinely
+   parameterless in this model.
+
+   CONFIRMED a false alarm by direct trace, not just by fixing the formula:
+   from a state reached via OPEN_GRADING !CRS_0 !ASN_0, GRADING_SHOWS !ASN_0
+   !PLACEHOLDER is reachable in exactly 3 hops via the intact, correct route
+   WAIT_FOR sel_grading_submission_text -> OBSERVE sel_grading_submission_text
+   -> GRADING_SHOWS. The composed model is fine here.
+
+   The real cause of the seven stalled sweep cases is therefore NOT a spec
+   defect at this pairing. It is most likely that testor, without -all,
+   extracted one arbitrarily-chosen path per purpose, and several of those
+   paths simply didn't include the healthy continuation that demonstrably
+   exists in the full composed model. See TESTOR_ALL in generate_all.sh.
+
+   Expected, with the parameters correctly included: TRUE. *)
+< true* . "OPEN_GRADING !CRS_0 !ASN_0" .
+  (not ("GRADING_SHOWS !ASN_0 !PLACEHOLDER" or "GRADING_SHOWS !ASN_0 !FINAL"))* .
+  ("GRADING_SHOWS !ASN_0 !PLACEHOLDER" or "GRADING_SHOWS !ASN_0 !FINAL") > true

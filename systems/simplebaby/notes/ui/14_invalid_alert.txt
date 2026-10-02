@@ -1,0 +1,13 @@
+# 14_invalid_alert  alert: 'Missing Information | Failed to save the Feeding log. You are missing the following fields: amount.'
+
+<FrameLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/action_bar_root'}  bounds=[70,1018][1010,1447]
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[70,1018][1010,1447]
+<LinearLayoutCompat> {'resource-id': 'com.anonymous.bt_sdk53:id/parentPanel'}  bounds=[70,1018][1010,1447]
+<LinearLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/topPanel'}  bounds=[70,1018][1010,1157]
+<TextView> {'resource-id': 'com.anonymous.bt_sdk53:id/alert_title', 'text': 'Missing Information'}  bounds=[133,1065][947,1136]
+<View> {'resource-id': 'com.anonymous.bt_sdk53:id/titleDividerNoCustom'}  bounds=[70,1136][1010,1157]
+<FrameLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/contentPanel'}  bounds=[70,1157][1010,1283]
+<ScrollView> {'resource-id': 'com.anonymous.bt_sdk53:id/scrollView'}  bounds=[70,1157][1010,1263]
+<TextView> {'resource-id': 'android:id/message', 'text': 'Failed to save the Feeding log. You are missing the following fields: amount.'}  bounds=[70,1157][1010,1263]
+<ScrollView> {'resource-id': 'com.anonymous.bt_sdk53:id/buttonPanel'}  bounds=[70,1283][1010,1447]
+<Button> {'resource-id': 'android:id/button1', 'text': 'OK'} clickable bounds=[810,1294][978,1436]

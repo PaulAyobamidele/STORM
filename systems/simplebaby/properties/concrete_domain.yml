@@ -1,0 +1,116 @@
+# concrete_domain.yml -- I() for system_interface_simplebaby.lnt (Android,
+# Appium / UiAutomator2). Every selector was read off a live hierarchy dump of
+# the running app (notes/ui/NN_*.txt, 2026-09-29, emulator simplebaby_test,
+# API 34). Keys are lower-case and equal to the LNT enum values.
+#
+# The app's React Native testIDs appear as bare resource-ids ("feeding-button").
+# Alerts are the platform dialog: title id com.anonymous.bt_sdk53:id/alert_title,
+# message android:id/message, buttons android:id/button1 (OK, DELETE) and
+# button2 (CANCEL). The time picker is the platform dialog in text-input mode.
+
+routes:
+  rt_home: "home"                      # navigate = terminate + relaunch the app
+
+selectors:
+  # welcome, sign-up, guest (dumps 01, 04, 30)
+  sel_sign_up:        'new UiSelector().resourceId("sign-up-button")'
+  sel_guest:          'new UiSelector().resourceId("guest-button")'
+  sel_guest_continue: 'new UiSelector().resourceId("guest-continue-button")'
+  sel_first_name:     'new UiSelector().resourceId("sign-up-first-name")'
+  sel_last_name:      'new UiSelector().resourceId("sign-up-last-name")'
+  sel_email:          'new UiSelector().resourceId("sign-up-email")'
+  sel_password:       'new UiSelector().resourceId("sign-up-password-initial")'
+  sel_password2:      'new UiSelector().resourceId("sign-up-password-confirm")'
+  sel_sign_up_submit: 'new UiSelector().resourceId("sign-up-sign-up-button")'
+  # first-child popup (dump 05)
+  sel_child_name:     'new UiSelector().resourceId("add-child-name")'
+  sel_child_save:     'new UiSelector().resourceId("add-child-save-button")'
+  # tabs: content-desc "<icon>, Trackers" / "<icon>, Logs" (dump 07); the
+  # Logs pattern is anchored so it cannot match the "Feeding Logs" bar
+  sel_tab_trackers:   'new UiSelector().descriptionMatches(".*, Trackers$")'
+  sel_tab_logs:       'new UiSelector().descriptionMatches(".*, Logs$")'
+  sel_logs_feeding:   'new UiSelector().resourceId("logs-feeding-button")'
+  # feeding form (dump 08)
+  sel_feeding_button: 'new UiSelector().resourceId("feeding-button")'
+  sel_item_name:      'new UiSelector().resourceId("feeding-item-name")'
+  sel_amount:         'new UiSelector().resourceId("feeding-amount")'
+  sel_feed_save:      'new UiSelector().resourceId("feeding-save-log-button")'
+  # dialogs (dumps 10, 14, 15)
+  sel_alert_ok:       'new UiSelector().resourceId("android:id/button1").text("OK")'
+  sel_confirm_delete: 'new UiSelector().resourceId("android:id/button1").text("DELETE")'
+  sel_back:           'new UiSelector().descriptionContains("Back")'
+  # history (dump 13)
+  sel_delete:         'new UiSelector().resourceId("log-item-delete-button")'
+  # sleep form and time picker (dumps 17, 18, 21)
+  sel_sleep_button:     'new UiSelector().resourceId("sleep-button")'
+  sel_sleep_reset:      'new UiSelector().resourceId("sleep-reset-form-button")'
+  sel_sleep_start_time: 'new UiSelector().resourceId("sleep-manual-start-time")'
+  sel_sleep_end_time:   'new UiSelector().resourceId("sleep-manual-end-time")'
+  sel_time_keyboard:    'new UiSelector().resourceId("android:id/toggle_mode")'
+  sel_input_hour:       'new UiSelector().resourceId("android:id/input_hour")'
+  sel_input_minute:     'new UiSelector().resourceId("android:id/input_minute")'
+  sel_ampm:             'new UiSelector().resourceId("android:id/am_pm_spinner")'
+  sel_am:               'new UiSelector().text("AM")'
+  sel_pm:               'new UiSelector().text("PM")'
+  sel_time_ok:          'new UiSelector().resourceId("android:id/button1").text("OK")'
+  sel_sleep_save:       'new UiSelector().resourceId("sleep-save-log-button")'
+  sel_sw_reset:         'new UiSelector().resourceId("sleep-stopwatch-reset")'
+  sel_sw_start:         'new UiSelector().resourceId("sleep-stopwatch-start")'
+
+elements:
+  # screen anchors: present on that screen, absent on the others
+  el_welcome:       'new UiSelector().resourceId("sign-up-button")'             # dump 01, 29, 35
+  el_trackers:      'new UiSelector().resourceId("feeding-button")'             # dump 07
+  el_alert:         'new UiSelector().resourceId("com.anonymous.bt_sdk53:id/alert_title")'
+  el_feed_form:     'new UiSelector().resourceId("feeding-save-log-button")'    # dump 08
+  el_sleep_form:    'new UiSelector().resourceId("sleep-save-log-button")'      # dump 17
+  # the history: the list, the empty sentence, or its load error (dumps 13, 16)
+  el_history:       "//*[@resource-id='feeding-logs'] | //android.widget.TextView[contains(@text,'have any feeding logs')] | //*[@resource-id='feeding-logs-loading-error']"
+  # journey preconditions
+  el_signup_form:   'new UiSelector().resourceId("sign-up-first-name")'         # dump 04
+  el_guest_screen:  'new UiSelector().resourceId("guest-continue-button")'      # dump 30
+  el_child_popup:   'new UiSelector().resourceId("add-child-name")'             # dump 05, 31
+  el_logs_tab:      'new UiSelector().resourceId("logs-feeding-button")'        # dump 12
+  el_delete_dialog: 'new UiSelector().resourceId("com.anonymous.bt_sdk53:id/alert_title").text("Delete Entry")'  # dump 15
+  el_time_dialog:   'new UiSelector().resourceId("android:id/toggle_mode")'     # dump 18
+  # ORACLES
+  el_saved:         'new UiSelector().resourceId("com.anonymous.bt_sdk53:id/alert_title").text("Feeding log saved successfully!")'   # dump 10
+  el_write_error:   'new UiSelector().resourceId("com.anonymous.bt_sdk53:id/alert_title").textStartsWith("Failed to save feeding log")'
+  el_reject:        'new UiSelector().resourceId("com.anonymous.bt_sdk53:id/alert_title").text("Missing Information")'   # dump 14
+  el_sleep_saved:   'new UiSelector().resourceId("com.anonymous.bt_sdk53:id/alert_title").text("Sleep log saved successfully!")'  # dump 25
+  # the history's state, present whether or not a card exists: the first
+  # card's "Item: ..." line, else the empty sentence, else the load error.
+  # Read with the `names` role (does it name the item?).
+  el_history_state: "(//*[@resource-id='feeding-logs']//android.widget.TextView[starts-with(@text,'Item:')])[1] | //android.widget.TextView[contains(@text,'have any feeding logs')] | //*[@resource-id='feeding-logs-loading-error']"
+  # O5: a field that failed to decrypt, or the list's load error
+  el_corrupt_flag:  "//android.widget.TextView[contains(@text,'Decryption Failed')] | //*[@resource-id='feeding-logs-loading-error']"
+  # O2 loss report and O5 storage report: any alert, or the list's load error
+  el_loss_flag:     "//*[@resource-id='feeding-logs-loading-error'] | //*[@resource-id='com.anonymous.bt_sdk53:id/alert_title']"
+  el_storage_error: "//*[@resource-id='feeding-logs-loading-error'] | //*[@resource-id='com.anonymous.bt_sdk53:id/alert_title']"
+  # O6: the stopwatch's minutes. In the release app the 'sleep-stopwatch' node
+  # is empty and the digits are its SIBLINGS, in the order 00 : h  00 : m  00 s
+  # (2026-10-01, first nominal walk), so the minutes are two places before the
+  # 'm' label.
+  el_sw_minutes:    "//android.widget.TextView[@text='m']/preceding-sibling::android.widget.TextView[2]"
+
+concrete_values:
+  cv_first:    "Probe"
+  cv_last:     "Tester"
+  cv_email:    "@env:SB_EMAIL"         # a fresh address per run, exported by run_case.sh
+  cv_password: "probe-pass-1"
+  cv_child:    "Robin"
+  cv_item:     "Apple sauce"
+  cv_amount:   "4 oz"
+  cv_h_1:      "1"
+  cv_h_2:      "2"
+  cv_h_6:      "6"
+  cv_h_10:     "10"
+  cv_m_00:     "00"
+
+screen_anchors:
+  SCR_HOME:     el_welcome
+  SCR_TRACKERS: el_trackers
+  SCR_ALERT:    el_alert
+  SCR_FEED:     el_feed_form
+  SCR_HISTORY:  el_history
+  SCR_SLEEP:    el_sleep_form

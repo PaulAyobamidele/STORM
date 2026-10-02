@@ -1,0 +1,133 @@
+# type_description.yml -- the Sampler contract and the oracle data for every
+# abstract type. One top-level key per LNT type, NO enclosing `types:` key (an
+# enclosing key silently breaks every lookup).
+#
+# Fields the framework reads (framework/concretization/algorithm.py Sampler,
+# quantity_resolver.py):
+#   base             Enum | Integer | String
+#   values           the enum values, in the LNT order
+#   origin           "system_generated" = the SUT produces it, the tester never
+#                    samples it; anything else = the tester supplies it
+#   abstract_values  interpretation of each abstract value into the concrete
+#                    string the SUT shows / accepts
+#   constraints      Integer only: list of [op, n] with op in >= <= > <
+#   bucket_unit_from Enum band only: {type, value} -> one rung's concrete size
+#   capture_at       documentation only (no consumer yet) -- the gate at which
+#                    a system_generated value is observed
+#
+# WHAT IS NOT GENERIC YET. The strict oracles that made the FoodYou campaign
+# bite -- the band inversion at the aggregate, the authoritative-value check
+# at the read-back, the fault-manifestation probes -- are keyed inside the
+# framework on FoodYou's literal names (types DailyTotal / Calorie / FoodId,
+# gates FOOD_INFO / ADD_ENTRY / REMOVE_ENTRY / CONFIRM_TOTAL, buckets EMPTY..
+# OVER, fault CACHE_STALE). For any other SUT they are INERT: the ioco walk,
+# the trap-state verdicts and the observe/wait_for oracle still work, the
+# value arithmetic does not. See README.md, "Framework generalisation".
+# The `role:` lines below are the proposed config hook for that; they are
+# documentation until the framework reads them.
+
+# HOLE 31  tester-generated enums: values + the string the SUT accepts
+ItemId:
+  base: Enum
+  values: [item_a, item_b, item_c]
+  origin: tester_generated
+  description: >
+    An item the user selects. REAL entries of the SUT's own catalogue, not
+    fixtures this project invents. Each query matches exactly one entry.
+  abstract_values:
+    item_a: "Item A"
+    item_b: "Item B"
+    item_c: "Item C"
+
+Context:
+  base: Enum
+  values: [CTX_A, CTX_B, CTX_C]
+  origin: tester_generated
+  description: The bucket a write lands in.
+  abstract_values:
+    CTX_A: "Context A"
+    CTX_B: "Context B"
+    CTX_C: "Context C"
+
+Scope:
+  base: Enum
+  values: [LOCAL, EXTERNAL]
+  origin: tester_generated
+  description: Where a read is directed; only EXTERNAL may fail per the specification.
+
+Validity:
+  base: Enum
+  values: [VALID, INVALID]
+  origin: tester_generated
+  description: Parameter-borne disruption; INVALID is typed by the SI itself.
+
+# HOLE 32  the value read back at INFO: the SUT's OWN data, one authoritative
+# figure per item, verified against the SUT's store with the command below.
+# If you change one here, change the restore commands in
+# disruption_mapping.yml that write the same values back, and let the
+# environment check assert they still agree before any run.
+Value:
+  base: Integer
+  origin: system_generated
+  capture_at: INFO
+  role: authoritative_value          # proposed; keyed per ItemId
+  constraints:
+    - ['>=', 0]
+    - ['<=', 1000]
+  description: >
+    Per-item value read back from the SUT. The INFO oracle checks the
+    observed figure against these, so a stale or corrupt value is a
+    counter-example rather than a captured (vacuous) pass.
+    Verify: <command that prints name, value from the SUT's own store>
+    Spread deliberately, so a total made of different items cannot be
+    correct by coincidence; high enough that the band's boundary is
+    reachable.
+  abstract_values:
+    item_a: "100"
+    item_b: "250"
+    item_c: "400"
+
+# HOLE 33  the saturating band, and the unit of one rung
+StateBand:
+  base: Enum
+  values: [B_EMPTY, B_LOW, B_MID, B_HIGH, B_OVER]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: band                         # proposed; rung = round(observed / unit)
+  description: >
+    Bucketed aggregate, saturating (bump in sutname_types.lnt). bump counts
+    COMMITTED WRITES, not values -- one rung per write -- and the concrete
+    oracle inverts that as rung = round(observed / bucket_unit).
+    ONLY VALID WHILE EVERY RECORDED ITEM IS THE SAME ITEM. A purpose may read
+    several items but must write only defaultItem. Every observed total from
+    about 3.5 rungs upward classifies as B_OVER, so the check cannot separate
+    values above the saturating rung; the exact-sum ledger in the
+    concretization layer covers part of that gap and reports separately.
+  # MUST equal defaultItem in sutname_fixture.lnt: a rung is one unit of the
+  # item actually written, or the purpose is measured against the wrong unit.
+  bucket_unit_from:
+    type:  Value
+    value: item_c
+  abstract_values:                   # rungs implied by the unit, reporting only
+    B_EMPTY: "0"
+    B_LOW:   "400"
+    B_MID:   "800"
+    B_HIGH:  "1200"
+    B_OVER:  "1600"
+
+WriteStatus:
+  base: Enum
+  values: [COMMITTED, ROLLED_BACK, CORRUPTED, REJECTED]
+  origin: system_generated
+  capture_at: CONFIRM
+  description: >
+    Fate of the write transaction. Not observed directly: it manifests in the
+    band read back (COMMITTED moves it one rung, every other status leaves
+    it unchanged). Whether a status is a separate observable label or only a
+    branch in the band is a modelling choice per SUT; state it.
+
+RecordId:
+  base: Enum
+  values: [rec_0, rec_1, rec_2]
+  origin: tester_generated
+  description: A persisted record, one per item (item_of in the types).

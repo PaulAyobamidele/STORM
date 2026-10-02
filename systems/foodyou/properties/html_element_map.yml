@@ -1,0 +1,79 @@
+# html_element_map.yml
+# Per-gate concrete-element reference for the observable abstract actions.
+# (Name kept for framework consistency with the web SUTs; FoodYou is a native
+#  Kotlin/Compose app, so "html"/CSS is replaced by Appium UiAutomator2
+#  resource-id / text selectors driven by an AppiumExecutor — see
+#  systems/foodyou/notes/scaffold.md, "Drive" next-step.)
+#
+# This is the concrete knowledge the System Interface concretizes; it mirrors
+# the navigate / tap / wait_for / observe sequences in
+# system_interface_foodyou.lnt. Templated tokens ({{FOOD_NAME}}, {{MEAL_NAME}})
+# are substituted from the abstract parameter via the L translation function +
+# type_description.yml abstract_values.
+
+app_package: "com.maksimowiczm.foodyou"
+automation:  "UiAutomator2"
+
+gates:
+
+  # ---- abstract input -------------------------------------------------
+  SEARCH_FOOD:                           # tester INPUT -> SUT
+    screen: search
+    param_types: {param_0: FoodId}
+    actions:
+      - selector: 'new UiSelector().text("{{FOOD_NAME}}")'
+        by: uiautomator
+        action: click                    # tap the food in the search results
+    wait_for:
+      selector: 'com.maksimowiczm.foodyou:id/foodCalories'
+      by: id
+
+  # ---- abstract output ------------------------------------------------
+  FOOD_INFO:                             # SUT -> tester
+    screen: search
+    observe:
+      selector: 'com.maksimowiczm.foodyou:id/foodCalories'
+      by: id
+      attribute: text                    # -> Calorie (per-food kcal)
+    wait_for:
+      selector: 'com.maksimowiczm.foodyou:id/foodCalories'
+      by: id
+
+  # ---- abstract input -------------------------------------------------
+  ADD_ENTRY:                             # tester INPUT -> SUT
+    screen: diary
+    param_types: {param_0: MealType, param_1: FoodId}
+    # Reference portion: AddEntryScreen opens with the measurement form
+    # pre-filled at Measurement.Gram.DEFAULT = 100 g; the tester accepts it and
+    # taps Save, so each entry contributes the food's per-100 g energy.
+    actions:
+      - selector: 'new UiSelector().text("{{MEAL_NAME}}")'
+        by: uiautomator
+        action: click                    # open the meal section's add target
+      - selector: 'new UiSelector().text("{{FOOD_NAME}}")'
+        by: uiautomator
+        action: click                    # pick the food -> AddEntryScreen (100 g)
+      - selector: 'new UiSelector().descriptionContains("Save")'
+        by: uiautomator
+        action: click                    # Save FAB -> createDiaryEntry commits
+    wait_for:
+      selector: 'com.maksimowiczm.foodyou:id/dailyGoalProgress'
+      by: id
+
+  # ---- abstract output (single, authoritative -> resilience) ----------
+  CONFIRM_TOTAL:                         # SUT -> tester
+    screen: diary
+    # param_2 is a FoodId carried for TRACEABILITY only: it records which food
+    # the write was about so the correlation identifier survives across the
+    # workflow. It is NOT observed here -- dailyGoalProgress is an aggregate
+    # that names no food -- so no oracle is attached to it.
+    param_types: {param_2: FoodId}
+    observe:
+      selector: 'com.maksimowiczm.foodyou:id/dailyGoalProgress'
+      by: id
+      attribute: text                    # -> DailyTotal (bucketed kcal)
+    # committed   -> total bumped one rung
+    # rolled back -> total unchanged (DISRUPTION_DB) — still consistent
+    wait_for:
+      selector: 'com.maksimowiczm.foodyou:id/dailyGoalProgress'
+      by: id

@@ -1,0 +1,50 @@
+
+=== DB_ABORT
+  before: live rows|C live|counter = 3|1|3
+  injected: True
+  alerts within 15 s: [(0.3, '500')]
+  post C still in the open column after 15 s: True
+  restored: True
+  store 8 s after restore: live rows|C live|counter = 3|1|3
+
+=== INFRA_STORAGE_FULL
+  before: live rows|C live|counter = 3|1|3
+  injected: True
+  alerts within 15 s: [(0.6, '500')]
+  post C still in the open column after 15 s: True
+  restored: True
+  store 8 s after restore: live rows|C live|counter = 3|1|3
+
+=== UE_SESSION_EXPIRED
+  before: live rows|C live|counter = 3|1|3
+  injected: True
+  alerts within 15 s: [(0.3, '401The access token was revoked')]
+  post C still in the open column after 15 s: True
+  restored: True
+  store 8 s after restore: live rows|C live|counter = 3|1|3
+
+=== APP_UNAVAILABLE
+  before: live rows|C live|counter = 3|1|3
+  injected: True
+  alerts within 15 s: NONE
+  post C still in the open column after 15 s: True
+  restored: True
+  store 8 s after restore: live rows|C live|counter = 2|0|2
+
+=== INFRA_DB_DOWN
+  before: live rows|C live|counter = 3|1|3
+  injected: True
+  alerts within 15 s: NONE
+  post C still in the open column after 15 s: True
+  restored: True
+  store 8 s after restore: live rows|C live|counter = 2|0|2
+
+=== INFRA_SIDEKIQ_DEAD
+  before: live rows|C live|counter = 3|1|3
+  injected: True
+  alerts within 15 s: [(0.3, 'Post deleted')]
+  post C still in the open column after 15 s: False
+  restored: True
+  store 8 s after restore: live rows|C live|counter = 2|0|2
+
+final seed: ok

@@ -1,0 +1,11 @@
+(* The fault can occur at all.
+
+   If APP_PARTIAL_SUBMISSION is unreachable then every property about what
+   follows it is vacuously satisfied, and the test case generated from the
+   matching purpose would exercise nothing. This has happened in this model
+   before: a synchronised gate one side never offered was SILENTLY DELETED from
+   the composition, the build still succeeded, and the state space just shrank.
+
+   Expected: TRUE
+*)
+< true* . "APP_PARTIAL_SUBMISSION" > true

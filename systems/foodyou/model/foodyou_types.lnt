@@ -1,0 +1,390 @@
+
+module foodyou_types is
+
+
+(* The foods under test. These are REAL products shipped with the app, in the
+   Swiss Food Composition Database that FoodYou imports from a bundled CSV --
+   not fixtures we invented.
+
+   That matters for the oracle. With a seeded TestEgg the expected energy was a
+   number we wrote into the database ourselves, so checking it partly checked
+   our own bookkeeping. These values come from the app's own data, so a mismatch
+   means the app disagrees with its own catalogue.
+
+   Chosen for three properties, all verified against the device:
+     * each query matches exactly ONE product, so `tap (L_food (fid))' is
+       unambiguous -- "Almond" (10 matches) and "Olive oil" (3) were rejected;
+     * separated energies, so a total cannot come out right by coincidence. One
+       food repeated gave totals that were multiples of a single number, which
+       could not distinguish "three entries" from "one entry counted thrice";
+     * HIGH ENOUGH THAT THREE MEALS CAN EXCEED THE 2000 kcal GOAL. This is what
+       makes the app's over-goal behaviour reachable at all: the previous fixture
+       topped out around 620 kcal, so "Exceeded by N calories" could never be
+       observed and that whole branch was dead. One food per meal now gives
+       1908 (under, 92 left) or 2017 (over by 17) -- a 17 kcal margin, tight
+       enough that a rounding slip or a double-counted entry crosses it. *)
+type FoodId is
+    food_peanut,    (* "Peanut butter"  636 kcal / 100 g *)
+    food_butter,    (* "Cooking butter" 745 kcal / 100 g *)
+    food_oil        (* "Corn germ oil"  900 kcal / 100 g *)
+with ==
+end type
+
+type MealType is
+    BREAKFAST, LUNCH, DINNER
+with ==
+end type
+
+type EntryId is
+    entry_0, entry_1, entry_2
+with ==
+end type
+
+(* The catalogue a search is scoped to.
+
+     LOCAL     already on the device, so always available and deterministic.
+               Concretely the Swiss Food Composition Database: 1190 real
+               products imported from a CSV bundled in the APK.
+     EXTERNAL  "Open Food Facts" -- fetched over the network. Observed returning
+               502, then 200, then "temporarily unavailable" within one day, so
+               its availability is outside this project's control. This is the
+               only source the specification says may fail, and that is what
+               earns it a separate abstract value.
+
+   Verified from the app's source: there is ONE Room database and ONE Product
+   table; "sources" are a sourceType column filtered by the search query, not
+   separate stores. A three-way USER/SWISS/EXTERNAL split was tried and reverted
+   -- the specification says nothing different about user-created rows versus
+   imported ones, so the distinction cost state space and controllability
+   conflicts while buying no test power.
+
+   "Recent" is not modelled: it is search history, so its contents depend on what
+   earlier runs typed, which would make a test case's behaviour a function of the
+   ones before it. *)
+type FoodSource is
+    LOCAL, EXTERNAL
+with ==
+end type
+
+
+type Validity is
+    VALID, INVALID
+with ==
+end type
+
+
+type Calorie is
+    kcal_peanut, kcal_butter, kcal_oil
+with ==
+end type
+
+
+type DailyTotal is
+    EMPTY, LOW, MODERATE, HIGH, OVER
+with ==
+end type
+
+function bump (t : DailyTotal) : DailyTotal is
+    case t in
+        EMPTY    -> return LOW
+      | LOW      -> return MODERATE
+      | MODERATE -> return HIGH
+      | HIGH     -> return OVER
+      | OVER     -> return OVER
+    end case
+end function
+
+function drop (t : DailyTotal) : DailyTotal is
+    case t in
+        EMPTY    -> return EMPTY
+      | LOW      -> return EMPTY
+      | MODERATE -> return LOW
+      | HIGH     -> return MODERATE
+      | OVER     -> return HIGH
+    end case
+end function
+
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, CORRUPTED, REJECTED
+with ==
+end type
+
+
+(* ---------------------------------------------------------------------------
+   TEST-PURPOSE HELPERS. Used only by the tp_*.lnt; the specification and the
+   system interface must not reference them. They encode TEST SELECTION, not
+   system behaviour: asserting them of FoodYou (e.g. "the app only permits egg
+   at dinner") would under-approximate the SUT and produce false FAILs.
+   --------------------------------------------------------------------------- *)
+
+(* A default for purposes that do not care WHICH food, only that there is one.
+   Purposes exercising several foods name them directly instead.
+
+   The old note here claimed FoodYou "ships NO stock products, so the app's food
+   set IS the fixture's food set". That was true when written and is not any
+   more: the app bundles the Swiss Food Composition Database as a CSV and
+   imports 1190 real products into the same Product table. The fixture no longer
+   has to invent foods, and this default is now one of the app's own.
+
+   Whatever this returns must have an entry in Calorie.abstract_values --
+   without one, _validate_food_info silently SKIPS instead of checking and every
+   run becomes a vacuous pass. *)
+(* food_oil, not the lightest food, and the reason is the 2000 kcal goal.
+
+   The bands require every LOGGED entry to be the same food (one rung = one
+   portion), and there are three meals, so the heaviest reachable total is
+   3 x kcal(defaultF). At 636 that is 1908 -- under the goal, so the app's
+   over-goal behaviour could never be observed. At 900 it is 2700, and the
+   boundary falls between two entries (1800, under) and three (2700, over).
+   Both sides are then reachable with a single food. *)
+function defaultF : FoodId is
+    return food_oil          (* "Corn germ oil" 900 kcal / 100 g *)
+end function
+
+function kcal_of (fid : FoodId) : Calorie is
+    case fid in
+        food_peanut -> return kcal_peanut
+      | food_butter -> return kcal_butter
+      | food_oil    -> return kcal_oil
+    end case
+end function
+
+
+function food_of (eid : EntryId) : FoodId is
+    case eid in
+        entry_0 -> return food_peanut
+      | entry_1 -> return food_butter
+      | entry_2 -> return food_oil
+    end case
+end function
+
+
+
+channel SearchChannel is
+    (fid : FoodId, src : FoodSource)
+end channel
+
+channel FoodInfoChannel is
+    (fid : FoodId, kcal : Calorie)
+end channel
+
+
+channel AddEntryChannel is
+    (meal : MealType, fid : FoodId, valid : Validity)
+end channel
+
+(* `fid` carries the food the write was ABOUT, so the correlation identifier
+   threaded through SEARCH_FOOD / FOOD_INFO / ADD_ENTRY does not break at
+   CONFIRM_TOTAL. Note what it is and is not: the DailyTotal itself is
+   food-blind (`bump` counts entries, it does not sum calories), and
+   concretely the tester observes el_daily_total, an aggregate that names no
+   food -- so `fid` here is PROVENANCE for the trace, not an observed value.
+   Do not build an oracle that "checks" it against the SUT; it would only be
+   comparing the tester against its own memory. *)
+channel TotalChannel is
+    (status: WriteStatus, total : DailyTotal, fid : FoodId)
+end channel
+
+(* APP <-> DATABASE : write (diary) path *)
+channel WriteEntryChannel is
+    (meal : MealType, fid : FoodId)
+end channel
+
+channel EntryPersistedChannel is
+    (status : WriteStatus, total : DailyTotal)
+end channel
+
+
+channel ViewDiaryChannel is
+    (eid : EntryId)
+end channel
+
+channel DiaryInfoChannel is
+    (eid : EntryId, fid : FoodId)
+end channel
+
+
+channel RemoveEntryChannel is
+    (eid : EntryId)
+end channel
+
+
+
+
+type Route is
+    rt_diary,    (* Home / diary: meals + the daily nutrition-goal progress *)
+    rt_search    (* Add-food search screen (per-meal "+" -> food lookup) *)
+with ==
+end type
+
+type Element is
+    el_calories,         
+    el_daily_total,      
+    el_entry_food,       
+    el_search_input,
+    (* The per-source result COUNTS ("Open Food Facts 98", "Swiss ... 1"). These
+       appear once the search has actually been submitted and BEFORE any source
+       is expanded, so they are what says "the query ran". Without this the model
+       had no way to express the gap between typing and having results, and the
+       tester proceeded straight to expecting rows. *)
+    el_source_counts,
+    el_search_results,
+    el_home,             
+    el_diary_entry_detail,  
+    el_measure_screen,
+    el_add_entry_form,
+    el_update_product_form, 
+    el_ingredient_added,    
+    el_delete_confirm,      
+    el_extapi_warning,      
+    el_input_error,         
+    el_corrupt_error,       
+    el_storage_error,
+    el_recovery_control        
+with ==
+end type
+
+type ConcreteValue is
+    (* The exact row text to tap in the results list. *)
+    cv_peanut, cv_butter, cv_oil,
+    cv_breakfast, cv_lunch, cv_dinner,    
+    cv_save,                             
+    cv_entry_0, cv_entry_1, cv_entry_2,   
+    cv_delete,                            
+    cv_back,                              
+    cv_edit_food,                         
+    cv_edit_product,                      
+    cv_edit_ingredient,                   
+    cv_add_ingredient,                    
+    cv_search_submit,                    
+    cv_confirm_delete,                    
+    (* The text typed into the search field. Each matches exactly one product. *)
+    cv_q_peanut, cv_q_butter, cv_q_oil,
+    (* One chip per modelled source. NOTE: cv_src_local previously resolved to
+       the SAME concrete selector as cv_search_submit -- both were the "Your
+       food" chip -- so the tester tapped that one chip twice and never pressed
+       the keyboard's search key. The search only ever ran via the app's
+       live-as-you-type, which is timing-dependent. They must stay distinct:
+       cv_search_submit is the keyboard action, cv_src_local is a filter chip. *)
+    cv_src_local,
+    cv_src_external,
+    cv_qty_invalid
+with ==
+end type
+
+
+
+
+
+function L_food (fid : FoodId) : ConcreteValue is
+    case fid in
+        food_peanut  -> return cv_peanut
+      | food_butter   -> return cv_butter
+      | food_oil -> return cv_oil
+    end case
+end function
+
+
+function L_query (fid : FoodId) : ConcreteValue is
+    case fid in
+        food_peanut  -> return cv_q_peanut
+      | food_butter   -> return cv_q_butter
+      | food_oil -> return cv_q_oil
+    end case
+end function
+
+function L_source (src : FoodSource) : ConcreteValue is
+    case src in
+        LOCAL    -> return cv_src_local
+      | EXTERNAL -> return cv_src_external
+    end case
+end function
+
+function L_meal (meal : MealType) : ConcreteValue is
+    case meal in
+        BREAKFAST -> return cv_breakfast
+      | LUNCH     -> return cv_lunch
+      | DINNER    -> return cv_dinner
+    end case
+end function
+
+function L_entry (eid : EntryId) : ConcreteValue is
+    case eid in
+        entry_0 -> return cv_entry_0
+      | entry_1 -> return cv_entry_1
+      | entry_2 -> return cv_entry_2
+    end case
+end function
+
+function L_back () : ConcreteValue is
+    return cv_back
+end function
+
+function L_edit_food () : ConcreteValue is
+    return cv_edit_food
+end function
+
+function L_edit_product () : ConcreteValue is
+    return cv_edit_product
+end function
+
+function L_edit_ingredient () : ConcreteValue is
+    return cv_edit_ingredient
+end function
+
+function L_add_ingredient () : ConcreteValue is
+    return cv_add_ingredient
+end function
+
+
+channel Ch_Route   is (r : Route)         end channel  (* navigate *)
+channel Ch_Value   is (v : ConcreteValue) end channel  (* tap       *)
+channel Ch_Element is (e : Element)       end channel  (* wait_for / observe *)
+
+
+process DISRUPTOR [ EXTAPI_FAIL,
+    NETWORK_DEGRADED, UE1_KILL, DISRUPTION_DB, DB_CORRUPT, CACHE_STALE : none
+] is
+    loop
+        alt
+        (* 2026-09-29: the `i' alternative that stood first here is REMOVED.
+           A tau branch in a looping disruptor is enabled in every state, so
+           TESTOR sees a tau-livelock everywhere and adds :DELTA: to every
+           output state -- 100% of them in the v2 suite. Quiescence was then
+           'permitted' wherever the SUT was silent, and no absent observable
+           could ever FAIL (extapi_fail v2: all INCONC). Same defect, same fix
+           as Spliit 2026-09-28. Faults are inputs (foodyou.io), so a disruptor
+           offering only faults introduces no tau and no spurious quiescence. *)
+            EXTAPI_FAIL
+        []
+            UE1_KILL
+        []
+            DISRUPTION_DB
+        []
+            DB_CORRUPT
+        []
+            CACHE_STALE
+        end alt
+    end loop
+end process
+
+
+process INFRA_DISRUPTOR [NETWORK_DEGRADED, STORAGE_FULL, STORAGE_MEDIA : none] is
+    loop
+        alt
+        (* 2026-09-29: the `i' alternative that stood first here is REMOVED.
+           A tau branch in a looping disruptor is enabled in every state, so
+           TESTOR sees a tau-livelock everywhere and adds :DELTA: to every
+           output state -- 100% of them in the v2 suite. Quiescence was then
+           'permitted' wherever the SUT was silent, and no absent observable
+           could ever FAIL (extapi_fail v2: all INCONC). Same defect, same fix
+           as Spliit 2026-09-28. Faults are inputs (foodyou.io), so a disruptor
+           offering only faults introduces no tau and no spurious quiescence. *)
+            STORAGE_FULL
+        []
+            STORAGE_MEDIA
+        end alt
+    end loop
+end process
+
+end module

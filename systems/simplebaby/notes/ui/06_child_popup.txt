@@ -1,0 +1,10 @@
+# 06_child_popup  
+
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[0,0][1080,2400]
+<ViewGroup> {'resource-id': 'add-child-popup'}  bounds=[0,0][1080,2400]
+<ViewGroup> {'content-desc': "Welcome to SimpleBaby, Please add your first child's name below:"} clickable bounds=[0,0][1080,2400]
+<TextView> {'text': 'Welcome to SimpleBaby'}  bounds=[193,825][887,991]
+<TextView> {'text': "Please add your first child's name below:"}  bounds=[184,1046][896,1176]
+<EditText> {'resource-id': 'add-child-name', 'text': 'Enter a name'} clickable bounds=[184,1222][896,1357]
+<ViewGroup> {'resource-id': 'add-child-save-button', 'content-desc': 'Save New Child'} clickable bounds=[184,1394][896,1547]
+<TextView> {'text': 'Save New Child'}  bounds=[232,1442][848,1498]

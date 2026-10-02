@@ -1,0 +1,9 @@
+# 12_new_reminder_dialog  
+
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[42,922][1038,1543]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/editAmountLayout'}  bounds=[79,959][1001,1120]
+<EditText> {'resource-id': 'com.futsch1.medtimer:id/editAmount', 'text': 'Dosage'} clickable bounds=[79,973][1001,1120]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/editReminderTimeLayout'}  bounds=[79,1167][1001,1328]
+<EditText> {'resource-id': 'com.futsch1.medtimer:id/editReminderTime', 'text': '8:00 AM'} clickable bounds=[79,1181][1001,1328]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/cancelCreateReminder', 'text': 'Cancel'} clickable bounds=[81,1378][370,1504]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/createReminder', 'text': 'Create reminder'} clickable bounds=[396,1378][999,1504]

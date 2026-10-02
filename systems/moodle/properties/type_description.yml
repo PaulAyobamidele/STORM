@@ -1,0 +1,140 @@
+# type_description.yml  —  Moodle case study
+# ---------------------------------------------------------------------------
+# The abstract domain D_abs: what each LNT type in model/moodle_types.lnt MEANS
+# in the running system, and how the executor recognises each value on screen.
+#
+# TYPE NAMES ARE TOP LEVEL. The framework does self.td.get("TypeName") directly
+# (algorithm.py:1843, Sampler, QuantityResolver), so an enclosing `types:` key
+# makes EVERY lookup return nothing — silently. This file previously had that
+# wrapper, which would have disabled the sampler, the parameter resolver and
+# every abstract-value match at once, with no error anywhere.
+#
+# `abstract_values` maps an abstract value to the string the SUT actually
+# renders. It is load-bearing: _select_by_observation uses it to decide WHICH
+# permitted output the SUT produced. A value with no entry cannot be
+# recognised, and an oracle that silently skips an unrecognised value is a
+# vacuous pass.
+#
+# Strings are plain — no embedded quotes. They are matched case-insensitively
+# as substrings of the observed text, because Moodle wraps values in markup and
+# whitespace that normalize-space does not fully remove.
+# ---------------------------------------------------------------------------
+
+CourseId:
+  base: Enum
+  values: [crs_0]
+  description: >
+    A Moodle course. ONE value, because the fixture has exactly one (id 2,
+    shortname MOD). Modelling more was unfaithful and multiplied the composed
+    state space without expressing anything the SUT can do.
+  abstract_values:
+    crs_0: "2"
+
+QuizId:
+  base: Enum
+  values: [qz_0]
+  description: The fixture quiz, Model_Quiz (cmid 1, instance 1).
+  abstract_values:
+    qz_0: "Model_Quiz"
+
+AssignId:
+  base: Enum
+  values: [asn_0]
+  description: The fixture assignment, Model_Assignment (cmid 2, instance 1).
+  abstract_values:
+    asn_0: "Model_Assignment"
+
+AttemptId:
+  base: Enum
+  values: [att_0]
+  origin: system_generated
+  description: >
+    A quiz attempt. PINNED in the System Interface rather than received: the
+    concrete attempt id is never needed, because sel_quiz_grade_value and
+    sel_attempt_state_cell both resolve on the quiz VIEW page (verified live).
+    The review/summary routes that template {{ATTEMPT_ID}} are consequently
+    unused — nothing binds that placeholder.
+  abstract_values:
+    att_0: "Attempt 1"
+
+Grade:
+  base: Enum
+  values: [GRADE_FULL, GRADE_ZERO]
+  origin: system_generated
+  description: >
+    An ENUMERATION, not Grade(val : Nat). Nat is unbounded and output gates
+    receive freely, so CADP enumerated naturals: the SI alone reached 1617
+    labels and the composition 1.57M states. Two abstract values are all the
+    properties need.
+  abstract_values:
+    GRADE_FULL: "100.00"
+    GRADE_ZERO: "0.00"
+
+AttemptStatus:
+  base: Enum
+  role: enum
+  observed_from: sel_attempt_state_cell
+  values: [IN_PROGRESS, SUBMITTED, ABANDONED]
+  origin: system_generated
+  capture_at: ATTEMPT_STATE
+  description: >
+    The quiz-attempt lifecycle as the STUDENT sees it, read from the State cell
+    of the attempt-summary table on mod/quiz/view.php.
+
+    ONE abstract value per DISTINCT rendered string, deliberately. GRADED was
+    removed because it rendered the same "Finished" as SUBMITTED — an ambiguous
+    mapping is an unusable one, since the executor cannot decide which value it
+    just saw. FAILED was removed because nothing in Moodle renders it, so an
+    oracle requiring it could never match.
+  abstract_values:
+    IN_PROGRESS: "In progress"
+    SUBMITTED: "Finished"
+    ABANDONED: "Never submitted"
+
+SubmissionStatus:
+  base: Enum
+  role: enum
+  observed_from: sel_submission_status
+  values: [NO_SUBMISSION, SUBMITTED_FG]
+  origin: system_generated
+  capture_at: SUBMISSION_STATUS
+  description: >
+    Assignment submission status, read from the 'Submission status' row.
+    DISTINCT from AttemptStatus: conflating the two hid the defect
+    APP_PARTIAL_SUBMISSION is about.
+
+    DRAFT was REMOVED when the fixture moved to submissiondrafts=0. Both
+    strings below were then re-measured against the live SUT rather than
+    carried over: with drafts off, one save takes the page from
+    "No submissions have been made yet" straight to "Submitted for grading"
+    and "Draft (not submitted)" is never rendered. Keeping DRAFT would have
+    left a value in the domain that no page can produce, so an oracle
+    requiring it could never match -- the same vacuous-oracle defect that the
+    unrenderable AttemptStatus FAILED value caused above.
+  abstract_values:
+    NO_SUBMISSION: "No submissions have been made yet"
+    SUBMITTED_FG: "Submitted for grading"
+
+SubmissionVersion:
+  base: Enum
+  role: enum
+  observed_from: [sel_submission_text, sel_grading_submission_text]
+  values: [PLACEHOLDER, FINAL]
+  origin: system_generated
+  capture_at: [SUBMISSION_TEXT, GRADING_SHOWS]
+  description: >
+    WHICH REVISION of the submitted text is stored or displayed. The
+    load-bearing type: both stale-read properties turn on it.
+
+    Read from the submission TEXT (sel_submission_text on the student page,
+    sel_grading_submission_text inside the grading form), NOT from a grade
+    cell — a grade cell renders "100.00" and contains nothing that
+    distinguishes the revisions, which is why the previous model's `ver`
+    parameter had no concrete counterpart and its oracle was vacuous.
+
+    The two strings are deliberately unmistakable. If both revisions rendered
+    similar text the oracle could not tell them apart and the property would
+    silently become untestable again.
+  abstract_values:
+    PLACEHOLDER: "REVISION-PLACEHOLDER"
+    FINAL: "REVISION-FINAL"

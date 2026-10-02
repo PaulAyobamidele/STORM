@@ -1,0 +1,14 @@
+# 08_unit_dialog  
+
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/action_bar_root'}  bounds=[70,626][1010,1018]
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[70,626][1010,1018]
+<LinearLayoutCompat> {'resource-id': 'com.futsch1.medtimer:id/parentPanel'}  bounds=[70,626][1010,1018]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/topPanel'}  bounds=[70,626][1010,744]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/title_template'}  bounds=[70,626][1010,744]
+<TextView> {'resource-id': 'com.futsch1.medtimer:id/alertTitle', 'text': 'Unit'}  bounds=[133,673][947,744]
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/customPanel'}  bounds=[70,744][1010,870]
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/custom'}  bounds=[70,744][1010,870]
+<EditText> {'resource-id': 'android:id/edit'} clickable focused bounds=[123,744][957,870]
+<ScrollView> {'resource-id': 'com.futsch1.medtimer:id/buttonPanel'}  bounds=[70,870][1010,1018]
+<Button> {'resource-id': 'android:id/button2', 'text': 'Cancel'} clickable bounds=[631,881][810,1007]
+<Button> {'resource-id': 'android:id/button1', 'text': 'OK'} clickable bounds=[810,881][978,1007]

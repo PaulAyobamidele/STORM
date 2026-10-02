@@ -1,0 +1,931 @@
+FOODYOU all-pairs navigation paths (root=Home; Back=popBackStackInclusive one level)
+
+## FROM Home
+  -> Settings (1): Home  --[settings icon]-->  Settings
+  -> About (1): Home  --[title tap]-->  About
+  -> MealsPersonalization (1): Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (1): Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (1): Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (1): Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (1): Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (1): Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (1): Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (2): Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (2): Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (2): Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (2): Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (2): Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (2): Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (3): Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (3): Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (4): Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (2): Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (2): Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (2): Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (2): Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (2): Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (3): Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (3): Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (3): Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (3): Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (3): Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM Settings
+  -> Home (1): Settings  --[Back]-->  Home
+  -> About (1): Settings  --[About]-->  About
+  -> MealsPersonalization (2): Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (1): Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (1): Settings  --[Meals]-->  MealSetup
+  -> Language (1): Settings  --[Language]-->  Language
+  -> GoalsSetup (1): Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (1): Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (1): Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (2): Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (2): Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (2): Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (3): Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (2): Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (2): Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (2): Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM About
+  -> Home (1): About  --[Back]-->  Home
+  -> Settings (2): About  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> MealsPersonalization (2): About  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): About  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): About  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): About  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): About  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): About  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): About  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): About  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM MealsPersonalization
+  -> Home (1): MealsPersonalization  --[Back]-->  Home
+  -> Settings (2): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings
+  -> About (2): MealsPersonalization  --[Back]-->  Home  --[title tap]-->  About
+  -> FoodDiarySearch (2): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): MealsPersonalization  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): MealsPersonalization  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): MealsPersonalization  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): MealsPersonalization  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): MealsPersonalization  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (1): MealsPersonalization  --[Meal settings]-->  MealSetup
+  -> Language (3): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): MealsPersonalization  --[Meal settings]-->  MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM FoodDiarySearch
+  -> Home (1): FoodDiarySearch  --[Back]-->  Home
+  -> Settings (2): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (2): FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (2): FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiaryCreateQuickAdd (2): FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (1): FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (1): FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (1): FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (1): FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (1): FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (2): FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (2): FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM FoodDiaryCreateQuickAdd
+  -> Home (1): FoodDiaryCreateQuickAdd  --[Back]-->  Home
+  -> Settings (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> GoalsPersonalization (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): FoodDiaryCreateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM GoalsPersonalization
+  -> Home (1): GoalsPersonalization  --[Back]-->  Home
+  -> Settings (2): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings
+  -> About (2): GoalsPersonalization  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (2): GoalsPersonalization  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): GoalsPersonalization  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> Goals (2): GoalsPersonalization  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): GoalsPersonalization  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): GoalsPersonalization  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (1): GoalsPersonalization  --[Goals settings]-->  GoalsSetup
+  -> Personalization (3): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): GoalsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): GoalsPersonalization  --[Goals settings]-->  GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM Goals
+  -> Home (1): Goals  --[Back]-->  Home
+  -> Settings (2): Goals  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (2): Goals  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (2): Goals  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): Goals  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): Goals  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> UpdateQuickAdd (2): Goals  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (2): Goals  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): Goals  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): Goals  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM UpdateQuickAdd
+  -> Home (1): UpdateQuickAdd  --[Back]-->  Home
+  -> Settings (2): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (2): UpdateQuickAdd  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (2): UpdateQuickAdd  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): UpdateQuickAdd  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): UpdateQuickAdd  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): UpdateQuickAdd  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> FoodDiaryUpdateEntry (2): UpdateQuickAdd  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): UpdateQuickAdd  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): UpdateQuickAdd  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM FoodDiaryUpdateEntry
+  -> Home (1): FoodDiaryUpdateEntry  --[Back]-->  Home
+  -> Settings (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (2): FoodDiaryUpdateEntry  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> Sponsor (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): FoodDiaryUpdateEntry  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM Sponsor
+  -> Home (2): Sponsor  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (1): Sponsor  --[Back]-->  Settings
+  -> About (2): Sponsor  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> MealSetup (2): Sponsor  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (2): Sponsor  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (2): Sponsor  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (2): Sponsor  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (2): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (3): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (3): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (4): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (4): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (4): Sponsor  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): Sponsor  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (3): Sponsor  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (3): Sponsor  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (3): Sponsor  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM MealSetup
+  -> Home (2): MealSetup  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (1): MealSetup  --[Back]-->  Settings
+  -> About (2): MealSetup  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (2): MealSetup  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> Language (2): MealSetup  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (2): MealSetup  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (2): MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (2): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (3): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (3): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (4): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (4): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (4): MealSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): MealSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (3): MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (3): MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (3): MealSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM Language
+  -> Home (2): Language  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (1): Language  --[Back]-->  Settings
+  -> About (2): Language  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): Language  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (2): Language  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (2): Language  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> GoalsSetup (2): Language  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (2): Language  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (2): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (3): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (3): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (4): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (4): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (4): Language  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): Language  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (3): Language  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (3): Language  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (3): Language  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM GoalsSetup
+  -> Home (2): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (1): GoalsSetup  --[Back]-->  Settings
+  -> About (2): GoalsSetup  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (2): GoalsSetup  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (2): GoalsSetup  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (2): GoalsSetup  --[Back]-->  Settings  --[Language]-->  Language
+  -> Personalization (2): GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (2): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (3): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (3): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (4): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (4): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (4): GoalsSetup  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): GoalsSetup  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (3): GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (3): GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (3): GoalsSetup  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM Personalization
+  -> Home (2): Personalization  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (1): Personalization  --[Back]-->  Settings
+  -> About (2): Personalization  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (2): Personalization  --[Home]-->  HomePersonalization  --[Meals]-->  MealsPersonalization
+  -> FoodDiarySearch (3): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (2): Personalization  --[Home]-->  HomePersonalization  --[Goals]-->  GoalsPersonalization
+  -> Goals (3): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (2): Personalization  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (2): Personalization  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (2): Personalization  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (2): Personalization  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> DatabaseSettings (2): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (3): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (3): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (4): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (4): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (4): Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (1): Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (1): Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (1): Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM DatabaseSettings
+  -> Home (2): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (1): DatabaseSettings  --[Back]-->  Settings
+  -> About (2): DatabaseSettings  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (3): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (2): DatabaseSettings  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (2): DatabaseSettings  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (2): DatabaseSettings  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (2): DatabaseSettings  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (2): DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> ExternalDatabases (1): DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (1): DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (1): DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (2): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (2): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (2): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (3): DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (3): DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (3): DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM ExternalDatabases
+  -> Home (3): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (2): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings
+  -> About (3): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (1): ExternalDatabases  --[Back]-->  DatabaseSettings
+  -> ImportCsvProducts (2): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (2): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (1): ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (1): ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (1): ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (3): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (4): ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM ImportCsvProducts
+  -> Home (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (2): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings
+  -> About (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (1): ImportCsvProducts  --[Back]-->  DatabaseSettings
+  -> ExternalDatabases (2): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ExportCsvProducts (2): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (5): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (5): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (5): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (6): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (6): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): ImportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM ExportCsvProducts
+  -> Home (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (2): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings
+  -> About (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (1): ExportCsvProducts  --[Back]-->  DatabaseSettings
+  -> ExternalDatabases (2): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (2): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> SwissFoodCompositionDatabase (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (5): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (5): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (5): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (6): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (6): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (4): ExportCsvProducts  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM SwissFoodCompositionDatabase
+  -> Home (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (3): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings
+  -> About (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (3): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (2): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings
+  -> ExternalDatabases (1): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases
+  -> ImportCsvProducts (3): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (3): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> UsdaApiKey (2): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (2): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (5): SwissFoodCompositionDatabase  --[Back]-->  ExternalDatabases  --[Back]-->  DatabaseSettings  --[Back]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM UsdaApiKey
+  -> Home (2): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (1): UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (4): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (4): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (4): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (4): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (4): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (4): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (5): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (5): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (5): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (6): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> OpenFoodFactsLogin (2): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (2): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (2): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (2): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (3): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (5): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (5): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (5): UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM OpenFoodFactsLogin
+  -> Home (2): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (1): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (4): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (4): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (4): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (4): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (4): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (4): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (5): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (5): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (5): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (6): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (2): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> FoodDiaryCreateRecipe (2): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (2): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (2): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (3): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (5): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (5): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (5): OpenFoodFactsLogin  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM FoodDiaryCreateRecipe
+  -> Home (2): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (1): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (4): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (4): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (4): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (4): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (4): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (4): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (5): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (5): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (5): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (6): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (1): FoodDiaryCreateRecipe  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (1): FoodDiaryCreateRecipe  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateProduct (2): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (1): FoodDiaryCreateRecipe  --[onCreate]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (2): FoodDiaryCreateRecipe  --[onCreate]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (1): FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (5): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (5): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (5): FoodDiaryCreateRecipe  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM FoodDiaryCreateProduct
+  -> Home (2): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (1): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (4): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (4): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (4): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (4): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (4): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (4): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (5): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (5): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (5): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (6): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (1): FoodDiaryCreateProduct  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (1): FoodDiaryCreateProduct  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (2): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateEntry (1): FoodDiaryCreateProduct  --[onCreate]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (2): FoodDiaryCreateProduct  --[onCreate]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (2): FoodDiaryCreateProduct  --[onCreate]-->  FoodDiaryCreateEntry  --[edit product]-->  UpdateProduct
+  -> ThemeSettings (5): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (5): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (5): FoodDiaryCreateProduct  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM FoodDiaryCreateEntry
+  -> Home (2): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (1): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (4): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (4): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (4): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (4): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (4): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (4): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (5): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (5): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (5): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (6): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (2): FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (2): FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (2): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (2): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> UpdateRecipe (1): FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (1): FoodDiaryCreateEntry  --[edit product]-->  UpdateProduct
+  -> ThemeSettings (5): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (5): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (5): FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM UpdateRecipe
+  -> Home (3): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (5): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (5): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (5): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (5): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (5): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (5): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (6): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (6): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (6): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (7): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (1): UpdateRecipe  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (1): UpdateRecipe  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (1): UpdateRecipe  --[Back]-->  FoodDiaryCreateEntry
+  -> UpdateProduct (1): UpdateRecipe  --[edit ingredient]-->  UpdateProduct
+  -> ThemeSettings (6): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (6): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (6): UpdateRecipe  --[USDA key]-->  UsdaApiKey  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM UpdateProduct
+  -> Home (3): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home
+  -> Settings (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings
+  -> About (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard long-press]-->  MealsPersonalization
+  -> FoodDiarySearch (2): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard long-press]-->  GoalsPersonalization
+  -> Goals (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (5): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (5): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (5): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (5): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (5): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization
+  -> DatabaseSettings (5): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (6): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (6): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (6): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (7): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (3): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (3): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (3): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (3): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (1): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (2): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> ThemeSettings (6): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (6): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (6): UpdateProduct  --[Back]-->  FoodDiaryCreateEntry  --[Back]-->  FoodDiarySearch  --[Back]-->  Home  --[settings icon]-->  Settings  --[Personalization]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM ThemeSettings
+  -> Home (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (2): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings
+  -> About (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): ThemeSettings  --[Back]-->  Personalization  --[Home]-->  HomePersonalization  --[Meals]-->  MealsPersonalization
+  -> FoodDiarySearch (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): ThemeSettings  --[Back]-->  Personalization  --[Home]-->  HomePersonalization  --[Goals]-->  GoalsPersonalization
+  -> Goals (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (1): ThemeSettings  --[Back]-->  Personalization
+  -> DatabaseSettings (3): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (5): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (5): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (5): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (5): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (5): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (6): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (6): ThemeSettings  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> HomePersonalization (2): ThemeSettings  --[Back]-->  Personalization  --[Home]-->  HomePersonalization
+  -> NutritionFactsPersonalization (2): ThemeSettings  --[Back]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM HomePersonalization
+  -> Home (2): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home
+  -> Settings (2): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings
+  -> About (3): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[title tap]-->  About
+  -> MealsPersonalization (1): HomePersonalization  --[Meals]-->  MealsPersonalization
+  -> FoodDiarySearch (3): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (3): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (1): HomePersonalization  --[Goals]-->  GoalsPersonalization
+  -> Goals (3): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (3): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (3): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (2): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Meal settings]-->  MealSetup
+  -> Language (3): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (2): HomePersonalization  --[Goals]-->  GoalsPersonalization  --[Goals settings]-->  GoalsSetup
+  -> Personalization (1): HomePersonalization  --[Back]-->  Personalization
+  -> DatabaseSettings (3): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): HomePersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (4): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (4): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (4): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (4): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (4): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (5): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (5): HomePersonalization  --[Meals]-->  MealsPersonalization  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (2): HomePersonalization  --[Back]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> NutritionFactsPersonalization (2): HomePersonalization  --[Back]-->  Personalization  --[Nutrition facts]-->  NutritionFactsPersonalization
+
+## FROM NutritionFactsPersonalization
+  -> Home (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home
+  -> Settings (2): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings
+  -> About (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[About]-->  About
+  -> MealsPersonalization (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Home]-->  HomePersonalization  --[Meals]-->  MealsPersonalization
+  -> FoodDiarySearch (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch
+  -> FoodDiaryCreateQuickAdd (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard quick-add]-->  FoodDiaryCreateQuickAdd
+  -> GoalsPersonalization (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Home]-->  HomePersonalization  --[Goals]-->  GoalsPersonalization
+  -> Goals (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[goalscard tap]-->  Goals
+  -> UpdateQuickAdd (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[tap manual entry]-->  UpdateQuickAdd
+  -> FoodDiaryUpdateEntry (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[tap food entry]-->  FoodDiaryUpdateEntry
+  -> Sponsor (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Sponsor]-->  Sponsor
+  -> MealSetup (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Meals]-->  MealSetup
+  -> Language (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Language]-->  Language
+  -> GoalsSetup (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Goals]-->  GoalsSetup
+  -> Personalization (1): NutritionFactsPersonalization  --[Back]-->  Personalization
+  -> DatabaseSettings (3): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings
+  -> ExternalDatabases (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases
+  -> ImportCsvProducts (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Import CSV]-->  ImportCsvProducts
+  -> ExportCsvProducts (4): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[Export CSV]-->  ExportCsvProducts
+  -> SwissFoodCompositionDatabase (5): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[Swiss DB]-->  SwissFoodCompositionDatabase
+  -> UsdaApiKey (5): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[USDA key]-->  UsdaApiKey
+  -> OpenFoodFactsLogin (5): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Database]-->  DatabaseSettings  --[External DBs]-->  ExternalDatabases  --[OFF login]-->  OpenFoodFactsLogin
+  -> FoodDiaryCreateRecipe (5): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe
+  -> FoodDiaryCreateProduct (5): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create product]-->  FoodDiaryCreateProduct
+  -> FoodDiaryCreateEntry (5): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry
+  -> UpdateRecipe (6): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[tap food result]-->  FoodDiaryCreateEntry  --[edit recipe]-->  UpdateRecipe
+  -> UpdateProduct (6): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Back]-->  Settings  --[Back]-->  Home  --[mealcard +add]-->  FoodDiarySearch  --[Create recipe]-->  FoodDiaryCreateRecipe  --[edit food]-->  UpdateProduct
+  -> ThemeSettings (2): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Theme]-->  ThemeSettings
+  -> HomePersonalization (2): NutritionFactsPersonalization  --[Back]-->  Personalization  --[Home]-->  HomePersonalization

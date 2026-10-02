@@ -1,0 +1,6 @@
+# Spliit tc variants -- purpose: infra_db_down -- 2026-10-01 22:59 -- rev 64b9e19 (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	80	80	16	FAIL	
+2	122	122	17	FAIL	
+3	58	58	15	FAIL	
+4	58	58	14	FAIL	

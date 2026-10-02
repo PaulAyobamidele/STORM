@@ -1,0 +1,12 @@
+(* CALIBRATION 2 of 2 — this formula MUST evaluate to FALSE.
+
+   The companion to 00_calibration_true.mcl. That one shows the notation can
+   match; this one shows it can also FAIL to match, so a FALSE elsewhere in
+   this directory carries information.
+
+   A gate name that does not exist in the model. If this returns TRUE the
+   checker is not doing what the formulas say, and nothing here is usable.
+
+   Expected: FALSE
+*)
+< true* . "NO_SUCH_GATE_IN_THIS_MODEL" > true

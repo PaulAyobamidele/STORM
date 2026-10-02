@@ -1,0 +1,11 @@
+process TP_HAPPY_ASSIGN [
+    SAVE_SUBMISSION, UPDATE_SUBMISSION, GRADE_SUBMISSION : AssignChannel,
+    CONFIRMED_GRADE : ConfirmedGradeChannel,
+    TP_ACCEPT : none
+] is
+    SAVE_SUBMISSION (?any CourseId, ?any AssignId, PLACEHOLDER);
+    UPDATE_SUBMISSION (?any CourseId, ?any AssignId, FINAL);
+    GRADE_SUBMISSION (?any CourseId, ?any AssignId, FINAL);
+    CONFIRMED_GRADE (?any AssignId, ?any Grade, FINAL);
+    TP_ACCEPT
+end process

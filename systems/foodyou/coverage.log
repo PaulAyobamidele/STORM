@@ -1,0 +1,1233 @@
+
+svl clean info: [persistent] compose_foodyou_copy.divbranching.bcg
+
+"compose_foodyou_copy.divbranching.bcg" = divbranching reduction of "compose_foodyou_copy.bcg"
+
+% bcg_min   -divbranching  "compose_foodyou_copy.bcg" "compose_foodyou_copy.divbranching.bcg"
+
+svl clean info: [temporary] svl000_stdout
+command exit with status 0
+
+info about compose_foodyou_copy.divbranching.bcg:
+    (* 1097 states, 2900 transitions, 10.3 Kbytes *)
+
+compute suspension automaton for compose_foodyou_copy.divbranching
+bcg_open compose_foodyou_copy.divbranching.bcg /home/paulad/cadp/bin.x64/testor.a -io  foodyou.io -suspension compose_foodyou_copy.suspension.brut.bcg
+bcg_open: running ``testor -io foodyou.io -suspension compose_foodyou_copy.suspension.brut.bcg'' for ``./compose_foodyou_copy.divbranching.bcg''
+
+info about compose_foodyou_copy.suspension.brut.bcg:
+    (* 646 states, 1682 transitions, 7.8 Kbytes *)
+
+svl clean info: [persistent] compose_foodyou_copy@1.o
+
+svl clean info: [persistent] compose_foodyou_copy.suspension.brut.bcg
+
+svl clean info: [persistent] compose_foodyou_copy.suspension.bcg
+
+"compose_foodyou_copy.suspension.bcg" = strong reduction of "compose_foodyou_copy.suspension.brut.bcg"
+
+% bcg_min   -strong  "compose_foodyou_copy.suspension.brut.bcg" "compose_foodyou_copy.suspension.bcg"
+command exit with status 0
+
+info about compose_foodyou_copy.suspension.bcg:
+    (* 646 states, 1682 transitions, 8.1 Kbytes *)
+
+svl clean info: [persistent] compose_foodyou_copy.red.bcg
+
+svl clean info: [temporary] svl001_labels.hid
+
+% 2>>"coverage.log" rm -f "svl001_labels.hid" ; touch "svl001_labels.hid"
+command exit with status 0
+
+"svl001_labels.hid" =
+    #coverage.svl
+    hide
+    #154
+    ":DELTA:"
+
+"compose_foodyou_copy.red.bcg" = hide ":DELTA:" in
+    "compose_foodyou_copy.suspension.bcg"
+
+% bcg_labels   -hide -gate "svl001_labels.hid" "compose_foodyou_copy.suspension.bcg" "compose_foodyou_copy.red.bcg"
+command exit with status 0
+
+svl clean info: [persistent] compose_foodyou_copy.det.bcg
+
+"compose_foodyou_copy.det.bcg" = weak trace reduction of "compose_foodyou_copy.red.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "compose_foodyou_copy.red.bcg"  reductor  -partial -weaktrace "compose_foodyou_copy.det.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -weaktrace compose_foodyou_copy.det.bcg'' for ``./compose_foodyou_copy.red.bcg''
+command exit with status 0
+
+% bcg_min   -strong "compose_foodyou_copy.det.bcg"
+command exit with status 0
+
+info about compose_foodyou_copy.det.bcg:
+    (* 646 states, 1036 transitions, 7.0 Kbytes *)
+
+svl clean info: [temporary] INCONCLUSIVE.aut
+
+svl clean info: [persistent] INCONCLUSIVE.bcg
+
+"INCONCLUSIVE.bcg" = "INCONCLUSIVE.aut"
+
+% bcg_io   "INCONCLUSIVE.aut"   "INCONCLUSIVE.bcg"
+command exit with status 0
+
+svl clean info: [temporary] COVER0.aut
+
+svl clean info: [persistent] COVER0.bcg
+
+"COVER0.bcg" = "COVER0.aut"
+
+% bcg_io   "COVER0.aut"   "COVER0.bcg"
+command exit with status 0
+
+svl clean info: [temporary] compose_foodyou_copy.sync
+
+------------------------------------------
+-- Handling user provided test purposes --
+------------------------------------------
+
+svl clean info: [persistent] TP1.bcg
+
+"TP1.bcg" = "tp_happy.bcg"
+
+% cp "tp_happy.bcg" "TP1.bcg"
+command exit with status 0
+
+extracting CTG1 for TP1
+bcg_open compose_foodyou_copy.red /home/paulad/cadp/bin.x64/testor.a -total -io  foodyou.io -all TP1 CTG1.bcg
+bcg_open: running ``testor -total -io foodyou.io -all TP1 CTG1.bcg'' for ``./compose_foodyou_copy.red.bcg''
+
+svl clean info: [persistent] CTG1.bcg
+
+svl clean info: [temporary] testor
+
+info about CTG1.bcg:
+    (* 36 states, 87 transitions, 3.3 Kbytes *)
+
+svl clean info: [persistent] 
+
+svl clean info: [temporary] svl000_display.txt
+
+strong comparison
+    "CTG1.bcg" == "INCONCLUSIVE.bcg"
+
+% bcg_cmp -strong   "CTG1.bcg" "INCONCLUSIVE.bcg"
+FALSE
+command exit with status 0
+
+compute cover of CTG1
+/home/paulad/cadp/bin.x64/bcg_union -strip CTG1.bcg CTG1.stripped.bcg
+
+svl clean info: [temporary] CTG1.stripped.bcg
+
+svl clean info: [persistent] CTG1.cover.bcg
+
+svl clean info: [temporary] svl006_labels.hid
+
+% 2>>"coverage.log" rm -f "svl006_labels.hid" ; touch "svl006_labels.hid"
+command exit with status 0
+
+"svl006_labels.hid" =
+    #coverage.svl
+    hide
+    #300
+    ":PASS:"
+
+"CTG1.cover.bcg" = hide ":PASS:" in
+    "CTG1.stripped.bcg"
+
+% bcg_labels   -hide -gate "svl006_labels.hid" "CTG1.stripped.bcg" "CTG1.cover.bcg"
+command exit with status 0
+
+merge COVER0 and CTG1.cover
+/home/paulad/cadp/bin.x64/bcg_union COVER0.bcg CTG1.cover.bcg COVER1.brut.bcg
+
+info about COVER1.brut.bcg:
+    (* 37 states, 71 transitions, 3.2 Kbytes *)
+
+svl clean info: [temporary] COVER1.brut.bcg
+
+svl clean info: [persistent] COVER1.bcg
+
+svl clean info: [temporary] svl003_labels.hid
+
+% { cat "compose_foodyou_copy.sync" ; /home/paulad/cadp/src/com/cadp_echo ;} | "/home/paulad/cadp"/src/com/cadp_awk 'BEGIN { FIRST=1 } (FIRST == 0) { print ; next } /^#/ { print ; next } /^[Ss]ync[ ][ ]*all[ ][ ]*but/ { print "hide" ; FIRST=0 ; next } /^[Ss]ync/ { print "hide all but" ; FIRST=0 ; next } { print ; FIRST=0 ; next }' > "svl003_labels.hid"
+command exit with status 0
+
+svl clean info: [temporary] svl004_reduced_COVER1.brut.bcg
+
+"svl004_reduced_COVER1.brut.bcg" = safety reduction (* with hiding *) of "COVER1.brut.bcg"
+
+svl clean info: [temporary] svl003_labels.bcg
+
+% bcg_labels -warning   -hide -total "svl003_labels.hid" "COVER1.brut.bcg" "svl003_labels.bcg"
+command exit with status 0
+
+% bcg_min   -branching "svl003_labels.bcg"
+command exit with status 0
+
+"svl004_reduced_COVER1.brut.bcg" = safety reduction of "svl003_labels.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "svl003_labels.bcg"  reductor  -partial -safety "svl004_reduced_COVER1.brut.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -safety svl004_reduced_COVER1.brut.bcg'' for ``./svl003_labels.bcg''
+command exit with status 0
+
+% bcg_min   -strong "svl004_reduced_COVER1.brut.bcg"
+command exit with status 0
+
+info about svl004_reduced_COVER1.brut.bcg:
+    (* 35 states, 70 transitions, 3.2 Kbytes *)
+
+info about svl004_reduced_COVER1.brut.bcg:
+    (* 35 states, 70 transitions, 3.2 Kbytes *)
+
+svl clean info: [temporary] projector
+
+svl clean info: [temporary] projector.o
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.c
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.o 
+
+"COVER1.bcg" = total abstraction "svl004_reduced_COVER1.brut.bcg"
+    sync using "compose_foodyou_copy.sync" of
+    "compose_foodyou_copy.suspension.bcg"
+
+% bcg_open    "compose_foodyou_copy.suspension.bcg"  projector   -sync -total "compose_foodyou_copy.sync" "svl004_reduced_COVER1.brut.bcg" "COVER1.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/projector.a''
+bcg_open: running ``projector -sync -total compose_foodyou_copy.sync svl004_reduced_COVER1.brut.bcg COVER1.bcg'' for ``./compose_foodyou_copy.suspension.bcg''
+command exit with status 0
+
+info about COVER1.bcg:
+    (* 35 states, 70 transitions, 3.2 Kbytes *)
+
+svl clean info: [persistent] COVER1.red.bcg
+
+svl clean info: [temporary] svl007_labels.hid
+
+% 2>>"coverage.log" rm -f "svl007_labels.hid" ; touch "svl007_labels.hid"
+command exit with status 0
+
+"svl007_labels.hid" =
+    #coverage.svl
+    hide
+    #314
+    ":DELTA:"
+
+svl clean info: [temporary] svl008_hidden_COVER1.bcg
+
+"svl008_hidden_COVER1.bcg" = hide ":DELTA:" in
+    "COVER1.bcg"
+
+% bcg_labels   -hide -gate "svl007_labels.hid" "COVER1.bcg" "svl008_hidden_COVER1.bcg"
+command exit with status 0
+
+"COVER1.red.bcg" = weak trace reduction of "svl008_hidden_COVER1.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "svl008_hidden_COVER1.bcg"  reductor  -partial -weaktrace "COVER1.red.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -weaktrace COVER1.red.bcg'' for ``./svl008_hidden_COVER1.bcg''
+command exit with status 0
+
+% bcg_min   -strong "COVER1.red.bcg"
+command exit with status 0
+
+info about COVER1.red.bcg:
+    (* 35 states, 36 transitions, 3.1 Kbytes *)
+
+percentage of covered transitions so far: .03474903474903474903
+
+----------------------------------------------
+-- Generating a test purpose for each label --
+----------------------------------------------
+
+"compose_foodyou_copy.labels" =  labels of "compose_foodyou_copy.bcg"
+
+svl clean info: [temporary] compose_foodyou_copy.labels
+
+svl clean info: [temporary] compose_foodyou_copy.labels.0
+
+"COVER1.labels" =  labels of "COVER1.bcg"
+
+svl clean info: [temporary] COVER1.labels
+
+svl clean info: [temporary] compose_foodyou_copy.labels.1
+
+generating test purpose TP2 for "ADD_ENTRY !BREAKFAST !FOOD_APPLE !INVALID"
+
+svl clean info: [temporary] TP2.aut
+
+svl clean info: [persistent] TP2.bcg
+
+"TP2.bcg" = "TP2.aut"
+
+% bcg_io   "TP2.aut"   "TP2.bcg"
+command exit with status 0
+
+extracting CTG2 for TP2
+bcg_open compose_foodyou_copy.red /home/paulad/cadp/bin.x64/testor.a -total -io  foodyou.io -all TP2 CTG2.bcg
+bcg_open: running ``testor -total -io foodyou.io -all TP2 CTG2.bcg'' for ``./compose_foodyou_copy.red.bcg''
+
+svl clean info: [persistent] CTG2.bcg
+
+svl clean info: [temporary] testor
+
+info about CTG2.bcg:
+    (* 647 states, 1683 transitions, 7.8 Kbytes *)
+
+svl clean info: [persistent] 
+
+strong comparison
+    "CTG2.bcg" == "INCONCLUSIVE.bcg"
+
+% bcg_cmp -strong   "CTG2.bcg" "INCONCLUSIVE.bcg"
+FALSE
+command exit with status 0
+
+compute cover of CTG2
+/home/paulad/cadp/bin.x64/bcg_union -strip CTG2.bcg CTG2.stripped.bcg
+
+svl clean info: [temporary] CTG2.stripped.bcg
+
+svl clean info: [persistent] CTG2.cover.bcg
+
+svl clean info: [temporary] svl006_labels.hid
+
+% 2>>"coverage.log" rm -f "svl006_labels.hid" ; touch "svl006_labels.hid"
+command exit with status 0
+
+"svl006_labels.hid" =
+    #coverage.svl
+    hide
+    #300
+    ":PASS:"
+
+"CTG2.cover.bcg" = hide ":PASS:" in
+    "CTG2.stripped.bcg"
+
+% bcg_labels   -hide -gate "svl006_labels.hid" "CTG2.stripped.bcg" "CTG2.cover.bcg"
+command exit with status 0
+
+merge COVER1 and CTG2.cover
+/home/paulad/cadp/bin.x64/bcg_union COVER1.bcg CTG2.cover.bcg COVER2.brut.bcg
+
+info about COVER2.brut.bcg:
+    (* 682 states, 1753 transitions, 7.9 Kbytes *)
+
+svl clean info: [temporary] COVER2.brut.bcg
+
+svl clean info: [persistent] COVER2.bcg
+
+svl clean info: [temporary] svl003_labels.hid
+
+% { cat "compose_foodyou_copy.sync" ; /home/paulad/cadp/src/com/cadp_echo ;} | "/home/paulad/cadp"/src/com/cadp_awk 'BEGIN { FIRST=1 } (FIRST == 0) { print ; next } /^#/ { print ; next } /^[Ss]ync[ ][ ]*all[ ][ ]*but/ { print "hide" ; FIRST=0 ; next } /^[Ss]ync/ { print "hide all but" ; FIRST=0 ; next } { print ; FIRST=0 ; next }' > "svl003_labels.hid"
+command exit with status 0
+
+svl clean info: [temporary] svl004_reduced_COVER2.brut.bcg
+
+"svl004_reduced_COVER2.brut.bcg" = safety reduction (* with hiding *) of "COVER2.brut.bcg"
+
+svl clean info: [temporary] svl003_labels.bcg
+
+% bcg_labels -warning   -hide -total "svl003_labels.hid" "COVER2.brut.bcg" "svl003_labels.bcg"
+command exit with status 0
+
+% bcg_min   -branching "svl003_labels.bcg"
+command exit with status 0
+
+"svl004_reduced_COVER2.brut.bcg" = safety reduction of "svl003_labels.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "svl003_labels.bcg"  reductor  -partial -safety "svl004_reduced_COVER2.brut.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -safety svl004_reduced_COVER2.brut.bcg'' for ``./svl003_labels.bcg''
+command exit with status 0
+
+% bcg_min   -strong "svl004_reduced_COVER2.brut.bcg"
+command exit with status 0
+
+info about svl004_reduced_COVER2.brut.bcg:
+    (* 639 states, 1666 transitions, 8.1 Kbytes *)
+
+info about svl004_reduced_COVER2.brut.bcg:
+    (* 639 states, 1666 transitions, 8.1 Kbytes *)
+
+svl clean info: [temporary] projector
+
+svl clean info: [temporary] projector.o
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.c
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.o 
+
+"COVER2.bcg" = total abstraction "svl004_reduced_COVER2.brut.bcg"
+    sync using "compose_foodyou_copy.sync" of
+    "compose_foodyou_copy.suspension.bcg"
+
+% bcg_open    "compose_foodyou_copy.suspension.bcg"  projector   -sync -total "compose_foodyou_copy.sync" "svl004_reduced_COVER2.brut.bcg" "COVER2.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/projector.a''
+bcg_open: running ``projector -sync -total compose_foodyou_copy.sync svl004_reduced_COVER2.brut.bcg COVER2.bcg'' for ``./compose_foodyou_copy.suspension.bcg''
+command exit with status 0
+
+info about COVER2.bcg:
+    (* 646 states, 1682 transitions, 7.9 Kbytes *)
+
+svl clean info: [persistent] COVER2.red.bcg
+
+svl clean info: [temporary] svl007_labels.hid
+
+% 2>>"coverage.log" rm -f "svl007_labels.hid" ; touch "svl007_labels.hid"
+command exit with status 0
+
+"svl007_labels.hid" =
+    #coverage.svl
+    hide
+    #314
+    ":DELTA:"
+
+svl clean info: [temporary] svl008_hidden_COVER2.bcg
+
+"svl008_hidden_COVER2.bcg" = hide ":DELTA:" in
+    "COVER2.bcg"
+
+% bcg_labels   -hide -gate "svl007_labels.hid" "COVER2.bcg" "svl008_hidden_COVER2.bcg"
+command exit with status 0
+
+"COVER2.red.bcg" = weak trace reduction of "svl008_hidden_COVER2.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "svl008_hidden_COVER2.bcg"  reductor  -partial -weaktrace "COVER2.red.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -weaktrace COVER2.red.bcg'' for ``./svl008_hidden_COVER2.bcg''
+command exit with status 0
+
+% bcg_min   -strong "COVER2.red.bcg"
+command exit with status 0
+
+info about COVER2.red.bcg:
+    (* 646 states, 1036 transitions, 7.0 Kbytes *)
+
+percentage of covered transitions so far: 1.00000000000000000000
+
+"COVER2.labels" =  labels of "COVER2.bcg"
+
+svl clean info: [temporary] COVER2.labels
+
+svl clean info: [temporary] compose_foodyou_copy.labels.2
+
+------------------------------------------------------
+-- Extending coverage to completely cover the model --
+------------------------------------------------------
+
+svl clean info: [persistent] TP3.bcg
+
+"TP3.bcg" = strong comparison
+    "compose_foodyou_copy.det.bcg" == "COVER2.red.bcg"
+
+svl clean info: [temporary] bisimulator
+
+svl clean info: [temporary] bisimulator.o
+
+% bcg_open    "compose_foodyou_copy.det.bcg"  bisimulator -bfs  -equal -strong -diag "TP3.bcg" "COVER2.red.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/bisimulator.a''
+bcg_open: running ``bisimulator -bfs -equal -strong -diag TP3.bcg COVER2.red.bcg'' for ``./compose_foodyou_copy.det.bcg''
+
+TRUE
+command exit with status 0
+
+svl clean info: [persistent] 
+
+strong comparison
+    "compose_foodyou_copy.suspension.bcg" == "COVER2.bcg"
+
+svl clean info: [temporary] bisimulator
+
+svl clean info: [temporary] bisimulator.o
+
+% bcg_open    "compose_foodyou_copy.suspension.bcg"  bisimulator -bfs  -equal -strong "COVER2.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/bisimulator.a''
+bcg_open: running ``bisimulator -bfs -equal -strong COVER2.bcg'' for ``./compose_foodyou_copy.suspension.bcg''
+
+TRUE
+command exit with status 0
+
+---------------------------------------------
+-- Flagging redundant complete test graphs --
+---------------------------------------------
+
+svl clean info: [persistent] REVERSE_COVER2.bcg
+
+svl clean info: [temporary] svl011_labels.hid
+
+% { cat "compose_foodyou_copy.sync" ; /home/paulad/cadp/src/com/cadp_echo ;} | "/home/paulad/cadp"/src/com/cadp_awk 'BEGIN { FIRST=1 } (FIRST == 0) { print ; next } /^#/ { print ; next } /^[Ss]ync[ ][ ]*all[ ][ ]*but/ { print "hide" ; FIRST=0 ; next } /^[Ss]ync/ { print "hide all but" ; FIRST=0 ; next } { print ; FIRST=0 ; next }' > "svl011_labels.hid"
+command exit with status 0
+
+svl clean info: [temporary] svl012_reduced_CTG2.cover.bcg
+
+"svl012_reduced_CTG2.cover.bcg" = safety reduction (* with hiding *) of "CTG2.cover.bcg"
+
+svl clean info: [temporary] svl011_labels.bcg
+
+% bcg_labels -warning   -hide -total "svl011_labels.hid" "CTG2.cover.bcg" "svl011_labels.bcg"
+command exit with status 0
+
+% bcg_min   -branching "svl011_labels.bcg"
+command exit with status 0
+
+"svl012_reduced_CTG2.cover.bcg" = safety reduction of "svl011_labels.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "svl011_labels.bcg"  reductor  -partial -safety "svl012_reduced_CTG2.cover.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -safety svl012_reduced_CTG2.cover.bcg'' for ``./svl011_labels.bcg''
+command exit with status 0
+
+% bcg_min   -strong "svl012_reduced_CTG2.cover.bcg"
+command exit with status 0
+
+info about svl012_reduced_CTG2.cover.bcg:
+    (* 639 states, 1666 transitions, 8.1 Kbytes *)
+
+info about svl012_reduced_CTG2.cover.bcg:
+    (* 639 states, 1666 transitions, 8.1 Kbytes *)
+
+svl clean info: [temporary] projector
+
+svl clean info: [temporary] projector.o
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.c
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.o 
+
+"REVERSE_COVER2.bcg" = total abstraction "svl012_reduced_CTG2.cover.bcg"
+    sync using "compose_foodyou_copy.sync" of
+    "compose_foodyou_copy.suspension.bcg"
+
+% bcg_open    "compose_foodyou_copy.suspension.bcg"  projector   -sync -total "compose_foodyou_copy.sync" "svl012_reduced_CTG2.cover.bcg" "REVERSE_COVER2.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/projector.a''
+bcg_open: running ``projector -sync -total compose_foodyou_copy.sync svl012_reduced_CTG2.cover.bcg REVERSE_COVER2.bcg'' for ``./compose_foodyou_copy.suspension.bcg''
+command exit with status 0
+
+info about REVERSE_COVER2.bcg:
+    (* 646 states, 1682 transitions, 7.9 Kbytes *)
+
+merge REVERSE_COVER2 and CTG1
+/home/paulad/cadp/bin.x64/bcg_union REVERSE_COVER2.bcg CTG1.bcg REVERSE_COVER1.brut.bcg
+
+info about REVERSE_COVER1.brut.bcg:
+    (* 682 states, 1767 transitions, 8.1 Kbytes *)
+
+svl clean info: [temporary] REVERSE_COVER1.brut.bcg
+
+svl clean info: [persistent] REVERSE_COVER1.bcg
+
+svl clean info: [temporary] svl003_labels.hid
+
+% { cat "compose_foodyou_copy.sync" ; /home/paulad/cadp/src/com/cadp_echo ;} | "/home/paulad/cadp"/src/com/cadp_awk 'BEGIN { FIRST=1 } (FIRST == 0) { print ; next } /^#/ { print ; next } /^[Ss]ync[ ][ ]*all[ ][ ]*but/ { print "hide" ; FIRST=0 ; next } /^[Ss]ync/ { print "hide all but" ; FIRST=0 ; next } { print ; FIRST=0 ; next }' > "svl003_labels.hid"
+command exit with status 0
+
+svl clean info: [temporary] svl004_reduced_REVERSE_COVER1.brut.bcg
+
+"svl004_reduced_REVERSE_COVER1.brut.bcg" = safety reduction (* with hiding *) of "REVERSE_COVER1.brut.bcg"
+
+svl clean info: [temporary] svl003_labels.bcg
+
+% bcg_labels -warning   -hide -total "svl003_labels.hid" "REVERSE_COVER1.brut.bcg" "svl003_labels.bcg"
+command exit with status 0
+
+% bcg_min   -branching "svl003_labels.bcg"
+command exit with status 0
+
+"svl004_reduced_REVERSE_COVER1.brut.bcg" = safety reduction of "svl003_labels.bcg"
+
+svl clean info: [temporary] reductor
+
+svl clean info: [temporary] reductor.o
+
+% bcg_open    "svl003_labels.bcg"  reductor  -partial -safety "svl004_reduced_REVERSE_COVER1.brut.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/reductor.a''
+bcg_open: running ``reductor -partial -safety svl004_reduced_REVERSE_COVER1.brut.bcg'' for ``./svl003_labels.bcg''
+command exit with status 0
+
+% bcg_min   -strong "svl004_reduced_REVERSE_COVER1.brut.bcg"
+command exit with status 0
+
+info about svl004_reduced_REVERSE_COVER1.brut.bcg:
+    (* 646 states, 1682 transitions, 8.1 Kbytes *)
+
+info about svl004_reduced_REVERSE_COVER1.brut.bcg:
+    (* 646 states, 1682 transitions, 8.1 Kbytes *)
+
+svl clean info: [temporary] projector
+
+svl clean info: [temporary] projector.o
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.c
+
+svl clean info: [temporary] compose_foodyou_copy.suspension.o 
+
+"REVERSE_COVER1.bcg" = total abstraction "svl004_reduced_REVERSE_COVER1.brut.bcg"
+    sync using "compose_foodyou_copy.sync" of
+    "compose_foodyou_copy.suspension.bcg"
+
+% bcg_open    "compose_foodyou_copy.suspension.bcg"  projector   -sync -total "compose_foodyou_copy.sync" "svl004_reduced_REVERSE_COVER1.brut.bcg" "REVERSE_COVER1.bcg"
+bcg_open: using ``/home/paulad/cadp/bin.x64/projector.a''
+bcg_open: running ``projector -sync -total compose_foodyou_copy.sync svl004_reduced_REVERSE_COVER1.brut.bcg REVERSE_COVER1.bcg'' for ``./compose_foodyou_copy.suspension.bcg''
+command exit with status 0
+
+info about REVERSE_COVER1.bcg:
+    (* 646 states, 1682 transitions, 7.9 Kbytes *)
+
+property INCREASING_COVERAGE (2, 1)
+ | REVERSE_COVER2 < REVERSE_COVER1 <= compose_foodyou_copy
+
+svl clean info: [persistent] 
+
+strong comparison
+    "REVERSE_COVER1.bcg" == "REVERSE_COVER2.bcg"
+
+% bcg_cmp -strong   "REVERSE_COVER1.bcg" "REVERSE_COVER2.bcg"
+TRUE
+command exit with status 0
+
+FAIL
+
+CTG1 is redundant (does not increase coverage)
+
+svl clean info: [persistent] CTG1.redundant.bcg
+
+-----------------------------------------------------
+-- Extracting test cases from complete test graphs --
+-----------------------------------------------------
+
+extracting test cases from CTG2.bcg
+/home/paulad/cadp/com/extract_all -check -copy -io  foodyou.io CTG2.bcg TC.CTG2
+extract_all: 345 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: test case TC.CTG2.1 with unreachable states
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: test case TC.CTG2.2 with unreachable states
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: test case TC.CTG2.3 with unreachable states
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: test case TC.CTG2.4 with unreachable states
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: test case TC.CTG2.5 with unreachable states
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: test case TC.CTG2.6 with unreachable states
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: test case TC.CTG2.7 with unreachable states
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: test case TC.CTG2.8 with unreachable states
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: test case TC.CTG2.9 with unreachable states
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: test case TC.CTG2.10 with unreachable states
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: test case TC.CTG2.11 with unreachable states
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: test case TC.CTG2.12 with unreachable states
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: test case TC.CTG2.13 with unreachable states
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: test case TC.CTG2.14 with unreachable states
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: test case TC.CTG2.15 with unreachable states
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: test case TC.CTG2.16 with unreachable states
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: test case TC.CTG2.17 with unreachable states
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: test case TC.CTG2.18 with unreachable states
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: test case TC.CTG2.19 with unreachable states
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: test case TC.CTG2.20 with unreachable states
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: test case TC.CTG2.21 with unreachable states
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: test case TC.CTG2.22 with unreachable states
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: test case TC.CTG2.23 with unreachable states
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: test case TC.CTG2.24 with unreachable states
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: test case TC.CTG2.25 with unreachable states
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: test case TC.CTG2.26 with unreachable states
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: test case TC.CTG2.27 with unreachable states
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: test case TC.CTG2.28 with unreachable states
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: test case TC.CTG2.29 with unreachable states
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: test case TC.CTG2.30 with unreachable states
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: test case TC.CTG2.31 with unreachable states
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: test case TC.CTG2.32 with unreachable states
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: test case TC.CTG2.33 with unreachable states
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: test case TC.CTG2.34 with unreachable states
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: test case TC.CTG2.35 with unreachable states
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: test case TC.CTG2.36 with unreachable states
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: test case TC.CTG2.37 with unreachable states
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: test case TC.CTG2.38 with unreachable states
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: test case TC.CTG2.39 with unreachable states
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: test case TC.CTG2.40 with unreachable states
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: test case TC.CTG2.41 with unreachable states
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: test case TC.CTG2.42 with unreachable states
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: test case TC.CTG2.43 with unreachable states
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: test case TC.CTG2.44 with unreachable states
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: test case TC.CTG2.45 with unreachable states
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: test case TC.CTG2.46 with unreachable states
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: test case TC.CTG2.47 with unreachable states
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: test case TC.CTG2.48 with unreachable states
+extract_all: extracting test case #49
+extract_all: checking test case #49
+extract_all: test case TC.CTG2.49 with unreachable states
+extract_all: extracting test case #50
+extract_all: checking test case #50
+extract_all: test case TC.CTG2.50 with unreachable states
+extract_all: extracting test case #51
+extract_all: checking test case #51
+extract_all: test case TC.CTG2.51 with unreachable states
+extract_all: extracting test case #52
+extract_all: checking test case #52
+extract_all: test case TC.CTG2.52 with unreachable states
+extract_all: extracting test case #53
+extract_all: checking test case #53
+extract_all: test case TC.CTG2.53 with unreachable states
+extract_all: extracting test case #54
+extract_all: checking test case #54
+extract_all: test case TC.CTG2.54 with unreachable states
+extract_all: extracting test case #55
+extract_all: checking test case #55
+extract_all: test case TC.CTG2.55 with unreachable states
+extract_all: extracting test case #56
+extract_all: checking test case #56
+extract_all: test case TC.CTG2.56 with unreachable states
+extract_all: extracting test case #57
+extract_all: checking test case #57
+extract_all: test case TC.CTG2.57 with unreachable states
+extract_all: extracting test case #58
+extract_all: checking test case #58
+extract_all: test case TC.CTG2.58 with unreachable states
+extract_all: extracting test case #59
+extract_all: checking test case #59
+extract_all: test case TC.CTG2.59 with unreachable states
+extract_all: extracting test case #60
+extract_all: checking test case #60
+extract_all: test case TC.CTG2.60 with unreachable states
+extract_all: extracting test case #61
+extract_all: checking test case #61
+extract_all: test case TC.CTG2.61 with unreachable states
+extract_all: extracting test case #62
+extract_all: checking test case #62
+extract_all: test case TC.CTG2.62 with unreachable states
+extract_all: extracting test case #63
+extract_all: checking test case #63
+extract_all: test case TC.CTG2.63 with unreachable states
+extract_all: extracting test case #64
+extract_all: checking test case #64
+extract_all: test case TC.CTG2.64 with unreachable states
+extract_all: extracting test case #65
+extract_all: checking test case #65
+extract_all: test case TC.CTG2.65 with unreachable states
+extract_all: extracting test case #66
+extract_all: checking test case #66
+extract_all: test case TC.CTG2.66 with unreachable states
+extract_all: extracting test case #67
+extract_all: checking test case #67
+extract_all: test case TC.CTG2.67 with unreachable states
+extract_all: extracting test case #68
+extract_all: checking test case #68
+extract_all: test case TC.CTG2.68 with unreachable states
+extract_all: extracting test case #69
+extract_all: checking test case #69
+extract_all: test case TC.CTG2.69 with unreachable states
+extract_all: extracting test case #70
+extract_all: checking test case #70
+extract_all: test case TC.CTG2.70 with unreachable states
+extract_all: extracting test case #71
+extract_all: checking test case #71
+extract_all: test case TC.CTG2.71 with unreachable states
+extract_all: extracting test case #72
+extract_all: checking test case #72
+extract_all: test case TC.CTG2.72 with unreachable states
+extract_all: extracting test case #73
+extract_all: checking test case #73
+extract_all: test case TC.CTG2.73 with unreachable states
+extract_all: extracting test case #74
+extract_all: checking test case #74
+extract_all: test case TC.CTG2.74 with unreachable states
+extract_all: extracting test case #75
+extract_all: checking test case #75
+extract_all: test case TC.CTG2.75 with unreachable states
+extract_all: extracting test case #76
+extract_all: checking test case #76
+extract_all: test case TC.CTG2.76 with unreachable states
+extract_all: extracting test case #77
+extract_all: checking test case #77
+extract_all: test case TC.CTG2.77 with unreachable states
+extract_all: extracting test case #78
+extract_all: checking test case #78
+extract_all: test case TC.CTG2.78 with unreachable states
+extract_all: extracting test case #79
+extract_all: checking test case #79
+extract_all: test case TC.CTG2.79 with unreachable states
+extract_all: extracting test case #80
+extract_all: checking test case #80
+extract_all: test case TC.CTG2.80 with unreachable states
+extract_all: extracting test case #81
+extract_all: checking test case #81
+extract_all: test case TC.CTG2.81 with unreachable states
+extract_all: extracting test case #82
+extract_all: checking test case #82
+extract_all: test case TC.CTG2.82 with unreachable states
+extract_all: extracting test case #83
+extract_all: checking test case #83
+extract_all: test case TC.CTG2.83 with unreachable states
+extract_all: extracting test case #84
+extract_all: checking test case #84
+extract_all: test case TC.CTG2.84 with unreachable states
+extract_all: extracting test case #85
+extract_all: checking test case #85
+extract_all: test case TC.CTG2.85 with unreachable states
+extract_all: extracting test case #86
+extract_all: checking test case #86
+extract_all: test case TC.CTG2.86 with unreachable states
+extract_all: extracting test case #87
+extract_all: checking test case #87
+extract_all: test case TC.CTG2.87 with unreachable states
+extract_all: extracting test case #88
+extract_all: checking test case #88
+extract_all: test case TC.CTG2.88 with unreachable states
+extract_all: extracting test case #89
+extract_all: checking test case #89
+extract_all: test case TC.CTG2.89 with unreachable states
+extract_all: extracting test case #90
+extract_all: checking test case #90
+extract_all: test case TC.CTG2.90 with unreachable states
+extract_all: extracting test case #91
+extract_all: checking test case #91
+extract_all: test case TC.CTG2.91 with unreachable states
+extract_all: extracting test case #92
+extract_all: checking test case #92
+extract_all: test case TC.CTG2.92 with unreachable states
+extract_all: extracting test case #93
+extract_all: checking test case #93
+extract_all: test case TC.CTG2.93 with unreachable states
+extract_all: extracting test case #94
+extract_all: checking test case #94
+extract_all: test case TC.CTG2.94 with unreachable states
+extract_all: extracting test case #95
+extract_all: checking test case #95
+extract_all: test case TC.CTG2.95 with unreachable states
+extract_all: extracting test case #96
+extract_all: checking test case #96
+extract_all: test case TC.CTG2.96 with unreachable states
+extract_all: extracting test case #97
+extract_all: checking test case #97
+extract_all: test case TC.CTG2.97 with unreachable states
+extract_all: extracting test case #98
+extract_all: checking test case #98
+extract_all: test case TC.CTG2.98 with unreachable states
+extract_all: extracting test case #99
+extract_all: checking test case #99
+extract_all: test case TC.CTG2.99 with unreachable states
+extract_all: extracting test case #100
+extract_all: checking test case #100
+extract_all: test case TC.CTG2.100 with unreachable states
+extract_all: extracting test case #101
+extract_all: checking test case #101
+extract_all: test case TC.CTG2.101 with unreachable states
+extract_all: extracting test case #102
+extract_all: checking test case #102
+extract_all: test case TC.CTG2.102 with unreachable states
+extract_all: extracting test case #103
+extract_all: checking test case #103
+extract_all: test case TC.CTG2.103 with unreachable states
+extract_all: extracting test case #104
+extract_all: checking test case #104
+extract_all: test case TC.CTG2.104 with unreachable states
+extract_all: extracting test case #105
+extract_all: checking test case #105
+extract_all: test case TC.CTG2.105 with unreachable states
+extract_all: extracting test case #106
+extract_all: checking test case #106
+extract_all: test case TC.CTG2.106 with unreachable states
+extract_all: extracting test case #107
+extract_all: checking test case #107
+extract_all: test case TC.CTG2.107 with unreachable states
+extract_all: extracting test case #108
+extract_all: checking test case #108
+extract_all: test case TC.CTG2.108 with unreachable states
+extract_all: extracting test case #109
+extract_all: checking test case #109
+extract_all: test case TC.CTG2.109 with unreachable states
+extract_all: extracting test case #110
+extract_all: checking test case #110
+extract_all: test case TC.CTG2.110 with unreachable states
+extract_all: extracting test case #111
+extract_all: checking test case #111
+extract_all: test case TC.CTG2.111 with unreachable states
+extract_all: extracting test case #112
+extract_all: checking test case #112
+extract_all: test case TC.CTG2.112 with unreachable states
+extract_all: extracting test case #113
+extract_all: checking test case #113
+extract_all: test case TC.CTG2.113 with unreachable states
+extract_all: extracting test case #114
+extract_all: checking test case #114
+extract_all: test case TC.CTG2.114 with unreachable states
+extract_all: extracting test case #115
+extract_all: checking test case #115
+extract_all: test case TC.CTG2.115 with unreachable states
+extract_all: extracting test case #116
+extract_all: checking test case #116
+extract_all: test case TC.CTG2.116 with unreachable states
+extract_all: extracting test case #117
+extract_all: checking test case #117
+extract_all: test case TC.CTG2.117 with unreachable states
+extract_all: extracting test case #118
+extract_all: checking test case #118
+extract_all: test case TC.CTG2.118 with unreachable states
+extract_all: extracting test case #119
+extract_all: checking test case #119
+extract_all: test case TC.CTG2.119 with unreachable states
+extract_all: extracting test case #120
+extract_all: checking test case #120
+extract_all: test case TC.CTG2.120 with unreachable states
+extract_all: 120 test cases extracted
+
+svl clean info: [persistent] TC.CTG2.1.bcg
+
+svl clean info: [persistent] TC.CTG2.10.bcg
+
+svl clean info: [persistent] TC.CTG2.100.bcg
+
+svl clean info: [persistent] TC.CTG2.101.bcg
+
+svl clean info: [persistent] TC.CTG2.102.bcg
+
+svl clean info: [persistent] TC.CTG2.103.bcg
+
+svl clean info: [persistent] TC.CTG2.104.bcg
+
+svl clean info: [persistent] TC.CTG2.105.bcg
+
+svl clean info: [persistent] TC.CTG2.106.bcg
+
+svl clean info: [persistent] TC.CTG2.107.bcg
+
+svl clean info: [persistent] TC.CTG2.108.bcg
+
+svl clean info: [persistent] TC.CTG2.109.bcg
+
+svl clean info: [persistent] TC.CTG2.11.bcg
+
+svl clean info: [persistent] TC.CTG2.110.bcg
+
+svl clean info: [persistent] TC.CTG2.111.bcg
+
+svl clean info: [persistent] TC.CTG2.112.bcg
+
+svl clean info: [persistent] TC.CTG2.113.bcg
+
+svl clean info: [persistent] TC.CTG2.114.bcg
+
+svl clean info: [persistent] TC.CTG2.115.bcg
+
+svl clean info: [persistent] TC.CTG2.116.bcg
+
+svl clean info: [persistent] TC.CTG2.117.bcg
+
+svl clean info: [persistent] TC.CTG2.118.bcg
+
+svl clean info: [persistent] TC.CTG2.119.bcg
+
+svl clean info: [persistent] TC.CTG2.12.bcg
+
+svl clean info: [persistent] TC.CTG2.120.bcg
+
+svl clean info: [persistent] TC.CTG2.13.bcg
+
+svl clean info: [persistent] TC.CTG2.14.bcg
+
+svl clean info: [persistent] TC.CTG2.15.bcg
+
+svl clean info: [persistent] TC.CTG2.16.bcg
+
+svl clean info: [persistent] TC.CTG2.17.bcg
+
+svl clean info: [persistent] TC.CTG2.18.bcg
+
+svl clean info: [persistent] TC.CTG2.19.bcg
+
+svl clean info: [persistent] TC.CTG2.2.bcg
+
+svl clean info: [persistent] TC.CTG2.20.bcg
+
+svl clean info: [persistent] TC.CTG2.21.bcg
+
+svl clean info: [persistent] TC.CTG2.22.bcg
+
+svl clean info: [persistent] TC.CTG2.23.bcg
+
+svl clean info: [persistent] TC.CTG2.24.bcg
+
+svl clean info: [persistent] TC.CTG2.25.bcg
+
+svl clean info: [persistent] TC.CTG2.26.bcg
+
+svl clean info: [persistent] TC.CTG2.27.bcg
+
+svl clean info: [persistent] TC.CTG2.28.bcg
+
+svl clean info: [persistent] TC.CTG2.29.bcg
+
+svl clean info: [persistent] TC.CTG2.3.bcg
+
+svl clean info: [persistent] TC.CTG2.30.bcg
+
+svl clean info: [persistent] TC.CTG2.31.bcg
+
+svl clean info: [persistent] TC.CTG2.32.bcg
+
+svl clean info: [persistent] TC.CTG2.33.bcg
+
+svl clean info: [persistent] TC.CTG2.34.bcg
+
+svl clean info: [persistent] TC.CTG2.35.bcg
+
+svl clean info: [persistent] TC.CTG2.36.bcg
+
+svl clean info: [persistent] TC.CTG2.37.bcg
+
+svl clean info: [persistent] TC.CTG2.38.bcg
+
+svl clean info: [persistent] TC.CTG2.39.bcg
+
+svl clean info: [persistent] TC.CTG2.4.bcg
+
+svl clean info: [persistent] TC.CTG2.40.bcg
+
+svl clean info: [persistent] TC.CTG2.41.bcg
+
+svl clean info: [persistent] TC.CTG2.42.bcg
+
+svl clean info: [persistent] TC.CTG2.43.bcg
+
+svl clean info: [persistent] TC.CTG2.44.bcg
+
+svl clean info: [persistent] TC.CTG2.45.bcg
+
+svl clean info: [persistent] TC.CTG2.46.bcg
+
+svl clean info: [persistent] TC.CTG2.47.bcg
+
+svl clean info: [persistent] TC.CTG2.48.bcg
+
+svl clean info: [persistent] TC.CTG2.49.bcg
+
+svl clean info: [persistent] TC.CTG2.5.bcg
+
+svl clean info: [persistent] TC.CTG2.50.bcg
+
+svl clean info: [persistent] TC.CTG2.51.bcg
+
+svl clean info: [persistent] TC.CTG2.52.bcg
+
+svl clean info: [persistent] TC.CTG2.53.bcg
+
+svl clean info: [persistent] TC.CTG2.54.bcg
+
+svl clean info: [persistent] TC.CTG2.55.bcg
+
+svl clean info: [persistent] TC.CTG2.56.bcg
+
+svl clean info: [persistent] TC.CTG2.57.bcg
+
+svl clean info: [persistent] TC.CTG2.58.bcg
+
+svl clean info: [persistent] TC.CTG2.59.bcg
+
+svl clean info: [persistent] TC.CTG2.6.bcg
+
+svl clean info: [persistent] TC.CTG2.60.bcg
+
+svl clean info: [persistent] TC.CTG2.61.bcg
+
+svl clean info: [persistent] TC.CTG2.62.bcg
+
+svl clean info: [persistent] TC.CTG2.63.bcg
+
+svl clean info: [persistent] TC.CTG2.64.bcg
+
+svl clean info: [persistent] TC.CTG2.65.bcg
+
+svl clean info: [persistent] TC.CTG2.66.bcg
+
+svl clean info: [persistent] TC.CTG2.67.bcg
+
+svl clean info: [persistent] TC.CTG2.68.bcg
+
+svl clean info: [persistent] TC.CTG2.69.bcg
+
+svl clean info: [persistent] TC.CTG2.7.bcg
+
+svl clean info: [persistent] TC.CTG2.70.bcg
+
+svl clean info: [persistent] TC.CTG2.71.bcg
+
+svl clean info: [persistent] TC.CTG2.72.bcg
+
+svl clean info: [persistent] TC.CTG2.73.bcg
+
+svl clean info: [persistent] TC.CTG2.74.bcg
+
+svl clean info: [persistent] TC.CTG2.75.bcg
+
+svl clean info: [persistent] TC.CTG2.76.bcg
+
+svl clean info: [persistent] TC.CTG2.77.bcg
+
+svl clean info: [persistent] TC.CTG2.78.bcg
+
+svl clean info: [persistent] TC.CTG2.79.bcg
+
+svl clean info: [persistent] TC.CTG2.8.bcg
+
+svl clean info: [persistent] TC.CTG2.80.bcg
+
+svl clean info: [persistent] TC.CTG2.81.bcg
+
+svl clean info: [persistent] TC.CTG2.82.bcg
+
+svl clean info: [persistent] TC.CTG2.83.bcg
+
+svl clean info: [persistent] TC.CTG2.84.bcg
+
+svl clean info: [persistent] TC.CTG2.85.bcg
+
+svl clean info: [persistent] TC.CTG2.86.bcg
+
+svl clean info: [persistent] TC.CTG2.87.bcg
+
+svl clean info: [persistent] TC.CTG2.88.bcg
+
+svl clean info: [persistent] TC.CTG2.89.bcg
+
+svl clean info: [persistent] TC.CTG2.9.bcg
+
+svl clean info: [persistent] TC.CTG2.90.bcg
+
+svl clean info: [persistent] TC.CTG2.91.bcg
+
+svl clean info: [persistent] TC.CTG2.92.bcg
+
+svl clean info: [persistent] TC.CTG2.93.bcg
+
+svl clean info: [persistent] TC.CTG2.94.bcg
+
+svl clean info: [persistent] TC.CTG2.95.bcg
+
+svl clean info: [persistent] TC.CTG2.96.bcg
+
+svl clean info: [persistent] TC.CTG2.97.bcg
+
+svl clean info: [persistent] TC.CTG2.98.bcg
+
+svl clean info: [persistent] TC.CTG2.99.bcg
+

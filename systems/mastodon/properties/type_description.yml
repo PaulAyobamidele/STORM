@@ -1,0 +1,114 @@
+# type_description.yml -- Sampler contract and oracle data for Mastodon's
+# abstract types. One top-level key per LNT type, no enclosing `types:` key.
+#
+# ORACLE HOOK. A type read back at a checkpoint declares `capture_at:` (the
+# gate whose label carries it), `role:` (band | enum | names) and
+# `observed_from:` (the el_* the value is read from). A type without `role:`
+# is not read back. `abstract_values` are the RENDERED strings.
+
+ItemId:
+  base: Enum
+  values: [post_a, post_b, post_c]
+  origin: tester_generated
+  description: >
+    The posts the tester writes, told apart by the unique core of their text
+    (concrete_domain.yml: cv_text_*). Nothing else on the page contains
+    "ioco note" (alice's posts read "Hello 1", "Hello 2").
+  abstract_values:
+    post_a: "ioco note A"
+    post_b: "ioco note B"
+    post_c: "ioco note C"
+
+RecordId:
+  base: Enum
+  values: [rec_a, rec_b, rec_c]
+  origin: tester_generated
+  description: A persisted status, one per post (item_of in the types).
+
+Visibility:
+  base: Enum
+  values: [PUBLIC, FOLLOWERS]
+  origin: tester_generated
+  description: The compose dialog's Public / Followers option.
+
+Validity:
+  base: Enum
+  values: [VALID, INVALID, OVERLIMIT]
+  origin: tester_generated
+  description: >
+    INVALID = blank text (client alert "Post can't be blank.");
+    OVERLIMIT = 501 counted characters (Post button withheld). Both live-confirmed.
+
+WriteStatus:
+  base: Enum
+  values: [COMMITTED, ROLLED_BACK, REJECTED, ABSENT]
+  origin: system_generated
+  capture_at: CONFIRM
+  # no role: Mastodon shows no status as such; it manifests in the three
+  # fields below, which are checked where they are observed.
+  description: The record's fate, for the model's bookkeeping.
+
+# "Posts | n" in the profile header, one rung per post. Every post the
+# tester writes counts one: rung = n.
+CountBand:
+  base: Enum
+  values: [N0, N1, N2, N3, N_MORE]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: band
+  observed_from: el_post_count
+  bucket_unit: 1
+  description: >
+    The profile's post counter (account_stats.statuses_count, a counter
+    cache). rung = round(n / 1), saturating at N_MORE.
+  abstract_values:
+    N0: "Posts 0"
+    N1: "Posts 1"
+    N2: "Posts 2"
+    N3: "Posts 3"
+    N_MORE: "Posts 4"
+
+HomeState:
+  base: Enum
+  values: [IN_HOME, NOT_IN_HOME]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: names
+  observed_from: el_home_column
+  description: >
+    IN_HOME iff the newest post of a freshly loaded Home feed is the post of
+    the same CONFIRM label (its ItemId rendering), else NOT_IN_HOME. Every
+    CONFIRM concerns the newest post written or the one just acted on.
+  names:
+    type: ItemId
+    when_named: IN_HOME
+    when_not: NOT_IN_HOME
+
+ProfileState:
+  base: Enum
+  values: [ON_PROFILE, OFF_PROFILE]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: names
+  observed_from: el_profile_posts
+  description: >
+    ON_PROFILE iff the newest post of the freshly loaded profile is the post.
+  names:
+    type: ItemId
+    when_named: ON_PROFILE
+    when_not: OFF_PROFILE
+
+# The post's text as the Home feed shows it. enum: the longest rendering that
+# occurs wins, so "... revised" beats the original when both match.
+# ITEM-SPECIFIC: valid while defaultItem = post_c (mastodon_fixture.lnt).
+Value:
+  base: Enum
+  values: [V_ORIG, V_EDITED]
+  origin: system_generated
+  capture_at: SHOW
+  role: enum
+  observed_from: el_home_column
+  description: The fixture post's text, as written or as edited.
+  abstract_values:
+    V_ORIG: "ioco note C"
+    V_EDITED: "ioco note C revised"

@@ -1,0 +1,27 @@
+(* THE PROPERTY. Expected: FALSE.
+
+   "After the content write fails, the status must never be reported as
+   Submitted for grading."
+
+   This is the whole of APP_PARTIAL_SUBMISSION. save_submission() in
+   mod/assign/locallib.php has no delegated transaction around the status row
+   (m_assign_submission) and the content row (m_assignsubmission_onlinetext),
+   so a status committed over content that never landed is exactly the
+   non-atomic write the case study is about.
+
+   FALSE here means the specification does not permit the counter-example --
+   which is what makes observing it against the real SUT a conformance FAIL
+   rather than merely an unexpected value.
+
+   The (not SAVE_SUBMISSION)* segment matters: without it the formula would
+   also match a later, SUCCESSFUL save legitimately reaching SUBMITTED_FG, and
+   would report TRUE for a model that is perfectly correct. It restricts the
+   search to the window between this fault and any fresh attempt.
+
+   NOTE this is a statement about the MODEL, not about Moodle. Whether Moodle
+   advances the status is decided by running tc_app_partial_submission, and
+   was measured separately: it rolls the status back and surfaces the error.
+*)
+< true* . "APP_PARTIAL_SUBMISSION" .
+  (not "SAVE_SUBMISSION !CRS_0 !ASN_0 !PLACEHOLDER")* .
+  "SUBMISSION_STATUS !ASN_0 !SUBMITTED_FG" > true

@@ -1,0 +1,631 @@
+-- system_interface_simplebaby.lnt -- I : D_abs -> D_sys for SimpleBaby
+-- (Android, Appium / UiAutomator2). Every selector comes from a live dump in
+-- notes/ui/ (2026-09-29, emulator simplebaby_test).
+--
+-- Each run starts from a cleared app on the welcome screen (seed.sh); the
+-- START arm signs up a fresh account or enters guest mode and creates the
+-- first child, so no id is ever captured. The history is always read FRESH
+-- (the Logs tab, then Feeding Logs), except after a delete, where the list
+-- the app shows in place is the one under test (APP_CACHE_STALE).
+--
+-- Parser contract: line comments only; concrete steps first, gate last;
+-- `screen` is the state variable, values SCR_*, initial SCR_HOME; guards are
+-- exactly `if screen == SCR_X then`. UE_KILL is realised by the SI's own
+-- relaunch (timing none). Every other fault gate stands before the first
+-- concrete step it shares with the nominal arm.
+
+module system_interface_simplebaby (simplebaby_types, simplebaby_fixture)
+with ==
+is
+
+type Screen is
+    SCR_HOME,       -- the welcome screen (no account, or a relaunched guest)
+    SCR_TRACKERS,   -- the Trackers tab
+    SCR_ALERT,      -- a "saved" alert over the tabs
+    SCR_FEED,       -- the feeding form
+    SCR_HISTORY,    -- the feeding history
+    SCR_SLEEP       -- the sleep form
+end type
+
+process SI [
+    navigate  : Ch_Route,
+    click     : Ch_Selector,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    START       : ModeChannel,
+    ADD         : AddChannel,
+    CONFIRM     : ConfirmChannel,
+    READ        : ReadChannel,
+    LIST        : ListChannel,
+    REMOVE      : RemoveChannel,
+    SLEEP_ADD   : SleepChannel,
+    SLEEP_SAVED : none,
+    SAVED_SHOWN : none,
+    TIMER_START : none,
+    TIMER_READ  : TimerChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    DB_DATA_LOST_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    UE_OFFLINE          : none,
+    UE_STORAGE_FULL     : none,
+    APP_UNAVAILABLE     : none,
+    APP_KEY_LOST        : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_LOCAL    : none,
+    DB_DATA_LOST        : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_MEDIA : none,
+    INFRA_DOZE          : none
+] is
+var
+    screen  : Screen,
+    md      : Mode,
+    id      : FeedId,
+    rid     : RecordId,
+    st      : WriteStatus,
+    started : Bool,
+    -- whether a feeding card exists; set only when a write COMMITS
+    has_a   : Bool
+in
+    screen  := SCR_HOME;
+    md      := SIGNED;
+    id      := feed_a;
+    rid     := rec_a;
+    st      := COMMITTED;
+    started := false;
+    has_a   := false;
+    loop
+      alt
+        -- ====================================================================
+        -- 0a. START signed in: a fresh account and its first child. Once only.
+        -- ====================================================================
+        if started then stop end if;
+        click (sel_sign_up);
+        wait_for (el_signup_form);
+        type_into (sel_first_name, cv_first);
+        type_into (sel_last_name, cv_last);
+        type_into (sel_email, cv_email);
+        type_into (sel_password, cv_password);
+        type_into (sel_password2, cv_password);
+        click (sel_sign_up_submit);
+        wait_for (el_child_popup);
+        type_into (sel_child_name, cv_child);
+        click (sel_child_save);
+        wait_for (el_trackers);
+        screen := SCR_TRACKERS;
+        md := SIGNED;
+        started := true;
+        START (SIGNED)
+    []
+        -- ====================================================================
+        -- 0b. START as a guest, and the guest's first child. Once only.
+        -- ====================================================================
+        if started then stop end if;
+        click (sel_guest);
+        wait_for (el_guest_screen);
+        click (sel_guest_continue);
+        wait_for (el_child_popup);
+        type_into (sel_child_name, cv_child);
+        click (sel_child_save);
+        wait_for (el_trackers);
+        screen := SCR_TRACKERS;
+        md := GUEST;
+        started := true;
+        START (GUEST)
+    []
+        -- ====================================================================
+        -- 1. LOG a feeding (valid), then read the history. At most one card at a
+        --    time (has_a), so "names the item" is exact. Every fault gate stands
+        --    BEFORE the save tap it shares with the commit arm.
+        -- ====================================================================
+        if not (started) then stop end if;
+        if has_a then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        id := defaultItem;
+        click (sel_feeding_button);
+        wait_for (el_feed_form);
+        type_into (sel_item_name, cv_item);
+        type_into (sel_amount, cv_amount);
+        screen := SCR_FEED;
+        ADD (id, VALID);
+        alt
+            -- commit: the app confirms and returns to the tabs by itself
+            click (sel_feed_save);
+            wait_for (el_saved);
+            observe (el_saved);
+            screen := SCR_ALERT;
+            SAVED_SHOWN
+        []
+            UE_OFFLINE;
+            click (sel_feed_save);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_alert_ok);
+            click (sel_back)
+        []
+            APP_UNAVAILABLE;
+            click (sel_feed_save);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_alert_ok);
+            click (sel_back)
+        []
+            DB_ABORT;
+            click (sel_feed_save);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_alert_ok);
+            click (sel_back)
+        []
+            INFRA_DB_DOWN;
+            click (sel_feed_save);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_alert_ok);
+            click (sel_back)
+        []
+            UE_STORAGE_FULL;
+            click (sel_feed_save);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_alert_ok);
+            click (sel_back)
+        []
+            -- killed right after the tap, then relaunched (the SI realises it)
+            UE_KILL;
+            click (sel_feed_save);
+            navigate (rt_home);
+            -- a relaunch lands on the tabs when signed in, on the welcome screen as a guest
+            if md == GUEST then screen := SCR_HOME else screen := SCR_TRACKERS end if;
+            if screen == SCR_HOME then
+                click (sel_guest);
+                wait_for (el_guest_screen);
+                click (sel_guest_continue);
+                wait_for (el_trackers);
+                screen := SCR_TRACKERS
+            end if
+        end alt;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            screen := SCR_TRACKERS
+        end if;
+        wait_for (el_trackers);
+        click (sel_tab_logs);
+        wait_for (el_logs_tab);
+        click (sel_logs_feeding);
+        wait_for (el_history);
+        observe (el_history_state);
+        screen := SCR_HISTORY;
+        CONFIRM (?st, ?any NameState, id);
+        if st == COMMITTED then has_a := true end if
+    []
+        -- ====================================================================
+        -- 2. LOG a feeding with the amount left empty: refused in the form.
+        -- ====================================================================
+        if not (started) then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        id := defaultItem;
+        click (sel_feeding_button);
+        wait_for (el_feed_form);
+        type_into (sel_item_name, cv_item);
+        screen := SCR_FEED;
+        ADD (id, INVALID);
+        click (sel_feed_save);
+        wait_for (el_reject);
+        observe (el_reject);
+        REJECT_SHOWN;
+        click (sel_alert_ok);
+        click (sel_back);
+        wait_for (el_trackers);
+        click (sel_tab_logs);
+        wait_for (el_logs_tab);
+        click (sel_logs_feeding);
+        wait_for (el_history);
+        observe (el_history_state);
+        screen := SCR_HISTORY;
+        CONFIRM (REJECTED, ?any NameState, id)
+    []
+        -- ====================================================================
+        -- 3. OPEN the history. A damage fault strikes before the list is opened;
+        --    the list must then flag it.
+        -- ====================================================================
+        if not (started) then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        id := defaultItem;
+        click (sel_tab_logs);
+        wait_for (el_logs_tab);
+        READ (id);
+        alt
+            click (sel_logs_feeding);
+            wait_for (el_history);
+            observe (el_history_state);
+            screen := SCR_HISTORY;
+            LIST (?any ShownState, id)
+        []
+            DB_CORRUPT;
+            click (sel_logs_feeding);
+            wait_for (el_history);
+            observe (el_corrupt_flag);
+            screen := SCR_HISTORY;
+            DB_CORRUPT_DETECTED
+        []
+            DB_CORRUPT_LOCAL;
+            click (sel_logs_feeding);
+            wait_for (el_history);
+            observe (el_corrupt_flag);
+            screen := SCR_HISTORY;
+            DB_CORRUPT_DETECTED
+        []
+            -- the saved row is deleted in Postgres before the list is opened
+            DB_DATA_LOST;
+            has_a := false;
+            click (sel_logs_feeding);
+            wait_for (el_history);
+            observe (el_loss_flag);
+            screen := SCR_HISTORY;
+            DB_DATA_LOST_DETECTED
+        []
+            -- the injection relaunches the app, which lands on the welcome screen
+            -- (a guest relaunch); the user enters guest mode again
+            INFRA_STORAGE_MEDIA;
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            -- no wait for the tracker buttons: with the store unreadable the
+            -- app opens on its first-run popup (live, 2026-10-01), which hides
+            -- them. The report is owed on the first screen after Continue.
+            observe (el_storage_error);
+            INFRA_STORAGE_ERROR
+        end alt
+    []
+        -- ====================================================================
+        -- 4. The device key is removed and the app relaunched BEFORE the history
+        --    is opened (the gate comes first, ahead of any shared step).
+        -- ====================================================================
+        if not (started) then stop end if;
+        APP_KEY_LOST;
+        -- a relaunch lands on the tabs when signed in, on the welcome screen as a guest
+        if md == GUEST then screen := SCR_HOME else screen := SCR_TRACKERS end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        id := defaultItem;
+        wait_for (el_trackers);
+        click (sel_tab_logs);
+        wait_for (el_logs_tab);
+        READ (id);
+        click (sel_logs_feeding);
+        wait_for (el_history);
+        observe (el_history_state);
+        screen := SCR_HISTORY;
+        LIST (?any ShownState, id)
+    []
+        -- ====================================================================
+        -- 5. DELETE the card, then read the list the app shows in place.
+        -- ====================================================================
+        if not (started) then stop end if;
+        if not (has_a) then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        rid := defaultRecord;
+        click (sel_tab_logs);
+        wait_for (el_logs_tab);
+        click (sel_logs_feeding);
+        wait_for (el_history);
+        click (sel_delete);
+        wait_for (el_delete_dialog);
+        screen := SCR_HISTORY;
+        REMOVE (rid);
+        alt
+            click (sel_confirm_delete)
+        []
+            -- the store will keep the row; the gate precedes the shared tap
+            APP_CACHE_STALE;
+            click (sel_confirm_delete)
+        end alt;
+        wait_for (el_history);
+        observe (el_history_state);
+        CONFIRM (?st, ?any NameState, item_of (rid));
+        if st == COMMITTED then has_a := false end if
+    []
+        -- ====================================================================
+        -- 6. LOG a manual sleep, 1:00 PM to 2:00 PM.
+        -- ====================================================================
+        if not (started) then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        click (sel_sleep_button);
+        wait_for (el_sleep_form);
+        click (sel_sleep_reset);
+        click (sel_sleep_start_time);
+        wait_for (el_time_dialog);
+        click (sel_time_keyboard);
+        type_into (sel_input_hour, cv_h_1);
+        type_into (sel_input_minute, cv_m_00);
+        click (sel_ampm);
+        click (sel_pm);
+        click (sel_time_ok);
+        click (sel_sleep_end_time);
+        wait_for (el_time_dialog);
+        click (sel_time_keyboard);
+        type_into (sel_input_hour, cv_h_2);
+        type_into (sel_input_minute, cv_m_00);
+        click (sel_ampm);
+        click (sel_pm);
+        click (sel_time_ok);
+        screen := SCR_SLEEP;
+        SLEEP_ADD (SAME_DAY);
+        click (sel_sleep_save);
+        wait_for (el_sleep_saved);
+        observe (el_sleep_saved);
+        screen := SCR_ALERT;
+        SLEEP_SAVED
+    []
+        -- ====================================================================
+        -- 7. LOG a manual sleep, 10:00 PM to 6:00 AM (O7).
+        -- ====================================================================
+        if not (started) then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        click (sel_sleep_button);
+        wait_for (el_sleep_form);
+        click (sel_sleep_reset);
+        click (sel_sleep_start_time);
+        wait_for (el_time_dialog);
+        click (sel_time_keyboard);
+        type_into (sel_input_hour, cv_h_10);
+        type_into (sel_input_minute, cv_m_00);
+        click (sel_ampm);
+        click (sel_pm);
+        click (sel_time_ok);
+        click (sel_sleep_end_time);
+        wait_for (el_time_dialog);
+        click (sel_time_keyboard);
+        type_into (sel_input_hour, cv_h_6);
+        type_into (sel_input_minute, cv_m_00);
+        click (sel_ampm);
+        click (sel_am);
+        click (sel_time_ok);
+        screen := SCR_SLEEP;
+        SLEEP_ADD (OVERNIGHT);
+        click (sel_sleep_save);
+        wait_for (el_sleep_saved);
+        observe (el_sleep_saved);
+        screen := SCR_ALERT;
+        SLEEP_SAVED
+    []
+        -- ====================================================================
+        -- 8. START the sleep stopwatch and read its minutes: at once, or after the
+        --    app spent a minute in the background under Doze (O6).
+        -- ====================================================================
+        if not (started) then stop end if;
+        if screen == SCR_ALERT then
+            click (sel_alert_ok);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_FEED then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_SLEEP then
+            click (sel_back);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HISTORY then
+            click (sel_back);
+            wait_for (el_logs_tab);
+            click (sel_tab_trackers);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        if screen == SCR_HOME then
+            click (sel_guest);
+            wait_for (el_guest_screen);
+            click (sel_guest_continue);
+            wait_for (el_trackers);
+            screen := SCR_TRACKERS
+        end if;
+        click (sel_sleep_button);
+        wait_for (el_sleep_form);
+        click (sel_sw_reset);
+        click (sel_sw_start);
+        screen := SCR_SLEEP;
+        TIMER_START;
+        alt
+            observe (el_sw_minutes);
+            TIMER_READ (?any TimerBand)
+        []
+            INFRA_DOZE;
+            wait_for (el_sleep_form);
+            observe (el_sw_minutes);
+            TIMER_READ (?any TimerBand)
+        end alt
+      end alt
+    end loop
+end var
+end process
+
+end module

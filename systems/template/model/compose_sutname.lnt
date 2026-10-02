@@ -1,0 +1,62 @@
+-- compose_sutname.lnt -- the synchronous product SPEC || SI that TESTOR
+-- derives test cases from.
+--
+--   lnt.open -main COMPOSED compose_sutname.lnt generator compose_sutname.bcg
+--
+-- SPEC and SI synchronise on the WHOLE abstract alphabet: the observable
+-- gates, the fault observables AND the fault gates. A fault therefore fires
+-- only where the specification places it AND where the System Interface has
+-- concrete steps for it (injection point, recovery steps, the observable to
+-- wait for). Nothing is hidden: the concrete primitives (navigate, tap,
+-- enter_text, wait_for, observe) stay visible so the generated test case
+-- carries them, and the .io file classifies them.
+--
+-- The top process is COMPOSED, not MAIN, so it cannot clash with the test
+-- purposes' MAIN when several modules are loaded in one flat directory.
+
+module compose_sutname (sutname_types, specification_sutname, system_interface_sutname)
+is
+
+process COMPOSED [
+    navigate   : Ch_Route,
+    tap        : Ch_Value,
+    enter_text : Ch_Value,
+    wait_for   : Ch_Element,
+    observe    : Ch_Element,
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    par SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+        APP_EXTAPI_WARNING, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+        UE_KILL, APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+        INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+
+        SPEC [SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+              APP_EXTAPI_WARNING, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+              UE_KILL, APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+              INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    ||
+        SI [navigate, tap, enter_text, wait_for, observe,
+            SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+            APP_EXTAPI_WARNING, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+            UE_KILL, APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+            INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    end par
+end process
+
+end module

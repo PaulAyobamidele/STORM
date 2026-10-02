@@ -1,0 +1,12 @@
+# v_noskip_skip_04_popup_scheduled  does the popup still offer Skipped?
+
+<ViewGroup> {} clickable bounds=[32,282][751,1011]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorAcknowledgedButton'}  bounds=[116,354][119,357]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/takenButton', 'text': 'Taken'} clickable bounds=[205,357][520,504]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorTakenButton'}  bounds=[205,429][208,432]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/rescheduleButton', 'text': 'Reschedule reminder'} clickable bounds=[205,789][751,936]
+<Button> {'resource-id': 'com.futsch1.medtimer:id/skippedButton', 'text': 'Skipped'} clickable bounds=[284,573][609,720]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorSkippedButton'}  bounds=[284,645][287,648]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorReraiseButton'}  bounds=[264,760][267,763]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorRescheduleButton'}  bounds=[205,861][208,864]
+<View> {'resource-id': 'com.futsch1.medtimer:id/anchorDeleteButton'}  bounds=[116,936][119,939]

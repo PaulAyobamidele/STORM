@@ -1,0 +1,3 @@
+# Spliit tc variants -- purpose: input_invalid -- 2026-10-01 23:00 -- rev 64b9e19 (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	776	1254	2	PASS	

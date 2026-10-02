@@ -1,0 +1,117 @@
+# concrete_domain.yml -- I() for system_interface_mastodon.lnt (web, Selenium).
+# Every selector below was read off a live DOM dump of the running app
+# (notes/dom/, 2026-09-29, user bob, https://mastodon.localhost). Keys are
+# lower-case and equal to the LNT enum values. XPath throughout (leading //).
+#
+# Posts are addressed by their OWN TEXT, never by position or id: the home
+# column also holds alice's posts ("Hello 1", "Hello 2"), and a fresh case
+# never knows a status id.
+
+# The app answers only on https://mastodon.localhost behind Caddy's internal
+# CA (observed_behaviour.md §1). Opt-in executor hook; logged when on.
+browser:
+  accept_insecure_certs: true
+
+routes:
+  rt_login:   "/auth/sign_in"
+  rt_home:    "/home"
+  rt_profile: "/@bob"
+
+selectors:
+  # sign-in page (01_sign_in)
+  sel_email:        "//input[@name='user[email]']"
+  sel_password:     "//input[@name='user[password]']"
+  sel_login_submit: "//form//button[@type='submit'][normalize-space()='Log in']"
+  # compose form, present on /home at 1280x900 (02_home)
+  sel_compose_text: "//form[contains(@class,'compose-form')]//textarea[contains(@class,'autosuggest-textarea__textarea')]"
+  sel_post_button:  "//div[contains(@class,'compose-form__submit')]//button[@type='submit']"
+  # visibility: compose button -> dialog -> dropdown -> option -> Save (07, 07b)
+  sel_visibility_button:    "(//form[contains(@class,'compose-form')]//button[contains(@class,'dropdown-button')])[1]"
+  sel_visibility_dropdown:  "(//div[contains(@class,'visibility-modal')]//button[contains(@class,'visibility-dropdown__button')])[1]"
+  sel_visibility_followers: "//li[@role='option'][@data-index='private']"
+  sel_visibility_save:      "//div[contains(@class,'visibility-modal')]//button[normalize-space()='Save']"
+  # a post's "More" button, found by the post's own text (14_status_menu_own)
+  sel_menu_a: "//div[@aria-label='Home']//article[.//div[contains(@class,'status__content__text')][contains(.,'ioco note A')]]//button[@aria-label='More']"
+  sel_menu_b: "//div[@aria-label='Home']//article[.//div[contains(@class,'status__content__text')][contains(.,'ioco note B')]]//button[@aria-label='More']"
+  sel_menu_c: "//div[@aria-label='Home']//article[.//div[contains(@class,'status__content__text')][contains(.,'ioco note C')]]//button[@aria-label='More']"
+  # the menu item's click handler is on the <button> inside the <li>; events
+  # dispatched on the <li> never reach it (nominal smoke, 2026-09-30: the
+  # delete dialog never opened)
+  sel_menu_edit:      "//li[contains(@class,'dropdown-menu__item')]/button[normalize-space()='Edit']"
+  sel_menu_delete:    "//li[contains(@class,'dropdown-menu__item')]/button[normalize-space()='Delete']"
+  sel_confirm_delete: "//div[contains(@class,'safety-action-modal')]//button[@type='submit'][normalize-space()='Delete']"
+  # the Home column title: scrolls the column to the top, reloads nothing. It
+  # sits in the tab bar ABOVE the Home region, not inside it (02, 13; the
+  # first version was scoped to the region and matched nothing, 2026-09-30)
+  sel_column_home:    "//button[contains(@class,'column-header__title')][normalize-space()='Home']"
+
+elements:
+  el_login_form:     "//input[@name='user[email]']"
+  # a real post in the Home column (alice's are always there); not the
+  # follow-suggestions pseudo-article
+  # The FIRST real post's text is rendered. An article with an id is not
+  # enough: the feed renders an off-screen or not-yet-measured article as an
+  # empty shell (scrollable_list/intersection_observer_article.jsx:108-116),
+  # and a read taken then saw only "load more" (tc_nominal, run 1, 2026-09-29).
+  # The newest post is first: bob's when it exists, else alice's.
+  el_home_loaded:    "(//div[@role='region'][@aria-label='Home']//article[@data-id][not(@data-id='inline-follow-suggestions')])[1]//div[contains(@class,'status__content__text')]"
+  # ORACLE: the NEWEST post in Home (the first real article), the element
+  # el_home_loaded already requires to be rendered. Not the whole feed: its
+  # other articles may still be empty shells when it is read (a feed read of
+  # only "load more" called a present post NOT_IN_HOME, suite run 2026-09-30).
+  # The newest post is ours whenever it exists; when it does not, the newest
+  # is an earlier post or alice's, so absence is a reading, never a timeout.
+  el_home_column:    "(//div[@role='region'][@aria-label='Home']//article[@data-id][not(@data-id='inline-follow-suggestions')])[1]"
+  el_update_button:  "//div[contains(@class,'compose-form__submit')]//button[normalize-space()='Update']"
+  el_compose_idle:   "//div[contains(@class,'compose-form__submit')]//button[normalize-space()='Post']"
+  # the account feed's first post has its TEXT rendered, or the feed shows its
+  # empty state (12, 20). Not the
+  # feed wrapper alone: it renders before its posts, and a read taken then
+  # saw the header and tabs only and called a listed post OFF_PROFILE
+  # (tc_nominal, first runs, 2026-09-29). The empty state appears only once
+  # loading has finished.
+  el_profile_loaded: "(//div[contains(@class,'_feat_account_timeline__statusWrapper')]//article[@data-id])[1]//div[contains(@class,'status__content__text')] | //div[contains(@class,'empty-column-indicator')]"
+  # ORACLE: "Posts | n" in the profile header's number fields (12, 20)
+  el_post_count:     "//li[contains(@class,'_comp_number_fields__item')][contains(.,'Posts')]"
+  # ORACLE: the profile's NEWEST post (first article of the account feed), or
+  # the empty state. Not the whole column: its header renders before its posts,
+  # and a read then called a listed post OFF_PROFILE (suite run 2026-09-30).
+  el_profile_posts:  "(//div[contains(@class,'_feat_account_timeline__statusWrapper')]//article[@data-id])[1] | //div[contains(@class,'empty-column-indicator')]"
+  # toasts and alerts all render as div.notification-bar (11; blank-post poll)
+  el_published:      "//div[contains(@class,'notification-bar')][contains(.,'Post published.')]"
+  # ORACLE owed after a failed write: any alert that is not a success toast
+  el_write_error:    "//div[contains(@class,'notification-bar')][not(contains(.,'Post published.'))][not(contains(.,'Post saved.'))]"
+  # ORACLE: the client's blank-post alert
+  el_reject_message: "//div[contains(@class,'notification-bar')][contains(.,\"Post can't be blank.\")]"
+  # ORACLE: the Post button withheld at 501 characters (06_overlimit)
+  el_post_disabled:  "//div[contains(@class,'compose-form__submit')]//button[@type='submit'][@disabled]"
+  el_delete_modal:   "//div[contains(@class,'safety-action-modal')]"
+  # ORACLE owed after DB_CORRUPT: any alert, or any warning on the post.
+  # Mastodon renders a blank post as an empty one (observed_behaviour §10)
+  el_corrupt_notice: "//div[contains(@class,'notification-bar')] | //*[@role='alert']"
+
+concrete_values:
+  # the fixture user; the password comes from the environment, never the repo.
+  # "@env:NAME" needs the executor extension listed in TEMPLATE_FIT.md.
+  cv_email:    "bob@mastodon.localhost"
+  cv_password: "@env:MASTODON_PW"
+  # post texts: each mentions @alice (who does not follow bob: the antispam
+  # rule needs it) and carries a URL (the link-preview fetch needs it). The
+  # "ioco note X" core is unique on the page and is what the oracles look for.
+  cv_text_a: "@alice ioco note A https://example.com"
+  cv_text_b: "@alice ioco note B https://example.com"
+  cv_text_c: "@alice ioco note C https://example.com"
+  cv_edit_a: "@alice ioco note A revised https://example.com"
+  cv_edit_b: "@alice ioco note B revised https://example.com"
+  cv_edit_c: "@alice ioco note C revised https://example.com"
+  cv_text_blank: ""
+  # 501 counted characters, no spaces, no URL (06_overlimit: counter -1)
+  cv_text_overlimit: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  # NO abstract enum values (post_a, rec_a ...) as keys: on the web path the
+  # parser resolves type_into (sel, L_f (var)) and click (L_f (var)) through
+  # the L function applied to the variable's abstract init value.
+
+# One element per anchored screen. SCR_HOME (before login) has none on purpose.
+screen_anchors:
+  SCR_TIMELINE: el_home_loaded
+  SCR_PROFILE:  el_profile_loaded

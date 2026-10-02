@@ -1,0 +1,130 @@
+# concrete_domain.yml -- the interpretation I() of every D_sys enum value used
+# by system_interface_sutname.lnt into a runtime selector / string / route.
+#
+# Consumed by framework/concretization/si_lnt_parser.py (found automatically
+# beside the SI or in ../properties/, or passed with --concrete-domain) and by
+# the graph walker for typed structural labels (TAP !CV_X, WAIT_FOR !EL_X ...).
+#
+# CONTRACT
+#   * Every key is LOWER-CASE and equal to the LNT enum value. The walker
+#     lower-cases every label parameter before the lookup; a capitalised key
+#     is never found and the enum silently resolves to its own name.
+#   * The category (routes / elements / concrete_values) is chosen by the
+#     primitive that uses the value, not by the prefix; rt_ / el_ / cv_ are a
+#     naming convention the checker relies on, not something the code reads.
+#   * A route whose text contains SESSION must contain the literal
+#     {{SESSION_ID}} or validate_invariants aborts the run.
+#   * Selector forms.  Web (Selenium): a string starting with // is XPath,
+#     with # is CSS, anything else is an id; or {selector: ..., by: xpath|css|
+#     id|name|class|tag}.  Android (Appium): 'new UiSelector()...' is used
+#     verbatim, 'pkg:id/name' is a resource id, a bare token is tried as text,
+#     textContains, description, descriptionContains, accessibility id; a
+#     KEYCODE_* value under tap is sent as a key event.
+#
+# Every selector marked (*) is a guess to be confirmed on the running SUT
+# (uiautomator dump / Appium Inspector / browser devtools) before a run.
+# A selector must be checked against BOTH the tree where the element is
+# present and the tree where it is absent: one that also matches the query
+# echoed in the search field turns an empty search into a false "results
+# present" and the next step's failure into a FAIL the SUT did not earn.
+
+# HOLE 27  routes -- one per value of type Route. Android: the activity the
+# executor starts; web: the URL path.
+routes:
+  rt_home: "home"        # (*)
+
+# HOLE 28  elements -- one per value of type Element. Say for each whether it
+# is an ORACLE (used in observe) or a PRECONDITION (wait_for only).
+elements:
+  el_home:             'Home'                                    # (*) anchor of SCR_HOME
+  el_search_input:     'new UiSelector().description("Search")'  # (*) anchor of SCR_SEARCH
+  el_search_ran:       'new UiSelector().text("Local")'          # (*) precondition: the query ran
+  el_search_results:   'new UiSelector().className("android.widget.TextView").textMatches("Item A|Item B|Item C")'  # (*) precondition: a result ROW (className keeps the query echo out)
+  el_value:            'new UiSelector().textMatches("\d+\s*unit")'   # (*) ORACLE at INFO
+  el_add_form:         'new UiSelector().text("Amount")'          # (*) anchor of SCR_ADD, present whether or not Save is offered
+  el_save_control:     'new UiSelector().descriptionContains("Save")' # (*)
+  el_state:            'new UiSelector().textMatches("\d+ / \d+ unit")' # (*) ORACLE at CONFIRM
+  el_record_detail:    'new UiSelector().textContains("Delete")'  # (*) anchor of SCR_RECORD
+  el_record_item:      'new UiSelector().textMatches("Item A|Item B|Item C")' # (*) ORACLE at DETAIL
+  el_delete_confirm:   'new UiSelector().textContains("deleted")' # (*)
+  el_extapi_warning:   'new UiSelector().descriptionContains("warning")'  # (*) ORACLE owed after APP_EXTAPI_FAIL
+  el_corrupt_error:    'new UiSelector().textContains("missing")' # (*) ORACLE owed after DB_CORRUPT
+  el_storage_error:    'new UiSelector().textContains("Something went wrong")'  # (*) ORACLE owed after INFRA_STORAGE_MEDIA
+  el_recovery_control: 'new UiSelector().descriptionMatches("Go back|Close")'   # (*) ORACLE, strict extension
+
+# HOLE 29  concrete_values -- one per value of type ConcreteValue, PLUS the
+# abstract enum values the SI assigns in its `var ... in` block (item_a,
+# CTX_A, ...): the parser resolves `tap (L_f (var))` through var's init value,
+# so those names must be keys here or the parser's map holds bare tokens.
+# The runtime uses the evaluated label (TAP !CV_ITEM_A) and never sees them.
+concrete_values:
+  # the result ROW to tap. className keeps this off the search field, which
+  # holds the same text whenever the query is the item's own name.
+  cv_item_a: 'new UiSelector().className("android.widget.TextView").textContains("Item A")'  # (*)
+  cv_item_b: 'new UiSelector().className("android.widget.TextView").textContains("Item B")'  # (*)
+  cv_item_c: 'new UiSelector().className("android.widget.TextView").textContains("Item C")'  # (*)
+  # the query typed; each must match exactly ONE item (checked on the device)
+  cv_q_a: "Item A"
+  cv_q_b: "Item B"
+  cv_q_c: "Item C"
+  # the context's own "add" control, NOT the context's name
+  cv_ctx_a: 'new UiSelector().description("Add").instance(0)'   # (*)
+  cv_ctx_b: 'new UiSelector().description("Add").instance(1)'   # (*)
+  cv_ctx_c: 'new UiSelector().description("Add").instance(2)'   # (*)
+  # a persisted record's row; keyed by item name to match item_of in the types
+  cv_rec_0: 'new UiSelector().className("android.widget.TextView").text("Item A")'  # (*)
+  cv_rec_1: 'new UiSelector().className("android.widget.TextView").text("Item B")'  # (*)
+  cv_rec_2: 'new UiSelector().className("android.widget.TextView").text("Item C")'  # (*)
+  cv_scope_local:    'new UiSelector().text("Local")'      # (*)
+  cv_scope_external: 'new UiSelector().text("External")'   # (*)
+  # SUBMIT = the keyboard's search key, never the same control as a scope chip
+  cv_search_submit:  'KEYCODE_ENTER'
+  cv_save:           'new UiSelector().descriptionContains("Save")'   # (*)
+  # one abstract value, possibly several controls (toolbar arrow on a screen,
+  # scrim on a sheet); a regex covers both
+  cv_back:           'new UiSelector().descriptionMatches("Go back|Close")'  # (*)
+  cv_delete:         'new UiSelector().textContains("Delete")'   # (*)
+  cv_confirm_delete: 'new UiSelector().text("Delete")'           # (*)
+  # the invalid input: "" = clear the field (unambiguously invalid, assumes
+  # nothing about the field's parser). enter_text clears before typing.
+  cv_input_invalid:  ""
+  # abstract enum values, for the parser's init-value resolution (see above)
+  item_a: "Item A"
+  item_b: "Item B"
+  item_c: "Item C"
+  CTX_A:  "Context A"
+  CTX_B:  "Context B"
+  CTX_C:  "Context C"
+
+# HOLE 30  screen_anchors -- one element per Screen value that PROVES the SUT
+# is on it: present on that screen, absent on every other. Without these the
+# tester acts on its belief about the screen without ever checking it, and a
+# navigation that silently failed lands the blame on the SUT's next step.
+screen_anchors:
+  SCR_HOME:   el_home
+  SCR_SEARCH: el_search_input
+  SCR_ADD:    el_add_form        # present even when Save is withheld
+  SCR_RECORD: el_record_detail
+
+# OPTIONAL blocks, all read by the framework when present:
+#
+# bindings:            # resolves {{TOKEN}} placeholders in routes before any
+#   COURSE_ID: "2"     # value has been captured (web SUTs with ids in URLs)
+#
+# session_reset_url: "/logout"   # HTML only: cookies are cleared when the
+#                                # executor navigates here
+#
+# unrealizable:        # abstract values THIS deployment cannot produce; a
+#   Scope: [EXTERNAL]  # test case needing one is UNEXECUTABLE, never FAIL.
+#                      # Do NOT use it to hide a branch that is expected to
+#                      # work: that suppresses exactly the counter-examples
+#                      # the suite exists to find. The environment guard
+#                      # (check_env) is the right tool for "the device could
+#                      # not reach the external source today".
+#
+# external_dependencies:      # downgrades every failure downstream of the
+#   engaged_by: [cv_scope_external]   # named control to UNEXECUTABLE until
+#   cleared_by: [cv_scope_local]      # a clearing control is used. A blindfold
+#                                     # by construction; use only with a
+#                                     # documented reason, and say so in the
+#                                     # results.

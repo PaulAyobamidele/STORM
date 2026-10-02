@@ -1,0 +1,16 @@
+module simplebaby_fixture (simplebaby_types) is
+
+(* Test selection only. Imported by the SI and the purposes, never by the
+   specification. *)
+
+(* The feeding every purpose writes; its card is the band's unit. *)
+function defaultItem : FeedId is
+    return feed_a
+end function
+
+(* Must be the card of defaultItem: item_of (rec_a) = feed_a. *)
+function defaultRecord : RecordId is
+    return rec_a
+end function
+
+end module

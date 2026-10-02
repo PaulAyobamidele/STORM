@@ -1,0 +1,652 @@
+-- system_interface_spliit.lnt -- I : D_abs -> D_sys for Spliit (web, Selenium).
+--
+-- Every selector comes from a live DOM dump (notes/dom/, 2026-09-25). The
+-- prelude creates a fresh group, so each run starts with an empty list, the
+-- total at S0 and an empty log, and no group id is ever needed: every later
+-- move is a click inside the group.
+--
+-- Parser contract (framework/concretization/si_lnt_parser.py): line comments
+-- only; concrete steps first, gate last; `screen` is the state variable,
+-- values SCR_*, initial SCR_HOME; guards are exactly `if screen == SCR_X then`.
+-- Faults are injected where their gate stands: the two SI-driven ones
+-- (UE_KILL = leaving right after submitting, APP_CACHE_STALE = priming the
+-- Stats cache) are realised by the steps that follow them.
+
+module system_interface_spliit (spliit_types, spliit_fixture)
+with ==
+is
+
+type Screen is
+    -- SCR_HOME is where the browser is before the prelude has created a
+    -- group: no app screen yet, so it carries no anchor (the framework skips
+    -- the check for an unanchored screen). Every other screen is anchored.
+    SCR_HOME,       -- the starting point, before any group exists
+    SCR_LIST,       -- the group's expense list
+    SCR_FORM,       -- the create-expense form
+    SCR_EDIT,       -- an expense's edit page
+    SCR_STATS,
+    SCR_ACTIVITY
+end type
+
+process SI [
+    navigate  : Ch_Route,
+    click     : Ch_Selector,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    APP_EXTAPI_FAIL     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none
+] is
+var
+    screen : Screen,
+    payer  : Payer,
+    id     : ExpenseId,
+    rid    : RecordId,
+    st     : WriteStatus,
+    -- which rows exist: set only when a write COMMITS, so a rolled-back
+    -- write leaves no row to open or delete
+    has_a, has_b, has_c : Bool
+in
+    payer  := john;
+    id     := exp_a;
+    rid    := row_a;
+    st     := COMMITTED;
+    has_a  := false;
+    has_b  := false;
+    has_c  := false;
+    screen := SCR_HOME;
+
+    -- prelude: a fresh group (John / Jane / Jack pre-filled), landing on its list
+    navigate (rt_group_create);
+    wait_for (el_group_form);
+    type_into (sel_group_name, cv_group_name);
+    click (sel_group_create);
+    wait_for (el_search_box);
+    screen := SCR_LIST;
+
+    loop
+      alt
+        -- =================================================================
+        -- 1. WRITE, valid, ONCE: any expense not yet written, paid by any
+        --    participant (titles never repeat, so a row is always found by
+        --    its title). The four write-path faults are the arms after ADD.
+        --    The choices come BEFORE any click, as in branches 7 and 8: once
+        --    every expense exists all three arms are `stop`, and a click made
+        --    first would commit to this branch and then deadlock.
+        -- =================================================================
+        alt
+            if not (has_a) then id := exp_a else stop end if
+        []  if not (has_b) then id := exp_b else stop end if
+        []  if not (has_c) then id := exp_c else stop end if
+        end alt;
+        alt
+            payer := john
+        []  payer := jane
+        []  payer := jack
+        end alt;
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        click (sel_new_expense);
+        wait_for (el_title_input);
+        type_into (sel_title, L_title (id));
+        type_into (sel_amount, L_amount (id));
+        click (sel_payer_combo);
+        click (L_payer (payer));
+        ADD (payer, id, VALID, ONCE);
+        alt
+            -- commit: the app returns to the list by itself
+            click (sel_create);
+            wait_for (el_search_box)
+        []
+            -- the proxy answers 503: the form must say so
+            APP_UNAVAILABLE;
+            click (sel_create);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_cancel);
+            wait_for (el_search_box)
+        []
+            -- the insert is aborted by a trigger: the form must say so
+            DB_ABORT;
+            click (sel_create);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_cancel);
+            wait_for (el_search_box)
+        []
+            -- the database is paused: the form must say so
+            INFRA_DB_DOWN;
+            click (sel_create);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            click (sel_cancel);
+            wait_for (el_search_box)
+        []
+            -- the user leaves right after submitting, then comes back.
+            -- The gate comes BEFORE the click, like the other faults: with
+            -- the click shared between this arm and the commit arm, the
+            -- state after Create had a quiescent alternative (this arm,
+            -- waiting for UE_KILL), so a silent app after Create was
+            -- INCONCLUSIVE in every case instead of the FAIL it is.
+            UE_KILL;
+            click (sel_create);
+            navigate (rt_groups);
+            wait_for (el_groups_page);
+            click (sel_recent_group);
+            wait_for (el_search_box)
+        end alt;
+        -- fresh read: `navigate` is a real browser reload (driver.get), so
+        -- the query cache a previous write primed is discarded and the
+        -- total read below is the committed one. Branch 5 alone keeps the
+        -- cached read, because the stale cache IS what it tests (O3).
+        navigate (rt_groups);
+        wait_for (el_groups_page);
+        click (sel_recent_group);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        screen := SCR_ACTIVITY;
+        CONFIRM (?st, ?any SpendBand, ?any LogState, id);
+        if st == COMMITTED then
+            case id in
+                exp_a -> has_a := true
+              | exp_b -> has_b := true
+              | exp_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 2. WRITE, valid, WEEKLY, dated eight days back: two rows result,
+        --    and the log must name both (the copy's entry is the oracle).
+        --    Only if its title is not already in the group, as in branch 1:
+        --    rows are found by title, so a second row with the same title
+        --    would let a check read the wrong one. The check comes BEFORE
+        --    any click, or a click would commit to this branch and deadlock.
+        -- =================================================================
+        id := recurringExpense;
+        case id in
+            exp_a -> if has_a then stop end if
+          | exp_b -> if has_b then stop end if
+          | exp_c -> if has_c then stop end if
+        end case;
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        alt
+            payer := john
+        []  payer := jane
+        []  payer := jack
+        end alt;
+        click (sel_new_expense);
+        wait_for (el_title_input);
+        type_into (sel_title, L_title (id));
+        type_into (sel_amount, L_amount (id));
+        type_into (sel_date, cv_date_past);
+        click (sel_payer_combo);
+        click (L_payer (payer));
+        click (sel_recurrence_combo);
+        click (sel_recurrence_weekly);
+        ADD (payer, id, VALID, WEEKLY);
+        click (sel_create);
+        wait_for (el_search_box);
+        -- fresh read: `navigate` is a real browser reload (driver.get), so
+        -- the query cache a previous write primed is discarded and the
+        -- total read below is the committed one. Branch 5 alone keeps the
+        -- cached read, because the stale cache IS what it tests (O3).
+        navigate (rt_groups);
+        wait_for (el_groups_page);
+        click (sel_recent_group);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        observe (el_activity_copy);
+        screen := SCR_ACTIVITY;
+        CONFIRM (?st, ?any SpendBand, ?any LogState, id);
+        if st == COMMITTED then
+            case id in
+                exp_a -> has_a := true
+              | exp_b -> has_b := true
+              | exp_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 3. WRITE, INVALID (amount 0): zod's inline message is the
+        --    rejection report; the form stays open, Cancel leaves it.
+        -- =================================================================
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        alt
+            payer := john
+        []  payer := jane
+        []  payer := jack
+        end alt;
+        id    := defaultExpense;
+        click (sel_new_expense);
+        wait_for (el_title_input);
+        type_into (sel_title, L_title (id));
+        type_into (sel_amount, cv_amount_invalid);
+        click (sel_payer_combo);
+        click (L_payer (payer));
+        ADD (payer, id, INVALID, ONCE);
+        click (sel_create);
+        wait_for (el_reject_message);
+        observe (el_reject_message);
+        REJECT_SHOWN;
+        click (sel_cancel);
+        wait_for (el_search_box);
+        -- fresh read: `navigate` is a real browser reload (driver.get), so
+        -- the query cache a previous write primed is discarded and the
+        -- total read below is the committed one. Branch 5 alone keeps the
+        -- cached read, because the stale cache IS what it tests (O3).
+        navigate (rt_groups);
+        wait_for (el_groups_page);
+        click (sel_recent_group);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        screen := SCR_ACTIVITY;
+        CONFIRM (REJECTED, ?any SpendBand, UNLOGGED, id)
+
+      []
+        -- =================================================================
+        -- 4. WRITE, OVERLIMIT (20,000,000): passes the browser, refused by
+        --    the server. The same report is owed; Spliit shows none.
+        -- =================================================================
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        alt
+            payer := john
+        []  payer := jane
+        []  payer := jack
+        end alt;
+        id    := defaultExpense;
+        click (sel_new_expense);
+        wait_for (el_title_input);
+        type_into (sel_title, L_title (id));
+        type_into (sel_amount, cv_amount_overlimit);
+        click (sel_payer_combo);
+        click (L_payer (payer));
+        ADD (payer, id, OVERLIMIT, ONCE);
+        click (sel_create);
+        wait_for (el_reject_message);
+        observe (el_reject_message);
+        REJECT_SHOWN;
+        click (sel_cancel);
+        wait_for (el_search_box);
+        -- fresh read: `navigate` is a real browser reload (driver.get), so
+        -- the query cache a previous write primed is discarded and the
+        -- total read below is the committed one. Branch 5 alone keeps the
+        -- cached read, because the stale cache IS what it tests (O3).
+        navigate (rt_groups);
+        wait_for (el_groups_page);
+        click (sel_recent_group);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        screen := SCR_ACTIVITY;
+        CONFIRM (REJECTED, ?any SpendBand, UNLOGGED, id)
+
+      []
+        -- =================================================================
+        -- 5. WRITE with the Stats cache primed first (APP_CACHE_STALE is
+        --    the priming visit); the total read back must be the new one.
+        -- =================================================================
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        APP_CACHE_STALE;
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        click (sel_tab_expenses);
+        wait_for (el_search_box);
+        alt
+            payer := john
+        []  payer := jane
+        []  payer := jack
+        end alt;
+        id    := defaultExpense;
+        click (sel_new_expense);
+        wait_for (el_title_input);
+        type_into (sel_title, L_title (id));
+        type_into (sel_amount, L_amount (id));
+        click (sel_payer_combo);
+        click (L_payer (payer));
+        ADD (payer, id, VALID, ONCE);
+        click (sel_create);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        screen := SCR_ACTIVITY;
+        CONFIRM (?st, ?any SpendBand, ?any LogState, id);
+        if st == COMMITTED then
+            case id in
+                exp_a -> has_a := true
+              | exp_b -> has_b := true
+              | exp_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 6. WRITE with the rate service unreachable: a foreign currency
+        --    is chosen, the form must report the failed lookup, and the
+        --    expense is then saved with the amount typed by hand.
+        -- =================================================================
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        APP_EXTAPI_FAIL;
+        alt
+            payer := john
+        []  payer := jane
+        []  payer := jack
+        end alt;
+        id    := defaultExpense;
+        click (sel_new_expense);
+        wait_for (el_title_input);
+        click (sel_currency_combo);
+        click (sel_currency_eur);
+        type_into (sel_original_amount, L_amount (id));
+        wait_for (el_rate_error);
+        observe (el_rate_error);
+        RATE_ERROR_SHOWN;
+        type_into (sel_title, L_title (id));
+        type_into (sel_amount, L_amount (id));
+        click (sel_payer_combo);
+        click (L_payer (payer));
+        ADD (payer, id, VALID, ONCE);
+        click (sel_create);
+        wait_for (el_search_box);
+        -- fresh read: `navigate` is a real browser reload (driver.get), so
+        -- the query cache a previous write primed is discarded and the
+        -- total read below is the committed one. Branch 5 alone keeps the
+        -- cached read, because the stale cache IS what it tests (O3).
+        navigate (rt_groups);
+        wait_for (el_groups_page);
+        click (sel_recent_group);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        screen := SCR_ACTIVITY;
+        CONFIRM (?st, ?any SpendBand, ?any LogState, id);
+        if st == COMMITTED then
+            case id in
+                exp_a -> has_a := true
+              | exp_b -> has_b := true
+              | exp_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 7. OPEN a row that exists: the edit page shows its title. If its
+        --    split rows are deleted underneath it, reopening must warn.
+        -- =================================================================
+        alt
+            if has_a then rid := row_a else stop end if
+        []  if has_b then rid := row_b else stop end if
+        []  if has_c then rid := row_c else stop end if
+        end alt;
+
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        click (L_record (rid));
+        wait_for (el_edit_form);
+        screen := SCR_EDIT;
+        VIEW (rid);
+        alt
+            observe (el_edit_title);
+            DETAIL (rid, ?id)
+        []
+            DB_CORRUPT;
+            click (sel_cancel);
+            wait_for (el_search_box);
+            click (L_record (rid));
+            wait_for (el_edit_form);
+            observe (el_corrupt_notice);
+            DB_CORRUPT_DETECTED
+        end alt
+
+      []
+        -- =================================================================
+        -- 8. DELETE a row that exists, then read the total and the log.
+        -- =================================================================
+        alt
+            if has_a then rid := row_a else stop end if
+        []  if has_b then rid := row_b else stop end if
+        []  if has_c then rid := row_c else stop end if
+        end alt;
+
+        if screen == SCR_FORM then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_EDIT then
+            click (sel_cancel);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_STATS then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+        if screen == SCR_ACTIVITY then
+            click (sel_tab_expenses);
+            wait_for (el_search_box);
+            screen := SCR_LIST
+        end if;
+
+        click (L_record (rid));
+        wait_for (el_edit_form);
+        click (sel_delete);
+        wait_for (el_delete_dialog);
+        click (sel_confirm_delete);
+        REMOVE (rid);
+        wait_for (el_search_box);
+        -- O8's read-back must not fall inside the 30s cache window a PRIOR
+        -- write already primed (observed_behaviour.md 8.2): `navigate` is a
+        -- real browser reload (executors.py's driver.get, not a client-side
+        -- route push), so it discards the query cache exactly as UE_KILL's
+        -- own navigate-away does. Without it, this state would read the
+        -- band from BEFORE the delete and blame O8 for O3's known defect.
+        navigate (rt_groups);
+        wait_for (el_groups_page);
+        click (sel_recent_group);
+        wait_for (el_search_box);
+        click (sel_tab_stats);
+        wait_for (el_total_spending);
+        observe (el_total_spending);
+        click (sel_tab_activity);
+        wait_for (el_activity_header);
+        observe (el_activity_latest);
+        screen := SCR_ACTIVITY;
+        CONFIRM (?st, ?any SpendBand, ?any LogState, item_of (rid));
+        if st == COMMITTED then
+            case rid in
+                row_a -> has_a := false
+              | row_b -> has_b := false
+              | row_c -> has_c := false
+            end case
+        end if
+      end alt
+    end loop
+end var
+end process
+
+end module

@@ -1,0 +1,162 @@
+module system_interface_foodyou (foodyou_types)
+with ==
+is
+
+
+type Screen is
+    SCR_HOME,
+    SCR_FOOD_SEARCH,
+    SCR_ADD_ENTRY,
+    SCR_VIEW_ENTRY_SHEET
+end type
+
+process SI [
+    navigate        : Ch_Route,
+    tap             : Ch_Value,
+    wait_for        : Ch_Element,
+    observe         : Ch_Element,
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    EXTAPI_WARNING  : none
+] is
+var
+    screen : Screen,
+    fid    : FoodId,
+    kcal   : Calorie,
+    meal   : MealType,
+    eid    : EntryId,
+    src    : FoodSource
+in
+    fid    := food_apple;
+    kcal   := Calorie (0);
+    meal   := BREAKFAST;
+    eid    := entry_0;
+    src    := LOCAL;
+    screen := SCR_HOME;
+
+    loop
+      alt
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        -- LOCAL lookup ("Your food"): scope the search to the on-device source,
+        -- pick the row, read its energy. Offline-resilient.
+        src := LOCAL;
+        tap (L_source (src));
+        fid := any FoodId;
+        tap (L_food (fid));
+        SEARCH_FOOD (fid, src);
+        wait_for (el_calories);
+        observe (el_calories);
+        FOOD_INFO (fid, ?kcal);
+        screen := SCR_ADD_ENTRY
+
+      []
+        -- 1b.  EXTERNAL lookup under EXTAPI_FAIL: scope to "Open Food Facts";
+        --       the lookup degrades and the ⚠️ warning is observed instead of
+        --       nutrition. The journey can then retry via the LOCAL branch.
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        src := EXTERNAL;
+        tap (L_source (src));
+        fid := any FoodId;
+        SEARCH_FOOD (fid, src);
+        wait_for (el_extapi_warning);
+        observe (el_extapi_warning);
+        EXTAPI_WARNING;
+        screen := SCR_FOOD_SEARCH
+
+      []
+        -- 2.  ADD_ENTRY + CONFIRM_TOTAL
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH;
+            fid := any FoodId;
+            tap (L_food (fid));
+            wait_for (el_calories);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            fid := any FoodId;
+            tap (L_food (fid));
+            wait_for (el_calories);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        tap (cv_save);
+        ADD_ENTRY (meal, fid);
+        tap (L_back);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?any WriteStatus, ?any DailyTotal)
+
+      []
+        -- VIEW_DIARY + DIARY_INFO
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+
+        eid := any EntryId;
+        tap (L_entry (eid));
+        wait_for (el_diary_entry_detail);
+        screen := SCR_VIEW_ENTRY_SHEET;
+        VIEW_DIARY (eid);
+        observe (el_entry_food);
+        DIARY_INFO (eid, ?fid);
+        tap (L_back);
+        wait_for (el_home);
+        screen := SCR_HOME
+
+      []
+        -- 4.  REMOVE_ENTRY + CONFIRM_TOTAL
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+
+        eid := any EntryId;
+        tap (L_entry (eid));
+        wait_for (el_diary_entry_detail);
+        screen := SCR_VIEW_ENTRY_SHEET;
+        tap (cv_delete);
+        REMOVE_ENTRY (eid);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?any WriteStatus, ?any DailyTotal)
+      end alt
+    end loop
+end var
+end process
+
+end module

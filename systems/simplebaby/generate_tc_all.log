@@ -1,0 +1,1862 @@
+using testor:      /home/paulad/cadp/bin.x64/testor.a
+using extract_all: /home/paulad/cadp/com/extract_all
+limiting virtual memory to 210844896 kbytes
+input hashes: inputs.md5 (26 files)
+==> compose_simplebaby.bcg
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+======================================================================
+==> nominal_signed
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_nominal_signed.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_nominal_signed.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_nominal_signed.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_nominal_signed.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_nominal_signed.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_nominal_signed.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_cmqBjL/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_cmqBjL/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_cmqBjL/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_cmqBjL/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_cmqBjL/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_nominal_signed.bcg simplebaby_nominal_signed.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 94 states, 149 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/nominal_signed/tc_nominal_signed.1.aut (149 transitions)
+     canonical: tc_nominal_signed.aut (= variant 1)
+======================================================================
+==> nominal_guest
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_nominal_guest.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_nominal_guest.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_nominal_guest.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_nominal_guest.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_nominal_guest.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_nominal_guest.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_SCAhQM/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_SCAhQM/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_SCAhQM/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_SCAhQM/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_SCAhQM/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_nominal_guest.bcg simplebaby_nominal_guest.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 89 states, 139 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/nominal_guest/tc_nominal_guest.1.aut (139 transitions)
+     canonical: tc_nominal_guest.aut (= variant 1)
+======================================================================
+==> ue_kill
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_ue_kill.lnt:46: warning: useless assignment to RID
+tp_ue_kill.lnt:16: warning: event parameter LIST never accessed
+tp_ue_kill.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_ue_kill.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_ue_kill.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_ue_kill.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_ue_kill.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_ue_kill.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_ue_kill.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_ue_kill.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue_kill.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_j1BeNQ/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_j1BeNQ/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_j1BeNQ/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_j1BeNQ/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_j1BeNQ/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_ue_kill.bcg simplebaby_ue_kill.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 29 states, 49 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/ue_kill/tc_ue_kill.1.aut (49 transitions)
+     canonical: tc_ue_kill.aut (= variant 1)
+======================================================================
+==> ue_offline
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_ue_offline.lnt:46: warning: useless assignment to RID
+tp_ue_offline.lnt:16: warning: event parameter LIST never accessed
+tp_ue_offline.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_ue_offline.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_ue_offline.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_ue_offline.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_ue_offline.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_ue_offline.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_ue_offline.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue_offline.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_YszS8p/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_YszS8p/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_YszS8p/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_YszS8p/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_YszS8p/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_ue_offline.bcg simplebaby_ue_offline.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 33 states, 53 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/ue_offline/tc_ue_offline.1.aut (53 transitions)
+     canonical: tc_ue_offline.aut (= variant 1)
+======================================================================
+==> ue_storage_full
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_ue_storage_full.lnt:46: warning: useless assignment to RID
+tp_ue_storage_full.lnt:16: warning: event parameter LIST never accessed
+tp_ue_storage_full.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_ue_storage_full.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_ue_storage_full.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_ue_storage_full.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_ue_storage_full.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_ue_storage_full.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_ue_storage_full.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue_storage_full.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_tqWHWu/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_tqWHWu/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_tqWHWu/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_tqWHWu/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_tqWHWu/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_ue_storage_full.bcg simplebaby_ue_storage_full.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 28 states, 43 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/ue_storage_full/tc_ue_storage_full.1.aut (43 transitions)
+     canonical: tc_ue_storage_full.aut (= variant 1)
+======================================================================
+==> app_unavailable
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_app_unavailable.lnt:46: warning: useless assignment to RID
+tp_app_unavailable.lnt:16: warning: event parameter LIST never accessed
+tp_app_unavailable.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_app_unavailable.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_app_unavailable.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_app_unavailable.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_app_unavailable.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_app_unavailable.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_app_unavailable.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_unavailable.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_NvZagk/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_NvZagk/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_NvZagk/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_NvZagk/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_NvZagk/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_app_unavailable.bcg simplebaby_app_unavailable.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 33 states, 53 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/app_unavailable/tc_app_unavailable.1.aut (53 transitions)
+     canonical: tc_app_unavailable.aut (= variant 1)
+======================================================================
+==> app_key_lost
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_app_key_lost.lnt:46: warning: useless assignment to RID
+tp_app_key_lost.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_app_key_lost.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_app_key_lost.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_key_lost.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_app_key_lost.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_app_key_lost.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_app_key_lost.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_key_lost.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_2N9nrZ/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_2N9nrZ/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_2N9nrZ/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_2N9nrZ/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_2N9nrZ/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_app_key_lost.bcg simplebaby_app_key_lost.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 40 states, 62 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/app_key_lost/tc_app_key_lost.1.aut (62 transitions)
+     canonical: tc_app_key_lost.aut (= variant 1)
+======================================================================
+==> app_cache_stale
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_app_cache_stale.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_app_cache_stale.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_app_cache_stale.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_cache_stale.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_app_cache_stale.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_app_cache_stale.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_app_cache_stale.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_cache_stale.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_Hcrjny/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_Hcrjny/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_Hcrjny/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_Hcrjny/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_Hcrjny/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_app_cache_stale.bcg simplebaby_app_cache_stale.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 58 states, 89 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/app_cache_stale/tc_app_cache_stale.1.aut (89 transitions)
+     canonical: tc_app_cache_stale.aut (= variant 1)
+======================================================================
+==> db_abort
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_db_abort.lnt:46: warning: useless assignment to RID
+tp_db_abort.lnt:16: warning: event parameter LIST never accessed
+tp_db_abort.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_db_abort.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_db_abort.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_db_abort.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_db_abort.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_db_abort.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_db_abort.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_abort.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_apTmOR/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_apTmOR/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_apTmOR/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_apTmOR/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_apTmOR/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_db_abort.bcg simplebaby_db_abort.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 33 states, 53 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/db_abort/tc_db_abort.1.aut (53 transitions)
+     canonical: tc_db_abort.aut (= variant 1)
+======================================================================
+==> db_corrupt
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_db_corrupt.lnt:46: warning: useless assignment to RID
+tp_db_corrupt.lnt:16: warning: event parameter LIST never accessed
+tp_db_corrupt.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_db_corrupt.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_db_corrupt.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_db_corrupt.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_db_corrupt.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_db_corrupt.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_corrupt.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_jSLstV/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_jSLstV/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_jSLstV/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_jSLstV/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_jSLstV/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_db_corrupt.bcg simplebaby_db_corrupt.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 43 states, 67 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/db_corrupt/tc_db_corrupt.1.aut (67 transitions)
+     canonical: tc_db_corrupt.aut (= variant 1)
+======================================================================
+==> db_corrupt_local
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_db_corrupt_local.lnt:46: warning: useless assignment to RID
+tp_db_corrupt_local.lnt:16: warning: event parameter LIST never accessed
+tp_db_corrupt_local.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_db_corrupt_local.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_db_corrupt_local.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_db_corrupt_local.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_db_corrupt_local.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_db_corrupt_local.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_corrupt_local.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_LnDz0B/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_LnDz0B/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_LnDz0B/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_LnDz0B/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_LnDz0B/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_db_corrupt_local.bcg simplebaby_db_corrupt_local.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 38 states, 57 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/db_corrupt_local/tc_db_corrupt_local.1.aut (57 transitions)
+     canonical: tc_db_corrupt_local.aut (= variant 1)
+======================================================================
+==> db_data_lost
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_db_data_lost.lnt:46: warning: useless assignment to RID
+tp_db_data_lost.lnt:16: warning: event parameter LIST never accessed
+tp_db_data_lost.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_db_data_lost.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_db_data_lost.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_db_data_lost.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_db_data_lost.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_db_data_lost.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_data_lost.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_AXCoIo/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_AXCoIo/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_AXCoIo/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_AXCoIo/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_AXCoIo/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_db_data_lost.bcg simplebaby_db_data_lost.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 43 states, 67 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/db_data_lost/tc_db_data_lost.1.aut (67 transitions)
+     canonical: tc_db_data_lost.aut (= variant 1)
+======================================================================
+==> infra_db_down
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_infra_db_down.lnt:46: warning: useless assignment to RID
+tp_infra_db_down.lnt:16: warning: event parameter LIST never accessed
+tp_infra_db_down.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_infra_db_down.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_infra_db_down.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_infra_db_down.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_infra_db_down.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_infra_db_down.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_infra_db_down.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_infra_db_down.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_9wjXym/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_9wjXym/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_9wjXym/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_9wjXym/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_9wjXym/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_infra_db_down.bcg simplebaby_infra_db_down.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 33 states, 53 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/infra_db_down/tc_infra_db_down.1.aut (53 transitions)
+     canonical: tc_infra_db_down.aut (= variant 1)
+======================================================================
+==> infra_storage_media
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_infra_storage_media.lnt:46: warning: useless assignment to RID
+tp_infra_storage_media.lnt:16: warning: event parameter LIST never accessed
+tp_infra_storage_media.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_infra_storage_media.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_infra_storage_media.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_infra_storage_media.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_infra_storage_media.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_infra_storage_media.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_infra_storage_media.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_SlN7dw/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_SlN7dw/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_SlN7dw/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_SlN7dw/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_SlN7dw/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_infra_storage_media.bcg simplebaby_infra_storage_media.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 43 states, 65 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/infra_storage_media/tc_infra_storage_media.1.aut (65 transitions)
+     canonical: tc_infra_storage_media.aut (= variant 1)
+======================================================================
+==> infra_doze
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_infra_doze.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_infra_doze.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_infra_doze.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_infra_doze.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_infra_doze.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_infra_doze.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_ULQmcD/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_ULQmcD/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_ULQmcD/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_ULQmcD/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_ULQmcD/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_infra_doze.bcg simplebaby_infra_doze.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 97 states, 154 transitions
+  3. extract_all -> controllable test cases
+extract_all: 2 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: 1 test case extracted
+  4. BCG -> AUT
+     variants/infra_doze/tc_infra_doze.1.aut (97 transitions)
+     canonical: tc_infra_doze.aut (= variant 1)
+======================================================================
+==> input_invalid
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_input_invalid.lnt:46: warning: useless assignment to RID
+tp_input_invalid.lnt:16: warning: event parameter LIST never accessed
+tp_input_invalid.lnt:19: warning: event parameter SLEEP_SAVED never accessed
+tp_input_invalid.lnt:20: warning: event parameter SAVED_SHOWN never accessed
+tp_input_invalid.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_input_invalid.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_input_invalid.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_input_invalid.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_input_invalid.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_input_invalid.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_XaaHDM/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_XaaHDM/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_XaaHDM/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_XaaHDM/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_XaaHDM/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_input_invalid.bcg simplebaby_input_invalid.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 31 states, 49 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/input_invalid/tc_input_invalid.1.aut (49 transitions)
+     canonical: tc_input_invalid.aut (= variant 1)
+======================================================================
+==> input_overnight
+  1. tp -> BCG
+simplebaby_types.lnt:152: warning: channel Ch_Route never employed
+simplebaby_types.lnt:153: warning: channel Ch_Selector never employed
+simplebaby_types.lnt:154: warning: channel Ch_TypeIn never employed
+simplebaby_types.lnt:155: warning: channel Ch_Element never employed
+simplebaby_types.lnt:52: warning: function named_of never called
+simplebaby_types.lnt:63: warning: function shown_of never called
+simplebaby_types.lnt:79: warning: function item_of never called
+simplebaby_types.lnt:14: warning: "with" function == of type Mode never called
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:34: warning: "with" function == of type Validity never called
+simplebaby_types.lnt:40: warning: "with" function == of type WriteStatus never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+tp_input_overnight.lnt:22: warning: event parameter TIMER_READ never accessed
+tp_input_overnight.lnt:23: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_input_overnight.lnt:24: warning: event parameter REJECT_SHOWN never accessed
+tp_input_overnight.lnt:25: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_input_overnight.lnt:26: warning: event parameter DB_DATA_LOST_DETECTED never accessed
+tp_input_overnight.lnt:27: warning: event parameter INFRA_STORAGE_ERROR never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_input_overnight.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_simplebaby.lnt''
+simplebaby_types.lnt:21: warning: "with" function == of type FeedId never called
+simplebaby_types.lnt:27: warning: "with" function == of type RecordId never called
+simplebaby_types.lnt:49: warning: "with" function == of type NameState never called
+simplebaby_types.lnt:60: warning: "with" function == of type ShownState never called
+simplebaby_types.lnt:70: warning: "with" function == of type SleepSpan never called
+simplebaby_types.lnt:76: warning: "with" function == of type TimerBand never called
+simplebaby_types.lnt:104: warning: "with" function == of type Route never called
+simplebaby_types.lnt:117: warning: "with" function == of type Selector never called
+simplebaby_types.lnt:142: warning: "with" function == of type Element never called
+simplebaby_types.lnt:149: warning: "with" function == of type InputValue never called
+specification_simplebaby.lnt:80: warning: useless assignment to n
+specification_simplebaby.lnt:80: warning: useless assignment to st
+specification_simplebaby.lnt:83: warning: useless assignment to n
+specification_simplebaby.lnt:83: warning: useless assignment to st
+specification_simplebaby.lnt:87: warning: useless assignment to n
+specification_simplebaby.lnt:91: warning: useless assignment to n
+specification_simplebaby.lnt:98: warning: useless assignment to sh
+specification_simplebaby.lnt:109: warning: useless assignment to n
+specification_simplebaby.lnt:109: warning: useless assignment to st
+specification_simplebaby.lnt:117: warning: useless assignment to t
+specification_simplebaby.lnt:172: warning: useless assignment to n
+specification_simplebaby.lnt:172: warning: useless assignment to st
+specification_simplebaby.lnt:176: warning: useless assignment to n
+specification_simplebaby.lnt:176: warning: useless assignment to st
+specification_simplebaby.lnt:190: warning: useless assignment to n
+specification_simplebaby.lnt:195: warning: useless assignment to n
+specification_simplebaby.lnt:201: warning: useless assignment to sh
+specification_simplebaby.lnt:232: warning: useless assignment to sh
+specification_simplebaby.lnt:235: warning: useless assignment to n
+specification_simplebaby.lnt:235: warning: useless assignment to st
+specification_simplebaby.lnt:237: warning: useless assignment to sp
+system_interface_simplebaby.lnt:229: warning: useless assignment to screen
+system_interface_simplebaby.lnt:156: warning: useless assignment to screen
+system_interface_simplebaby.lnt:278: warning: useless assignment to screen
+system_interface_simplebaby.lnt:272: warning: useless assignment to screen
+system_interface_simplebaby.lnt:327: warning: useless assignment to screen
+system_interface_simplebaby.lnt:390: warning: useless assignment to screen
+system_interface_simplebaby.lnt:435: warning: useless assignment to screen
+system_interface_simplebaby.lnt:510: warning: useless assignment to screen
+system_interface_simplebaby.lnt:489: warning: useless assignment to screen
+system_interface_simplebaby.lnt:570: warning: useless assignment to screen
+system_interface_simplebaby.lnt:549: warning: useless assignment to screen
+system_interface_simplebaby.lnt:610: warning: useless assignment to screen
+system_interface_simplebaby.lnt:80: warning: useless assignment to st
+system_interface_simplebaby.lnt:79: warning: useless assignment to rid
+system_interface_simplebaby.lnt:78: warning: useless assignment to id
+
+lnt.open: translating ``simplebaby_types.lnt'' to ``/tmp/paulad_lnt.open_hF377j/SIMPLEBABY_TYPES.lib'' ...
+
+lnt.open: translating ``simplebaby_fixture.lnt'' to ``/tmp/paulad_lnt.open_hF377j/SIMPLEBABY_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_hF377j/SPECIFICATION_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``system_interface_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_hF377j/SYSTEM_INTERFACE_SIMPLEBABY.lib'' ...
+
+lnt.open: translating ``compose_simplebaby.lnt'' to ``/tmp/paulad_lnt.open_hF377j/compose_simplebaby.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_simplebaby.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_simplebaby''
+cadp_indent: cannot find ``indent''
+             file ``compose_simplebaby.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_simplebaby''
+lotos.open: running ``testor -io simplebaby.io -all tp_input_overnight.bcg simplebaby_input_overnight.ctg.bcg'' for ``compose_simplebaby.lotos''
+     ctg: 85 states, 135 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/input_overnight/tc_input_overnight.1.aut (135 transitions)
+     canonical: tc_input_overnight.aut (= variant 1)
+======================================================================
+test cases per purpose:
+  nominal_signed: 1 test case(s), 16 s
+  nominal_guest: 1 test case(s), 16 s
+  ue_kill: 1 test case(s), 14 s
+  ue_offline: 1 test case(s), 15 s
+  ue_storage_full: 1 test case(s), 14 s
+  app_unavailable: 1 test case(s), 15 s
+  app_key_lost: 1 test case(s), 15 s
+  app_cache_stale: 1 test case(s), 16 s
+  db_abort: 1 test case(s), 13 s
+  db_corrupt: 1 test case(s), 15 s
+  db_corrupt_local: 1 test case(s), 15 s
+  db_data_lost: 1 test case(s), 15 s
+  infra_db_down: 1 test case(s), 15 s
+  infra_storage_media: 1 test case(s), 15 s
+  infra_doze: 1 test case(s), 23 s
+  input_invalid: 1 test case(s), 15 s
+  input_overnight: 1 test case(s), 16 s
+
+canonical AUTs (walked by run.py): tc_app_cache_stale.aut tc_app_key_lost.aut tc_app_unavailable.aut tc_db_abort.aut tc_db_corrupt.aut tc_db_corrupt_local.aut tc_db_data_lost.aut tc_infra_db_down.aut tc_infra_doze.aut tc_infra_storage_media.aut tc_input_invalid.aut tc_input_overnight.aut tc_nominal_guest.aut tc_nominal_signed.aut tc_ue_kill.aut tc_ue_offline.aut tc_ue_storage_full.aut 
+alternatives:                      variants/<purpose>/tc_<purpose>.N.aut
+
+bring back tc_*.aut and variants/ to systems/simplebaby/generated/tc/,
+and gen_times.tsv, model_size.txt, inputs.md5 to systems/simplebaby/

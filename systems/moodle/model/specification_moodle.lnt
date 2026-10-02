@@ -1,0 +1,741 @@
+module specification_moodle (moodle_types)
+with ==
+is
+
+(* ===========================================================================
+
+ 
+     APP1_WRITE_FAIL        quiz-attempt write fails        CONTROL, expect PASS
+     APP_PARTIAL_SUBMISSION content write fails, status commits
+     APP_GRADE_STALE_SUB    submission changes under the grader
+     APP_LAZY_REGRADE       course total read before recompute
+     DB_ATTEMPT_STEP_LOSS   answer steps lost, attempt still finishes
+     INFRA_CRON_DEAD        overdue attempt never closed
+     UE1_LOSE_CONN          client connectivity lost
+     UE2_SESSION_EXPIRE     session invalidated mid-flow
+
+    SUBMISSION_STATUS (asn, st) — after APP_PARTIAL_SUBMISSION the
+     specification offers NO_SUBMISSION and NEVER SUBMITTED_FG. Moodle's
+     save_submission() has no transaction around the status row and the
+     onlinetext row, so if the SUT can show "submitted" when the content write
+     failed, that is an output the specification does not offer: a
+     counter-example.
+
+     This property only became reachable when the fixture moved to
+     submissiondrafts=0. Under drafts=1 a save never advanced the status --
+     measured, it stayed "Draft (not submitted)" until a SEPARATE "Submit
+     assignment" action -- so the single non-atomic operation described here
+     did not exist in the SUT, no test case contained SUBMITTED_FG at all, and
+     the property was stated but untestable. It was split from the old
+     three-parameter SUBMISSION_STATE for a related reason: the concretizer
+     performs one observe and captures one parameter per gate, so a label
+     carrying the status AND the version could never have both read.
+
+   CONFIRMED_GRADE (asn, g, ver) — after the teacher opened the grading form
+     showing version V, the specification offers a confirmed grade only against
+     V, or STALE_WARNING_SHOWN. process_save_grade() performs no
+     submission-changed check, so grading a version the teacher never saw is
+     detectable.
+
+   * COURSE_TOTAL (crs, g) — once a component grade of GRADE_FULL is
+     persisted, the specification offers only GRADE_FULL. grade_item's
+     needsupdate defaults to 1 and recompute is deferred, so a stale total is
+     detectable.
+
+   * ATTEMPT_STATE (att, st) — an attempt past its deadline must reach a
+     TERMINAL state. IN_PROGRESS is not offered after the deadline, so an
+     attempt left open forever because cron never ran is detectable.
+   =========================================================================== *)
+
+
+process STUDENT [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    UE1_LOSE_CONN       : none,
+    UE2_SESSION_EXPIRE  : none,
+    WRITE_ERROR_SHOWN   : none,
+    SESSION_ERROR_SHOWN : none,
+    CONN_ERROR_SHOWN    : none
+] is
+    var
+        crs : CourseId,
+        qz  : QuizId,
+        att : AttemptId,
+        asn : AssignId,
+        g   : Grade,
+        st  : AttemptStatus,
+        sst : SubmissionStatus,
+        ver : SubmissionVersion
+    in
+        crs := crs_0;
+        qz  := qz_0;
+        att := att_0;
+        asn := asn_0;
+        g   := GRADE_FULL;
+        st  := IN_PROGRESS;
+        sst := NO_SUBMISSION;
+        ver := PLACEHOLDER;
+
+        loop
+            alt
+                ENROL (crs)
+            []
+                (* Quiz: attempt, finish, read the grade. Either the grade
+                   appears or a surfaced error explains why not. *)
+                disrupt
+                    VIEW_QUIZ (crs, qz);
+                    START_ATTEMPT (crs, qz, ?att);
+                    (* After starting, the student either continues the attempt
+                       or walks away and later looks at its state. Without the
+                       second arm an attempt could end only by finishing it or by
+                       a surfaced error, so ATTEMPT_STATE was unreachable from
+                       INSIDE an attempt -- and INFRA_CRON_DEAD, whose entire
+                       scenario is an attempt left open past its deadline,
+                       extracted 0 cases however its refuse list was tuned (see
+                       tp_infra_cron_dead.lnt, 2026-09-10..12: with
+                       PROCESS_ATTEMPT correctly refused, the only coherent path
+                       is this one, and it did not exist). Same shape as the
+                       SUBMISSION_STATUS rendezvous fix below: reading the page
+                       is always available.
+
+                       Placed as an alt right after START_ATTEMPT rather than in
+                       the `by' list, so it is offered ONCE, not at every step:
+                       quiz purposes that refuse ATTEMPT_STATE gain a single
+                       TP_REFUSE branch here instead of four. Verified by
+                       hand-tracing SPEC || TP through every rendezvous,
+                       2026-09-25. *)
+                    alt
+                        SAVE_ATTEMPT (att);
+                        PROCESS_ATTEMPT (att);
+                        GRADE_PERSISTED (?att, ?g)
+                    []
+                        ATTEMPT_STATE (att, ?st)
+                    end alt
+                by
+                    (* UE1_LOSE_CONN wired explicitly, not left bare: ties the
+                       fault to interrupting THIS attempt specifically, the same
+                       way APP_GRADE_STALE_SUB is tied to TEACHER's own grading
+                       flow. Without this, CONN_ERROR_SHOWN here is reachable
+                       only via a bare gate no fault gate precedes, and
+                       UE1_LOSE_CONN's own standalone STUDENT arm is
+                       structurally unrelated to this sequence -- the purpose
+                       requiring "START_ATTEMPT; UE1_LOSE_CONN; CONN_ERROR_SHOWN"
+                       directly could then only be satisfied by stitching in an
+                       unrelated occurrence, the same defect class fixed for
+                       UE2_SESSION_EXPIRE. Confirmed isolated to STUDENT alone:
+                       APP does not declare CONN_ERROR_SHOWN, SESSION_ERROR_SHOWN,
+                       UE1_LOSE_CONN, or UE2_SESSION_EXPIRE in its own gate list
+                       (see SPEC's own composition comment), so this does not
+                       touch APP1_WRITE_FAIL's or DB_ATTEMPT_STEP_LOSS's own,
+                       entirely separate disrupt in APP. UPDATE 2026-09-09: the
+                       ASSIGNMENT disrupt below had the same defect for real --
+                       ue2_session_expire's walker took the bare SESSION_ERROR_SHOWN
+                       gate there with no UE2_SESSION_EXPIRE anywhere in the run
+                       (run-ue2_session_expire-20260909-002539.log), producing a
+                       spurious FAIL. Both CONN_ERROR_SHOWN and SESSION_ERROR_SHOWN
+                       in that block are now wired to their fault precursors the
+                       same way, below. *)
+                    alt
+                        WRITE_ERROR_SHOWN
+                    []
+                        UE1_LOSE_CONN;
+                        CONN_ERROR_SHOWN
+                    []
+                        UE2_SESSION_EXPIRE;
+                        SESSION_ERROR_SHOWN
+                    end alt
+                end disrupt
+            []
+                (* The attempt's lifecycle state, read from the quiz page.
+                   A terminal state is required; see the DATABASE process. *)
+                ATTEMPT_STATE (att, ?st)
+            []
+                (* Assignment: one save (which submits outright, because the
+                   fixture sets submissiondrafts=0), then a revision to FINAL,
+                   observing the stored state each time. *)
+                disrupt
+                    VIEW_ASSIGN (crs, asn);
+                    SAVE_SUBMISSION (crs, asn, PLACEHOLDER);
+                    SUBMISSION_STATUS (asn, ?sst);
+                    SUBMISSION_TEXT (asn, ?ver);
+                    UPDATE_SUBMISSION (crs, asn, FINAL);
+                    SUBMISSION_STATUS (asn, ?sst);
+                    SUBMISSION_TEXT (asn, ?ver)
+                by
+                    alt
+                        WRITE_ERROR_SHOWN
+                    []
+                        UE1_LOSE_CONN;
+                        CONN_ERROR_SHOWN
+                    []
+                        UE2_SESSION_EXPIRE;
+                        SESSION_ERROR_SHOWN
+                    end alt
+                end disrupt
+            []
+                (* Reading the assignment page is ALWAYS available. It was only
+                   reachable inside the submit/update sequence, which is
+                   `disrupt ... by <error>' -- so a surfaced error aborted the
+                   branch and STUDENT never offered SUBMISSION_STATE again,
+                   while APP still required it after
+                   APP_PARTIAL_SUBMISSION; WRITE_ERROR_SHOWN. Unsatisfiable
+                   rendezvous, so the fault's own oracle was unreachable:
+                   verified FALSE for  UPDATE .. FAULT .. SUBMISSION_STATE.
+                   A student can always just look at the page. *)
+                SUBMISSION_STATUS (asn, ?sst)
+            []
+                SUBMISSION_TEXT (asn, ?ver)
+            []
+                CONFIRMED_GRADE (asn, ?g, ?ver)
+            []
+                (* GUARDED THE SAME WAY THE QUIZ AND ASSIGNMENT ARMS ARE, AND
+                   FOR A SHARPER REASON: without this disrupt, STUDENT has NO
+                   alternative once VIEW_COURSE_TOTAL fires -- `;' is
+                   sequential, so the ONLY thing STUDENT can do next is
+                   COURSE_TOTAL. APP's matching arm can instead take
+                   APP_LAZY_REGRADE and require WRITE_ERROR_SHOWN, which
+                   STUDENT could never offer there. That is not a slow path or
+                   an off-purpose branch: STUDENT is a single sequential
+                   process, so it is PERMANENTLY stuck the moment APP commits
+                   to that branch -- unlike the quiz/assignment arms, where a
+                   missed rendezvous still leaves STUDENT free to try again on
+                   a later loop iteration.
+
+                   Mirrors APP's own shape exactly: one escape, WRITE_ERROR_SHOWN,
+                   because that is the only gate APP's course-total disrupt ever
+                   produces. *)
+                VIEW_COURSE_TOTAL (crs);
+                disrupt
+                    COURSE_TOTAL (crs, ?g)
+                by
+                    WRITE_ERROR_SHOWN
+                end disrupt
+            []
+                (* Client-side faults happen at the client, so the STUDENT sees
+                   them. Each must still be SURFACED: a lost connection or a
+                   dead session the page does not report is the vulnerability,
+                   not the fault itself. *)
+                UE1_LOSE_CONN;
+                CONN_ERROR_SHOWN
+            []
+                UE2_SESSION_EXPIRE;
+                SESSION_ERROR_SHOWN
+            end alt
+        end loop
+    end var
+end process
+
+
+process TEACHER [
+    OPEN_GRADING        : OpenGradingChannel,
+    GRADING_SHOWS       : GradingShowsChannel,
+    GRADE_SUBMISSION    : GradeActionChannel,
+    STALE_WARNING_SHOWN : none
+] is
+    var
+        crs : CourseId,
+        asn : AssignId,
+        g   : Grade,
+        ver : SubmissionVersion
+    in
+        crs := crs_0;
+        asn := asn_0;
+        g   := GRADE_FULL;
+        ver := PLACEHOLDER;
+        loop
+            (* The teacher OPENS the form, SEES a version, then AWARDS a mark.
+               Splitting the read from the write is what makes
+               APP_GRADE_STALE_SUB expressible: the student's update lands in
+               between, and the question is what the system does about it.
+               A single GRADE_SUBMISSION gate cannot say this.
+
+               UNGUARDED ON PURPOSE (Issue 3, decided 2026-09-12): OPEN_GRADING
+               fires here every round regardless of whether a submission
+               exists yet. A real fix (giving TEACHER its own SUBMISSION_STATUS
+               channel and an `only if sst == SUBMITTED_FG' guard) was staged
+               and verified to work mechanically, but was NOT pushed --
+               DECISION: accept this as a documented coverage gap instead.
+               Evidence: app_grade_stale_sub's own canonical walk (the one
+               actually reported) gives a clean, correct FAIL regardless of
+               this gap -- confirmed live, post-reset, clean fixture. The
+               gap's real cost is confined to NON-canonical variants in
+               grading-adjacent purposes' test graphs (wasted, not wrong).
+               The fix would require compose_moodle's own TEACHER/(APP||
+               DATABASE) synchronisation set to change, which reshapes every
+               purpose's composed graph, not just this one -- the exact kind
+               of blast radius that unexpectedly broke an unrelated purpose
+               (tp_app_lazy_regrade.lnt) from a FAR smaller SI-only change the
+               same day. Not worth that cost to clean up variants nobody
+               reads. Revisit only if a NEW purpose's CANONICAL verdict (not
+               just a wasted variant) is ever shown to be corrupted by this
+               gap -- see TASKS.md. *)
+            OPEN_GRADING (crs, asn);
+            GRADING_SHOWS (asn, ?ver);
+            disrupt
+                GRADE_SUBMISSION (crs, asn, g)
+            by
+                STALE_WARNING_SHOWN
+            end disrupt
+        end loop
+    end var
+end process
+
+
+process APP [
+    START_ATTEMPT     : AttemptChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    WRITE_ATTEMPT     : WriteAttemptChannel,
+    ATTEMPT_PERSISTED : StatusChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    WRITE_STATUS      : StatusWriteChannel,
+    WRITE_CONTENT     : ContentWriteChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL        : none,
+    APP_PARTIAL_SUBMISSION : none,
+    APP_GRADE_STALE_SUB    : none,
+    APP_LAZY_REGRADE       : none,
+    DB_ATTEMPT_STEP_LOSS   : none,
+    WRITE_ERROR_SHOWN      : none,
+    STALE_WARNING_SHOWN    : none
+] is
+    var
+        crs : CourseId,
+        qz  : QuizId,
+        att : AttemptId,
+        asn : AssignId,
+        g   : Grade,
+        s   : AttemptStatus,
+        -- The version the DATABASE currently holds.
+        stored : SubmissionVersion,
+        -- The version the grading form last displayed to the teacher.
+        shown  : SubmissionVersion,
+        newver : SubmissionVersion,
+        sst    : SubmissionStatus
+    in
+        crs    := crs_0;
+        qz     := qz_0;
+        att    := att_0;
+        asn    := asn_0;
+        g      := GRADE_FULL;
+        s      := IN_PROGRESS;
+        stored := PLACEHOLDER;
+        shown  := PLACEHOLDER;
+        sst    := NO_SUBMISSION;
+
+        loop
+            alt
+                START_ATTEMPT (?crs, ?qz, att);
+                att := any AttemptId
+            []
+                (* CONTROL PATH. The quiz-attempt write is transactional in the
+                   SUT, so a correct system rolls back and says so. *)
+                PROCESS_ATTEMPT (?att);
+                WRITE_ATTEMPT (crs, qz, att);
+                disrupt
+                    ATTEMPT_PERSISTED (?att, ?s);
+                    (* DB_ATTEMPT_STEP_LOSS preempts the GRADE, not an
+                       unobservable status value. The attempt row commits but
+                       the answer steps did not, so a correct system must
+                       surface the error and must NOT persist a grade computed
+                       from answers it does not have. Any GRADE_PERSISTED after
+                       this fault is an output the specification does not
+                       offer. The previous form required ATTEMPT_STATE(FAILED),
+                       which nothing in Moodle renders, and left a grade freely
+                       persistable — so it forbade nothing. *)
+                    disrupt
+                        GRADE_PERSISTED (att, g)
+                    by
+                        DB_ATTEMPT_STEP_LOSS;
+                        WRITE_ERROR_SHOWN
+                    end disrupt
+                by
+                    APP1_WRITE_FAIL;
+                    WRITE_ERROR_SHOWN
+                end disrupt
+            []
+                ATTEMPT_STATE (?att, ?s)
+            []
+                (* THE NON-ATOMIC WRITE.
+
+                   Moodle writes the status row (m_assign_submission) and the
+                   content row (m_assignsubmission_onlinetext) with no
+                   transaction between them -- save_submission() in
+                   mod/assign/locallib.php has none. Modelled faithfully as two
+                   gates. APP_PARTIAL_SUBMISSION preempts the CONTENT write
+                   only: the status has already been written.
+
+                   THE LOAD-BEARING PAIR lives here now, on the FIRST save, and
+                   the fixture had to change for it to exist at all.
+                   With submissiondrafts=1 a save did not touch the status
+                   (measured: it stayed "Draft (not submitted)"; only a
+                   separate "Submit assignment" advanced it), so the single
+                   operation that writes both never happened and the property
+                   was stated but unreachable -- SUBMITTED_FG appeared in no
+                   test case at all. With submissiondrafts=0 one save writes
+                   both, measured 'new | (NO ROW)' -> 'submitted |
+                   REVISION-PLACEHOLDER', so status-over-absent-content is a
+                   state the SUT can actually reach.
+
+                   After the fault the specification offers NO_SUBMISSION and
+                   never SUBMITTED_FG: that IS the property. Nothing about the
+                   verdict is decided here -- Moodle may or may not roll the
+                   status back, and the run reports which.
+
+                   No SUBMISSION_TEXT is offered on the fault branch, and that
+                   is deliberate rather than an omission: the content row was
+                   never created, so the "Online text" row does not render and
+                   there is nothing to read. Requiring an observation of it
+                   would make the SI wait for an element that cannot appear and
+                   turn a real verdict into a walker timeout. *)
+                (* GUARDED ON THERE BEING NO SUBMISSION YET.
+
+                   Without this guard the arm is re-offered every time the loop
+                   comes round, so the composed model claims the SUT will accept
+                   a FIRST save on an assignment that already has one. Moodle
+                   renders "Add submission" only while no submission exists --
+                   afterwards it is "Edit submission" -- so the precondition can
+                   never hold and the tester stalls on it.
+
+                   Measured, 2026-08-27 sweep: six of nine cases reported
+                   INCONCLUSIVE at exactly that wait, and four of them were not
+                   even about the assignment. They were quiz and session cases
+                   that wandered into this branch and died there without ever
+                   reaching their own fault, so five of the eight faults were
+                   never actually exercised. An unfaithful model does not just
+                   mis-describe the SUT; it silently costs coverage elsewhere.
+
+                   The guard is on the FAULT path too, and correctly so: when
+                   the content write fails no submission is created, sst stays
+                   NO_SUBMISSION, and re-offering the first save is then exactly
+                   right -- the student really can press "Add submission"
+                   again. *)
+                only if sst == NO_SUBMISSION then
+                    SAVE_SUBMISSION (?crs, ?asn, ?stored);
+                    WRITE_STATUS (asn, SUBMITTED_FG);
+                    disrupt
+                        WRITE_CONTENT (asn, stored);
+                        sst := SUBMITTED_FG;
+                        SUBMISSION_STATUS (asn, sst);
+                        SUBMISSION_TEXT (asn, stored)
+                    by
+                        APP_PARTIAL_SUBMISSION;
+                        WRITE_ERROR_SHOWN;
+                        SUBMISSION_STATUS (asn, NO_SUBMISSION)
+                    end disrupt
+                end if
+            []
+                (* REVISING an existing submission.
+
+                   The status is already SUBMITTED_FG and stays there; only the
+                   content changes. This arm exists because APP_GRADE_STALE_SUB
+                   needs the stored version to change under the grader, which
+                   is what makes PLACEHOLDER/FINAL observable.
+
+                   APP_PARTIAL_SUBMISSION is NOT offered here. Its concrete
+                   mechanism fails the INSERT of the content row, and this save
+                   UPDATEs a row that already exists, so the fault cannot bite
+                   on this arm. Offering it anyway would put a branch in the
+                   test cases that no injection can reach -- a fault gate that
+                   fires while the SUT is undisrupted, which is exactly the
+                   vacuous-oracle defect the model has been cleaned of.
+
+                   Guarded as the mirror of the arm above: "Edit submission"
+                   exists only once a submission does, so offering a revision
+                   before the first save would be the same unfaithfulness in
+                   the other direction. *)
+                only if sst == SUBMITTED_FG then
+                    UPDATE_SUBMISSION (?crs, ?asn, ?newver);
+                    WRITE_CONTENT (asn, newver);
+                    stored := newver;
+                    SUBMISSION_STATUS (asn, SUBMITTED_FG);
+                    SUBMISSION_TEXT (asn, stored)
+                end if
+            []
+                (* GRADING, with the read and the write separated.
+
+                   `shown' records what the teacher was actually looking at.
+                   If the stored version changes afterwards, a correct system
+                   must warn rather than silently attach the mark to something
+                   the teacher never read.
+
+                   TRIED AND REVERTED, 2026-09-11: guarded this arm with
+                   `only if sst == SUBMITTED_FG', mirroring the SAVE_SUBMISSION/
+                   UPDATE_SUBMISSION arms above. Confirmed by direct BFS over
+                   the freshly-compiled compose_moodle.bcg (no stale cache --
+                   checked) that OPEN_GRADING still fires with zero
+                   SAVE_SUBMISSION anywhere in the path: shortest witness was
+                   6 SI-local login steps then straight into OPEN_GRADING.
+                   Root cause: OPEN_GRADING also fires, completely unguarded,
+                   from TEACHER's own loop (this file, process TEACHER) --
+                   TEACHER has no `alt' at all, so it is always the eager side
+                   of the OPEN_GRADING/GRADING_SHOWS/GRADE_SUBMISSION
+                   rendezvous with APP, and APP refusing its own side did not
+                   block the synchronized event the way multiway rendezvous
+                   is expected to. TEACHER only learns the submission version
+                   AFTER OPEN_GRADING via GRADING_SHOWS(asn, ?ver) -- too late
+                   to gate on. A real fix needs TEACHER to have its own
+                   advance knowledge of submission state, which is real spec
+                   surgery, not a one-line guard. Reverted rather than done
+                   here: only app_grade_stale_sub needs OPEN_GRADING reachable
+                   at all (every other purpose already refuses it in its own
+                   test purpose file), and the guard's only other effect was
+                   breaking infra_cron_dead's satisfiability for no benefit.
+                   This detour is therefore a known, accepted apparatus-facing
+                   coverage gap in app_grade_stale_sub/happy's variant sweeps,
+                   not something worth more spec risk right now. *)
+                OPEN_GRADING (?crs, ?asn);
+                shown := stored;
+                GRADING_SHOWS (asn, shown);
+                disrupt
+                    GRADE_SUBMISSION (?crs, ?asn, ?g);
+                    CONFIRMED_GRADE (asn, g, shown)
+                by
+                    APP_GRADE_STALE_SUB;
+                    STALE_WARNING_SHOWN
+                end disrupt
+            []
+                (* THE DEFERRED AGGREGATE.
+
+                   Once a component grade is persisted the course total must
+                   reflect it. Moodle defers recompute behind needsupdate, so
+                   this is where a stale total becomes visible. *)
+                VIEW_COURSE_TOTAL (?crs);
+                disrupt
+                    COURSE_TOTAL (crs, g)
+                by
+                    APP_LAZY_REGRADE;
+                    -- Not offered: a stale total with no indication. A correct
+                    -- system either recomputes or reports it cannot yet.
+                    WRITE_ERROR_SHOWN
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    WRITE_ATTEMPT     : WriteAttemptChannel,
+    ATTEMPT_PERSISTED : StatusChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    WRITE_STATUS      : StatusWriteChannel,
+    WRITE_CONTENT     : ContentWriteChannel,
+    APP1_WRITE_FAIL        : none,
+    APP_PARTIAL_SUBMISSION : none,
+    INFRA_CRON_DEAD        : none
+] is
+    var
+        crs : CourseId,
+        qz  : QuizId,
+        att : AttemptId,
+        asn : AssignId,
+        ver : SubmissionVersion,
+        sst : SubmissionStatus
+    in
+        crs := crs_0;
+        qz  := qz_0;
+        att := att_0;
+        asn := asn_0;
+        ver := PLACEHOLDER;
+        sst := NO_SUBMISSION;
+
+        loop
+            alt
+                (* The DATABASE abandons its acknowledgement in lock-step with
+                   the APP; the shared fault gate is what keeps them together.
+                   Surfacing is the APP's job, not the DATABASE's. *)
+                WRITE_ATTEMPT (?crs, ?qz, ?att);
+                disrupt
+                    ATTEMPT_PERSISTED (att, SUBMITTED)
+                by
+                    APP1_WRITE_FAIL
+                end disrupt
+            []
+                (* An attempt past its deadline must reach a TERMINAL state.
+                   \mod_quiz\task\update_overdue_attempts is what closes it, so
+                   with cron dead it never leaves IN_PROGRESS. The specification
+                   offers only the terminal outcomes here, which is what makes
+                   a stuck attempt a counter-example rather than a slow one. *)
+                disrupt
+                    alt
+                        ATTEMPT_STATE (att, SUBMITTED)
+                    []
+                        ATTEMPT_STATE (att, ABANDONED)
+                    end alt
+                by
+                    INFRA_CRON_DEAD;
+                    ATTEMPT_STATE (att, ABANDONED)
+                end disrupt
+            []
+                WRITE_STATUS (?asn, ?sst)
+            []
+                disrupt
+                    WRITE_CONTENT (?asn, ?ver)
+                by
+                    APP_PARTIAL_SUBMISSION
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+(* The environment. Faults are OFFERED, never forced: the `i' branch is what
+   lets a run proceed undisrupted, so normal behaviour stays reachable and a
+   purpose that asks for no fault still terminates. *)
+process DISRUPTOR [
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS : none
+] is
+    loop
+        alt
+            i
+        []
+            APP1_WRITE_FAIL
+        []
+            APP_PARTIAL_SUBMISSION
+        []
+            APP_GRADE_STALE_SUB
+        []
+            APP_LAZY_REGRADE
+        []
+            DB_ATTEMPT_STEP_LOSS
+        end alt
+    end loop
+end process
+
+
+process INFRA_DISRUPTOR [INFRA_CRON_DEAD : none] is
+    loop
+        alt
+            i
+        []
+            INFRA_CRON_DEAD
+        end alt
+    end loop
+end process
+
+
+process SPEC [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    WRITE_ATTEMPT     : WriteAttemptChannel,
+    ATTEMPT_PERSISTED : StatusChannel,
+    WRITE_STATUS      : StatusWriteChannel,
+    WRITE_CONTENT     : ContentWriteChannel,
+    APP1_WRITE_FAIL        : none,
+    APP_PARTIAL_SUBMISSION : none,
+    APP_GRADE_STALE_SUB    : none,
+    APP_LAZY_REGRADE       : none,
+    DB_ATTEMPT_STEP_LOSS   : none,
+    INFRA_CRON_DEAD        : none,
+    UE1_LOSE_CONN          : none,
+    UE2_SESSION_EXPIRE     : none,
+    WRITE_ERROR_SHOWN      : none,
+    STALE_WARNING_SHOWN    : none,
+    SESSION_ERROR_SHOWN    : none,
+    CONN_ERROR_SHOWN       : none
+] is
+    par APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+        APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD in
+
+        (* ONLY gates BOTH branches actually have.
+           ENROL / VIEW_QUIZ / SAVE_ATTEMPT / VIEW_ASSIGN / CONN_ERROR_SHOWN /
+           SESSION_ERROR_SHOWN belong to STUDENT alone. Listing them here made
+           each a rendezvous with a partner that does not exist, so all six
+           became unreachable and the state space collapsed to 85 states / 18
+           labels — while still reporting "no deadlock". A synchronised gate
+           the other side never offers is silently DELETED, not diagnosed. *)
+        par START_ATTEMPT, PROCESS_ATTEMPT, GRADE_PERSISTED, ATTEMPT_STATE,
+            SAVE_SUBMISSION, UPDATE_SUBMISSION, SUBMISSION_STATUS, SUBMISSION_TEXT, CONFIRMED_GRADE,
+            VIEW_COURSE_TOTAL, COURSE_TOTAL, WRITE_ERROR_SHOWN in
+
+            STUDENT [ENROL, VIEW_QUIZ, START_ATTEMPT, SAVE_ATTEMPT,
+                     PROCESS_ATTEMPT, GRADE_PERSISTED, ATTEMPT_STATE,
+                     VIEW_ASSIGN, SAVE_SUBMISSION, UPDATE_SUBMISSION,
+                     SUBMISSION_STATUS, SUBMISSION_TEXT, CONFIRMED_GRADE, VIEW_COURSE_TOTAL,
+                     COURSE_TOTAL, UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+                     WRITE_ERROR_SHOWN, SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN]
+        ||
+            par OPEN_GRADING, GRADING_SHOWS, GRADE_SUBMISSION,
+                STALE_WARNING_SHOWN in
+
+                TEACHER [OPEN_GRADING, GRADING_SHOWS, GRADE_SUBMISSION,
+                         STALE_WARNING_SHOWN]
+            ||
+                par WRITE_ATTEMPT, ATTEMPT_PERSISTED, ATTEMPT_STATE,
+                    WRITE_STATUS, WRITE_CONTENT,
+                    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION in
+
+                    APP [START_ATTEMPT, PROCESS_ATTEMPT, WRITE_ATTEMPT,
+                         ATTEMPT_PERSISTED, GRADE_PERSISTED, ATTEMPT_STATE,
+                         SAVE_SUBMISSION, UPDATE_SUBMISSION, WRITE_STATUS,
+                         WRITE_CONTENT, SUBMISSION_STATUS, SUBMISSION_TEXT, OPEN_GRADING,
+                         GRADING_SHOWS, GRADE_SUBMISSION, CONFIRMED_GRADE,
+                         VIEW_COURSE_TOTAL, COURSE_TOTAL,
+                         APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION,
+                         APP_GRADE_STALE_SUB, APP_LAZY_REGRADE,
+                         DB_ATTEMPT_STEP_LOSS,
+                         WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN]
+                ||
+                    DATABASE [WRITE_ATTEMPT, ATTEMPT_PERSISTED, ATTEMPT_STATE,
+                              WRITE_STATUS, WRITE_CONTENT,
+                              APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION,
+                              INFRA_CRON_DEAD]
+                end par
+            end par
+        end par
+    ||
+        (* No sync set: DISRUPTOR does not offer INFRA_CRON_DEAD, so naming it
+           here would delete the gate exactly as above. The two disruptors
+           simply interleave; both reach the core through the OUTER par. *)
+        par
+            DISRUPTOR [APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION,
+                       APP_GRADE_STALE_SUB, APP_LAZY_REGRADE,
+                       DB_ATTEMPT_STEP_LOSS]
+        ||
+            INFRA_DISRUPTOR [INFRA_CRON_DEAD]
+        end par
+    end par
+end process
+
+end module

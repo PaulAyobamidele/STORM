@@ -1,0 +1,3 @@
+# mastodon tc variants -- purpose: nominal -- 2026-09-30 15:15 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	85	121	8	FAIL	injected=0 restored=0 ERROR  CONFIRM mismatch — CountBand: AUT expects N2, observed 'posts\n3' classifies as N3

@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	58	89	66	FAIL	ERROR  CONFIRM mismatch — NameState: AUT expects NAMED, observed "you don't have any feeding logs for robin yet!" classifies as UNNAMED

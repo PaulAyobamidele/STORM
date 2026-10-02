@@ -1,0 +1,12 @@
+purpose	ctg_states	ctg_transitions
+nominal	2140	3724
+ue_kill	614	1069
+app_unavailable	622	1061
+app_cache_stale	1365	2404
+app_extapi_fail	1427	2497
+db_abort	622	1061
+db_corrupt	1680	2910
+infra_db_down	622	1061
+input_invalid	1106	1925
+input_overlimit	1106	1925
+weekly	1231	2168

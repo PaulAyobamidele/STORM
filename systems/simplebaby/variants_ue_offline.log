@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	33	53	101	FAIL	ERROR  State 20 waits for WAIT_FOR !EL_WRITE_ERROR — it never appeared and this state does NOT permit quiescence. The specification required an output here and 

@@ -1,0 +1,59 @@
+adb:      emulator-5554	device
+appium:   ready on 4723
+environment check:
+  [ok]   device reachable
+  [ok]   airplane mode off
+  [ok]   device has a route to the internet
+  [ok]   device can resolve the external source
+  [ok]   Open Food Facts responding (HTTP 200)
+  [ok]   app database present (onboarded)
+  [ok]   foods under test hold their authoritative energies
+READY
+variants from: systems/foodyou/generated/tc/variants/storage_media
+# FoodYou tc variants -- purpose: storage_media -- 2026-09-25 14:46
+VARIANT     STATES    TRANSITNS   VERDICT
+1              268          403   FAIL
+2              269          404   FAIL
+3              261          393   FAIL
+4              263          396   HARNESS
+5              251          377   FAIL
+6              259          390   FAIL
+7              259          390   FAIL
+8              267          403   FAIL
+9              259          390   FAIL
+10             261          393   FAIL
+11             237          357   HARNESS
+12             239          360   FAIL
+13             248          375   FAIL
+14             256          388   FAIL
+15             253          383   FAIL
+16             265          400   FAIL
+17             249          376   FAIL
+18             257          389   HARNESS
+19             265          400   FAIL
+20             247          374   FAIL
+21             246          370   FAIL
+22             242          366   HARNESS
+23             245          371   FAIL
+24             247          372   FAIL
+25             255          385   FAIL
+26             245          369   FAIL
+27             219          328   FAIL
+28             219          328   FAIL
+29             244          366   HARNESS
+30             246          369   FAIL
+31             232          351   FAIL
+32             257          388   FAIL
+33             258          389   FAIL
+34             250          376   FAIL
+35             222          334   FAIL
+36             215          324   HARNESS
+37             247          373   HARNESS
+38             247          373   HARNESS
+ABORT: 3 consecutive harness failures -- the device cannot start a
+  test case. Remaining variants are NOT run and must not be counted.
+  Check for a system 'isn't responding' dialog, a crashed app, or an
+  exhausted disk, then re-run this purpose.
+----------------------------------------------------------------
+canonical systems/foodyou/generated/tc/tc_storage_media.aut restored
+written to systems/foodyou/variants_storage_media.log

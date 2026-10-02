@@ -1,0 +1,316 @@
+module specification_foodyou_copy (foodyou_types)
+with ==
+is
+
+process USER [
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_ERROR_SHOWN : none
+] is
+    var
+        fid   : FoodId,
+        kcal  : Calorie,
+        meal  : MealType,
+        eid   : EntryId,
+        total : DailyTotal,
+        status : WriteStatus,
+        amount_ok : Validity
+    in
+        fid   := food_peanut;
+        kcal  := kcal_peanut;
+        meal  := BREAKFAST;
+        eid   := entry_0;
+        total := EMPTY;
+        amount_ok := VALID;
+        loop
+            alt
+                -- LOCAL search ("Your food"): a corrupt stored record must be
+                -- DETECTED (error) rather than shown as garbage nutrition (strict).
+                fid := any FoodId;
+                disrupt
+                    SEARCH_FOOD (fid, LOCAL);
+                    FOOD_INFO (fid, ?kcal)
+                by
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                -- EXTERNAL search (Open Food Facts) may degrade
+                fid := any FoodId;
+                disrupt
+                    SEARCH_FOOD (fid, EXTERNAL);
+                    FOOD_INFO (fid, ?kcal)
+                by
+                    EXTAPI_WARNING
+                end disrupt
+            []
+                -- or select a meal, add the food (with a valid OR invalid amount)
+                -- and read the resulting total
+                meal := any MealType;
+                fid := any FoodId;
+                amount_ok := any Validity;
+                ADD_ENTRY (meal, fid, amount_ok);
+                CONFIRM_TOTAL (?status, ?total, fid)
+            []
+                eid := any EntryId;
+                disrupt
+                    VIEW_DIARY (eid);
+                    DIARY_INFO (eid, ?fid)
+                by
+                    STORAGE_ERROR_SHOWN
+                end disrupt
+            []
+                -- or remove a logged entry and observe the new total
+                eid := any EntryId;
+                REMOVE_ENTRY (eid);
+                CONFIRM_TOTAL (?status, ?total, food_of (eid))
+            end alt
+        end loop
+    end var
+end process
+
+
+process APP [
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    EXTAPI_FAIL     : none,
+    EXTAPI_WARNING  : none,
+    DB_CORRUPT      : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_MEDIA   : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE     : none
+] is
+    var
+        fid    : FoodId,
+        kcal   : Calorie,
+        meal   : MealType,
+        eid    : EntryId,
+        status : WriteStatus,
+        total  : DailyTotal
+    in
+        fid    := food_peanut;
+        kcal   := kcal_peanut;
+        meal   := BREAKFAST;
+        eid    := entry_0;
+        status := COMMITTED;
+        total  := EMPTY;
+        loop
+            alt
+                -- LOCAL lookup: a corrupt record must surface an error, not a
+                -- garbage calorie
+                disrupt
+                    SEARCH_FOOD (?fid, LOCAL);
+                    FOOD_INFO (fid, ?kcal)
+                by
+                    DB_CORRUPT;
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                -- LOCAL read after the cache went stale (CACHE_STALE): the app
+                -- must return the AUTHORITATIVE nutrition
+                CACHE_STALE;
+                SEARCH_FOOD (?fid, LOCAL);
+                FOOD_INFO (fid, ?kcal)
+            []
+                disrupt
+                    SEARCH_FOOD (?fid, EXTERNAL);
+                    FOOD_INFO (fid, ?kcal)
+                by
+                    EXTAPI_FAIL;
+                    EXTAPI_WARNING
+                end disrupt
+            []
+                ADD_ENTRY (?meal, ?fid, ?any Validity);
+                CONFIRM_TOTAL (?status, ?total, fid)
+            []
+                -- diary read: a storage-media error must surface an error, not wrong entry
+                disrupt
+                    VIEW_DIARY (?eid);
+                    DIARY_INFO (?eid, ?fid)
+                by
+                    STORAGE_MEDIA;
+                    STORAGE_ERROR_SHOWN
+                end disrupt
+            []
+
+                REMOVE_ENTRY (?eid);
+                CONFIRM_TOTAL (?status, ?total, food_of (eid))
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    EXTAPI_FAIL     : none,
+    UE1_KILL        : none,
+    DISRUPTION_DB   : none,
+    DB_CORRUPT      : none,
+    STORAGE_FULL    : none,
+    STORAGE_MEDIA   : none,
+    CACHE_STALE     : none
+] is
+    var
+        fid   : FoodId,
+        meal  : MealType,
+        eid   : EntryId,
+        total : DailyTotal,
+        amount_ok : Validity
+    in
+        fid   := food_peanut;
+        meal  := BREAKFAST;
+        eid   := entry_0;
+        total := EMPTY;
+        amount_ok := VALID;
+        loop
+            alt
+                disrupt
+                    SEARCH_FOOD (?fid, LOCAL);
+                    FOOD_INFO (fid, kcal_of (fid))
+                by
+                    DB_CORRUPT
+                end disrupt
+            []
+                -- LOCAL read after cache went stale (CACHE_STALE): DATABASE is the
+                -- source of truth.
+                CACHE_STALE;
+                SEARCH_FOOD (?fid, LOCAL);
+                FOOD_INFO (fid, kcal_of (fid))
+            []
+                -- EXTERNAL lookup: abandoned in lock-step with APP when
+                -- EXTAPI_FAIL fires (kept a 3-way rendezvous on FOOD_INFO)
+                disrupt
+                    SEARCH_FOOD (?fid, EXTERNAL);
+                    FOOD_INFO (fid, kcal_of (fid))
+                by
+                    EXTAPI_FAIL
+                end disrupt
+            []
+                ADD_ENTRY (?meal, ?fid, ?amount_ok);
+                if amount_ok == VALID then
+                    alt
+                        total := bump (total);
+                        CONFIRM_TOTAL (COMMITTED, total, fid)
+                    []
+                        UE1_KILL;
+                        CONFIRM_TOTAL (ROLLED_BACK, total, fid)
+                    []
+                        DISRUPTION_DB;
+                        CONFIRM_TOTAL (ROLLED_BACK, total, fid)
+                    []
+                        STORAGE_FULL;
+                        CONFIRM_TOTAL (ROLLED_BACK, total, fid)
+                    end alt
+                else
+                    CONFIRM_TOTAL (REJECTED, total, fid)
+                end if
+            []
+                disrupt
+                    VIEW_DIARY (?eid);
+                    DIARY_INFO (eid, food_of (eid))
+                by
+                    STORAGE_MEDIA
+                end disrupt
+            []
+                REMOVE_ENTRY (?eid);
+                -- OVER is a SATURATING band: it means "four entries or more", so
+                -- removing one leaves "three or more" -- which is HIGH or still
+                -- OVER, and the model cannot tell which. Committing to HIGH (what
+                -- drop does) is a guess, and when it guesses wrong the tester
+                -- reports a counter-example that does not exist. Observed live on
+                -- 2026-08-13: six entries logged, one removed, app showed 620
+                -- (OVER), model insisted on HIGH -> FAIL. Nothing was wrong with
+                -- FoodYou.
+                --
+                -- Offering BOTH is the correct abstraction, not a workaround. In
+                -- ioco a specification may allow several outputs after a trace;
+                -- the tester accepts any of them and only fails on one that is
+                -- not offered. Below OVER the count is exact, so drop stays.
+                if total == OVER then
+                    alt
+                        total := HIGH
+                    []
+                        total := OVER
+                    end alt
+                else
+                    total := drop (total)
+                end if;
+                CONFIRM_TOTAL (COMMITTED, total, food_of (eid))
+            end alt
+        end loop
+    end var
+end process
+
+
+process SPEC [
+    SEARCH_FOOD   : SearchChannel,
+    FOOD_INFO     : FoodInfoChannel,
+    ADD_ENTRY     : AddEntryChannel,
+    CONFIRM_TOTAL : TotalChannel,
+    VIEW_DIARY    : ViewDiaryChannel,
+    DIARY_INFO    : DiaryInfoChannel,
+    REMOVE_ENTRY  : RemoveEntryChannel,
+    EXTAPI_FAIL   : none,
+    EXTAPI_WARNING : none,
+    UE1_KILL      : none,
+    DISRUPTION_DB : none,
+    DB_CORRUPT    : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL  : none,
+    STORAGE_MEDIA : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE   : none,
+    NETWORK_DEGRADED : none
+] is
+    par EXTAPI_FAIL, UE1_KILL, DISRUPTION_DB, DB_CORRUPT, STORAGE_FULL, STORAGE_MEDIA,
+        CACHE_STALE in
+        par SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+            VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY, EXTAPI_WARNING, DB_CORRUPT_DETECTED,
+            STORAGE_ERROR_SHOWN in
+            USER [SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+                  VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY, EXTAPI_WARNING, DB_CORRUPT_DETECTED,
+                  STORAGE_ERROR_SHOWN]
+            ||
+            par SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+                VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY, EXTAPI_FAIL, DB_CORRUPT, STORAGE_MEDIA,
+                CACHE_STALE in
+                APP [SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+                     VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY, EXTAPI_FAIL, EXTAPI_WARNING,
+                     DB_CORRUPT, DB_CORRUPT_DETECTED, STORAGE_MEDIA, STORAGE_ERROR_SHOWN,
+                     CACHE_STALE]
+                ||
+                DATABASE [SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+                          VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY, EXTAPI_FAIL, UE1_KILL,
+                          DISRUPTION_DB, DB_CORRUPT, STORAGE_FULL, STORAGE_MEDIA, CACHE_STALE]
+            end par
+        end par
+        ||
+        par NETWORK_DEGRADED in
+            DISRUPTOR [EXTAPI_FAIL, NETWORK_DEGRADED, UE1_KILL, DISRUPTION_DB, DB_CORRUPT,
+                       CACHE_STALE]
+            ||
+            INFRA_DISRUPTOR [NETWORK_DEGRADED, STORAGE_FULL, STORAGE_MEDIA]
+        end par
+    end par
+end process
+
+end module

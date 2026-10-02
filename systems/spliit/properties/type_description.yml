@@ -1,0 +1,137 @@
+# type_description.yml -- Sampler contract and oracle data for Spliit's
+# abstract types. One top-level key per LNT type, no enclosing `types:` key.
+#
+# ORACLE HOOK. A type read back at a checkpoint declares `capture_at:` (the
+# gate whose label carries it), `role:` (how an observation is read into it:
+# band | enum | names) and `observed_from:` (the el_* the value comes from).
+# The framework's observation_oracle classifies the type from the walk's
+# OBSERVE steps and compares it with the label's offer; a disagreement is a
+# FAIL with the screen captured. A type without `role:` is not read back.
+# `abstract_values` are the RENDERED strings, what the app shows and what
+# the tester types, never internal units.
+
+ExpenseId:
+  base: Enum
+  values: [exp_a, exp_b, exp_c]
+  origin: tester_generated
+  capture_at: DETAIL
+  role: enum
+  observed_from: el_edit_title
+  description: >
+    The three expenses the tester creates, distinguished by title. Titles are
+    distinct and none is a substring of another, so a row is found by title.
+    Also the DETAIL checkpoint's own oracle: the edit page opened must show
+    the title of the row the tester meant to open, not some other row.
+  abstract_values:
+    exp_a: "Groceries A"
+    exp_b: "Bus pass B"
+    exp_c: "Dinner C"
+
+Payer:
+  base: Enum
+  values: [john, jane, jack]
+  origin: tester_generated
+  description: The participants Spliit pre-fills when a group is created.
+  abstract_values:
+    john: "John"
+    jane: "Jane"
+    jack: "Jack"
+
+Validity:
+  base: Enum
+  values: [VALID, INVALID, OVERLIMIT]
+  origin: tester_generated
+  description: >
+    INVALID = amount 0 (zod, in the browser: "The amount must not be zero.").
+    OVERLIMIT = 20,000,000, accepted by the browser and refused by the server
+    (major vs minor units, observed_behaviour.md §6). Confirmed live.
+
+Recurrence:
+  base: Enum
+  values: [ONCE, WEEKLY]
+  origin: tester_generated
+  description: >
+    WEEKLY dated eight days back materialises exactly one copy on the next
+    read (confirmed live: three rows for two writes).
+
+RecordId:
+  base: Enum
+  values: [row_a, row_b, row_c]
+  origin: tester_generated
+  description: A persisted row, one per expense (item_of in the types).
+
+# Amounts as typed and as displayed (major units); Spliit stores minor units
+# (4000). Every expense is worth ONE band rung, so all three are equal: the
+# band counts rows, and a 25.00 row would make two rows read as one rung
+# (see concrete_domain.yml). Rows are told apart by title, never by amount.
+Amount:
+  base: Integer
+  origin: system_generated
+  constraints:
+    - ['>=', 0]
+    - ['<=', 10000000]
+  description: The expense amount as the form takes it and Stats shows it.
+  abstract_values:
+    exp_a: "40.00"
+    exp_b: "40.00"
+    exp_c: "40.00"
+
+SpendBand:
+  base: Enum
+  values: [S0, S1, S2, S3, S_MORE]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: band
+  observed_from: el_total_spending
+  description: >
+    "Total group spendings" on the Stats tab, in rungs of one expense:
+    rung = round(observed / 40.00), saturating at S_MORE; any positive
+    total is at least S1. Exact because every expense the tester writes is
+    40.00 (Amount above), so a WEEKLY write plus its materialised copy is
+    two rungs, as the model states. Reimbursements do not count.
+  bucket_unit_from:
+    type:  Amount
+    value: exp_c
+  abstract_values:                 # representatives, for reports only
+    S0:     "$0.00"
+    S1:     "$40.00"
+    S2:     "$80.00"
+    S3:     "$120.00"
+    S_MORE: "$160.00"
+
+LogState:
+  base: Enum
+  values: [LOGGED, UNLOGGED, DELETED]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: names
+  observed_from: el_activity_latest
+  description: >
+    Read from the activity list's text (entries "Expense “title” created
+    by …" or "… deleted by …", or the empty-state sentence). DELETED iff
+    the list names the title AND the phrase "deleted by" together (the
+    createdEntry and the deletedEntry both render the title, so the title
+    alone cannot tell them apart -- CONFIRM LIVE: title-only matched both,
+    see and_phrase below). Else LOGGED iff it names the title, else
+    UNLOGGED -- also when no entry exists. Each case runs in a fresh
+    group, so the list holds only that case's writes.
+    Spliit logs BEFORE inserting, so after DB_ABORT the entry exists
+    although the expense does not; that is the O5 counter-example.
+  names:
+    type: ExpenseId
+    when_named: LOGGED
+    when_not:   UNLOGGED
+    and_phrase:
+      DELETED: "deleted by"
+
+WriteStatus:
+  base: Enum
+  values: [COMMITTED, ROLLED_BACK, REJECTED]
+  origin: system_generated
+  capture_at: CONFIRM
+  # no role: Spliit shows no status as such. It manifests in the band
+  # (COMMITTED moves it, the others leave it) and in whether a report was
+  # shown, and those are checked where they are observed.
+  description: >
+    Not shown by Spliit as such; carried for the model's bookkeeping and
+    checked through SpendBand and the *_SHOWN gates.

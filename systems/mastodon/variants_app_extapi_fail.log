@@ -1,0 +1,4 @@
+# mastodon tc variants -- purpose: app_extapi_fail -- 2026-09-30 15:31 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	32	32	5	PASS	injected=1 restored=1 
+2	20	20	3	PASS	injected=1 restored=1 

@@ -1,0 +1,516 @@
+-- system_interface_medtimer.lnt -- I : D_abs -> D_sys for MedTimer, campaign two.
+--
+-- Every selector comes from a live hierarchy dump (notes/ui/). The prelude
+-- creates medicine A "Vitamin C" (3 pills; doses 11:57, 11:58, 11:59 PM) and
+-- medicine B "Zinc" (2 pills; dose 11:56 PM), one pill per dose, and ends on
+-- the medicine list. A dose row is located by its reminder time, so deleting
+-- one does not shift the others.
+--
+-- Parser contract: line comments only; concrete steps first, gate last;
+-- `screen` with SCR_* values, initial SCR_HOME; guards exactly
+-- `if screen == SCR_X then`. Fault gates stand BEFORE the concrete step they
+-- share with the nominal arm (the commit tap). Every read-back is fresh: the
+-- row is read on the overview and the stock on the medicine list after a tab
+-- switch; only APP_CACHE_STALE reads the list BEFORE the write as well.
+--
+-- The SI mirrors the specification's state (each dose's row state from what
+-- CONFIRM reads back, the last written dose, the forbidden medicines, and
+-- whether the list was just primed) so that no journey's concrete steps are
+-- walked where the specification would then refuse its gate.
+
+module system_interface_medtimer (medtimer_types, medtimer_fixture)
+with ==, !=
+is
+
+type Screen is
+    SCR_HOME,       -- the overview
+    SCR_MEDICINES   -- the medicine list
+with ==
+end type
+
+
+function forbidden (m : MedicineId, nsa, nsb : Bool) : Bool is
+    case m in med_a -> return nsa | med_b -> return nsb end case
+end function
+
+process SI [
+    navigate  : Ch_Route,
+    tap       : Ch_Value,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_STOCK    : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+var
+    screen : Screen,
+    d      : DoseId,
+    m      : MedicineId,
+    act    : DoseAction,
+    st     : WriteStatus,
+    ds     : DoseState,
+    dy     : Day,
+    last   : DoseId,
+    nsa, nsb, primed : Bool
+in
+    d := d_a1; m := med_a; act := TAKE; st := COMMITTED; ds := PENDING;
+    dy := day (PENDING, PENDING, PENDING, PENDING);
+    last := d_a1; nsa := false; nsb := false; primed := false;
+    screen := SCR_HOME;
+
+    -- prelude: the two medicines and their four doses, ending on the list
+    tap (cv_tab_medicines);
+    wait_for (el_medicines);
+    tap (cv_add_medicine);
+    wait_for (el_add_dialog);
+    type_into (sel_name_field, cv_name_a);
+    tap (cv_ok);
+    wait_for (el_edit_medicine);
+    tap (cv_stock_settings);
+    wait_for (el_stock_settings);
+    tap (cv_stock_unit);
+    type_into (sel_unit_field, cv_unit_value);
+    tap (cv_ok);
+    tap (cv_stock_amount);
+    type_into (sel_amount_field, cv_stock_a);
+    tap (cv_ok);
+    wait_for (el_stock_set_a);
+    tap (cv_back);
+    wait_for (el_edit_medicine);
+    tap (cv_add_reminder);
+    tap (cv_type_time_based);
+    wait_for (el_reminder_dialog);
+    tap (cv_dose_field);
+    type_into (sel_dose_field, cv_dose);
+    tap (cv_time_field);
+    type_into (sel_time_field, cv_time_a1);
+    tap (cv_create_reminder);
+    wait_for (el_rem_a1);
+    tap (cv_add_reminder);
+    tap (cv_type_time_based);
+    wait_for (el_reminder_dialog);
+    tap (cv_dose_field);
+    type_into (sel_dose_field, cv_dose);
+    tap (cv_time_field);
+    type_into (sel_time_field, cv_time_a2);
+    tap (cv_create_reminder);
+    wait_for (el_rem_a2);
+    tap (cv_add_reminder);
+    tap (cv_type_time_based);
+    wait_for (el_reminder_dialog);
+    tap (cv_dose_field);
+    type_into (sel_dose_field, cv_dose);
+    tap (cv_time_field);
+    type_into (sel_time_field, cv_time_a3);
+    tap (cv_create_reminder);
+    wait_for (el_rem_a3);
+    tap (cv_back);
+    wait_for (el_medicines);
+    tap (cv_add_medicine);
+    wait_for (el_add_dialog);
+    type_into (sel_name_field, cv_name_b);
+    tap (cv_ok);
+    wait_for (el_edit_medicine);
+    tap (cv_stock_settings);
+    wait_for (el_stock_settings);
+    tap (cv_stock_unit);
+    type_into (sel_unit_field, cv_unit_value);
+    tap (cv_ok);
+    tap (cv_stock_amount);
+    type_into (sel_amount_field, cv_stock_b);
+    tap (cv_ok);
+    wait_for (el_stock_set_b);
+    tap (cv_back);
+    wait_for (el_edit_medicine);
+    tap (cv_add_reminder);
+    tap (cv_type_time_based);
+    wait_for (el_reminder_dialog);
+    tap (cv_dose_field);
+    type_into (sel_dose_field, cv_dose);
+    tap (cv_time_field);
+    type_into (sel_time_field, cv_time_b);
+    tap (cv_create_reminder);
+    wait_for (el_rem_b);
+    tap (cv_back);
+    wait_for (el_medicines);
+    screen := SCR_MEDICINES;
+
+    loop
+      alt
+        -- =================================================================
+        -- 1. CREATE a medicine with a valid name: it is shown.
+        -- =================================================================
+        if primed then stop end if;
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        tap (cv_add_medicine);
+        wait_for (el_add_dialog);
+        type_into (sel_name_field, cv_name_valid);
+        tap (cv_ok);
+        ADD_MEDICINE (VALID);
+        wait_for (el_edit_medicine);
+        observe (el_medicine_shown);
+        MEDICINE_SHOWN;
+        tap (cv_back);
+        wait_for (el_medicines);
+        screen := SCR_MEDICINES
+
+      []
+        -- =================================================================
+        -- 2. CREATE with the EMPTY name: a refusal is owed (O9).
+        -- =================================================================
+        if primed then stop end if;
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        tap (cv_add_medicine);
+        wait_for (el_add_dialog);
+        type_into (sel_name_field, cv_name_invalid);
+        tap (cv_ok);
+        ADD_MEDICINE (INVALID);
+        observe (el_name_error);
+        REJECT_SHOWN;
+        tap (cv_back);
+        wait_for (el_medicines);
+        screen := SCR_MEDICINES
+
+      []
+        -- =================================================================
+        -- 3. FORBID skipping a medicine (its settings switch).
+        -- =================================================================
+        if primed then stop end if;
+        m := any MedicineId where not (forbidden (m, nsa, nsb));
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        tap (L_card_tap (m));
+        wait_for (el_edit_medicine);
+        tap (cv_med_settings);
+        wait_for (el_med_settings);
+        tap (cv_cannot_skip);
+        wait_for (el_no_skip_on);
+        NO_SKIP (m);
+        tap (cv_back);
+        wait_for (el_edit_medicine);
+        tap (cv_back);
+        wait_for (el_medicines);
+        screen := SCR_MEDICINES;
+        if m == med_a then nsa := true else nsb := true end if
+
+      []
+        -- =================================================================
+        -- 4. MARK a scheduled dose Taken or Skipped from its row's popup.
+        -- =================================================================
+        d := any DoseId where get_state (dy, d) == PENDING;
+        act := any DoseAction;
+        if screen == SCR_MEDICINES then
+            tap (cv_tab_overview);
+            wait_for (el_overview);
+            screen := SCR_HOME
+        end if;
+        wait_for (L_row (d));
+        tap (L_state_tap (d));
+        ACT (d, act);
+        alt
+            -- commit
+            tap (L_action (act));
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            APP_WRITE_FAIL;
+            tap (L_action (act));
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            DB_ABORT;
+            tap (L_action (act));
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            INFRA_STORAGE_FULL;
+            tap (L_action (act));
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- killed right after the tap; the relaunch is the kill
+            UE_KILL;
+            tap (L_action (act));
+            navigate (rt_home);
+            screen := SCR_HOME;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        end alt;
+        dy := put_state (dy, d, ds);
+        if st == COMMITTED then last := d end if;
+        primed := false
+
+      []
+        -- =================================================================
+        -- 5. DELETE a dose's record (popup Delete, then Yes). The row is
+        --    gone after a commit, so only the stock is read back.
+        -- =================================================================
+        d := any DoseId where (get_state (dy, d) == TAKEN) or (get_state (dy, d) == SKIPPED);
+        if screen == SCR_MEDICINES then
+            tap (cv_tab_overview);
+            wait_for (el_overview);
+            screen := SCR_HOME
+        end if;
+        wait_for (L_row (d));
+        tap (L_state_tap (d));
+        tap (cv_delete);
+        wait_for (el_delete_dialog);
+        DELETE (d);
+        alt
+            -- commit
+            tap (cv_confirm_delete);
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            APP_WRITE_FAIL;
+            tap (cv_confirm_delete);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            INFRA_STORAGE_FULL;
+            tap (cv_confirm_delete);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- killed right after the tap; the relaunch is the kill
+            UE_KILL;
+            tap (cv_confirm_delete);
+            navigate (rt_home);
+            screen := SCR_HOME;
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        end alt;
+        dy := put_state (dy, d, ds);
+        if st == COMMITTED then last := d end if;
+        primed := false
+
+      []
+        -- =================================================================
+        -- 6. EDIT a dose's record in the edit sheet (Taken / Skipped
+        --    toggle); the sheet writes when it is dismissed (BACK).
+        -- =================================================================
+        d := any DoseId where (get_state (dy, d) == TAKEN) or (get_state (dy, d) == SKIPPED);
+        act := any DoseAction;
+        if screen == SCR_MEDICINES then
+            tap (cv_tab_overview);
+            wait_for (el_overview);
+            screen := SCR_HOME
+        end if;
+        wait_for (L_row (d));
+        tap (L_row_tap (d));
+        wait_for (el_edit_sheet);
+        tap (L_toggle (act));
+        EDIT (d, act);
+        alt
+            -- commit
+            tap (cv_back);
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            APP_WRITE_FAIL;
+            tap (cv_back);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- the write fails: the app must say so (O4); the gate stands
+            -- BEFORE the commit tap, and the app is left to attempt it
+            INFRA_STORAGE_FULL;
+            tap (cv_back);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        []
+            -- killed right after the tap; the relaunch is the kill
+            UE_KILL;
+            tap (cv_back);
+            navigate (rt_home);
+            screen := SCR_HOME;
+            wait_for (L_row (d));
+            observe (L_state (d));
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (?st, ?any StockBand, ?ds, d)
+        end alt;
+        dy := put_state (dy, d, ds);
+        if st == COMMITTED then last := d end if;
+        primed := false
+
+      []
+        -- =================================================================
+        -- 7. PRIME the medicine list just before a write (APP_CACHE_STALE):
+        --    the next write's read-back must still be the committed stock.
+        -- =================================================================
+        if primed then stop end if;
+        if not (writable (dy)) then stop end if;
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        observe (el_card_a);
+        observe (el_card_b);
+        APP_CACHE_STALE;
+        primed := true
+
+      []
+        -- =================================================================
+        -- 8. RE-READ a dose after a relaunch: its row (unless deleted) and
+        --    its medicine's stock, or the honest error a corrupt or
+        --    unreadable store owes (O6, O7).
+        -- =================================================================
+        if primed then stop end if;
+        d := any DoseId;
+        navigate (rt_home);
+        screen := SCR_HOME;
+        VIEW (d);
+        alt
+            if get_state (dy, d) != ABSENT then
+                wait_for (L_row (d));
+                observe (L_state (d))
+            end if;
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (L_card (med_of (d)));
+            screen := SCR_MEDICINES;
+            CONFIRM (COMMITTED, ?any StockBand, ?ds, d)
+        []
+            DB_CORRUPT;
+            navigate (rt_home);
+            observe (el_corrupt_error);
+            DB_CORRUPT_DETECTED
+        []
+            DB_CORRUPT_STOCK;
+            navigate (rt_home);
+            observe (el_corrupt_error);
+            DB_CORRUPT_DETECTED
+        []
+            INFRA_STORAGE_MEDIA;
+            navigate (rt_home);
+            observe (el_storage_error);
+            INFRA_STORAGE_ERROR
+        end alt
+
+      []
+        -- =================================================================
+        -- 9. The last written record is lost underneath the app (SQL); the
+        --    dose is due again.
+        -- =================================================================
+        if primed then stop end if;
+        if not ((get_state (dy, last) == TAKEN) or (get_state (dy, last) == SKIPPED)) then stop end if;
+        DB_EVENT_LOSS;
+        dy := put_state (dy, last, PENDING)
+      end alt
+    end loop
+end var
+end process
+
+end module

@@ -1,0 +1,342 @@
+digraph CTG {
+  rankdir=TB;
+  graph [splines=true, outputorder=edgesfirst];
+  graph [nodesep=0.12, ranksep=0.22, margin=0, pad=0.02];
+  node [shape=circle, width=0.28, height=0.28, fixedsize=true, fontsize=7, penwidth=0.8];
+  edge [fontsize=6, arrowsize=0.5, penwidth=0.8];
+  0 [color=red, fontcolor=red, pos="0,0!"];
+  1 [color=red, fontcolor=red, pos="76,0!"];
+  2 [color=red, fontcolor=red, pos="152,0!"];
+  3 [color=red, fontcolor=red, pos="228,0!"];
+  4 [color=red, fontcolor=red, pos="304,0!"];
+  5 [color=red, fontcolor=red, pos="380,0!"];
+  6 [color=red, fontcolor=red, pos="456,0!"];
+  7 [color=red, fontcolor=red, pos="532,0!"];
+  8 [color=red, fontcolor=red, pos="608,0!"];
+  9 [color=black, fontcolor=black, pos="76,-60!"];
+  10 [color=red, fontcolor=red, pos="608,-180!"];
+  11 [color=black, fontcolor=black, pos="152,-60!"];
+  12 [color=red, fontcolor=red, pos="532,-180!"];
+  13 [color=black, fontcolor=black, pos="228,-60!"];
+  14 [color=red, fontcolor=red, pos="456,-180!"];
+  15 [color=black, fontcolor=black, pos="304,-60!"];
+  16 [color=red, fontcolor=red, pos="380,-180!"];
+  17 [color=black, fontcolor=black, pos="380,-60!"];
+  18 [color=red, fontcolor=red, pos="304,-180!"];
+  19 [color=black, fontcolor=black, pos="456,-60!"];
+  20 [color=red, fontcolor=red, pos="228,-180!"];
+  21 [color=black, fontcolor=black, pos="532,-60!"];
+  22 [color=red, fontcolor=red, pos="152,-180!"];
+  23 [color=black, fontcolor=black, pos="532,-120!"];
+  24 [color=red, fontcolor=red, pos="76,-180!"];
+  25 [color=black, fontcolor=black, pos="456,-120!"];
+  26 [color=red, fontcolor=red, pos="0,-180!"];
+  27 [color=black, fontcolor=black, pos="380,-120!"];
+  28 [color=red, fontcolor=red, pos="0,-240!"];
+  29 [color=black, fontcolor=black, pos="304,-120!"];
+  30 [color=red, fontcolor=red, pos="76,-240!"];
+  31 [color=black, fontcolor=black, pos="228,-120!"];
+  32 [color=red, fontcolor=red, pos="152,-240!"];
+  33 [color=red, fontcolor=red, pos="608,-540!"];
+  34 [color=red, fontcolor=red, pos="76,-300!"];
+  35 [color=black, fontcolor=black, pos="228,-240!"];
+  36 [color=red, fontcolor=red, pos="152,-300!"];
+  37 [color=black, fontcolor=black, pos="304,-240!"];
+  38 [color=red, fontcolor=red, pos="228,-300!"];
+  39 [color=black, fontcolor=black, pos="380,-240!"];
+  40 [color=red, fontcolor=red, pos="304,-300!"];
+  41 [color=black, fontcolor=black, pos="456,-240!"];
+  42 [color=red, fontcolor=red, pos="380,-300!"];
+  43 [color=black, fontcolor=black, pos="532,-240!"];
+  44 [color=red, fontcolor=red, pos="456,-300!"];
+  45 [color=black, fontcolor=black, pos="608,-240!"];
+  46 [color=red, fontcolor=red, pos="532,-300!"];
+  47 [color=black, fontcolor=black, pos="608,-420!"];
+  48 [color=red, fontcolor=red, pos="532,-360!"];
+  49 [color=black, fontcolor=black, pos="532,-420!"];
+  50 [color=red, fontcolor=red, pos="456,-360!"];
+  51 [color=black, fontcolor=black, pos="456,-420!"];
+  52 [color=red, fontcolor=red, pos="380,-360!"];
+  53 [color=black, fontcolor=black, pos="380,-420!"];
+  54 [color=red, fontcolor=red, pos="304,-360!"];
+  55 [color=black, fontcolor=black, pos="304,-420!"];
+  56 [color=red, fontcolor=red, pos="228,-360!"];
+  57 [color=black, fontcolor=black, pos="228,-420!"];
+  58 [color=black, fontcolor=black, pos="152,-420!"];
+  59 [color=black, fontcolor=black, pos="76,-420!"];
+  60 [color=black, fontcolor=black, pos="0,-420!"];
+  61 [color=black, fontcolor=black, pos="0,-480!"];
+  62 [color=black, fontcolor=black, pos="76,-480!"];
+  63 [color=black, fontcolor=black, pos="152,-480!"];
+  64 [color=black, fontcolor=black, pos="228,-480!"];
+  65 [color=black, fontcolor=black, pos="304,-480!"];
+  66 [color=black, fontcolor=black, pos="380,-480!"];
+  67 [color=black, fontcolor=black, pos="456,-480!"];
+  68 [color=black, fontcolor=black, pos="532,-480!"];
+  69 [color=black, fontcolor=black, pos="608,-480!"];
+  0 -> 0 [label="δ", color=black, fontcolor=black];
+  L1 [shape=plaintext, label="NAVIGATE
+!RT_LOGIN", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="38,9!"];
+  0 -> 1 [color=red];
+  L2 [shape=plaintext, label="WAIT_FOR
+!EL_LOGIN_FORM", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="114,9!"];
+  1 -> 2 [color=red];
+  2 -> 2 [label="δ", color=black, fontcolor=black];
+  L4 [shape=plaintext, label="TYPE_INTO
+!SEL_EMAIL
+!CV_EMAIL", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="190,12!"];
+  2 -> 3 [color=red];
+  3 -> 3 [label="δ", color=black, fontcolor=black];
+  L6 [shape=plaintext, label="TYPE_INTO
+!SEL_PASSWORD
+!CV_PASSWORD", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="266,12!"];
+  3 -> 4 [color=red];
+  4 -> 4 [label="δ", color=black, fontcolor=black];
+  L8 [shape=plaintext, label="CLICK
+!SEL_LOGIN_SUBMIT", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="342,9!"];
+  4 -> 5 [color=red];
+  L9 [shape=plaintext, label="WAIT_FOR
+!EL_HOME_LOADED", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="418,9!"];
+  5 -> 6 [color=red];
+  6 -> 6 [label="δ", color=black, fontcolor=black];
+  L11 [shape=plaintext, label="TYPE_INTO
+!SEL_COMPOSE_TEXT
+!CV_TEXT_A", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="494,12!"];
+  6 -> 7 [color=red];
+  7 -> 7 [label="δ", color=black, fontcolor=black];
+  L13 [shape=plaintext, label="ADD
+!POST_A
+!PUBLIC
+!VALID", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="570,16!"];
+  7 -> 8 [color=red];
+  8 -> 8 [label="δ", color=black, fontcolor=black];
+  L15 [shape=plaintext, label="APP_WRITE_FAIL", fontsize=5.5, fontcolor=blue, fixedsize=false, width=0, height=0, margin=0, pos="541,-10!"];
+  8 -> 9 [color=blue];
+  L16 [shape=plaintext, label="CLICK
+!SEL_POST_BUTTON", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="636,-40!"];
+  8 -> 10 [color=red];
+  9 -> 9 [label="δ", color=black, fontcolor=black];
+  L18 [shape=plaintext, label="CLICK
+!SEL_POST_BUTTON", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="114,-51!"];
+  9 -> 11 [color=black];
+  L19 [shape=plaintext, label="WAIT_FOR
+!EL_PUBLISHED", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="570,-171!"];
+  10 -> 12 [color=red];
+  L20 [shape=plaintext, label="WAIT_FOR
+!EL_WRITE_ERROR", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="190,-51!"];
+  11 -> 13 [color=black];
+  12 -> 12 [label="δ", color=black, fontcolor=black];
+  L22 [shape=plaintext, label="NAVIGATE
+!RT_PROFILE", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="494,-171!"];
+  12 -> 14 [color=red];
+  L23 [shape=plaintext, label="OBSERVE
+!EL_WRITE_ERROR", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="266,-51!"];
+  13 -> 15 [color=black];
+  L24 [shape=plaintext, label="WAIT_FOR
+!EL_PROFILE_LOADED", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="418,-171!"];
+  14 -> 16 [color=red];
+  L25 [shape=plaintext, label="WRITE_ERROR_SHOWN", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="342,-54!"];
+  15 -> 17 [color=black];
+  L26 [shape=plaintext, label="OBSERVE
+!EL_POST_COUNT", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="342,-171!"];
+  16 -> 18 [color=red];
+  17 -> 17 [label="δ", color=black, fontcolor=black];
+  L28 [shape=plaintext, label="NAVIGATE
+!RT_PROFILE", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="418,-51!"];
+  17 -> 19 [color=black];
+  L29 [shape=plaintext, label="OBSERVE
+!EL_PROFILE_POSTS", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="266,-171!"];
+  18 -> 20 [color=red];
+  L30 [shape=plaintext, label="WAIT_FOR
+!EL_PROFILE_LOADED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="494,-51!"];
+  19 -> 21 [color=black];
+  20 -> 20 [label="δ", color=black, fontcolor=black];
+  L32 [shape=plaintext, label="NAVIGATE
+!RT_HOME", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="190,-171!"];
+  20 -> 22 [color=red];
+  L33 [shape=plaintext, label="OBSERVE
+!EL_POST_COUNT", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="557,-90!"];
+  21 -> 23 [color=black];
+  L34 [shape=plaintext, label="WAIT_FOR
+!EL_HOME_LOADED", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="114,-171!"];
+  22 -> 24 [color=red];
+  L35 [shape=plaintext, label="OBSERVE
+!EL_PROFILE_POSTS", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="494,-111!"];
+  23 -> 25 [color=black];
+  L36 [shape=plaintext, label="OBSERVE
+!EL_HOME_COLUMN", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="38,-171!"];
+  24 -> 26 [color=red];
+  25 -> 25 [label="δ", color=black, fontcolor=black];
+  L38 [shape=plaintext, label="NAVIGATE
+!RT_HOME", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="418,-111!"];
+  25 -> 27 [color=black];
+  L39 [shape=plaintext, label="CONFIRM
+!COMMITTED
+!N1
+!IN_HOME
+!ON_PROFILE
+!POST_A", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="-21,-210!"];
+  26 -> 28 [color=red];
+  L40 [shape=plaintext, label="WAIT_FOR
+!EL_HOME_LOADED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="342,-111!"];
+  27 -> 29 [color=black];
+  28 -> 28 [label="δ", color=black, fontcolor=black];
+  L42 [shape=plaintext, label="TYPE_INTO
+!SEL_COMPOSE_TEXT
+!CV_TEXT_B", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="38,-228!"];
+  28 -> 30 [color=red];
+  L43 [shape=plaintext, label="OBSERVE
+!EL_HOME_COLUMN", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="266,-111!"];
+  29 -> 31 [color=black];
+  30 -> 30 [label="δ", color=black, fontcolor=black];
+  L45 [shape=plaintext, label="ADD
+!POST_B
+!PUBLIC
+!VALID", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="114,-224!"];
+  30 -> 32 [color=red];
+  L46 [shape=plaintext, label="CONFIRM
+!ROLLED_BACK
+!N0
+!NOT_IN_HOME
+!OFF_PROFILE
+!POST_A", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="194,-120!"];
+  31 -> 33 [color=black];
+  32 -> 32 [label="δ", color=black, fontcolor=black];
+  L48 [shape=plaintext, label="APP_WRITE_FAIL", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="93,-270!"];
+  32 -> 34 [color=red];
+  L49 [shape=plaintext, label="CLICK
+!SEL_POST_BUTTON", fontsize=5.5, fontcolor=blue, fixedsize=false, width=0, height=0, margin=0, pos="190,-231!"];
+  32 -> 35 [color=blue];
+  33 -> 33 [label=":PASS:", color=red, fontcolor=red];
+  34 -> 34 [label="δ", color=black, fontcolor=black];
+  L52 [shape=plaintext, label="CLICK
+!SEL_POST_BUTTON", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="114,-291!"];
+  34 -> 36 [color=red];
+  L53 [shape=plaintext, label="WAIT_FOR
+!EL_PUBLISHED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="266,-231!"];
+  35 -> 37 [color=black];
+  L54 [shape=plaintext, label="WAIT_FOR
+!EL_WRITE_ERROR", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="190,-291!"];
+  36 -> 38 [color=red];
+  37 -> 37 [label="δ", color=black, fontcolor=black];
+  L56 [shape=plaintext, label="NAVIGATE
+!RT_PROFILE", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="342,-231!"];
+  37 -> 39 [color=black];
+  L57 [shape=plaintext, label="OBSERVE
+!EL_WRITE_ERROR", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="266,-291!"];
+  38 -> 40 [color=red];
+  L58 [shape=plaintext, label="WAIT_FOR
+!EL_PROFILE_LOADED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="418,-231!"];
+  39 -> 41 [color=black];
+  L59 [shape=plaintext, label="WRITE_ERROR_SHOWN", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="342,-294!"];
+  40 -> 42 [color=red];
+  L60 [shape=plaintext, label="OBSERVE
+!EL_POST_COUNT", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="494,-231!"];
+  41 -> 43 [color=black];
+  42 -> 42 [label="δ", color=black, fontcolor=black];
+  L62 [shape=plaintext, label="NAVIGATE
+!RT_PROFILE", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="418,-291!"];
+  42 -> 44 [color=red];
+  L63 [shape=plaintext, label="OBSERVE
+!EL_PROFILE_POSTS", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="570,-231!"];
+  43 -> 45 [color=black];
+  L64 [shape=plaintext, label="WAIT_FOR
+!EL_PROFILE_LOADED", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="494,-291!"];
+  44 -> 46 [color=red];
+  45 -> 45 [label="δ", color=black, fontcolor=black];
+  L66 [shape=plaintext, label="NAVIGATE
+!RT_HOME", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="624,-280!"];
+  45 -> 47 [color=black];
+  L67 [shape=plaintext, label="OBSERVE
+!EL_POST_COUNT", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="557,-330!"];
+  46 -> 48 [color=red];
+  L68 [shape=plaintext, label="WAIT_FOR
+!EL_HOME_LOADED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="570,-411!"];
+  47 -> 49 [color=black];
+  L69 [shape=plaintext, label="OBSERVE
+!EL_PROFILE_POSTS", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="494,-351!"];
+  48 -> 50 [color=red];
+  L70 [shape=plaintext, label="OBSERVE
+!EL_HOME_COLUMN", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="494,-411!"];
+  49 -> 51 [color=black];
+  50 -> 50 [label="δ", color=black, fontcolor=black];
+  L72 [shape=plaintext, label="NAVIGATE
+!RT_HOME", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="418,-351!"];
+  50 -> 52 [color=red];
+  L73 [shape=plaintext, label="CONFIRM
+!COMMITTED
+!N2
+!IN_HOME
+!ON_PROFILE
+!POST_B", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="418,-398!"];
+  51 -> 53 [color=black];
+  L74 [shape=plaintext, label="WAIT_FOR
+!EL_HOME_LOADED", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="342,-351!"];
+  52 -> 54 [color=red];
+  53 -> 53 [label="δ", color=black, fontcolor=black];
+  L76 [shape=plaintext, label="TYPE_INTO
+!SEL_COMPOSE_TEXT
+!CV_TEXT_C", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="342,-408!"];
+  53 -> 55 [color=black];
+  L77 [shape=plaintext, label="OBSERVE
+!EL_HOME_COLUMN", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="266,-351!"];
+  54 -> 56 [color=red];
+  55 -> 55 [label="δ", color=black, fontcolor=black];
+  L79 [shape=plaintext, label="ADD
+!POST_C
+!PUBLIC
+!VALID", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="266,-404!"];
+  55 -> 57 [color=black];
+  L80 [shape=plaintext, label="CONFIRM
+!ROLLED_BACK
+!N1
+!NOT_IN_HOME
+!OFF_PROFILE
+!POST_B", fontsize=5.5, fontcolor=red, fixedsize=false, width=0, height=0, margin=0, pos="194,-360!"];
+  56 -> 33 [color=red];
+  57 -> 57 [label="δ", color=black, fontcolor=black];
+  L82 [shape=plaintext, label="APP_WRITE_FAIL", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="190,-414!"];
+  57 -> 58 [color=black];
+  58 -> 58 [label="δ", color=black, fontcolor=black];
+  L84 [shape=plaintext, label="CLICK
+!SEL_POST_BUTTON", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="114,-411!"];
+  58 -> 59 [color=black];
+  L85 [shape=plaintext, label="WAIT_FOR
+!EL_WRITE_ERROR", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="38,-411!"];
+  59 -> 60 [color=black];
+  L86 [shape=plaintext, label="OBSERVE
+!EL_WRITE_ERROR", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="-27,-450!"];
+  60 -> 61 [color=black];
+  L87 [shape=plaintext, label="WRITE_ERROR_SHOWN", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="38,-474!"];
+  61 -> 62 [color=black];
+  62 -> 62 [label="δ", color=black, fontcolor=black];
+  L89 [shape=plaintext, label="NAVIGATE
+!RT_PROFILE", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="114,-471!"];
+  62 -> 63 [color=black];
+  L90 [shape=plaintext, label="WAIT_FOR
+!EL_PROFILE_LOADED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="190,-471!"];
+  63 -> 64 [color=black];
+  L91 [shape=plaintext, label="OBSERVE
+!EL_POST_COUNT", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="266,-471!"];
+  64 -> 65 [color=black];
+  L92 [shape=plaintext, label="OBSERVE
+!EL_PROFILE_POSTS", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="342,-471!"];
+  65 -> 66 [color=black];
+  66 -> 66 [label="δ", color=black, fontcolor=black];
+  L94 [shape=plaintext, label="NAVIGATE
+!RT_HOME", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="418,-471!"];
+  66 -> 67 [color=black];
+  L95 [shape=plaintext, label="WAIT_FOR
+!EL_HOME_LOADED", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="494,-471!"];
+  67 -> 68 [color=black];
+  L96 [shape=plaintext, label="OBSERVE
+!EL_HOME_COLUMN", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="570,-471!"];
+  68 -> 69 [color=black];
+  L97 [shape=plaintext, label="CONFIRM
+!ROLLED_BACK
+!N2
+!NOT_IN_HOME
+!OFF_PROFILE
+!POST_C", fontsize=5.5, fontcolor=black, fixedsize=false, width=0, height=0, margin=0, pos="630,-510!"];
+  69 -> 33 [color=black];
+}

@@ -1,0 +1,47 @@
+module tp_happy (foodyou_types) is
+
+process MAIN [
+    SEARCH_FOOD      : SearchChannel,
+    FOOD_INFO        : FoodInfoChannel,
+    ADD_ENTRY        : AddEntryChannel,
+    CONFIRM_TOTAL    : TotalChannel,
+    VIEW_DIARY       : ViewDiaryChannel,
+    DIARY_INFO       : DiaryInfoChannel,
+    REMOVE_ENTRY     : RemoveEntryChannel,
+    EXTAPI_FAIL      : none,
+    NETWORK_DEGRADED : none,
+    UE1_KILL         : none,
+    DISRUPTION_DB    : none,
+    DB_CORRUPT       : none,
+    STORAGE_FULL     : none,
+    STORAGE_MEDIA    : none,
+    CACHE_STALE      : none,
+    TP_ACCEPT        : none,
+    TP_REFUSE        : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD   (IDF, LOCAL);
+            FOOD_INFO     (IDF, ?any Calorie);
+            ADD_ENTRY     (BREAKFAST, IDF, VALID);
+            CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF);
+            loop TP_ACCEPT end loop
+        by
+            alt
+                EXTAPI_FAIL
+            []  NETWORK_DEGRADED
+            []  UE1_KILL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  STORAGE_MEDIA
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

@@ -1,0 +1,8 @@
+(* The fault is always surfaced. Expected: TRUE.
+
+   Every path on which APP_PARTIAL_SUBMISSION occurs must be able to reach
+   WRITE_ERROR_SHOWN. A specification that let the system fail silently would
+   make silence CONFORMANT under ioco, which is the opposite of the intended
+   reading -- and is why divergence appears nowhere in this model.
+*)
+< true* . "APP_PARTIAL_SUBMISSION" > < true* . "WRITE_ERROR_SHOWN" > true

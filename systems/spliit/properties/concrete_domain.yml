@@ -1,0 +1,130 @@
+# concrete_domain.yml -- I() for system_interface_spliit.lnt.
+# Every selector below was read off a live DOM dump of the running app
+# (notes/dom/*.txt|html, 2026-09-25, group "Probe group 164321"); the ones
+# marked CONFIRM LIVE were not exercised by the probe. Keys are lower-case
+# and equal to the LNT enum values. XPath throughout (leading //).
+#
+# The form has TWO decimal inputs (originalAmount first, hidden until a
+# foreign currency is picked) and TWO type=submit buttons (an empty one in
+# the currency block before "Create"), so fields are addressed by name and
+# buttons by visible text, never by position.
+
+routes:
+  rt_group_create: "/groups/create"
+  rt_groups:       "/groups"
+
+selectors:
+  # create-group page
+  sel_group_name:     "//input[@name='name']"
+  sel_group_create:   "//button[@type='submit'][normalize-space()='Create']"
+  # /groups: the first recent-group card (this browser session created it)
+  sel_recent_group:   "(//a[contains(@href,'/groups/') and not(contains(@href,'/groups/create'))])[1]"
+  # expense list
+  sel_new_expense:    "(//a[contains(@href,'/expenses/create')])[1]"
+  sel_tab_expenses:   "//button[@role='tab'][normalize-space()='Expenses']"
+  sel_tab_stats:      "//button[@role='tab'][normalize-space()='Stats']"
+  sel_tab_activity:   "//button[@role='tab'][normalize-space()='Activity']"
+  # a row, by the title div (clicking it opens the edit page; confirmed)
+  sel_row_a:          "//div[normalize-space()='Groceries A']"
+  sel_row_b:          "//div[normalize-space()='Bus pass B']"
+  sel_row_c:          "//div[normalize-space()='Dinner C']"
+  # create / edit form
+  sel_title:            "//input[@name='title']"
+  sel_amount:           "//input[@name='amount']"
+  sel_date:             "//input[@type='date']"
+  sel_original_amount:  "//input[@name='originalAmount']"          # CONFIRM LIVE: visible once a foreign currency is chosen
+  sel_currency_combo:   "//label[contains(.,'Currency of expense')]/following::button[@role='combobox'][1]"
+  sel_currency_eur:     "//div[@role='option'][normalize-space()='Euro (EUR)']"
+  sel_payer_combo:      "//label[contains(.,'Paid by')]/following::button[@role='combobox'][1]"
+  sel_payer_john:       "//div[@role='option'][normalize-space()='John']"
+  sel_payer_jane:       "//div[@role='option'][normalize-space()='Jane']"
+  sel_payer_jack:       "//div[@role='option'][normalize-space()='Jack']"
+  sel_recurrence_combo: "//label[contains(.,'Expense Recurrence')]/following::button[@role='combobox'][1]"
+  sel_recurrence_weekly: "//div[@role='option'][normalize-space()='Weekly']"
+  sel_create:           "//button[@type='submit'][normalize-space()='Create']"
+  sel_cancel:           "//a[normalize-space()='Cancel']"
+  # edit page
+  sel_delete:           "//button[normalize-space()='Delete']"
+  sel_confirm_delete:   "//div[@role='dialog']//button[normalize-space()='Yes']"
+
+elements:
+  el_group_form:      "//input[@name='name']"
+  el_groups_page:     "//a[contains(@href,'/groups/create')]"
+  el_search_box:      "//input[@placeholder='Search for an expense…']"
+  el_title_input:     "//input[@name='title']"
+  el_create_button:   "//button[@type='submit'][normalize-space()='Create']"
+  el_edit_form:       "//button[@type='submit'][normalize-space()='Save']"
+  el_edit_title:
+    selector: "//input[@name='title']"
+    by: xpath
+    attribute: value                         # CONFIRM LIVE: executor reads this attribute
+  el_delete_dialog:   "//div[@role='dialog'][contains(.,'Delete this expense?')]"
+  el_totals_header:   "//h3[normalize-space()='Totals']"
+  # "<div>Total group spendings</div><div>$62.00</div>" (17_stats_after_weekly.html)
+  el_total_spending:  "//div[normalize-space()='Total group spendings']/following-sibling::div[1]"
+  # "the activity list is loaded": an entry, or the empty-state sentence. The
+  # <h3> alone is on screen while the list still shows skeletons, and an
+  # observe taken then would read nothing and call a logged write UNLOGGED.
+  el_activity_header: "(//main//em)[1] | //p[normalize-space()='There is not yet any activity in your group.']"
+  # The list's whole text: entries read "Expense <em>“title”</em> created by
+  # <strong>Someone</strong>.", or the empty-state sentence. LogState is read
+  # from it with the `names` role (does it name the title just written?).
+  # NOT "(//main//em)[1]": an OBSERVE on an absent element is a timeout, and
+  # on a group where nothing was written that turned UNLOGGED into a FAIL of
+  # the tester's own making (input_invalid, first campaign).
+  el_activity_latest: "//h3[normalize-space()='Activity']/ancestor::div[1]/following-sibling::div[1]"
+  # the materialised copy's own entry: a SECOND entry naming the weekly title
+  el_activity_copy:   "(//em[contains(.,'Bus pass B')])[2]"
+  # ORACLES owed after a failure. Spliit renders no error on a failed write
+  # (13_overlimit_after_submit.html: nothing destructive, no alert, empty
+  # toast region), so these are unions of every way an error could surface.
+  el_write_error:     "//p[contains(@id,'form-item-message')] | //*[@role='alert'] | //div[@role='region'][@aria-label='Notifications (F8)']//li"
+  el_reject_message:  "//p[contains(@id,'form-item-message')]"      # "The amount must not be zero." (12_invalid_zero.txt)
+  # NOT script/style: Next.js embeds every translation string in a <script>
+  # payload, so a bare contains(text()) matched on every page whether or not
+  # the message was shown (2026-10-01: every case "saw" it in the script).
+  el_rate_error:      "//*[not(self::script) and not(self::style)][contains(text(),'Oops, we could not get the most recent rates.')]"
+  el_corrupt_notice:  "//p[contains(@id,'form-item-message')] | //*[@role='alert']"
+
+concrete_values:
+  cv_group_name:        "ioco group"
+  # titles: distinct, none a substring of another, so a row is found by title
+  cv_title_a:           "Groceries A"
+  cv_title_b:           "Bus pass B"
+  cv_title_c:           "Dinner C"
+  # ONE amount for every expense. SpendBand counts rows in rungs of one
+  # expense (rung = total / 40.00), so the abstraction holds only if every
+  # row is worth one rung: with 25.00 rows the WEEKLY case's two rows
+  # ($50.00) would classify as S1 while the model says S2, a FAIL of the
+  # tester's discretisation, not of the SUT. Titles keep the rows distinct.
+  cv_amount_a:          "40.00"
+  cv_amount_b:          "40.00"
+  cv_amount_c:          "40.00"
+  cv_amount_invalid:    "0"
+  cv_amount_overlimit:  "20000000"
+  # eight days before the run: WEEKLY then materialises exactly one copy on
+  # the next read. RELATIVE DATE: the executor must resolve "@date-8" to an
+  # ISO date and set the input's value (a native date input does not accept
+  # ISO text through send_keys); see README "Framework generalisation".
+  cv_date_past:         "@date-8"
+  # NO abstract enum values (exp_a, john, row_a ...) as keys here: on the web
+  # path the parser resolves `type_into (sel, L_f (var))` and
+  # `click (L_f (var))` through the L function applied to the variable's
+  # abstract init value, and a key for that value would replace it with a
+  # string before the lookup.
+
+# One element per Screen value, present on that screen and absent elsewhere.
+#
+# SCR_HOME is deliberately ABSENT. It is where the browser sits before the
+# prelude has created a group, which is no app screen at all: the reset only
+# clears cookies, it does not navigate, so on a fresh session nothing of the
+# app is on screen. Declaring an anchor for it would make the framework's
+# initial-screen check refuse to start every run. An unanchored screen is
+# skipped by design, and saying "we are not on a known screen yet" is the
+# honest statement. Everything the walk actually visits is anchored.
+screen_anchors:
+  SCR_LIST:     el_search_box
+  SCR_FORM:     el_create_button
+  SCR_EDIT:     el_edit_form
+  SCR_STATS:    el_totals_header
+  SCR_ACTIVITY: el_activity_header

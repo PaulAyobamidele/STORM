@@ -1,0 +1,18 @@
+purpose	seconds	cases
+# 2026-09-30 generation: seconds from narval file timestamps (tp_X.bcg to last variant); later generations time each purpose in generate_tc_all.sh
+app_cache_stale	21	1
+app_extapi_fail	27	2
+app_lazy_processing	12	1
+app_unavailable	36	3
+app_write_fail	28	2
+db_abort	41	3
+db_corrupt	15	1
+db_event_loss	24	1
+infra_db_down	43	3
+infra_sidekiq_dead	40	3
+infra_storage_full	44	3
+input_invalid	17	1
+input_overlimit	16	1
+nominal	15	1
+ue_kill	32	2
+ue_session_expired	39	3

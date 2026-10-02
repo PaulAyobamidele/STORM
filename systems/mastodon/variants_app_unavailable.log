@@ -1,0 +1,5 @@
+# mastodon tc variants -- purpose: app_unavailable -- 2026-09-30 15:27 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	46	46	16	FAIL	injected=1 restored=1 ERROR  State 34 waits for WAIT_FOR !EL_WRITE_ERROR — it never appeared and this state does NOT permit quiescence. The sp
+2	34	34	15	FAIL	injected=1 restored=1 ERROR  State 22 waits for WAIT_FOR !EL_WRITE_ERROR — it never appeared and this state does NOT permit quiescence. The sp
+3	22	22	15	FAIL	injected=1 restored=1 ERROR  State 10 waits for WAIT_FOR !EL_WRITE_ERROR — it never appeared and this state does NOT permit quiescence. The sp

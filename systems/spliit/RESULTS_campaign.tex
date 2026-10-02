@@ -1,0 +1,541 @@
+% =====================================================================
+%  Spliit -- Disruption Conformance Campaign
+%  Results presentation. Overleaf-ready: pdflatex twice.
+%
+%  Every figure in this document was measured on 28 September 2026 and is
+%  traceable to systems/spliit/run_<case>.out and to the database rows
+%  quoted in Section~\ref{sec:finding}. There are no placeholders.
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,backgrounds}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{RGB}{0,90,160}
+\definecolor{warn}{RGB}{176,60,20}
+\definecolor{good}{RGB}{20,110,60}
+\definecolor{codebg}{gray}{0.96}
+
+\lstset{basicstyle=\ttfamily\footnotesize, backgroundcolor=\color{codebg},
+        frame=single, rulecolor=\color{gray!40}, breaklines=true,
+        columns=fullflexible, framexleftmargin=4pt}
+
+\newcommand{\PENDING}[1]{\textcolor{warn}{\textbf{[PENDING: #1]}}}
+\newcommand{\gate}[1]{\texttt{\small #1}}
+\newcommand{\obl}[1]{\textbf{O#1}}
+
+\title{\vspace{-1.5em}\textbf{Disruption Conformance Testing of a Server-Backed
+Expense-Sharing Web Application}\\[0.3em]
+\large Results of a hybrid-\textbf{ioco} campaign over 16 generated test cases}
+\author{}
+\date{Campaign closed 28 September 2026}
+
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+
+% =====================================================================
+\section{What was tested}
+% =====================================================================
+
+The subject is \textbf{Spliit}, an open-source expense-sharing web application
+(Next.js~16, tRPC~11, Prisma~6, PostgreSQL~17). Unlike a local-first
+application, every write crosses a network to a server and a database, and
+every read of a derived view (totals, activity log) is served through a client
+cache. The application was run from its own Docker composition and driven
+through a fault proxy that can refuse its API calls.
+
+A formal specification (LNT, 486 states), a System Interface describing how each
+abstract gate is realised in the browser, and an interpretation of the abstract
+domain are composed (3\,719 states, 4\,497 transitions) and passed to
+CADP/TESTOR, which generates controllable test cases. A concretization layer walks
+each test case against the running application through a headless browser,
+applies disruptions out of band, and returns an \textbf{ioco} verdict.
+
+Eleven test purposes were generated, yielding \textbf{16 test cases}. Twelve
+walks are reported: the eleven canonical cases and two \emph{fault-first}
+variants, for reasons Section~\ref{sec:stale} explains.
+
+\medskip
+\noindent\textbf{The specification states obligations, not the application's
+habits.} Before any run, the behaviour of the application was studied from its
+source and seven obligations were written into the specification header --- the
+behaviour a careful user is entitled to, in the spirit of the reporting and
+consistency duties of the EU AI Act, not the behaviour the source was seen to
+have:
+
+\begin{center}\small
+\begin{tabular}{@{}llp{7.2cm}@{}}
+\toprule
+ & Obligation & Observable the specification demands \\
+\midrule
+\obl{1} & a rejected save is reported & \gate{REJECT\_SHOWN} \\
+\obl{2} & the log covers every row a write made & \gate{LOGGED}, also for weekly copies \\
+\obl{3} & the total shown is the committed one & the band after a write, cache warm or not \\
+\obl{4} & a failed save is reported & \gate{WRITE\_ERROR\_SHOWN} \\
+\obl{5} & the log never claims a write that failed & \gate{UNLOGGED} after a rollback \\
+\obl{6} & a failed rate lookup is reported & \gate{RATE\_ERROR\_SHOWN} \\
+\obl{7} & a corrupt record is flagged when opened & \gate{DB\_CORRUPT\_DETECTED} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Written this way, the nominal path itself can fail. The source study
+forecast, for each disruption, whether the application would meet its
+obligation; the forecasts were recorded in the disruption mapping before the
+first run and are compared with the outcome in Section~\ref{sec:summary}.
+
+\medskip
+\noindent\textbf{Conformance is relative to the specification.} A \textsc{fail}
+means the application produced an output the specification forbids after a given
+trace --- including \emph{quiescence}, the absence of an output the
+specification requires. Whether the specification is itself a faithful account
+of what should be required is treated in Section~\ref{sec:threats}.
+
+% =====================================================================
+\section{Verdicts and what they mean here}
+% =====================================================================
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[font=\footnotesize, node distance=6mm,
+  dec/.style={draw, diamond, aspect=2.6, inner sep=1pt, align=center, fill=gray!8},
+  end/.style={draw, rounded corners=3pt, minimum height=7mm, align=center},
+  ar/.style={-{Stealth[length=2mm]}, thick, gray!70}]
+\node[dec] (d0) {disruption confirmed\\in place, apparatus intact?};
+\node[end, fill=gray!15, right=18mm of d0] (unex) {\textsc{unexecutable}\\(no verdict)};
+\node[dec, below=9mm of d0] (d1) {application\\responded?};
+\node[dec, right=18mm of d1] (dq) {test case permits\\quiescence here?};
+\node[end, fill=accent!12, right=14mm of dq] (inc) {\textsc{inconclusive}};
+\node[dec, below=9mm of d1] (d2) {response permitted\\by the specification?};
+\node[end, fill=good!12, right=18mm of d2] (pass) {\textsc{pass}};
+\node[end, fill=warn!12, below=9mm of d2] (fail) {\textsc{fail}};
+\draw[ar] (d0) -- node[above]{no} (unex);
+\draw[ar] (d0) -- node[left]{yes} (d1);
+\draw[ar] (d1) -- node[above]{no (silent)} (dq);
+\draw[ar] (dq) -- node[above]{yes} (inc);
+\draw[ar] (dq.south) |- node[pos=0.75,above]{no: an output was owed} (fail.east);
+\draw[ar] (d1) -- node[left]{yes} (d2);
+\draw[ar] (d2) -- node[above]{yes} (pass);
+\draw[ar] (d2) -- node[left]{no} (fail);
+\end{tikzpicture}
+\caption{The verdict procedure. Silence is not a default: whether the
+application's not responding is a \textsc{fail} is decided by the generated test
+case, which offers a quiescence transition ($\delta$) exactly where the
+specification allows the application to stay silent.}
+\label{fig:verdict}
+\end{figure}
+
+\noindent\textbf{\textsc{pass}} --- the test case reached its accept state, every
+output observed on the way being one the specification permits. For an output
+that carries values (\gate{CONFIRM (status, band, log, id)}) this means the
+concrete readings --- the total on the Stats tab, the text of the activity list
+--- were interpreted into an abstract label and that label is the one the case
+offers. A walk that reaches the accept state without that interpretation proves
+nothing; one such walk occurred before the interpreting oracle existed and is
+not counted.
+
+\noindent\textbf{\textsc{fail}} --- an output outside the set the specification
+permits after the trace. Two forms occurred: the application produced a value the
+case does not offer (a total that had not moved), and the application produced
+nothing within the observation window at a state where the case offers no
+$\delta$.
+
+\noindent\textbf{\textsc{inconclusive}} --- the application produced nothing at a
+state where the case offers $\delta$. None occurred.
+
+\noindent\textbf{\textsc{unexecutable}} --- not a verdict. The disruption could
+not be confirmed in place, or the apparatus failed, so the walk did not test what
+the case names. None occurred in the batch reported here; Section~\ref{sec:batch}
+records a batch that was discarded on these grounds.
+
+% =====================================================================
+\section{The nominal campaign}
+% =====================================================================
+
+The \gate{nominal} purpose exercises the application with no disruption: create
+a group, add one expense of 40.00 paid by one participant, read the group total
+on the Stats tab, read the activity log. It is the \textbf{control}: it
+establishes that the selectors, the typing and clicking, and the interpretation
+of the two readings are right, so that a verdict under disruption can be
+attributed to the disruption.
+
+\begin{table}[h]
+\centering\small
+\caption{Nominal campaign.}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Purpose & Cases & \textsc{pass} & \textsc{inconc} & \textsc{fail} \\
+\midrule
+\gate{nominal} & 1 & 1 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent The walk read \texttt{\$40.00} on the Stats tab and \emph{``Expense
+``Dinner C'' created by Someone.''} in the activity list, and the oracle
+interpreted them as \gate{S1} and \gate{LOGGED}, the two values the case's single
+\gate{CONFIRM} offers. The database held one expense and one activity row.
+
+% =====================================================================
+\section{The disruptions}
+% =====================================================================
+
+Seven disruptions were injected out of band --- through the fault proxy, SQL
+against the application's database, the container runtime, or the host's name
+resolution --- never through the user interface. Three more are carried as
+parameters of the write rather than injected: the tester performs them as a user
+would. Every injected disruption was verified to \emph{bite} (a probe confirmed
+its effect independently of the application) before the walk continued, and to
+\emph{let go} after it.
+
+\begin{table}[h]
+\centering\footnotesize
+\caption{The ten disruptions, what each means for this application, and the
+obligation it tests.}
+\label{tab:disruptions}
+\begin{tabular}{@{}llp{5.0cm}p{4.0cm}@{}}
+\toprule
+Layer & Disruption & Meaning for Spliit & Specification demands \\
+\midrule
+User/Env & \gate{UE\_KILL} & The user leaves the page right after pressing
+Create, then comes back. & The read-back is consistent: either the expense and
+its log entry, or neither. \\
+\addlinespace
+User/Env & \gate{INPUT\_INVALID} & Amount 0. & The rejection is reported
+(\obl{1}); nothing is written. \\
+\addlinespace
+User/Env & \gate{INPUT\_OVERLIMIT} & Amount 20\,000\,000, which the browser
+accepts and the server refuses. & The rejection is reported (\obl{1}); nothing
+is written. \\
+\addlinespace
+User/Env & \gate{WEEKLY} & The expense recurs weekly and is dated eight days
+back, so the server materialises one copy on the next read. & Every row written
+is logged (\obl{2}); the total counts both. \\
+\addlinespace
+App & \gate{APP\_UNAVAILABLE} & The proxy answers 503 to every API call. & The
+failed save is reported (\obl{4}). \\
+\addlinespace
+App & \gate{APP\_CACHE\_STALE} & The Stats view is opened before the write, so
+its cache is warm when the total is read back. & The committed total is shown
+(\obl{3}). \\
+\addlinespace
+App & \gate{APP\_EXTAPI\_FAIL} & The currency-rate service is unreachable from the
+browser. & The failed lookup is reported (\obl{6}); the write still commits. \\
+\addlinespace
+Database & \gate{DB\_ABORT} & A BEFORE INSERT trigger aborts the expense insert.
+& The failed save is reported (\obl{4}); the log does not claim it (\obl{5}). \\
+\addlinespace
+Database & \gate{DB\_CORRUPT} & The expense's split rows are deleted underneath
+it. & The corruption is flagged when the row is opened (\obl{7}). \\
+\addlinespace
+Infra & \gate{INFRA\_DB\_DOWN} & The database container is paused for 25\,s
+across the write. & The failed save is reported (\obl{4}). \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =====================================================================
+\section{Results by test purpose}
+\label{sec:results}
+% =====================================================================
+
+\begin{table}[h]
+\centering\small
+\caption{Verdicts per test purpose. ``Walked'' is the case executed: the
+canonical case, or the fault-first variant where the canonical case cannot reach
+its disruption (Section~\ref{sec:stale}).}
+\label{tab:results}
+\begin{tabular}{@{}llrlll@{}}
+\toprule
+Purpose & Walked & Cases & Verdict & Obligation & Rows left (expenses / log) \\
+\midrule
+\gate{nominal}          & canonical & 1 & \textsc{pass} & ---            & 1 / 1 \\
+\gate{input\_invalid}   & canonical & 1 & \textsc{pass} & \obl{1} met    & 0 / 0 \\
+\gate{ue\_kill}         & canonical & 1 & \textsc{pass} & consistent     & 1 / 1 \\
+\gate{app\_extapi\_fail}& variant 4 & 4 & \textsc{pass} & \obl{6} met    & 1 / 1 \\
+\gate{input\_overlimit} & canonical & 1 & \textsc{fail} & \obl{1}        & 0 / 0 \\
+\gate{app\_unavailable} & canonical & 1 & \textsc{fail} & \obl{4}        & 0 / 0 \\
+\gate{db\_abort}        & canonical & 1 & \textsc{fail} & \obl{4}        & 0 / \textbf{1} \\
+\gate{infra\_db\_down}  & canonical & 1 & \textsc{fail} & \obl{4}        & 1 / 1 (landed late) \\
+\gate{weekly}           & canonical & 1 & \textsc{fail} & \obl{2}        & \textbf{2} / 1 \\
+\gate{app\_cache\_stale}& variant 4 & 4 & \textsc{fail} & \obl{3}        & 1 / 1 \\
+\gate{app\_cache\_stale}& canonical &   & \textsc{fail} & \obl{3}        & 2 / 2 \\
+\gate{db\_corrupt}      & canonical & 1 & \textsc{fail} & \obl{7}        & 1 / 1, 0 splits \\
+\midrule
+\textbf{Total} & 12 walks & 16 & 4 \textsc{pass}, 8 \textsc{fail} & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{\gate{input\_invalid}, \gate{ue\_kill}, \gate{app\_extapi\_fail} --- the passes}
+
+With amount~0 the form shows \emph{``The amount must not be zero.''} before
+anything is sent; the case observes \gate{REJECT\_SHOWN}, the tester cancels,
+and the read-back interprets \texttt{\$0.00} and the empty-list sentence
+\emph{``There is not yet any activity in your group.''} as \gate{S0} and
+\gate{UNLOGGED} --- the one \gate{CONFIRM} the case offers. \obl{1} is met for
+the client-side check.
+
+Leaving the page immediately after Create and returning, the tester found the
+expense and its log entry both present: the request had completed after the
+browser left. The case offers both consistent outcomes (whole, or nothing) and
+observed the first.
+
+With \texttt{api.frankfurter.app} resolved to the loopback address, choosing a
+foreign currency produced \emph{``Oops, we could not get the most recent rates.
+Enter a custom rate below.''}; the case observes \gate{RATE\_ERROR\_SHOWN}, the
+write then commits, and the read-back agrees. \obl{6} is met.
+
+\subsection{\gate{app\_unavailable}, \gate{db\_abort}, \gate{infra\_db\_down} --- \obl{4}, three layers, one silence}
+\label{sec:silent}
+
+\paragraph{The setup.}
+Three different things are broken, each aimed at the same obligation --- a save
+that fails is reported to the user: the API refused at the proxy, the insert
+aborted inside the database, the database unreachable for 25\,s. Network,
+database engine, infrastructure: three independent paths to one requirement.
+
+\paragraph{What the tester did.}
+Filled the form and pressed Create, then waited for the form to say something.
+
+\paragraph{What the specification requires.}
+After any of the three, exactly one output is permitted, \gate{WRITE\_ERROR\_SHOWN},
+realised as any error text on the form, any element with an alert role, or any
+toast. The generated case offers no $\delta$ at that state.
+
+\paragraph{What the application did.}
+Nothing, in all three cases, for the length of the observation window: the
+Create button re-enabled and the form stayed. Three \textsc{fail}s by quiescence.
+The source explains the silence: no error boundary on the route, the mutation
+awaited without a handler, and the asynchronous button swallowing its rejection.
+
+\paragraph{The database tells the three apart.}
+Under \gate{APP\_UNAVAILABLE} nothing reached the server: no expense, no log row.
+Under \gate{DB\_ABORT} the expense was refused \emph{and the log row was written
+anyway}: the application logs before it writes, outside any transaction
+(Section~\ref{sec:finding}). Under \gate{INFRA\_DB\_DOWN} the request hung while
+the database was paused and \textbf{completed after it returned}: the expense and
+its log row both exist. The obligation violated there is ``the user is told'',
+not ``the write is kept''; a reader should know the write was delayed, not lost.
+
+\subsection{\gate{input\_overlimit} --- \obl{1}, the server's silent no}
+
+The browser validates the amount in major units and the server in minor units,
+so 20\,000\,000 passes the form and is refused by the server. The specification
+requires \gate{REJECT\_SHOWN}; the form showed nothing and stayed put. The
+database holds neither an expense nor a log row: the server refused before
+logging, so this silence, unlike \gate{DB\_ABORT}'s, leaves no trace. A user who
+typed a large amount is told nothing and is left with an unsaved form.
+
+\subsection{\gate{app\_cache\_stale} --- \obl{3}, a view that does not follow the write}
+\label{sec:stale}
+
+\paragraph{The setup.}
+Nothing is broken. The Stats tab is opened once before the expense is written.
+
+\paragraph{What the specification requires.}
+After a committed write of one 40.00 expense the total must read one rung:
+\gate{CONFIRM (COMMITTED, S1, LOGGED, exp\_c)}.
+
+\paragraph{What the application did.}
+The Stats tab read \texttt{\$0.00}. The write had committed (one expense, one
+log row in the database); the view served a cached total. The source gives the
+mechanism: the query client keeps results fresh for 30\,s, and the create form
+invalidates only the expense list, never the totals or the activity log. Both
+derived views therefore stay stale for up to 30\,s after any write that follows
+a read.
+
+\paragraph{The canonical case never reached its disruption.}
+The canonical \gate{app\_cache\_stale} case begins with three ordinary writes and
+applies the priming visit only before the fourth. It failed at the
+\emph{second} write: the System Interface reads Stats back after every write,
+that read warms the cache, and the next write's read-back returned the previous
+total (\texttt{\$40.00} where the case offers only \gate{S2}). The same holds
+for the canonical \gate{app\_extapi\_fail} case and for variants 1--3 of both:
+any case with two writes within 30\,s fails on \obl{3} before its disruption.
+Variant~4 of each, which applies the disruption first, is the one reported.
+
+\medskip
+\noindent\fbox{\begin{minipage}{0.95\textwidth}
+The stale total is not a fault the tester injects. It is the application's
+default after any read, and it shows on the nominal shape of the specification
+as soon as a second write follows a first within the cache window.
+\end{minipage}}
+
+\subsection{\gate{weekly} --- \obl{2}, a row the log does not know}
+
+An expense dated eight days back with weekly recurrence is written. On the next
+read the server materialises the copy that has fallen due: the database holds
+two expenses (dated the 20th and the 27th), the Stats tab reads \texttt{\$80.00}
+(\gate{S2}, both counted), and the activity log names the write \textbf{once}.
+The case waits for a second entry naming it (\gate{EL\_ACTIVITY\_COPY}) and
+offers no $\delta$; none appeared. The materialiser runs inside a transaction on
+every read and writes no activity row. A row exists, is counted, and is
+unaccounted for.
+
+\subsection{\gate{db\_corrupt} --- \obl{7}, a row that opens as if whole}
+
+After one committed write (the first \gate{CONFIRM} agreed: \gate{S1},
+\gate{LOGGED}), the expense's split rows are deleted by SQL; the probe confirmed
+zero remained. The tester opened the row. The specification requires
+\gate{DB\_CORRUPT\_DETECTED}, realised as any error text or alert on the edit
+page; the page rendered the form and said nothing. A \textsc{fail} by
+quiescence: the record is shown for editing with its payment split gone.
+
+% =====================================================================
+\section{A batch that was discarded}
+\label{sec:batch}
+% =====================================================================
+
+The first full batch is not reported. Its \gate{db\_abort} walk installed its
+trigger and the framework never removed it: the walker collected the faults it
+injected and restored none of them. Every insert in the five cases that followed
+was aborted by a disruption those cases had not asked for --- \gate{ue\_kill}
+showed the \gate{DB\_ABORT} signature, two cases stalled on the form and were
+reported \textsc{unexecutable}, and \gate{infra\_db\_down}'s own pause had been
+backgrounded by a shell precedence slip and never confirmed, yet a \textsc{fail}
+was recorded. A sixth, \gate{input\_invalid}, failed because the observable for
+``no activity'' was the first list entry, which an empty list does not have.
+
+All of these were the tester's. The framework now restores every injected
+disruption after every walk and re-probes it; discards any verdict whose
+disruption was not confirmed; judges a missing observable by the case rather than
+by which primitive missed it; and the activity observable reads the list's text,
+which exists whether or not the list is empty. The batch of
+Section~\ref{sec:results} was then run from a stack verified clean (trigger
+count~0, database unpaused, proxy without faults), and ended with the trigger
+count still~0.
+
+% =====================================================================
+\section{A finding the verdicts could not express}
+\label{sec:finding}
+% =====================================================================
+
+Under \gate{DB\_ABORT} the walk ends at \obl{4}: the form said nothing, the case
+offers no $\delta$, \textsc{fail}. It never reaches the \gate{CONFIRM} at which
+\obl{5} --- the log never claims a write that failed --- would be judged. The
+database reached it anyway. The groups created by the reported batch, newest
+first, with their expense and activity-row counts:
+
+\begin{lstlisting}
+ created  | expenses | activity_rows | split_rows   case
+ 11:21:15 |        1 |             1 |          0   db_corrupt
+ 11:21:13 |        2 |             2 |          0   app_cache_stale (canonical)
+ 11:20:47 |        1 |             1 |          0   ue_kill
+ 11:20:34 |        0 |             0 |          0   input_overlimit
+ 11:20:32 |        0 |             0 |          0   input_invalid
+ 11:20:18 |        1 |             1 |          0   infra_db_down
+ 11:20:04 |        0 |             1 |          0   db_abort
+ 11:19:50 |        0 |             0 |          0   app_unavailable
+ 11:19:49 |        1 |             1 |          0   nominal
+\end{lstlisting}
+
+\noindent The \gate{db\_abort} group holds an activity row --- \emph{``Expense
+``Dinner C'' created by Someone.''} --- for an expense that does not exist. The
+source shows why: every logging write puts the activity row \emph{before} the
+domain write, outside any transaction. A user opening the activity tab is told an
+expense was created that the group does not contain.
+
+No \textbf{ioco} verdict reports this, because the walk stopped, correctly, at
+the first non-conformance. It is a finding of a query against the application's
+own store, not a conformance verdict, and it is reported as such. Making it a
+verdict would require the specification to let the walk continue past a missing
+error report to the read-back --- that is, to weaken \obl{4} --- and that is a
+choice, not a repair.
+
+\medskip
+\noindent\fbox{\begin{minipage}{0.95\textwidth}
+The same pattern --- an aborted write whose log entry survives --- is the one
+\gate{WEEKLY} shows from the other side: a write that succeeds and leaves no log
+entry. The application's log and its data are maintained separately, and the
+campaign found both directions in which they can disagree.
+\end{minipage}}
+
+% =====================================================================
+\section{Threats to validity}
+\label{sec:threats}
+% =====================================================================
+
+\paragraph{Changes made during the campaign.}
+The framework was corrected while the campaign ran (Section~\ref{sec:batch}),
+and two further defects of the tester's were found and fixed before the reported
+batch: a walk could reach its accept state without interpreting a valued output
+(the first \gate{nominal} pass, discarded), and every generated case offered
+$\delta$ at every state because the specification's disruptor carried an
+internal no-op branch, which the generator reads as livelock and therefore as
+permitted quiescence. The branch was removed and every case regenerated: the
+composition lost exactly one internal loop per state and no case changed its
+shape. A second regeneration moved the \gate{UE\_KILL} gate before the click it
+shared with the commit arm, for the same reason. All changes are SUT-agnostic
+and were checked with self-tests; none touched a verdict's meaning after the
+reported batch began.
+
+\paragraph{The abstraction.}
+The total is read in rungs of one expense, and every expense the tester writes
+is 40.00 so that a rung is a row; the application's arithmetic is not under
+test. The log is read as ``does the list name the row just written'', which in
+a fresh group per walk is the newest entry. Whether an entry is the
+\emph{newest} is not checked.
+
+\paragraph{Windows.}
+Quiescence is decided at 10\,s. The application's cache window is 30\,s and
+every read-back in the campaign fell inside it; \gate{INFRA\_DB\_DOWN}'s pause
+was 25\,s and the delayed write landed after the walk had stopped. A different
+window would not change any verdict here, but it would change the wording of
+that one.
+
+\paragraph{Coverage not achieved.}
+Variants 1--3 of \gate{app\_cache\_stale} and \gate{app\_extapi\_fail} were not
+walked (Section~\ref{sec:stale}). Only one participant ever paid, no expense was
+ever edited or deleted through the walk (the \gate{VIEW}/\gate{REMOVE} arms are
+refused by every purpose), and reimbursements were not exercised. No
+coverage measure of the specification was computed.
+
+\paragraph{Verification of restore.}
+\gate{DB\_CORRUPT} (nothing to restore in a fresh group) and
+\gate{APP\_EXTAPI\_FAIL} (a hosts-file line placed and removed by hand, since the
+harness cannot answer a sudo prompt) declare no restore probe; the log says so.
+
+\paragraph{Single execution; one environment.}
+One repetition per case, one stack, one headless browser, one machine. No
+screenshot evidence is captured on the web executor; the evidence is the walk
+log and the database.
+
+% =====================================================================
+\section{Summary}
+\label{sec:summary}
+% =====================================================================
+
+\begin{itemize}\setlength\itemsep{2pt}
+  \item Twelve walks over eleven purposes: \textbf{4 \textsc{pass}, 8
+        \textsc{fail}}, no \textsc{inconclusive}, no \textsc{unexecutable}.
+        Every injected disruption was confirmed in place before, and confirmed
+        gone after, the walk it belongs to.
+  \item Every forecast written before the first run matched its outcome; the
+        one left open, \gate{UE\_KILL}, came out \textsc{pass}.
+  \item Six failures are \emph{silence where a report was owed}: a failed save
+        at three layers (\obl{4}), a server-side rejection (\obl{1}), a corrupt
+        row opened without a notice (\obl{7}), a materialised row the log never
+        mentions (\obl{2}). Two are \emph{a value the specification forbids}: a
+        total that did not follow the write (\obl{3}), once under the intended
+        disruption and once on the nominal shape at the second write.
+  \item The passes are the client-side rejection (\obl{1}), the rate-service
+        failure (\obl{6}) --- the one failure the application reports in words
+        --- and a consistent outcome when the user leaves mid-submit.
+  \item One finding no verdict could express: an activity row for an expense
+        that was never written (\obl{5} in the data), because the application
+        logs before it writes and the walk stops at the first non-conformance.
+  \item The tester's own first batch was discarded and the reasons recorded.
+\end{itemize}
+
+\end{document}

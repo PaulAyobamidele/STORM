@@ -1,0 +1,117 @@
+module tp_ue1_lose_conn (moodle_types) is
+
+(* CLIENT CONNECTIVITY LOST. A dropped connection the page does not report is
+   the vulnerability, not the drop itself. Moodle ships #connection-error
+   hidden on the attempt page and unhides it when autosave cannot reach the
+   server, so the observable is genuinely the SUT's own.
+
+   This accept sequence needs a SPEC-level fix to be satisfiable directly:
+   UE1_LOSE_CONN is now wired explicitly into STUDENT's quiz disrupt in
+   specification_moodle.lnt (`[] UE1_LOSE_CONN; CONN_ERROR_SHOWN`, not bare
+   CONN_ERROR_SHOWN), tying the fault to interrupting an active attempt.
+   Without that wiring, START_ATTEMPT and UE1_LOSE_CONN belong to two
+   unrelated parts of the spec, and this sequence could only be satisfied by
+   stitching in an unrelated occurrence -- the same defect class fixed for
+   UE2_SESSION_EXPIRE (test-purpose level, since that fault's oracle is
+   page-independent). CONN_ERROR_SHOWN's oracle here is NOT page-independent
+   (it depends on staying on the already-loaded attempt page, unlike
+   SESSION_ERROR_SHOWN's own fresh-navigate fix), so the fix had to happen in
+   the spec instead. Confirmed isolated to STUDENT: APP does not declare
+   CONN_ERROR_SHOWN or UE1_LOSE_CONN, so APP1_WRITE_FAIL and
+   DB_ATTEMPT_STEP_LOSS's own, separate disrupt in APP is untouched.
+
+   STRUCTURE: `disrupt <accept sequence> by <refused faults> end disrupt'.
+
+   NOT a flat `alt'. In an alt the refuse arms are ALTERNATIVES to the accept
+   sequence, so they are reachable only from the purpose's INITIAL state. The
+   moment the purpose advances one step, every fault arm becomes unreachable,
+   the faults are implicitly accepted, and they wander into the generated test
+   case. Observed directly: tc_happy.1.aut came back with 311 transitions and
+   fired INFRA_CRON_DEAD, DB_ATTEMPT_STEP_LOSS, APP_GRADE_STALE_SUB,
+   UE1_LOSE_CONN and UE2_SESSION_EXPIRE before reaching :PASS: -- a "happy
+   path" control in which five things had gone wrong.
+
+   `disrupt ... by ...' lets the refuse branch PREEMPT the sequence at any
+   point, which is what "refuse this fault anywhere" actually means. It is also
+   what keeps the prefix set small: an unrefused fault makes every fault
+   interleaving a legal prefix, and a purpose cannot constrain prefixes --
+   they are specification behaviour.
+
+   Both verdicts LOOP, so they are proper sinks. *)
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId);
+        UE1_LOSE_CONN;
+        CONN_ERROR_SHOWN;
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  DB_ATTEMPT_STEP_LOSS
+            []  INFRA_CRON_DEAD
+            []  UE2_SESSION_EXPIRE
+            (* Everything below used to be declared-but-unconstrained -- a
+               silent don't-care escape route past the fault. Confirmed live:
+               tc_ue1_lose_conn.1.aut finished the whole quiz normally via
+               SAVE_ATTEMPT/PROCESS_ATTEMPT/GRADE_PERSISTED before ever
+               touching UE1_LOSE_CONN. Refusing them makes explicit what the
+               accept sequence already implies: nothing but UE1_LOSE_CONN is a
+               legitimate next step after START_ATTEMPT. VIEW_QUIZ is the one
+               declared gate deliberately NOT here -- it's the required first
+               step of the same disrupted sequence in the spec, not a
+               competing branch. *)
+            (* Every gate below carries real parameters -- only the 7 faults
+               above are none-typed. `?any TYPE' means "any value, don't
+               care", matching the arity each channel actually declares
+               (checked against every arm in system_interface_moodle.lnt). *)
+            []  SAVE_ATTEMPT (?any AttemptId)
+            []  PROCESS_ATTEMPT (?any AttemptId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            []  ENROL (?any CourseId)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

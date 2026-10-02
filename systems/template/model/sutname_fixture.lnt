@@ -1,0 +1,45 @@
+module sutname_fixture (sutname_types) is
+
+(* ===========================================================================
+   sutname_fixture.lnt -- TEST SELECTION, not system behaviour.
+
+   Imported by the System Interface and by every test purpose. NOT imported by
+   specification_sutname.lnt, so the specification cannot see these names at
+   all: asserting them of the SUT ("the app only permits item_c in CTX_A")
+   would under-approximate it and produce false FAILs.
+
+   Why a separate module rather than a section of sutname_types.lnt: the same
+   default was once defined twice (types and a dead tp_lib) and the two
+   drifted. One definition, one import line per consumer.
+   =========================================================================== *)
+
+(* HOLE 12  defaultItem -- the item every purpose searches and every purpose
+   writes, so the sweep produces ONE comparable results matrix. The System
+   Interface pins its concrete steps to this value too (see the ORDERING note
+   in system_interface_sutname.lnt): a purpose cannot choose a different item,
+   and that is a stated limitation, not an oversight.
+
+   Whatever this returns MUST have an entry under every system_generated type
+   in properties/type_description.yml (abstract_values) -- without one the
+   oracle silently SKIPS instead of checking and every run is a vacuous pass.
+
+   Pick the item that makes the band's boundary reachable (HOLE 1, third
+   bullet). Retarget the whole sweep by editing this one return. *)
+function defaultItem : ItemId is
+    return item_c
+end function
+
+(* HOLE 13  defaultContext -- the context every purpose writes into. *)
+function defaultContext : Context is
+    return CTX_A
+end function
+
+(* HOLE 14  defaultRecord -- the record the two-phase purposes open after
+   writing defaultItem. MUST satisfy item_of (defaultRecord) == defaultItem,
+   or the precondition phase writes one record and the target phase opens a
+   different one that does not exist. *)
+function defaultRecord : RecordId is
+    return rec_2
+end function
+
+end module

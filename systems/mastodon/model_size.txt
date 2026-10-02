@@ -1,0 +1,19 @@
+2026-09-30 15:00:47
+./compose_mastodon.bcg:
+created by caesar
+	1175066 states
+	1514418 transitions
+	164 labels
+	initial state: 0
+	no deadlock state
+	branching factor: average = 1.29, minimal = 1, maximal = 21
+	no transition with a hidden label ("i")
+	non-deterministic behavior for:
+	   label "INFRA_SIDEKIQ_DEAD" at state(s): 132 158 159 238 264 466 483 ... (19924 states in total)
+	   label "CLICK !SEL_COLUMN_HOME" at state(s): 132 158 159 238 264 466 483 ... (19924 states in total)
+	   label "APP_CACHE_STALE" at state(s): 483 560 561 817 879 909 1015 ... (4548 states in total)
+	   label "DB_EVENT_LOSS" at state(s): 483 560 561 817 879 909 1015 ... (4548 states in total)
+	   label "APP_LAZY_PROCESSING" at state(s): 483 560 561 817 879 909 1015 ... (9732 states in total)
+	   label "CHECK !REC_A" at state(s): 117683 121214 164665 164939 165170 168627 168812 ... (480 states in total)
+	   label "CHECK !REC_B" at state(s): 117684 121215 164666 164940 165171 168628 168813 ... (416 states in total)
+	   label "CHECK !REC_C" at state(s): 117685 121216 164667 164941 165172 168629 168814 ... (368 states in total)

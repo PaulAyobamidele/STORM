@@ -1,0 +1,407 @@
+module specification_sutname (sutname_types)
+with ==
+is
+
+(* ===========================================================================
+   specification_sutname.lnt -- how the SUT SHOULD behave, including under
+   injected faults. Written honestly and STRICTLY: it states what the SUT owes
+   the user, and the verdict is whatever the SUT earns. Never edit a branch to
+   make a verdict come out a particular way.
+
+   STRUCTURE (the same in every case study):
+
+     USER      what the user does and what it is OWED back
+     APP       mediates; where an app-layer fault strikes and what it must
+               then show (the fault's OBSERVABLE)
+     DATABASE  authoritative source of every output; where a storage-layer
+               fault strikes and what status is then read back
+     DISRUPTOR unconstrained choice of every fault; WHEN a fault fires is left
+               to the composition with a test purpose, never fixed here
+     SPEC      the flat, no-hide three-way rendezvous of the above
+
+   FAULT PLACEMENT -- there are exactly four shapes, and each fault uses one.
+   The test-purpose template of the same shape mirrors it (README.md, table
+   "Fault shapes"):
+
+     INTERRUPT     disrupt <journey> by FAULT; OBSERVABLE end disrupt
+                   (the fault may strike either side of the request; the
+                   SUT owes a visible acknowledgement)         -> DB_CORRUPT,
+                   APP_EXTAPI_FAIL, INFRA_STORAGE_MEDIA
+     WRITE-PATH    REQUEST; alt commit [] FAULT; CONFIRM (ROLLED_BACK, ...)
+                   (the fault is a SIBLING of the commit in DATABASE; the
+                   band read back must be the UNMOVED one)      -> UE_KILL,
+                   DB_ABORT, INFRA_STORAGE_FULL
+     PRE-ARMED     FAULT; <journey continues nominally>
+                   (resilience: the SUT must still answer with the
+                   authoritative value)                          -> APP_CACHE_STALE
+     PARAMETER     carried by a channel field, no gate
+                   (the specification routes on the value)       -> Validity
+
+   FAULT NAMING -- <LAYER>_<WHAT>: UE_ (user / environment), APP_, DB_,
+   INFRA_. An observable owed after a fault is <FAULT-STEM>_<DETECTED|WARNING
+   |ERROR>. Every fault name appears in SIX places and must be identical in
+   all of them (README.md "Fault checklist"); framework/scripts/
+   check_alphabet.py verifies that.
+
+   NO DEAD GATES. Every gate in SPEC's alphabet is offered by some process.
+   A gate that is declared and synchronised on but never offered (an "infra
+   degradation signal" with no injection behind it) forces every test purpose
+   to special-case it and produced a mislabelled purpose once. If a cascade is
+   worth modelling, give the trigger its own injection; otherwise leave it
+   out.
+   =========================================================================== *)
+
+
+(* HOLE 15  USER -- one `alt` branch per journey the user can start. Outputs
+   are RECEIVED (`?v`); the fault observables the user is owed appear as the
+   `by` arm of a disrupt around the journey they interrupt. *)
+process USER [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none
+] is
+    var
+        id     : ItemId,
+        v      : Value,
+        ctx    : Context,
+        rid    : RecordId,
+        band   : StateBand,
+        status : WriteStatus,
+        vld    : Validity     -- not `valid`: LNT is case-insensitive, it would shadow VALID
+    in
+        id     := item_a;
+        v      := val_a;
+        ctx    := CTX_A;
+        rid    := rec_0;
+        band   := B_EMPTY;
+        status := COMMITTED;
+        vld    := VALID;
+        loop
+            alt
+                -- READ, local scope: a corrupt stored record must be DETECTED
+                -- (an error), not shown as a plausible value.
+                id := any ItemId;
+                disrupt
+                    SEARCH (id, LOCAL);
+                    INFO (id, ?v)
+                by
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                -- READ, external scope: the external dependency may degrade,
+                -- and the SUT must SAY so rather than fail silently.
+                id := any ItemId;
+                disrupt
+                    SEARCH (id, EXTERNAL);
+                    INFO (id, ?v)
+                by
+                    APP_EXTAPI_WARNING
+                end disrupt
+            []
+                -- WRITE with a valid OR invalid input, then read the state.
+                ctx   := any Context;
+                id    := any ItemId;
+                vld   := any Validity;
+                ADD (ctx, id, vld);
+                CONFIRM (?status, ?band, id)
+            []
+                -- OPEN a persisted record: a storage read error must surface
+                -- an honest error, not a wrong item or a crash.
+                rid := any RecordId;
+                disrupt
+                    VIEW (rid);
+                    DETAIL (rid, ?id)
+                by
+                    INFRA_STORAGE_ERROR
+                end disrupt
+            []
+                -- REMOVE a persisted record and observe the new state.
+                rid := any RecordId;
+                REMOVE (rid);
+                CONFIRM (?status, ?band, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+(* HOLE 16  APP -- the same journeys, seen from the mediating layer. App-layer
+   faults are placed here, each followed by the observable it owes. *)
+process APP [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_FAIL     : none,
+    APP_EXTAPI_WARNING  : none,
+    APP_CACHE_STALE     : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_MEDIA : none,
+    INFRA_STORAGE_ERROR : none
+] is
+    var
+        id     : ItemId,
+        v      : Value,
+        ctx    : Context,
+        rid    : RecordId,
+        band   : StateBand,
+        status : WriteStatus
+    in
+        id     := item_a;
+        v      := val_a;
+        ctx    := CTX_A;
+        rid    := rec_0;
+        band   := B_EMPTY;
+        status := COMMITTED;
+        loop
+            alt
+                -- INTERRUPT shape: local read abandoned by corruption, which
+                -- the app must then report.
+                disrupt
+                    SEARCH (?id, LOCAL);
+                    INFO (id, ?v)
+                by
+                    DB_CORRUPT;
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                -- PRE-ARMED shape: the cache went stale BEFORE the read; the
+                -- app must still return the AUTHORITATIVE value.
+                APP_CACHE_STALE;
+                SEARCH (?id, LOCAL);
+                INFO (id, ?v)
+            []
+                -- INTERRUPT shape: the external lookup degrades visibly.
+                disrupt
+                    SEARCH (?id, EXTERNAL);
+                    INFO (id, ?v)
+                by
+                    APP_EXTAPI_FAIL;
+                    APP_EXTAPI_WARNING
+                end disrupt
+            []
+                -- WRITE: forwarded; the status is whatever DATABASE reports.
+                ADD (?ctx, ?id, ?any Validity);
+                CONFIRM (?status, ?band, id)
+            []
+                -- INTERRUPT shape: record read abandoned by a media error,
+                -- which the app must surface.
+                disrupt
+                    VIEW (?rid);
+                    DETAIL (rid, ?id)
+                by
+                    INFRA_STORAGE_MEDIA;
+                    INFRA_STORAGE_ERROR
+                end disrupt
+            []
+                REMOVE (?rid);
+                CONFIRM (?status, ?band, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+(* HOLE 17  DATABASE -- the authoritative source of every output. Storage-
+   layer faults are placed here: interrupts abandon the read in lock-step
+   with APP; write-path faults are SIBLINGS of the commit, and the band they
+   report back is the UNMOVED one. *)
+process DATABASE [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    UE_KILL             : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    var
+        id    : ItemId,
+        ctx   : Context,
+        rid   : RecordId,
+        band  : StateBand,
+        vld   : Validity      -- not `valid`: LNT is case-insensitive, it would shadow VALID
+    in
+        id    := item_a;
+        ctx   := CTX_A;
+        rid   := rec_0;
+        band  := B_EMPTY;
+        vld   := VALID;
+        loop
+            alt
+                disrupt
+                    SEARCH (?id, LOCAL);
+                    INFO (id, value_of (id))
+                by
+                    DB_CORRUPT
+                end disrupt
+            []
+                -- the database is the source of truth: after a stale cache
+                -- it still answers with the authoritative value
+                APP_CACHE_STALE;
+                SEARCH (?id, LOCAL);
+                INFO (id, value_of (id))
+            []
+                -- abandoned in lock-step with APP when the external lookup
+                -- fails (keeps INFO a three-way rendezvous)
+                disrupt
+                    SEARCH (?id, EXTERNAL);
+                    INFO (id, value_of (id))
+                by
+                    APP_EXTAPI_FAIL
+                end disrupt
+            []
+                -- WRITE-PATH shape. Each fault is a sibling of the commit;
+                -- `band` in every rollback arm is the value from BEFORE the
+                -- attempt, i.e. the model states that an aborted write must
+                -- not move the aggregate. PARAMETER shape: an invalid input
+                -- is REJECTED and moves nothing either.
+                ADD (?ctx, ?id, ?vld);
+                if vld == VALID then
+                    alt
+                        band := bump (band);
+                        CONFIRM (COMMITTED, band, id)
+                    []
+                        UE_KILL;
+                        CONFIRM (ROLLED_BACK, band, id)
+                    []
+                        DB_ABORT;
+                        CONFIRM (ROLLED_BACK, band, id)
+                    []
+                        INFRA_STORAGE_FULL;
+                        CONFIRM (ROLLED_BACK, band, id)
+                    end alt
+                else
+                    CONFIRM (REJECTED, band, id)
+                end if
+            []
+                disrupt
+                    VIEW (?rid);
+                    DETAIL (rid, item_of (rid))
+                by
+                    INFRA_STORAGE_MEDIA
+                end disrupt
+            []
+                -- B_OVER saturates: removing one from "four or more" leaves
+                -- "three or more", which is B_HIGH or still B_OVER, and ioco
+                -- lets the specification offer both. Below the top rung the
+                -- count is exact, so drop stays.
+                REMOVE (?rid);
+                if band == B_OVER then
+                    alt
+                        band := B_HIGH
+                    []
+                        band := B_OVER
+                    end alt
+                else
+                    band := drop (band)
+                end if;
+                CONFIRM (COMMITTED, band, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+(* HOLE 18  DISRUPTOR -- every fault, always offerable, or nothing (`i`).
+   WHEN a fault fires is decided by the composition with a test purpose. If a
+   fault should only become possible after some infrastructure event, model
+   that event as a fault of its own WITH an injection, e.g.
+
+       par
+           loop alt i [] DB_ABORT end alt end loop
+       ||
+           disrupt loop i end loop by INFRA_DEGRADED end disrupt;
+           loop alt i [] DB_CORRUPT end alt end loop
+       end par
+
+   and add INFRA_DEGRADED to the alphabet, the .io, disruption_mapping.yml
+   and every purpose's refuse set. Do not leave it as a synchronisation gate
+   nobody offers. *)
+process DISRUPTOR [
+    UE_KILL, APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+    INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA : none
+] is
+    loop
+        alt
+            i
+        []  UE_KILL
+        []  APP_EXTAPI_FAIL
+        []  APP_CACHE_STALE
+        []  DB_ABORT
+        []  DB_CORRUPT
+        []  INFRA_STORAGE_FULL
+        []  INFRA_STORAGE_MEDIA
+        end alt
+    end loop
+end process
+
+
+(* SPEC -- the flat three-way rendezvous. No `hide`: every gate that names
+   something the user can observe is a real synchronisation gate that USER,
+   APP and DATABASE all take part in. The gate list here IS the alphabet that
+   the System Interface, the composition, the .io and every test purpose must
+   reproduce. *)
+process SPEC [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    par UE_KILL, APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+        INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+        par SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+            APP_EXTAPI_WARNING, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR in
+            USER [SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                  APP_EXTAPI_WARNING, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR]
+        ||
+            par SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_CORRUPT, INFRA_STORAGE_MEDIA in
+                APP [SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                     APP_EXTAPI_FAIL, APP_EXTAPI_WARNING, APP_CACHE_STALE,
+                     DB_CORRUPT, DB_CORRUPT_DETECTED,
+                     INFRA_STORAGE_MEDIA, INFRA_STORAGE_ERROR]
+            ||
+                DATABASE [SEARCH, INFO, ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                          APP_EXTAPI_FAIL, APP_CACHE_STALE, UE_KILL, DB_ABORT,
+                          DB_CORRUPT, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+            end par
+        end par
+    ||
+        DISRUPTOR [UE_KILL, APP_EXTAPI_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+                   INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    end par
+end process
+
+end module

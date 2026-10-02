@@ -1,0 +1,94 @@
+# type_description.yml -- Sampler contract and oracle data for SimpleBaby's
+# abstract types. One top-level key per LNT type.
+#
+# ORACLE HOOK. A type read back at a checkpoint declares `capture_at:` (the
+# gate whose label carries it), `role:` (band | enum | names) and
+# `observed_from:` (the el_* it is read from). A type without `role:` is not
+# read back. `abstract_values` are the RENDERED strings.
+
+Mode:
+  base: Enum
+  values: [SIGNED, GUEST]
+  origin: tester_generated
+  description: Signed up with Supabase, or guest mode on the device store.
+
+FeedId:
+  base: Enum
+  values: [feed_a]
+  origin: tester_generated
+  description: The one feeding the tester writes (item name and amount below).
+  abstract_values:
+    feed_a: "Apple sauce"
+
+RecordId:
+  base: Enum
+  values: [rec_a]
+  origin: tester_generated
+  description: The feeding's card (item_of rec_a = feed_a).
+
+Validity:
+  base: Enum
+  values: [VALID, INVALID]
+  origin: tester_generated
+  description: INVALID = the amount left empty; the form refuses it (dump 14).
+
+WriteStatus:
+  base: Enum
+  values: [COMMITTED, ROLLED_BACK, REJECTED]
+  origin: system_generated
+  capture_at: CONFIRM
+  # no role: the app shows no status as such; it manifests in NameState and in
+  # whether SAVED_SHOWN / WRITE_ERROR_SHOWN / REJECT_SHOWN appeared.
+  description: Fate of a write or a delete; carried for the model's bookkeeping.
+
+NameState:
+  base: Enum
+  values: [NAMED, UNNAMED]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: names
+  observed_from: el_history_state
+  description: >
+    NAMED iff the history's text names the item written ("Item: Apple
+    sauce"); UNNAMED for the empty sentence, a load error, or a card whose
+    item failed to decrypt. The SI keeps at most one card, so this is exact.
+  names:
+    type: FeedId
+    when_named: NAMED
+    when_not:   UNNAMED
+
+ShownState:
+  base: Enum
+  values: [SHOWN, NOT_SHOWN]
+  origin: system_generated
+  capture_at: LIST
+  role: names
+  observed_from: el_history_state
+  description: The same reading as NameState, at the plain history read (LIST).
+  names:
+    type: FeedId
+    when_named: SHOWN
+    when_not:   NOT_SHOWN
+
+SleepSpan:
+  base: Enum
+  values: [SAME_DAY, OVERNIGHT]
+  origin: tester_generated
+  description: 1:00 PM to 2:00 PM, or 10:00 PM to 6:00 AM (dumps 23-25).
+
+TimerBand:
+  base: Enum
+  values: [T0, T1, T_MORE]
+  origin: system_generated
+  capture_at: TIMER_READ
+  role: band
+  observed_from: el_sw_minutes
+  bucket_unit: 1
+  description: >
+    The stopwatch's minutes field: "00" is T0, "01" is T1, two or more is
+    T_MORE. After a minute in the background the specification owes T1 or
+    more (O6); live, it read 00 after 62 s (dumps 26, 27).
+  abstract_values:                 # representatives, for reports only
+    T0:     "00"
+    T1:     "01"
+    T_MORE: "02"

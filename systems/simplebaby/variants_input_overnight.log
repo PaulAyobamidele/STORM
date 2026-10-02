@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	85	135	139	FAIL	ERROR  State 81 waits for WAIT_FOR !EL_SLEEP_SAVED — it never appeared and this state does NOT permit quiescence. The specification required an output here and 

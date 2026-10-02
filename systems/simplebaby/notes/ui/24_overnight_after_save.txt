@@ -1,0 +1,13 @@
+# 24_overnight_after_save  alert: 'Missing Information | Failed to save the Sleep log. Please provide either a stopwatch time or valid manual start and end times.'
+
+<FrameLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/action_bar_root'}  bounds=[70,1003][1010,1461]
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[70,1003][1010,1461]
+<LinearLayoutCompat> {'resource-id': 'com.anonymous.bt_sdk53:id/parentPanel'}  bounds=[70,1003][1010,1461]
+<LinearLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/topPanel'}  bounds=[70,1003][1010,1142]
+<TextView> {'resource-id': 'com.anonymous.bt_sdk53:id/alert_title', 'text': 'Missing Information'}  bounds=[133,1050][947,1121]
+<View> {'resource-id': 'com.anonymous.bt_sdk53:id/titleDividerNoCustom'}  bounds=[70,1121][1010,1142]
+<FrameLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/contentPanel'}  bounds=[70,1142][1010,1297]
+<ScrollView> {'resource-id': 'com.anonymous.bt_sdk53:id/scrollView'}  bounds=[70,1142][1010,1297]
+<TextView> {'resource-id': 'android:id/message', 'text': 'Failed to save the Sleep log. Please provide either a stopwatch time or valid manual start and end times.'}  bounds=[70,1142][1010,1297]
+<ScrollView> {'resource-id': 'com.anonymous.bt_sdk53:id/buttonPanel'}  bounds=[70,1297][1010,1461]
+<Button> {'resource-id': 'android:id/button1', 'text': 'OK'} clickable bounds=[810,1308][978,1450]

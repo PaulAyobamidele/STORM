@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	96	97	168	FAIL	ERROR  TIMER_READ mismatch — TimerBand: AUT expects T_MORE, observed '00' classifies as T0

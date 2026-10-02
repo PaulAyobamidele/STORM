@@ -1,0 +1,27 @@
+(* CALIBRATION 1 of 2 — this formula MUST evaluate to TRUE.
+
+   Nothing else in this directory may be believed until both calibration
+   formulas return the answers stated at the top of their files.
+
+   WHY THIS FILE EXISTS
+   --------------------
+   In MCL a double-quoted action is a LITERAL string, not a regular
+   expression. "SUBMISSION_STATUS.*" therefore matches a label whose text ends
+   in a full stop and an asterisk -- i.e. nothing at all -- and every formula
+   written that way comes back FALSE. During this case study that produced two
+   confidently reported findings ("the stale interleaving is unreachable",
+   "the pairing is unenforced") which were both artefacts of the notation.
+   Both reversed once the formulas were written properly.
+
+   A formula that returns FALSE because it matched nothing is
+   indistinguishable, in the output, from a formula that returns FALSE because
+   the property genuinely fails. The only defence is to calibrate: prove the
+   label text you are using DOES match something before drawing any conclusion
+   from its absence.
+
+   Labels here are exact strings taken from the generated test cases, which are
+   projections of this same composed model, so they are known to occur.
+
+   Expected: TRUE
+*)
+< true* . "SAVE_SUBMISSION !CRS_0 !ASN_0 !PLACEHOLDER" > true

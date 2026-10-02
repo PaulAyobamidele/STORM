@@ -1,0 +1,121 @@
+module tp_input_invalid (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    domain disruption on the happy path (ordering 1).
+   TARGET   the empty medicine name at the create step (O9); expected FAIL. *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_STOCK    : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+        alt
+            ADD_MEDICINE (INVALID)
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (VALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, TAKE)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            []  VIEW (d_a1)
+            []  VIEW (d_a2)
+            []  VIEW (d_a3)
+            []  VIEW (d_b)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt;
+        alt
+            REJECT_SHOWN
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (VALID)
+            []  ADD_MEDICINE (INVALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, TAKE)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            []  VIEW (d_a1)
+            []  VIEW (d_a2)
+            []  VIEW (d_a3)
+            []  VIEW (d_b)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt;
+        loop TP_ACCEPT end loop
+end process
+
+end module

@@ -1,0 +1,14 @@
+# 03_fail_signup  
+
+<LinearLayout> {'resource-id': 'com.anonymous.bt_sdk53:id/action_bar_root'}  bounds=[0,0][1080,2400]
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[0,0][1080,2400]
+<LinearLayout> {'resource-id': 'simple-baby-logo'}  bounds=[540,235][1080,1315]
+<TextView> {'text': 'Welcome to'}  bounds=[46,1416][1036,1499]
+<TextView> {'text': 'SimpleBaby'}  bounds=[37,1508][1045,1619]
+<TextView> {'text': "A secure baby tracker that's easy to use."}  bounds=[37,1637][1045,1702]
+<ViewGroup> {'resource-id': 'sign-in-button', 'content-desc': 'Sign In'} clickable bounds=[37,1804][1043,1957]
+<TextView> {'text': 'Sign In'}  bounds=[85,1852][995,1908]
+<ViewGroup> {'resource-id': 'sign-up-button', 'content-desc': 'Sign Up'} clickable bounds=[37,1976][1043,2129]
+<TextView> {'text': 'Sign Up'}  bounds=[85,2024][995,2080]
+<ViewGroup> {'resource-id': 'guest-button', 'content-desc': 'Try as Guest'} clickable bounds=[37,2147][1043,2300]
+<TextView> {'text': 'Try as Guest'}  bounds=[85,2195][995,2251]

@@ -1,0 +1,5 @@
+# MedTimer tc variants -- purpose: nominal -- 2026-10-02 00:41 -- rev 7f17b6c (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	209	334	661	FAIL	
+2	209	335	701	FAIL	
+3	209	334	669	FAIL	

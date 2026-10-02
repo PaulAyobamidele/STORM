@@ -1,0 +1,314 @@
+module sutname_types is
+
+(* ===========================================================================
+   sutname_types.lnt -- the abstract domain D_abs, the concrete domain D_sys,
+   and the translation L : D_abs -> D_sys.
+
+   This module is imported by the specification, the System Interface, the
+   fixture module and every test purpose. It must contain NO test-selection
+   helper (defaults, witnesses): those live in sutname_fixture.lnt, which the
+   specification does not import, so the separation is structural rather than
+   a matter of discipline.
+
+   Every `HOLE n` below is listed in README.md. Fill them in order;
+   `grep -n HOLE` on the copied system lists what is still open.
+   =========================================================================== *)
+
+
+(* ---------------------------------------------------------------------------
+   1. ABSTRACT DOMAIN  D_abs
+   --------------------------------------------------------------------------- *)
+
+(* HOLE 1  ItemId -- the entities the user selects (foods, medicines,
+   expenses, quizzes). Two or three values, taken from the SUT's OWN shipped
+   data, never fixtures this project invents: a mismatch then means the SUT
+   disagrees with its own catalogue, not with our bookkeeping.
+
+   Choose values that (verified on the device, not assumed):
+     * each resolve to exactly ONE UI row, so `tap (L_item (id))` is
+       unambiguous;
+     * carry observable values (HOLE 5) far enough apart that an aggregate
+       cannot come out right by coincidence;
+     * are large enough that the SUT's boundary behaviour (a goal, a
+       threshold, a stock-out) is REACHABLE within the band (HOLE 6). A fixture
+       that cannot reach the boundary leaves that branch dead in every suite. *)
+type ItemId is
+    item_a, item_b, item_c
+with ==
+end type
+
+(* HOLE 2  Scope -- where a read is directed. Keep two values only if the
+   specification says something DIFFERENT about them (e.g. one may fail, the
+   other may not). A distinction the specification does not use costs state
+   space and controllability conflicts and buys no test power. Delete the
+   type and the `scope` channel field if the SUT has a single source. *)
+type Scope is
+    LOCAL, EXTERNAL
+with ==
+end type
+
+(* HOLE 3  Context -- the bucket a write lands in (meal, group, course).
+   Delete the type and the `ctx` channel field if writes have no context. *)
+type Context is
+    CTX_A, CTX_B, CTX_C
+with ==
+end type
+
+(* HOLE 4  RecordId -- identity of a persisted record, ONE PER ItemId.
+   ABSTRACTION: at most one record per item (rec_n <-> item_of (rec_n)). The
+   real SUT may allow the same item recorded twice; that is out of scope, and
+   the System Interface keeps a per-item existence flag on that basis. *)
+type RecordId is
+    rec_0, rec_1, rec_2
+with ==
+end type
+
+(* HOLE 5  Value -- the attribute read back for an item (energy, stock,
+   balance). OPAQUE TOKENS, one per item, never numbers: the concrete figure
+   is the SUT's own data and the concretization layer checks it against the
+   SUT's authoritative store (type_description.yml: abstract_values). Putting
+   the number here would re-implement the SUT's database inside the tester. *)
+type Value is
+    val_a, val_b, val_c
+with ==
+end type
+
+(* Validity carries the PARAMETER-BORNE disruption (an invalid input). It is
+   not a gate: the specification routes on it (DATABASE, ADD branch), so its
+   test purpose is linear and needs no inner disrupt. *)
+type Validity is
+    VALID, INVALID
+with ==
+end type
+
+(* Fate of a write transaction, READ BACK by the tester at CONFIRM. A status
+   the SUT cannot produce is harmless; one it CAN produce but the model omits
+   is a false FAIL. *)
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, CORRUPTED, REJECTED
+with ==
+end type
+
+(* HOLE 6  StateBand -- the aggregate a write moves (daily total, stock),
+   as a SATURATING band so the LTS stays finite. One rung = one committed
+   write of ONE unit of the default item (sutname_fixture.lnt), which is the
+   only reading under which the concrete oracle can invert it; the band is
+   therefore valid only while every recorded item is the same item. A test
+   purpose may READ several items but must WRITE only one. *)
+type StateBand is
+    B_EMPTY, B_LOW, B_MID, B_HIGH, B_OVER
+with ==
+end type
+
+function bump (b : StateBand) : StateBand is
+    case b in
+        B_EMPTY -> return B_LOW
+      | B_LOW   -> return B_MID
+      | B_MID   -> return B_HIGH
+      | B_HIGH  -> return B_OVER
+      | B_OVER  -> return B_OVER
+    end case
+end function
+
+(* drop is exact BELOW the saturating rung only. At B_OVER ("four or more")
+   removing one leaves "three or more", which is B_HIGH or still B_OVER, and
+   the specification offers BOTH (DATABASE, REMOVE branch). Committing to one
+   is a guess, and a wrong guess reports a counter-example that does not
+   exist. *)
+function drop (b : StateBand) : StateBand is
+    case b in
+        B_EMPTY -> return B_EMPTY
+      | B_LOW   -> return B_EMPTY
+      | B_MID   -> return B_LOW
+      | B_HIGH  -> return B_MID
+      | B_OVER  -> return B_HIGH
+    end case
+end function
+
+(* HOLE 7  value_of / item_of -- the authoritative bindings the DATABASE
+   process answers with. value_of is the SUT's own catalogue (opaque tokens);
+   item_of is the record-to-item abstraction of HOLE 4. *)
+function value_of (id : ItemId) : Value is
+    case id in
+        item_a -> return val_a
+      | item_b -> return val_b
+      | item_c -> return val_c
+    end case
+end function
+
+function item_of (rid : RecordId) : ItemId is
+    case rid in
+        rec_0 -> return item_a
+      | rec_1 -> return item_b
+      | rec_2 -> return item_c
+    end case
+end function
+
+
+(* ---------------------------------------------------------------------------
+   2. OBSERVABLE CHANNELS  (USER <-> APP <-> DATABASE, three-way rendezvous)
+
+   Every observable gate is carried by all three core processes: DATABASE is
+   the authoritative source of each output, APP mediates, USER receives.
+   Nothing is hidden and nothing is invented at a layer that does not own it.
+   --------------------------------------------------------------------------- *)
+
+(* READ journey: SEARCH (input) then INFO (output). *)
+channel SearchChannel is
+    (id : ItemId, scope : Scope)
+end channel
+
+channel InfoChannel is
+    (id : ItemId, v : Value)
+end channel
+
+(* WRITE journey: ADD (input) then CONFIRM (output). *)
+channel AddChannel is
+    (ctx : Context, id : ItemId, valid : Validity)
+end channel
+
+(* `id` on CONFIRM is PROVENANCE: it keeps the correlation identifier threaded
+   from SEARCH / INFO / ADD alive at the output, so a purpose can bind it and
+   the oracle knows which item's unit to expect. It is NOT an observed value --
+   the concrete screen shows an aggregate that names no item. Do not build an
+   oracle that "checks" it; it would compare the tester against its own
+   memory. *)
+channel ConfirmChannel is
+    (status : WriteStatus, band : StateBand, id : ItemId)
+end channel
+
+(* RECORD journeys: VIEW then DETAIL (read a persisted record); REMOVE then
+   CONFIRM (delete it and observe the new band). *)
+channel ViewChannel is
+    (rid : RecordId)
+end channel
+
+channel DetailChannel is
+    (rid : RecordId, id : ItemId)
+end channel
+
+(* HOLE 8  SUT-initiated journeys. If the SUT starts an interaction itself
+   (a reminder is raised, a notification arrives, a nurse is paged), add an
+   OUTPUT gate that opens the journey, e.g.
+
+       channel NotifyChannel is (id : ItemId) end channel
+       -- APP:  NOTIFY (id); ACT (?id, ?action); ... CONFIRM (...)
+       -- USER: NOTIFY (?id); ACT (id, action); CONFIRM (...)
+
+   and realise NOTIFY in the System Interface as wait_for/observe steps that
+   END in the gate (concrete steps first, gate last -- see the SI). *)
+
+
+(* ---------------------------------------------------------------------------
+   3. CONCRETE DOMAIN  D_sys  and the translation  L : D_abs -> D_sys
+
+   The System Interface drives the SUT with five typed primitives:
+       navigate   (Route)     go to a screen / URL
+       tap        (Concrete)  press a control
+       enter_text (Concrete)  type a string into the focused field
+       wait_for   (Element)   block until an element is present (PRECONDITION)
+       observe    (Element)   read an element (ORACLE)
+   Their interpretation I() into runtime selectors / strings / URLs lives in
+   properties/concrete_domain.yml under the SAME names. Name prefixes are a
+   convention the checker relies on: rt_ (Route), el_ (Element), cv_
+   (ConcreteValue).
+   --------------------------------------------------------------------------- *)
+
+(* HOLE 9  Route -- the screens `navigate` can reach directly (the SUT's
+   entry points: a launch activity, a URL). Everything else is reached by
+   tapping, and the screen variable in the SI tracks where that led. *)
+type Route is
+    rt_home
+with ==
+end type
+
+(* HOLE 10  Element -- everything wait_for / observe inspects. An element that
+   appears in an `observe` is an ORACLE selector: its absence is a conformance
+   FAIL. One that appears only in `wait_for` is a PRECONDITION: its absence
+   means the tester could not get where it was going (UNEXECUTABLE).
+   Keep that distinction in mind when reusing one element for both. *)
+type Element is
+    el_home,             (* proves the home screen is up (screen anchor) *)
+    el_search_input,     (* proves the search screen is up (screen anchor) *)
+    el_search_ran,       (* the query has been SUBMITTED (counts / spinner gone);
+                            without it the tester goes from typing straight to
+                            expecting rows and blames the SUT for its own haste *)
+    el_search_results,   (* a result ROW is present -- the query ran and matched *)
+    el_value,            (* the item's value on its result row (oracle at INFO) *)
+    el_add_form,         (* proves the add form is up, valid input OR NOT *)
+    el_save_control,     (* the commit control, which the SUT may withhold *)
+    el_state,            (* the aggregate on the home screen (oracle at CONFIRM) *)
+    el_record_detail,    (* proves a record's detail view is up (screen anchor) *)
+    el_record_item,      (* the item named in the record detail (oracle at DETAIL) *)
+    el_delete_confirm,   (* the delete confirmation control *)
+    el_extapi_warning,   (* observable owed after APP_EXTAPI_FAIL *)
+    el_corrupt_error,    (* observable owed after DB_CORRUPT *)
+    el_storage_error,    (* observable owed after INFRA_STORAGE_MEDIA *)
+    el_recovery_control  (* strict extension: the user must not be trapped *)
+with ==
+end type
+
+(* HOLE 11  ConcreteValue -- everything tap / enter_text targets or types. *)
+type ConcreteValue is
+    cv_item_a, cv_item_b, cv_item_c,          (* the result ROW to tap *)
+    cv_q_a, cv_q_b, cv_q_c,                   (* the query text to type *)
+    cv_ctx_a, cv_ctx_b, cv_ctx_c,             (* the context's "add" control *)
+    cv_rec_0, cv_rec_1, cv_rec_2,             (* a persisted record's row *)
+    cv_scope_local, cv_scope_external,        (* scope selector *)
+    cv_search_submit,                         (* the keyboard's search key -- NOT a chip *)
+    cv_save,
+    cv_back,                                  (* one abstract value, possibly several controls *)
+    cv_delete,
+    cv_confirm_delete,
+    cv_input_invalid                          (* the invalid input typed *)
+with ==
+end type
+
+function L_item (id : ItemId) : ConcreteValue is
+    case id in
+        item_a -> return cv_item_a
+      | item_b -> return cv_item_b
+      | item_c -> return cv_item_c
+    end case
+end function
+
+function L_query (id : ItemId) : ConcreteValue is
+    case id in
+        item_a -> return cv_q_a
+      | item_b -> return cv_q_b
+      | item_c -> return cv_q_c
+    end case
+end function
+
+function L_scope (s : Scope) : ConcreteValue is
+    case s in
+        LOCAL    -> return cv_scope_local
+      | EXTERNAL -> return cv_scope_external
+    end case
+end function
+
+function L_context (c : Context) : ConcreteValue is
+    case c in
+        CTX_A -> return cv_ctx_a
+      | CTX_B -> return cv_ctx_b
+      | CTX_C -> return cv_ctx_c
+    end case
+end function
+
+function L_record (rid : RecordId) : ConcreteValue is
+    case rid in
+        rec_0 -> return cv_rec_0
+      | rec_1 -> return cv_rec_1
+      | rec_2 -> return cv_rec_2
+    end case
+end function
+
+(* No nullary L_back: the SI taps cv_back directly. A parameterless L function
+   is read by neither of si_lnt_parser's tap forms (it needs L_f (var) or a
+   bare cv_*), so `tap (L_back)` silently contributed no action. *)
+
+channel Ch_Route   is (r : Route)         end channel  (* navigate *)
+channel Ch_Value   is (v : ConcreteValue) end channel  (* tap / enter_text *)
+channel Ch_Element is (e : Element)       end channel  (* wait_for / observe *)
+
+end module

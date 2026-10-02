@@ -1,0 +1,6 @@
+# Spliit tc variants -- purpose: ue_kill -- 2026-10-01 22:52 -- rev 64b9e19 (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	98	100	55	PASS	
+2	120	122	56	PASS	
+3	82	85	54	PASS	
+4	124	127	55	PASS	

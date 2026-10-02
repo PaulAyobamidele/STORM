@@ -1,0 +1,173 @@
+module tp_infra_cron_dead (moodle_types) is
+
+(* MOODLE DEPENDS ON CRON FOR CORRECTNESS. update_overdue_attempts is what
+   closes an attempt left open past its deadline. Disabled, the attempt stays
+   IN_PROGRESS forever with no error and no notice. The specification offers
+   only terminal states after the deadline.
+
+   STRUCTURE: `disrupt <accept sequence> by <refused faults> end disrupt'.
+
+   NOT a flat `alt'. In an alt the refuse arms are ALTERNATIVES to the accept
+   sequence, so they are reachable only from the purpose's INITIAL state. The
+   moment the purpose advances one step, every fault arm becomes unreachable,
+   the faults are implicitly accepted, and they wander into the generated test
+   case. Observed directly: tc_happy.1.aut came back with 311 transitions and
+   fired INFRA_CRON_DEAD, DB_ATTEMPT_STEP_LOSS, APP_GRADE_STALE_SUB,
+   UE1_LOSE_CONN and UE2_SESSION_EXPIRE before reaching :PASS: -- a "happy
+   path" control in which five things had gone wrong.
+
+   `disrupt ... by ...' lets the refuse branch PREEMPT the sequence at any
+   point, which is what "refuse this fault anywhere" actually means. It is also
+   what keeps the prefix set small: an unrefused fault makes every fault
+   interleaving a legal prefix, and a purpose cannot constrain prefixes --
+   they are specification behaviour.
+
+   Both verdicts LOOP, so they are proper sinks. *)
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        (* VIEW_QUIZ: STUDENT's quiz path begins with it. It is declared here
+           and was offered nowhere -- neither accepted nor refused -- which
+           blocks the rendezvous exactly as refusing would. That is why testor
+           reported a 1-state CTG: the spec's first quiz step could never
+           happen. It must be ACCEPTED, not left unoffered. Batch 3 of the
+           2026-09-12 incremental closure was going to REFUSE it, which would
+           have kept the purpose unsatisfiable by a different route.
+
+           The refuse list below is correct as it stands and unchanged:
+           PROCESS_ATTEMPT / GRADE_PERSISTED / VIEW_COURSE_TOTAL / COURSE_TOTAL
+           are exactly what stops the "quiz completes normally, THEN cron dies"
+           escape the 2026-09-10 trace found. With those refused, the only
+           coherent path is start -> walk away -> ATTEMPT_STATE -- and STUDENT
+           in specification_moodle.lnt could not express it (ATTEMPT_STATE was
+           a sibling of the quiz disrupt, unreachable from inside an attempt).
+           That is the real cause of every 0-of-N result; fixed in the spec the
+           same day. Hand-traced SPEC || TP through all five rendezvous:
+             VIEW_QUIZ -> START_ATTEMPT -> INFRA_CRON_DEAD
+                       -> ATTEMPT_STATE (att_0, ABANDONED) -> PASS
+           AttemptId is the singleton att_0, so the 4-way rendezvous cannot
+           fail on a value. Diagnosed 2026-09-25. *)
+        VIEW_QUIZ (?any CourseId, ?any QuizId);
+        START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId);
+        INFRA_CRON_DEAD;
+        ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus);
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  DB_ATTEMPT_STEP_LOSS
+            []  UE1_LOSE_CONN
+            []  UE2_SESSION_EXPIRE
+            (* REVISED STRATEGY, 2026-09-10: the broad version of this fix
+               (refuse every declared-but-unconstrained gate) was tried
+               first, then a correction (un-refusing SAVE_ATTEMPT) was tried
+               second, and BOTH left the purpose UNSATISFIABLE -- confirmed
+               by testor itself: the complete test graph (-all) collapsed to
+               exactly 1 state / 1 transition, :INCONCLUSIVE: only. This
+               fault's real spec structure lives entirely in DATABASE, a
+               separate process (`disrupt alt ATTEMPT_STATE(SUBMITTED) []
+               ATTEMPT_STATE(ABANDONED) end alt by INFRA_CRON_DEAD;
+               ATTEMPT_STATE(ABANDONED) end disrupt'), and two single-gate
+               guesses at what DATABASE's own parallel process additionally
+               needs have both been wrong.
+
+               Reverted to the MINIMUM instead: refuse only the ONE gate the
+               ORIGINAL failure log actually showed taking the wrong turn.
+               INFRA_CRON_DEAD fired and was confirmed, but the walk then
+               went to OPEN_GRADING and the whole teacher/session-check chain
+               instead of ATTEMPT_STATE -- the purpose's own real oracle was
+               never even attempted.
+
+               SECOND ROUND, same day: OPEN_GRADING alone made the purpose
+               satisfiable (82 variants), but the canonical (.1) traced
+               directly showed a NEW, different escape: it let the ENTIRE
+               quiz complete NORMALLY first -- START_ATTEMPT through
+               PROCESS_ATTEMPT, GRADE_PERSISTED showing a real grade,
+               VIEW_COURSE_TOTAL/COURSE_TOTAL showing a real total -- and only
+               THEN fired INFRA_CRON_DEAD, followed by checking ATTEMPT_STATE
+               for ABANDONED. That is incoherent: by the time the fault fires
+               the attempt has already been fully, successfully processed,
+               so "abandoned" cannot be what Moodle would show next. These
+               four were in the original broad refuse-list and were dropped
+               along with everything else in the minimal rewrite; they need
+               to come back specifically, not the whole broad list. Add more
+               refusals later ONLY if a fresh walk shows yet another NEW
+               escape route -- not preemptively. *)
+            (* DIAGNOSTIC, 2026-09-11, REFUTED: tried removing OPEN_GRADING
+               from this list alone to isolate whether refusing it is what
+               collapsed this purpose to unsatisfiable (1-state CTG, no
+               reachable :PASS:) after specification_moodle.lnt gained the
+               `only if sst == SUBMITTED_FG' guard on OPEN_GRADING/
+               GRADING_SHOWS/GRADE_SUBMISSION. Regenerated on narval3:
+               SAME collapse, still 1 state / 1 transition. So OPEN_GRADING's
+               presence in this refuse list is NOT the cause -- restored it.
+               The other 10 purposes regenerated cleanly under the same
+               guard, so this is isolated to infra_cron_dead specifically,
+               not a property of the guard itself. DEFERRED, same as
+               app_partial_submission/db_attempt_step_loss: needs CTG/trace
+               inspection, not another blind guess. Backup of the file as it
+               stood before this guard existed at all:
+               tp_infra_cron_dead.lnt.pre-open_grading-guard-experiment. *)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  PROCESS_ATTEMPT (?any AttemptId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+            (* INCREMENTAL CLOSURE, 2026-09-12, BATCH 1 of 3: this purpose has
+               already collapsed to unsatisfiable twice from a single broad
+               refuse-list pass (see history above) -- DATABASE's own
+               structure imposes constraints not visible from this file
+               alone, and two single-gate guesses at what it additionally
+               needed were both wrong. Closing incrementally instead, with a
+               regeneration + satisfiability check after each batch, rather
+               than repeating the all-at-once mistake a third time.
+               Batch 1: the pure assignment side, zero connection to the
+               quiz/cron path this purpose's own accept sequence lives on.
+               If this batch alone collapses satisfiability, DATABASE's
+               constraint touches the assignment side somehow -- a real,
+               surprising finding worth its own investigation, not something
+               to guess past. Batch 2 (surfaced errors) and batch 3
+               (VIEW_QUIZ/ENROL/SAVE_ATTEMPT, each individually) follow only
+               if this batch survives. *)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

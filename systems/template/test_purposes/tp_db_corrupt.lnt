@@ -1,0 +1,87 @@
+module tp_db_corrupt (sutname_types, sutname_fixture) is
+
+(* ===========================================================================
+   SHAPE    INTERRUPT. Copy this file for every fault the specification places
+            as `disrupt <journey> by FAULT; OBSERVABLE end disrupt`:
+            DB_CORRUPT (this file), APP_EXTAPI_FAIL (search EXTERNAL instead
+            of LOCAL, observable APP_EXTAPI_WARNING).
+
+   TARGET   Database -- DB_CORRUPT: a stored record is unsound.
+
+   THE SUT MUST: DETECT the corruption and say so. It may not render the
+            damaged record as though it were sound. A missing value shown as
+            zero, or as a blank the aggregate then treats as zero, is the
+            counter-example: the user cannot tell a real value from a lost
+            one.
+
+   The specification places the fault as an interrupt of the local lookup --
+
+       disrupt SEARCH (?id, LOCAL); INFO (id, ?v)
+       by      DB_CORRUPT; DB_CORRUPT_DETECTED end disrupt
+
+   -- so it may strike either side of SEARCH, and this purpose mirrors that
+   rather than pinning a position the model leaves open. A purpose that pins
+   a position the specification leaves open is over-constrained; one that
+   leaves open a position the specification fixes is under-constrained.
+
+   ACCEPT   the lookup is interrupted and the SUT reports the corruption.
+   REFUSE   the lookup COMPLETES -- the record was sound, so the fault never
+            fired and this trace belongs to the nominal purpose; and any
+            OTHER fault interrupting the run.
+
+   Observable owed: DB_CORRUPT_DETECTED.
+
+   The CTG of this shape necessarily contains an :INCONCLUSIVE: branch (the
+   fault fires and the observable never comes). That is normal. Satisfiability
+   is decided by whether :PASS: is reachable, which generate_tc_all.sh checks.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ItemId in
+        IDF := defaultItem;
+        disrupt
+            SEARCH (IDF, LOCAL);
+            INFO   (IDF, ?any Value);
+            loop TP_REFUSE end loop
+        by
+            alt
+                DB_CORRUPT;
+                DB_CORRUPT_DETECTED;
+                loop TP_ACCEPT end loop
+            []
+                -- any OTHER fault: this purpose's own target excluded
+                alt
+                    UE_KILL
+                []  APP_EXTAPI_FAIL
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  INFRA_STORAGE_FULL
+                []  INFRA_STORAGE_MEDIA
+                end alt;
+                loop TP_REFUSE end loop
+            end alt
+        end disrupt
+    end var
+end process
+
+end module

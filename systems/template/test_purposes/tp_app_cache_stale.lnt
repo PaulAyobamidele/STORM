@@ -1,0 +1,83 @@
+module tp_app_cache_stale (sutname_types, sutname_fixture) is
+
+(* ===========================================================================
+   SHAPE    PRE-ARMED (resilience). Copy this file for every fault the
+            specification places BEFORE a journey that must then complete
+            nominally: `FAULT; SEARCH ...; INFO ...`.
+
+   TARGET   App -- APP_CACHE_STALE: a cached value has drifted from its
+            source.
+
+   THE SUT MUST: return the AUTHORITATIVE value, not the stale cached figure.
+            The store is the source of truth; a cache that has drifted must
+            be revalidated, not served.
+
+   The specification places the fault before the read, not as an interrupt
+   of it --
+
+       APP_CACHE_STALE; SEARCH (?id, LOCAL); INFO (id, ?v)
+
+   -- so the accept path is linear, matching the model.
+
+   ACCEPT   the cache is stale, a local search is performed, and INFO
+            reports a value.
+   REFUSE   any OTHER fault interrupting the run.
+
+   Observable owed: INFO (IDF, ?v). This needs no dedicated response gate:
+   the concretization layer checks the reported value against the SUT's OWN
+   store (type_description.yml, abstract_values), so a stale figure is caught
+   by comparison with the authoritative one. That check IS the revalidation
+   test, and it is exact rather than a string match. This is the sharpest
+   shape: the others ask whether the SUT reports a failure; this one asks
+   whether the value it reports is TRUE.
+
+   INJECTION (properties/disruption_mapping.yml): timing `pre`, and it must
+   change the value UNDERNEATH a cache the SUT already holds. Rewriting the
+   store itself makes the stale value the new truth, and the oracle then
+   punishes correct behaviour.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ItemId in
+        IDF := defaultItem;
+        disrupt
+            APP_CACHE_STALE;
+            SEARCH (IDF, LOCAL);
+            INFO   (IDF, ?any Value);
+            loop TP_ACCEPT end loop
+        by
+            -- any OTHER fault: this purpose's own target excluded
+            alt
+                UE_KILL
+            []  APP_EXTAPI_FAIL
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

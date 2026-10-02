@@ -1,0 +1,102 @@
+module tp_app_partial_submission (moodle_types) is
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        (* VIEW_ASSIGN: STUDENT's assignment path begins with it. It was in the
+           refuse list below (re-added 2026-09-12 with the broad closure), which
+           sends the spec's very first step to TP_REFUSE -- no PASS reachable.
+           It must be ACCEPTED here, not merely un-refused. *)
+        VIEW_ASSIGN (?any CourseId, ?any AssignId);
+        SAVE_SUBMISSION (?any CourseId, ?any AssignId, PLACEHOLDER);
+        APP_PARTIAL_SUBMISSION;
+        (* WRITE_ERROR_SHOWN: the 2026-09-12 note below is right that it must
+           not be refused -- but declared-and-unoffered blocks the rendezvous
+           exactly as refusing does. APP's fault branch is the unbranching
+           sequence APP_PARTIAL_SUBMISSION; WRITE_ERROR_SHOWN; SUBMISSION_STATUS,
+           so the purpose has to OFFER it here or SUBMISSION_STATUS is never
+           reached. Found 2026-09-25 by tracing SPEC || TP by hand. Oracle is
+           unchanged: the spec offers only NO_SUBMISSION, so SUBMITTED_FG from
+           the SUT is outside the expected set -- FAIL. *)
+        WRITE_ERROR_SHOWN;
+        SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus);
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  DB_ATTEMPT_STEP_LOSS
+            []  INFRA_CRON_DEAD
+            []  UE1_LOSE_CONN
+            []  UE2_SESSION_EXPIRE
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            (* 2026-09-10: canonical (.1) traced directly, not walked -- teacher
+               logged in and graded (OPEN_GRADING/GRADING_SHOWS showing
+               PLACEHOLDER) BEFORE the student ever submitted anything. On a
+               freshly-reset fixture there is nothing yet to grade; this
+               ordering is not concretely executable. Closing it the same
+               targeted way as SUBMISSION_TEXT above. *)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            (* 2026-09-12: closing the rest of the declared-but-unconstrained
+               gate list, same pattern proven on tp_ue1_lose_conn.lnt and
+               tp_happy.lnt. A prior attempt at this exact fix ([[project_moodle]])
+               came back UNSATISFIABLE and was deferred rather than chased
+               further at the time. Traced why: WRITE_ERROR_SHOWN is
+               DELIBERATELY NOT refused here, unlike in tp_happy.lnt --
+               it sits inside APP_PARTIAL_SUBMISSION's own fault chain in the
+               spec (`APP_PARTIAL_SUBMISSION; WRITE_ERROR_SHOWN;
+               SUBMISSION_STATUS(NO_SUBMISSION)', an unavoidable,
+               unbranching sequence with no alternative), so refusing it
+               would refuse the purpose's own required path to its target
+               fault -- the same reason VIEW_QUIZ stays open in
+               tp_ue1_lose_conn.lnt. STALE_WARNING_SHOWN/SESSION_ERROR_SHOWN/
+               CONN_ERROR_SHOWN carry no such dependency (each sits behind a
+               DIFFERENT fault that is already refused above), so they are
+               closed here for the same defensive completeness as happy's. *)
+            []  ENROL (?any CourseId)
+            []  VIEW_QUIZ (?any CourseId, ?any QuizId)
+            []  START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId)
+            []  SAVE_ATTEMPT (?any AttemptId)
+            []  PROCESS_ATTEMPT (?any AttemptId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+            []  STALE_WARNING_SHOWN
+            []  SESSION_ERROR_SHOWN
+            []  CONN_ERROR_SHOWN
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

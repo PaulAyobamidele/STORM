@@ -1,0 +1,112 @@
+# type_description.yml -- Sampler contract and oracle data for MedTimer's
+# abstract types. One top-level key per LNT type, no enclosing `types:` key.
+#
+# ORACLE HOOK (framework/concretization/observation_oracle.py). A type read
+# back at a checkpoint declares `capture_at:` (the gate whose label carries
+# it), `role:` (band | enum | names) and `observed_from:` (the el_* the value
+# is read from). A type without `role:` is not read back and a PASS would be
+# vacuous for it. `abstract_values` are the RENDERED strings.
+
+MedicineId:
+  base: Enum
+  values: [med_a, med_b]
+  origin: tester_generated
+  description: The two medicines the prelude creates.
+  abstract_values:
+    med_a: "Vitamin C"
+    med_b: "Zinc"
+
+DoseId:
+  base: Enum
+  values: [d_a1, d_a2, d_a3, d_b]
+  origin: tester_generated
+  description: Tonight's four doses, by reminder time.
+  abstract_values:
+    d_a1: "11:57 PM"
+    d_a2: "11:58 PM"
+    d_a3: "11:59 PM"
+    d_b:  "11:56 PM"
+
+DoseAction:
+  base: Enum
+  values: [TAKE, SKIP]
+  origin: tester_generated
+  description: What the tester does with the day's dose (the popup's Taken / Skipped).
+  abstract_values:
+    TAKE: "Taken"
+    SKIP: "Skipped"
+
+Validity:
+  base: Enum
+  values: [VALID, INVALID]
+  origin: tester_generated
+  description: The medicine name typed; INVALID is the empty name.
+  abstract_values:
+    VALID: "Vitamin D"
+    INVALID: ""
+
+# The dose, as typed into the reminder: the unit of the stock band.
+Dose:
+  base: Integer
+  origin: system_generated
+  constraints:
+    - ['>=', 0]
+    - ['<=', 100]
+  description: The reminder's dose ("1"); one rung of StockBand.
+  abstract_values:
+    med_a: "1"
+    med_b: "1"
+
+StockBand:
+  base: Enum
+  values: [S0, S1, S2, S3, S4]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: band
+  observed_from: [el_card_a, el_card_b]
+  description: >
+    The acted dose's medicine stock, read off its card after a tab switch
+    ("Vitamin C (N pills left)" / "Zinc (N pills left)"): only that card is
+    observed before each CONFIRM, so the scope holds one reading. In
+    rungs of one dose: rung = round(N / 1), saturating at S4 = four or more.
+    The fixture starts at S3 so that a refund the records do not justify
+    (three to four) classifies as S4, not S3. When stock management is
+    inactive (exactly zero with no out-of-stock reminder) the card shows no
+    stock text at all; that case is unreachable in these journeys.
+  bucket_unit_from:
+    type:  Dose
+    value: med_a
+  abstract_values:                 # representatives, for reports only
+    S0: "0 pills left"
+    S1: "1 pills left"
+    S2: "2 pills left"
+    S3: "3 pills left"
+    S4: "4 pills left"
+
+DoseState:
+  base: Enum
+  values: [PENDING, TAKEN, SKIPPED, ABSENT]
+  origin: system_generated
+  capture_at: CONFIRM
+  role: enum
+  observed_from: [el_state_a1, el_state_a2, el_state_a3, el_state_b]
+  description: >
+    The dose row's state button content description on the overview.
+    ABSENT has no rendering (the row is gone), so a label carrying ABSENT is
+    reported unclassified, never mismatched; the stock band is the oracle on
+    that path.
+  abstract_values:
+    PENDING: "Please wait…"
+    TAKEN:   "Taken"
+    SKIPPED: "Skipped"
+    ABSENT:  ""
+
+WriteStatus:
+  base: Enum
+  values: [COMMITTED, ROLLED_BACK, REJECTED]
+  origin: system_generated
+  capture_at: CONFIRM
+  # no role: MedTimer shows no status as such. It manifests in the band and
+  # the row state (COMMITTED moves them, the others leave them) and in
+  # whether WRITE_ERROR_SHOWN appeared, which are checked where observed.
+  description: Fate of the write; carried for the model's bookkeeping.

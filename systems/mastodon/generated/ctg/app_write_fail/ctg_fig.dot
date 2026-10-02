@@ -1,0 +1,52 @@
+digraph CTG {
+  rankdir=TB;
+  graph [splines=true, outputorder=edgesfirst];
+  graph [nodesep=0.12, ranksep=0.22, margin=0, pad=0.02];
+  node [shape=circle, width=0.28, height=0.28, fixedsize=true, fontsize=7, penwidth=0.8];
+  edge [fontsize=6, arrowsize=0.5, penwidth=0.8];
+  0 [color=red, fontcolor=red, pos="0,0!"];
+  7 [color=red, fontcolor=red, pos="118,0!"];
+  8 [color=red, fontcolor=red, pos="236,0!"];
+  9 [color=black, fontcolor=black, pos="236,-58!"];
+  26 [color=red, fontcolor=red, pos="354,0!"];
+  28 [color=red, fontcolor=red, pos="472,0!"];
+  30 [color=red, fontcolor=red, pos="472,-116!"];
+  32 [color=red, fontcolor=red, pos="354,-116!"];
+  33 [color=red, fontcolor=red, pos="118,-232!"];
+  34 [color=red, fontcolor=red, pos="236,-116!"];
+  35 [color=black, fontcolor=black, pos="354,-174!"];
+  40 [color=red, fontcolor=red, pos="118,-116!"];
+  42 [color=red, fontcolor=red, pos="0,-116!"];
+  56 [color=red, fontcolor=red, pos="0,-232!"];
+  0 -> 7 [label="NAVIGATE LOGIN
+(+5 steps)
+TYPE_INTO COMPOSE_TEXT...", color=red, fontcolor=red];
+  7 -> 8 [label="ADD POST_A...", color=red, fontcolor=red];
+  8 -> 9 [label="APP_WRITE_FAIL", color=blue, fontcolor=blue];
+  8 -> 26 [label="CLICK POST_BUTTON
+(+7 steps)
+OBSERVE HOME_COLUMN", color=red, fontcolor=red];
+  26 -> 28 [label="CONFIRM COMMITTED...", color=red, fontcolor=red];
+  28 -> 30 [label="TYPE_INTO COMPOSE_TEXT...", color=red, fontcolor=red];
+  30 -> 32 [label="ADD POST_B...", color=red, fontcolor=red];
+  32 -> 34 [label="APP_WRITE_FAIL", color=red, fontcolor=red];
+  32 -> 35 [label="CLICK POST_BUTTON", color=blue, fontcolor=blue];
+  34 -> 40 [label="CLICK POST_BUTTON
+WAIT_FOR WRITE_ERROR
+OBSERVE WRITE_ERROR", color=red, fontcolor=red];
+  40 -> 42 [label="WRITE_ERROR_SHOWN", color=red, fontcolor=red];
+  42 -> 56 [label="NAVIGATE PROFILE
+(+5 steps)
+OBSERVE HOME_COLUMN", color=red, fontcolor=red];
+  56 -> 33 [label="CONFIRM ROLLED_BACK...", color=red, fontcolor=red];
+  0 -> 0 [label="δ", color=black, fontcolor=black];
+  7 -> 7 [label="δ", color=black, fontcolor=black];
+  8 -> 8 [label="δ", color=black, fontcolor=black];
+  9 -> 9 [label="δ", color=black, fontcolor=black];
+  28 -> 28 [label="δ", color=black, fontcolor=black];
+  30 -> 30 [label="δ", color=black, fontcolor=black];
+  32 -> 32 [label="δ", color=black, fontcolor=black];
+  33 -> 33 [label=":PASS:", color=red, fontcolor=red];
+  34 -> 34 [label="δ", color=black, fontcolor=black];
+  42 -> 42 [label="δ", color=black, fontcolor=black];
+}

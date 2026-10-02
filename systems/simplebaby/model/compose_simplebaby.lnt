@@ -1,0 +1,60 @@
+-- compose_simplebaby.lnt -- COMPOSED = SPEC || SI, synchronised on the whole
+-- abstract alphabet; the five concrete primitives stay visible for the
+-- generated test case.
+--
+--   lnt.open -main COMPOSED compose_simplebaby.lnt generator compose_simplebaby.bcg
+
+module compose_simplebaby (simplebaby_types, specification_simplebaby, system_interface_simplebaby)
+is
+
+process COMPOSED [
+    navigate  : Ch_Route,
+    click     : Ch_Selector,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    START       : ModeChannel,
+    ADD         : AddChannel,
+    CONFIRM     : ConfirmChannel,
+    READ        : ReadChannel,
+    LIST        : ListChannel,
+    REMOVE      : RemoveChannel,
+    SLEEP_ADD   : SleepChannel,
+    SLEEP_SAVED : none,
+    SAVED_SHOWN : none,
+    TIMER_START : none,
+    TIMER_READ  : TimerChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    DB_DATA_LOST_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    UE_OFFLINE          : none,
+    UE_STORAGE_FULL     : none,
+    APP_UNAVAILABLE     : none,
+    APP_KEY_LOST        : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_LOCAL    : none,
+    DB_DATA_LOST        : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_MEDIA : none,
+    INFRA_DOZE          : none
+] is
+    par START, ADD, CONFIRM, READ, LIST, REMOVE, SLEEP_ADD, SLEEP_SAVED, SAVED_SHOWN, TIMER_START, TIMER_READ,
+        WRITE_ERROR_SHOWN, REJECT_SHOWN, DB_CORRUPT_DETECTED, DB_DATA_LOST_DETECTED, INFRA_STORAGE_ERROR, UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE,
+        APP_KEY_LOST, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST, INFRA_DB_DOWN, INFRA_STORAGE_MEDIA, INFRA_DOZE in
+        SPEC [START, ADD, CONFIRM, READ, LIST, REMOVE, SLEEP_ADD, SLEEP_SAVED, SAVED_SHOWN, TIMER_START, TIMER_READ,
+              WRITE_ERROR_SHOWN, REJECT_SHOWN, DB_CORRUPT_DETECTED, DB_DATA_LOST_DETECTED, INFRA_STORAGE_ERROR, UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE,
+              APP_KEY_LOST, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST, INFRA_DB_DOWN, INFRA_STORAGE_MEDIA, INFRA_DOZE]
+    ||
+        SI [navigate, click, type_into, wait_for, observe,
+            START, ADD, CONFIRM, READ, LIST, REMOVE, SLEEP_ADD, SLEEP_SAVED, SAVED_SHOWN, TIMER_START, TIMER_READ,
+            WRITE_ERROR_SHOWN, REJECT_SHOWN, DB_CORRUPT_DETECTED, DB_DATA_LOST_DETECTED, INFRA_STORAGE_ERROR, UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE,
+            APP_KEY_LOST, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST, INFRA_DB_DOWN, INFRA_STORAGE_MEDIA, INFRA_DOZE]
+    end par
+end process
+
+end module

@@ -1,0 +1,157 @@
+module simplebaby_types is
+
+(* SimpleBaby: a parent logs feedings and sleeps for a child, signed in
+   (Supabase, end-to-end encrypted) or as a guest (on-device store).
+   Ground truth: notes/observed_behaviour.md. Test-selection defaults live in
+   simplebaby_fixture.lnt, which the specification does not import. *)
+
+(* ---- abstract domain ---------------------------------------------------- *)
+
+(* Where the records live. The SI prelude signs up or enters guest mode;
+   the specification offers each fault only in the mode that hosts it. *)
+type Mode is
+    SIGNED, GUEST
+with ==
+end type
+
+(* The feeding the tester writes: one fixed item name and amount
+   (type_description.yml). *)
+type FeedId is
+    feed_a
+with ==
+end type
+
+(* A persisted feeding card, one per FeedId. *)
+type RecordId is
+    rec_a
+with ==
+end type
+
+(* INVALID = the amount left empty (client check, observed_behaviour §6).
+   `vld`, never `valid`, for variables: LNT is case-insensitive. *)
+type Validity is
+    VALID, INVALID
+with ==
+end type
+
+(* Fate of a write or a delete, read back from the history. *)
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, REJECTED
+with ==
+end type
+
+(* NAMED = the history names the item, readably. The app shows no card
+   count anywhere (notes/ui/13), so the history is read as "names the item
+   or not"; the SI keeps at most one feeding card at a time, which makes that
+   exact. A card whose fields failed to decrypt does not name the item. *)
+type NameState is
+    NAMED, UNNAMED
+with ==
+end type
+
+function named_of (held : Bool) : NameState is
+    if held then return NAMED else return UNNAMED end if
+end function
+
+(* The same question at the plain history read (LIST). A type of its own
+   because each checkpoint type is read at one gate. *)
+type ShownState is
+    SHOWN, NOT_SHOWN
+with ==
+end type
+
+function shown_of (held : Bool) : ShownState is
+    if held then return SHOWN else return NOT_SHOWN end if
+end function
+
+(* A manual sleep: start and end the same evening, or 22:00 to 06:00. *)
+type SleepSpan is
+    SAME_DAY, OVERNIGHT
+with ==
+end type
+
+(* The sleep stopwatch's minutes reading. *)
+type TimerBand is
+    T0, T1, T_MORE
+with ==
+end type
+
+function item_of (rid : RecordId) : FeedId is
+    case rid in
+        rec_a -> return feed_a
+    end case
+end function
+
+(* ---- observable channels ------------------------------------------------ *)
+
+channel ModeChannel    is (md : Mode)                                  end channel
+channel AddChannel     is (id : FeedId, vld : Validity)                end channel
+(* `id` is provenance, not an observed value. *)
+channel ConfirmChannel is (st : WriteStatus, n : NameState, id : FeedId)   end channel
+channel ReadChannel    is (id : FeedId)                                end channel
+channel ListChannel    is (sh : ShownState, id : FeedId)               end channel
+channel RemoveChannel  is (rid : RecordId)                             end channel
+channel SleepChannel   is (sp : SleepSpan)                             end channel
+channel TimerChannel   is (t : TimerBand)                              end channel
+
+(* ---- concrete domain D_sys and L (Android, Appium / UiAutomator2) --------
+   click (Selector), type_into (Selector, InputValue), wait_for / observe
+   (Element), navigate (Route: relaunch). Every name is interpreted in
+   properties/concrete_domain.yml from the live dumps in notes/ui/. *)
+
+type Route is
+    rt_home                  (* relaunch the app *)
+with ==
+end type
+
+type Selector is
+    sel_sign_up, sel_guest, sel_guest_continue,
+    sel_first_name, sel_last_name, sel_email, sel_password, sel_password2,
+    sel_sign_up_submit, sel_child_name, sel_child_save,
+    sel_tab_trackers, sel_tab_logs, sel_logs_feeding,
+    sel_feeding_button, sel_item_name, sel_amount, sel_feed_save,
+    sel_alert_ok, sel_back, sel_delete, sel_confirm_delete,
+    sel_sleep_button, sel_sleep_reset, sel_sleep_start_time, sel_sleep_end_time,
+    sel_time_keyboard, sel_input_hour, sel_input_minute, sel_ampm, sel_am, sel_pm,
+    sel_time_ok, sel_sleep_save, sel_sw_reset, sel_sw_start
+with ==
+end type
+
+type Element is
+    el_welcome,          (* anchor of SCR_HOME *)
+    el_signup_form,
+    el_guest_screen,
+    el_child_popup,
+    el_trackers,         (* anchor of SCR_TRACKERS *)
+    el_alert,            (* anchor of SCR_ALERT: any app alert *)
+    el_feed_form,        (* anchor of SCR_FEED *)
+    el_saved,            (* "Feeding log saved successfully!" (oracle) *)
+    el_write_error,      (* "Failed to save feeding log: ..." (oracle, O4) *)
+    el_reject,           (* "Missing Information" (oracle, O1) *)
+    el_logs_tab,
+    el_history,          (* anchor of SCR_HISTORY *)
+    el_history_state,    (* first "Item:" line, or the empty sentence (oracle) *)
+    el_delete_dialog,
+    el_corrupt_flag,     (* decryption failure or a load error (oracle, O5) *)
+    el_storage_error,    (* any storage error report (oracle, O5) *)
+    el_loss_flag,        (* any report that a saved record is gone (oracle, O2) *)
+    el_sleep_form,       (* anchor of SCR_SLEEP *)
+    el_time_dialog,
+    el_sleep_saved,      (* "Sleep log saved successfully!" (oracle, O7) *)
+    el_sw_minutes        (* the stopwatch's minutes field (oracle, O6) *)
+with ==
+end type
+
+type InputValue is
+    cv_first, cv_last, cv_email, cv_password, cv_child,
+    cv_item, cv_amount,
+    cv_h_1, cv_h_2, cv_h_6, cv_h_10, cv_m_00
+with ==
+end type
+
+channel Ch_Route    is (r : Route)                    end channel  (* navigate  *)
+channel Ch_Selector is (s : Selector)                 end channel  (* click     *)
+channel Ch_TypeIn   is (s : Selector, v : InputValue) end channel  (* type_into *)
+channel Ch_Element  is (e : Element)                  end channel  (* wait_for / observe *)
+
+end module

@@ -1,0 +1,227 @@
+module spliit_types is
+
+(* Spliit: a group of participants records expenses; the app derives totals
+   and balances. Ground truth: notes/observed_behaviour.md. Amounts are in
+   minor units in the SUT; here they are opaque tokens. *)
+
+(* ---- abstract domain ---------------------------------------------------- *)
+
+(* The expenses the tester creates: three fixed title/amount pairs, amounts
+   spread so a total cannot be right by coincidence. Concrete values in
+   properties/type_description.yml. *)
+type ExpenseId is
+    exp_a, exp_b, exp_c
+with ==
+end type
+
+(* Who paid. The three participants Spliit pre-fills on group creation. *)
+type Payer is
+    john, jane, jack
+with ==
+end type
+
+(* A persisted expense row, one per ExpenseId (at most one row per fixture
+   expense; the real app allows duplicates, out of scope). *)
+type RecordId is
+    row_a, row_b, row_c
+with ==
+end type
+
+(* Parameter-borne disruptions.
+   INVALID   rejected in the browser by zod (amount 0)
+   OVERLIMIT passes the browser (major units) and is rejected by the server
+             (minor units): amount 20,000,000 (observed_behaviour.md §6) *)
+type Validity is
+    VALID, INVALID, OVERLIMIT
+with ==
+end type
+
+(* ONCE = a single row. WEEKLY dated eight days back is materialised on the
+   next read into exactly one extra row, whatever the hour (§7). *)
+type Recurrence is
+    ONCE, WEEKLY
+with ==
+end type
+
+(* Fate of a write, read back by the tester from the totals. *)
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, REJECTED
+with ==
+end type
+
+(* LOGGED = the activity log has a "created" entry for EVERY row the write
+   produced. Spliit logs before inserting (api.ts:53-67) and logs nothing
+   for materialised rows (api.ts:498-552). DELETED is the delete journey's
+   own outcome (deleteExpense also logs before deleting, api.ts:112-128;
+   the rendered text names the action, "deleted by" vs "created by", so a
+   deletion is never mistaken for a lingering creation entry). *)
+type LogState is
+    LOGGED, UNLOGGED, DELETED
+with ==
+end type
+
+(* "Total group spendings" (Stats tab) as a saturating band: one rung per
+   committed row of the default expense. Reimbursements do not count. *)
+type SpendBand is
+    S0, S1, S2, S3, S_MORE
+with ==
+end type
+
+function bump (b : SpendBand) : SpendBand is
+    case b in
+        S0     -> return S1
+      | S1     -> return S2
+      | S2     -> return S3
+      | S3     -> return S_MORE
+      | S_MORE -> return S_MORE
+    end case
+end function
+
+(* A committed write moves the total by one rung, or two for WEEKLY. *)
+function grow (b : SpendBand, rec : Recurrence) : SpendBand is
+    case rec in
+        ONCE   -> return bump (b)
+      | WEEKLY -> return bump (bump (b))
+    end case
+end function
+
+(* Exact below the top rung only; at S_MORE the specification offers both. *)
+function drop (b : SpendBand) : SpendBand is
+    case b in
+        S0     -> return S0
+      | S1     -> return S0
+      | S2     -> return S1
+      | S3     -> return S2
+      | S_MORE -> return S3
+    end case
+end function
+
+function item_of (rid : RecordId) : ExpenseId is
+    case rid in
+        row_a -> return exp_a
+      | row_b -> return exp_b
+      | row_c -> return exp_c
+    end case
+end function
+
+(* ---- observable channels (USER <-> APP <-> DATABASE) -------------------- *)
+
+(* WRITE: create an expense, then read back the total and the log. *)
+channel AddChannel is
+    (payer : Payer, id : ExpenseId, valid : Validity, rec : Recurrence)
+end channel
+
+(* `id` is provenance for the trace, not an observed value. *)
+channel ConfirmChannel is
+    (status : WriteStatus, band : SpendBand, log : LogState, id : ExpenseId)
+end channel
+
+(* RECORD: open a row (read which expense it is), or delete it. *)
+channel ViewChannel is
+    (rid : RecordId)
+end channel
+
+channel DetailChannel is
+    (rid : RecordId, id : ExpenseId)
+end channel
+
+(* ---- concrete domain D_sys and L : D_abs -> D_sys (used by the SI) ------
+   Web SUT driven by Selenium: navigate (Route), click (Selector),
+   type_into (Selector, InputValue), wait_for / observe (Element). Every
+   name is interpreted in properties/concrete_domain.yml; every selector
+   there was taken from a live DOM dump (notes/dom/, 2026-09-25). *)
+
+(* Only two absolute routes are needed: the group is created in the SI's
+   prelude and every later move is a click inside it, so no group id ever
+   has to be captured. *)
+type Route is
+    rt_group_create,   (* /groups/create *)
+    rt_groups          (* /groups: recent groups, used to return after UE_KILL *)
+with ==
+end type
+
+(* Targets of click and type_into. *)
+type Selector is
+    sel_group_name, sel_group_create, sel_recent_group,
+    sel_new_expense, sel_cancel,
+    sel_title, sel_amount, sel_date, sel_original_amount,
+    sel_currency_combo, sel_currency_eur,
+    sel_payer_combo, sel_payer_john, sel_payer_jane, sel_payer_jack,
+    sel_recurrence_combo, sel_recurrence_weekly,
+    sel_create, sel_delete, sel_confirm_delete,
+    sel_tab_expenses, sel_tab_stats, sel_tab_activity,
+    sel_row_a, sel_row_b, sel_row_c          (* a row, by its title *)
+with ==
+end type
+
+(* Targets of wait_for (precondition) and observe (oracle). *)
+type Element is
+    el_group_form,        (* anchor of the create-group page *)
+    el_groups_page,       (* anchor of /groups *)
+    el_search_box,        (* anchor of SCR_HOME: the expense list's search box *)
+    el_title_input,       (* anchor of SCR_FORM *)
+    el_create_button,
+    el_edit_form,         (* anchor of SCR_EDIT: the Save button *)
+    el_edit_title,        (* the title input's value (oracle at DETAIL) *)
+    el_delete_dialog,
+    el_totals_header,     (* anchor of SCR_STATS *)
+    el_total_spending,    (* "Total group spendings" figure (oracle at CONFIRM) *)
+    el_activity_header,   (* anchor of SCR_ACTIVITY *)
+    el_activity_latest,   (* title named by the newest log entry (oracle at CONFIRM) *)
+    el_activity_copy,     (* the second entry for the WEEKLY title (oracle, O2) *)
+    el_write_error,       (* any error surfaced after a failed save; none today *)
+    el_reject_message,    (* zod's inline message under the amount field *)
+    el_rate_error,        (* "Oops, we could not get the most recent rates." *)
+    el_corrupt_notice     (* any warning on a corrupt row's edit page; none today *)
+with ==
+end type
+
+(* Strings typed into a field. cv_date_past is a relative date the executor
+   must resolve at run time (eight days before today). *)
+type InputValue is
+    cv_group_name,
+    cv_title_a, cv_title_b, cv_title_c,
+    cv_amount_a, cv_amount_b, cv_amount_c,
+    cv_amount_invalid, cv_amount_overlimit,
+    cv_date_past
+with ==
+end type
+
+function L_title (id : ExpenseId) : InputValue is
+    case id in
+        exp_a -> return cv_title_a
+      | exp_b -> return cv_title_b
+      | exp_c -> return cv_title_c
+    end case
+end function
+
+function L_amount (id : ExpenseId) : InputValue is
+    case id in
+        exp_a -> return cv_amount_a
+      | exp_b -> return cv_amount_b
+      | exp_c -> return cv_amount_c
+    end case
+end function
+
+function L_payer (p : Payer) : Selector is
+    case p in
+        john -> return sel_payer_john
+      | jane -> return sel_payer_jane
+      | jack -> return sel_payer_jack
+    end case
+end function
+
+function L_record (rid : RecordId) : Selector is
+    case rid in
+        row_a -> return sel_row_a
+      | row_b -> return sel_row_b
+      | row_c -> return sel_row_c
+    end case
+end function
+
+channel Ch_Route    is (r : Route)                     end channel  (* navigate  *)
+channel Ch_Selector is (s : Selector)                  end channel  (* click     *)
+channel Ch_TypeIn   is (s : Selector, v : InputValue)  end channel  (* type_into *)
+channel Ch_Element  is (e : Element)                   end channel  (* wait_for / observe *)
+
+end module

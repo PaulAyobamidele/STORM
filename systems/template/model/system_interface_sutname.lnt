@@ -1,0 +1,448 @@
+-- system_interface_sutname.lnt -- the System Interface I : D_abs -> D_sys.
+--
+-- One `alt` branch per journey. Each branch is: navigation guards that funnel
+-- the SUT from wherever it is to the branch's anchor screen, then concrete
+-- steps, then the abstract gate they realise. Faults appear where their
+-- injection point is, followed by the concrete steps that recover from them
+-- and the observable they owe.
+--
+-- PARSER CONTRACT (framework/concretization/si_lnt_parser.py). This file is
+-- read by a Python parser as well as by CADP, and the parser is stricter:
+--
+--   * LINE COMMENTS ONLY in this file. `(* ... *)` blocks are not stripped and
+--     any action-looking text inside one is parsed as a real action.
+--   * The gate bodies live in the first `alt ... end alt` after the first
+--     `loop`. Top-level branches are separated by a line that is exactly `[]`.
+--   * CONCRETE STEPS FIRST, GATE LAST. The parser attaches to each abstract
+--     gate the steps in the segment LEADING UP TO it; a gate placed before
+--     its steps gets none and validate_invariants rejects the run.
+--     Consequence: a step that depends on a gate parameter (L_query (id))
+--     must know the value BEFORE the gate, so the SI PINS the value
+--     (`id := defaultItem`). A purpose cannot choose a different item.
+--     Receiving it instead (`SEARCH (?id, scope)`) was tried: every prefix
+--     path then exists once per item and extraction grows by that factor.
+--   * The state variable is literally `screen`, its values start `SCR_`, the
+--     initial value is `SCR_HOME` (hard-coded in the executor), an assignment
+--     is a whole line `screen := SCR_X;`, and a guard is exactly the line
+--     `if screen == SCR_X then` closed by `end if`. Nothing else is a guard.
+--   * Recognised primitives, lower-case, one per line:
+--       navigate (rt_x)  tap (cv_x)  tap (L_f (var))  wait_for (el_x)
+--       observe (el_x)   enter_text (cv_x | L_f (var))
+--     enter_text is executed from the typed label in the generated test case,
+--     not from the parser's map -- it works, but the parser emits no action.
+--   * `tap (L_f (var))` is resolved by the parser through var's INIT value in
+--     the `var ... in` block, not through L_f. Keep the init values as keys
+--     of concrete_values: in concrete_domain.yml (the runtime uses the
+--     evaluated label instead, so this is for the parser's map only).
+--   * An element in an `observe` is an ORACLE (its absence is a FAIL); one
+--     only in `wait_for` is a PRECONDITION (its absence is UNEXECUTABLE).
+--   * A gate's DESTINATION screen is the single `screen :=` in its segment;
+--     two different ones make the destination ambiguous and unverifiable.
+--
+-- HOLE 22  Screens: one value per screen the SI must know it is on, SCR_HOME
+--          first. Each needs an anchor element in concrete_domain.yml
+--          (screen_anchors) that is present on that screen and absent on the
+--          others, so "am I where I think I am?" is answerable.
+
+module system_interface_sutname (sutname_types, sutname_fixture)
+with ==
+is
+
+type Screen is
+    SCR_HOME,
+    SCR_SEARCH,
+    SCR_ADD,
+    SCR_RECORD
+end type
+
+process SI [
+    navigate   : Ch_Route,
+    tap        : Ch_Value,
+    enter_text : Ch_Value,
+    wait_for   : Ch_Element,
+    observe    : Ch_Element,
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+var
+    screen : Screen,
+    id     : ItemId,
+    v      : Value,
+    ctx    : Context,
+    rid    : RecordId,
+    scope  : Scope,
+    st     : WriteStatus,
+    -- WHICH RECORDS CURRENTLY EXIST. The SUT can only show a record for an
+    -- item that has actually been written, so without these the model
+    -- generates tests that open rows the SUT cannot display -- unrunnable
+    -- against a clean fixture, and hidden by pre-seeding, which then
+    -- invalidates every band assertion. A flag is set only when the write
+    -- COMMITS: a rolled-back write leaves no row, and the model says so.
+    has_0, has_1, has_2 : Bool
+in
+    id     := item_a;
+    v      := val_a;
+    ctx    := CTX_A;
+    rid    := rec_0;
+    scope  := LOCAL;
+    st     := COMMITTED;
+    screen := SCR_HOME;
+    has_0  := false;
+    has_1  := false;
+    has_2  := false;
+
+    loop
+      alt
+        -- =================================================================
+        -- 1. READ, local scope: SEARCH then INFO, or DB_CORRUPT then the
+        --    corruption observable. Funnel: any screen -> SCR_SEARCH.
+        -- =================================================================
+        if screen == SCR_ADD then
+            tap (cv_back);
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_RECORD then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+        if screen == SCR_HOME then
+            tap (L_context (ctx));
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+
+        -- HOLE 23  the search interaction. Model every step the SUT actually
+        -- needs: typing does not run a query, the keyboard's search key does;
+        -- results may only appear once a scope is selected. Collapsing this
+        -- into one tap is what makes searches "flaky".
+        scope := LOCAL;
+        id    := defaultItem;
+        enter_text (L_query (id));
+        tap (cv_search_submit);
+        wait_for (el_search_ran);
+        tap (L_scope (scope));
+        wait_for (el_search_results);
+        SEARCH (id, scope);
+        alt
+            -- the value is read where the SUT renders it (HOLE 24: on the
+            -- result row, or only after opening the item?)
+            wait_for (el_value);
+            observe (el_value);
+            INFO (id, ?v);
+            tap (L_item (id));
+            wait_for (el_add_form);
+            screen := SCR_ADD
+        []
+            DB_CORRUPT;
+            wait_for (el_corrupt_error);
+            observe (el_corrupt_error);
+            DB_CORRUPT_DETECTED;
+            screen := SCR_SEARCH
+        end alt
+
+      []
+        -- =================================================================
+        -- 2. READ, local scope, after the cache went stale (pre-armed
+        --    fault). The steps are the nominal ones; the oracle at INFO does
+        --    the work by comparing against the authoritative value.
+        -- =================================================================
+        if screen == SCR_ADD then
+            tap (cv_back);
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_RECORD then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+        if screen == SCR_HOME then
+            tap (L_context (ctx));
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+
+        APP_CACHE_STALE;
+        scope := LOCAL;
+        id    := defaultItem;
+        enter_text (L_query (id));
+        tap (cv_search_submit);
+        wait_for (el_search_ran);
+        tap (L_scope (scope));
+        wait_for (el_search_results);
+        SEARCH (id, scope);
+        wait_for (el_value);
+        observe (el_value);
+        INFO (id, ?v);
+        tap (L_item (id));
+        wait_for (el_add_form);
+        screen := SCR_ADD
+
+      []
+        -- =================================================================
+        -- 3. READ, external scope: the lookup may be interrupted by the
+        --    external dependency failing, and the SUT then owes a warning.
+        -- =================================================================
+        if screen == SCR_ADD then
+            tap (cv_back);
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_RECORD then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+        if screen == SCR_HOME then
+            tap (L_context (ctx));
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+
+        scope := EXTERNAL;
+        id    := defaultItem;
+        enter_text (L_query (id));
+        tap (cv_search_submit);
+        wait_for (el_search_ran);
+        tap (L_scope (scope));
+        -- PRECONDITION, not oracle: if the external source legitimately has
+        -- no such item the branch must stop HERE (UNEXECUTABLE), not later at
+        -- an oracle selector (a FAIL the SUT did not earn). One missing
+        -- wait_for at this point produced every false FAIL of a whole sweep.
+        wait_for (el_search_results);
+        disrupt
+            SEARCH (id, scope);
+            wait_for (el_value);
+            observe (el_value);
+            INFO (id, ?v);
+            tap (L_item (id));
+            wait_for (el_add_form);
+            screen := SCR_ADD
+        by
+            APP_EXTAPI_FAIL;
+            wait_for (el_extapi_warning);
+            observe (el_extapi_warning);
+            APP_EXTAPI_WARNING;
+            screen := SCR_SEARCH
+        end disrupt
+
+      []
+        -- =================================================================
+        -- 4. WRITE with a valid input: ADD, then the fate of the write read
+        --    back at CONFIRM. The three write-path faults are one nested
+        --    alt after the request: the tester's choice is between the
+        --    commit path and one fault, exactly as in DATABASE.
+        --    Funnel: any screen -> SCR_ADD with the item open.
+        -- =================================================================
+        ctx := defaultContext;
+        id  := defaultItem;
+        if screen == SCR_RECORD then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+        if screen == SCR_HOME then
+            tap (L_context (ctx));
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_SEARCH then
+            enter_text (L_query (id));
+            tap (cv_search_submit);
+            wait_for (el_search_ran);
+            tap (L_scope (LOCAL));
+            wait_for (el_search_results);
+            tap (L_item (id));
+            wait_for (el_add_form);
+            screen := SCR_ADD
+        end if;
+
+        -- prove the commit control is offered before pressing it: a SUT that
+        -- withholds it (an invalid default, a disabled form) would otherwise
+        -- have the tap fail somewhere later, blamed on the wrong step
+        wait_for (el_save_control);
+        tap (cv_save);
+        ADD (ctx, id, VALID);
+        alt
+            -- commit path: leave the form; the SUT returns home by itself
+            -- after a commit (HOLE 25: if yours does not, add the backs)
+            tap (cv_back)
+        []
+            -- the process is killed and relaunched; the SUT reopens on home
+            UE_KILL;
+            navigate (rt_home)
+        []
+            DB_ABORT;
+            tap (cv_back)
+        []
+            INFRA_STORAGE_FULL;
+            tap (cv_back)
+        end alt;
+        wait_for (el_state);
+        screen := SCR_HOME;
+        observe (el_state);
+        CONFIRM (?st, ?any StateBand, id);
+        -- the record exists only if the write actually committed
+        if st == COMMITTED then
+            case id in
+                item_a -> has_0 := true
+              | item_b -> has_1 := true
+              | item_c -> has_2 := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 5. WRITE with an INVALID input. HOLE 26: how does the SUT refuse?
+        --    Some show an error element (observe it before ADD); some
+        --    WITHHOLD the commit control, in which case there is no tap to
+        --    model and no error to observe, and the refusal is checked where
+        --    it matters -- the band below must be UNCHANGED. That is the
+        --    stronger oracle. The form is left unsaved, so leaving it may
+        --    take more backs than after a commit.
+        -- =================================================================
+        ctx := defaultContext;
+        id  := defaultItem;
+        if screen == SCR_RECORD then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+        if screen == SCR_HOME then
+            tap (L_context (ctx));
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_SEARCH then
+            enter_text (L_query (id));
+            tap (cv_search_submit);
+            wait_for (el_search_ran);
+            tap (L_scope (LOCAL));
+            wait_for (el_search_results);
+            tap (L_item (id));
+            wait_for (el_add_form);
+            screen := SCR_ADD
+        end if;
+
+        enter_text (cv_input_invalid);
+        ADD (ctx, id, INVALID);
+        wait_for (el_add_form);
+        tap (cv_back);
+        wait_for (el_search_input);
+        screen := SCR_SEARCH;
+        tap (cv_back);
+        wait_for (el_state);
+        screen := SCR_HOME;
+        observe (el_state);
+        CONFIRM (?st, ?any StateBand, id)
+
+      []
+        -- =================================================================
+        -- 6. OPEN a persisted record: VIEW then DETAIL, or the media fault
+        --    then the honest error (plus the strict recovery control).
+        -- =================================================================
+        -- Choose a record that ACTUALLY EXISTS, and do it FIRST: an absent
+        -- record yields `stop`, which offers no action, so the branch is
+        -- simply never taken. Guarding after a tap would let the model
+        -- commit to the branch and then deadlock.
+        alt
+            if has_0 then rid := rec_0 else stop end if
+        []  if has_1 then rid := rec_1 else stop end if
+        []  if has_2 then rid := rec_2 else stop end if
+        end alt;
+
+        if screen == SCR_ADD then
+            tap (cv_back);
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_SEARCH then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+
+        tap (L_record (rid));
+        wait_for (el_record_detail);
+        screen := SCR_RECORD;
+        disrupt
+            VIEW (rid);
+            observe (el_record_item);
+            DETAIL (rid, ?id);
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        by
+            INFRA_STORAGE_MEDIA;
+            wait_for (el_storage_error);
+            observe (el_storage_error);
+            -- STRICT extension: surfacing the error is not enough, the user
+            -- must not be trapped in it. Observed, not tapped: its absence
+            -- is FAIL, not UNEXECUTABLE.
+            observe (el_recovery_control);
+            INFRA_STORAGE_ERROR
+        end disrupt
+
+      []
+        -- =================================================================
+        -- 7. REMOVE a persisted record, then read the new band.
+        -- =================================================================
+        alt
+            if has_0 then rid := rec_0 else stop end if
+        []  if has_1 then rid := rec_1 else stop end if
+        []  if has_2 then rid := rec_2 else stop end if
+        end alt;
+
+        if screen == SCR_ADD then
+            tap (cv_back);
+            wait_for (el_search_input);
+            screen := SCR_SEARCH
+        end if;
+        if screen == SCR_SEARCH then
+            tap (cv_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+
+        tap (L_record (rid));
+        wait_for (el_record_detail);
+        screen := SCR_RECORD;
+        tap (cv_delete);
+        wait_for (el_delete_confirm);
+        tap (cv_confirm_delete);
+        REMOVE (rid);
+        wait_for (el_state);
+        screen := SCR_HOME;
+        observe (el_state);
+        CONFIRM (?st, ?any StateBand, item_of (rid));
+        -- the record is gone only if the removal actually committed
+        if st == COMMITTED then
+            case rid in
+                rec_0 -> has_0 := false
+              | rec_1 -> has_1 := false
+              | rec_2 -> has_2 := false
+            end case
+        end if
+      end alt
+    end loop
+end var
+end process
+
+end module

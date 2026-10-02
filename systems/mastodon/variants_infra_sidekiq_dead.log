@@ -1,0 +1,5 @@
+# mastodon tc variants -- purpose: infra_sidekiq_dead -- 2026-09-30 15:31 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	44	44	5	FAIL	injected=1 restored=1 ERROR  CONFIRM mismatch — HomeState: AUT expects IN_HOME, observed 'bob\n@bob\nnow\n@alice ioco note b \nhttps://\nexamp
+2	32	32	4	FAIL	injected=1 restored=1 ERROR  CONFIRM mismatch — HomeState: AUT expects IN_HOME, observed 'bob\n@bob\nnow\n@alice ioco note a \nhttps://\nexamp
+3	20	20	3	FAIL	injected=1 restored=1 ERROR  CONFIRM mismatch — HomeState: AUT expects IN_HOME, observed 'alice\n@alice\n1d\nhello 2\n0' classifies as NOT_IN_

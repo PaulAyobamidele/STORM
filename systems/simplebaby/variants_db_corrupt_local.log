@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	38	57	99	FAIL	ERROR  State 35 waits for OBSERVE !EL_CORRUPT_FLAG — it never appeared and this state does NOT permit quiescence. The specification required an output here and 

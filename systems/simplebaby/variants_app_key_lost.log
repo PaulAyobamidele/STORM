@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	40	62	51	FAIL	ERROR  LIST mismatch — ShownState: AUT expects SHOWN, observed 'error: could not decrypt child name.' classifies as NOT_SHOWN

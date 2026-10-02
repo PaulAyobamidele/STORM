@@ -1,0 +1,15 @@
+# v_skip_delete_06_delete_dialog  the confirmation dialog: capture its buttons
+
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/action_bar_root'}  bounds=[91,982][989,1482]
+<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[91,982][989,1482]
+<LinearLayoutCompat> {'resource-id': 'com.futsch1.medtimer:id/parentPanel'}  bounds=[91,982][989,1482]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/topPanel'}  bounds=[91,982][989,1156]
+<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/title_template'}  bounds=[91,982][989,1114]
+<TextView> {'resource-id': 'com.futsch1.medtimer:id/alertTitle', 'text': 'Confirm'}  bounds=[154,1029][377,1114]
+<View> {'resource-id': 'com.futsch1.medtimer:id/titleDividerNoCustom'}  bounds=[91,1114][989,1156]
+<FrameLayout> {'resource-id': 'com.futsch1.medtimer:id/contentPanel'}  bounds=[91,1156][989,1282]
+<ScrollView> {'resource-id': 'com.futsch1.medtimer:id/scrollView'}  bounds=[91,1156][989,1207]
+<TextView> {'resource-id': 'android:id/message', 'text': 'Are you sure to delete the reminder event?'}  bounds=[91,1156][989,1207]
+<ScrollView> {'resource-id': 'com.futsch1.medtimer:id/buttonPanel'}  bounds=[91,1282][989,1482]
+<Button> {'resource-id': 'android:id/button2', 'text': 'Cancel'} clickable bounds=[558,1319][737,1445]
+<Button> {'resource-id': 'android:id/button1', 'text': 'Yes'} clickable bounds=[758,1319][926,1445]

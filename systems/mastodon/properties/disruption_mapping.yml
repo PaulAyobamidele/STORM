@@ -1,0 +1,178 @@
+# disruption_mapping.yml -- how each Mastodon fault is injected and undone.
+# Web schema (framework/concretization/disruptor.py): named mechanisms with an
+# argv command; per fault inject / restore payloads and verify probes.
+#
+#   faults: keys are EXACTLY the fault gate names of specification_mastodon.lnt
+#   timing: gate = when the walk reaches the fault's label (every fault here:
+#           each label stands BEFORE the click it disrupts, or before the whole
+#           journey for the pre-armed ones); none = the SI realises it
+#
+# The stack: `docker compose up -d` in systems/mastodon/sut/mastodon brings up
+# mastodon-{db,redis,web,sidekiq,streaming,caddy}-1. The fixture user is bob
+# (account 117353415630680785, user 2); systems/mastodon/seed.sh resets him.
+# Redis commands go through `shell`: the argv mechanism passes the payload as
+# ONE argument, which redis-cli would read as a command name.
+#
+# --- expectations, from observed_behaviour.md §12-13, stated before any run ---
+# The ONE happy path H: S1 post A, S2 post B, S3 post C, S4 read C without
+# refresh, S5 fresh check of C, S6 delete C. Every other purpose disrupts H;
+# each strike point is one generated test case.
+# nominal               PASS  H completes
+# input_invalid     x3  PASS  blank post at S1/S2/S3: "Post can't be blank."
+# input_overlimit   x3  PASS  501 characters at S1/S2/S3: Post withheld
+# UE_KILL           x3  PASS  the request completes; both outcomes offered
+# APP_WRITE_FAIL    x3  FAIL  O2: "Post published." for a dropped post
+# UE_SESSION_EXPIRED x4 PASS  401 alert, nothing moved (posts and delete)
+# APP_UNAVAILABLE   x4  FAIL  O2 by quiescence (posts and delete; lands later)
+# DB_ABORT          x4  PASS  500 alert, nothing moved (posts and delete)
+# INFRA_DB_DOWN     x4  FAIL  O2 by quiescence (posts and delete; lands later)
+# INFRA_STORAGE_FULL x4 PASS  500 alert, nothing moved (posts and delete)
+# APP_EXTAPI_FAIL   x3  PASS  O3: the link crawl is async and rescued
+# INFRA_SIDEKIQ_DEAD x4 FAIL  O3 at S1-S3 (home not written); O4/O6 at S6 (count)
+# APP_CACHE_STALE       FAIL  O7 at S4: the client store is not revalidated
+# DB_EVENT_LOSS         FAIL  O4 at S5: the counter cache still counts the row
+# DB_CORRUPT            FAIL  O8 at S5: a blank post renders as an empty one
+# APP_LAZY_PROCESSING   FAIL  O4/O6 at S6: the count drops only via the worker
+# Every one of these is a forecast. The verdict is what the app earns.
+
+mechanisms:
+  postgres:
+    command: ["docker", "exec", "-i", "mastodon-db-1", "psql", "-U", "postgres", "-d", "mastodon_production", "-t", "-A", "-v", "ON_ERROR_STOP=1", "-c"]
+    timeout: 30
+  shell:
+    command: ["bash", "-lc"]
+    timeout: 90
+
+faults:
+
+  UE_KILL:                      # the user leaves right after pressing Post
+    timing: none                # realised by the SI: click Post, navigate home at once
+    mechanism: none
+
+  UE_SESSION_EXPIRED:           # bob's sessions and API tokens are revoked
+    timing: gate
+    mechanism: postgres
+    inject: >-
+      DELETE FROM session_activations WHERE user_id = 2;
+      UPDATE oauth_access_tokens SET revoked_at = now() WHERE resource_owner_id = 2 AND revoked_at IS NULL;
+    restore: "SELECT 1"         # nothing to undo: the SI logs in again, the next case logs in afresh
+    verify_injected: { payload: "SELECT (SELECT count(*) FROM session_activations WHERE user_id = 2) + (SELECT count(*) FROM oauth_access_tokens WHERE resource_owner_id = 2 AND revoked_at IS NULL)", equals: "0" }
+    # the account is still usable (the fault revoked sessions, not the login)
+    verify_restored: { payload: "SELECT count(*) FROM users WHERE id = 2 AND disabled = false AND confirmed_at IS NOT NULL", equals: "1" }
+
+  APP_WRITE_FAIL:               # antispam silently drops the post (antispam.rb:39-45)
+    # the rule compares against the NFKC-lowercased text and needs a mention of
+    # an account that does not follow bob: every fixture text mentions @alice
+    # and contains "ioco note", so the entry strikes whichever post comes next
+    timing: gate
+    mechanism: shell
+    inject:  "docker exec mastodon-redis-1 redis-cli SADD antispam:all_time_spammy_texts 'ioco note' >/dev/null"
+    restore: "docker exec mastodon-redis-1 redis-cli SREM antispam:all_time_spammy_texts 'ioco note' >/dev/null && docker exec -i mastodon-db-1 psql -U postgres -d mastodon_production -tAc 'DELETE FROM reports WHERE target_account_id = 117353415630680785 AND account_id = -99' >/dev/null"
+    verify_injected: { payload: "docker exec mastodon-redis-1 redis-cli SISMEMBER antispam:all_time_spammy_texts 'ioco note'", equals: "1" }
+    verify_restored: { payload: "docker exec mastodon-redis-1 redis-cli SISMEMBER antispam:all_time_spammy_texts 'ioco note'", equals: "0" }
+
+  APP_UNAVAILABLE:              # the web process stops answering
+    # paused in the foreground; a delayed unpause in its own background
+    # subshell so the read-back can run once the owed report has had its window
+    timing: gate
+    mechanism: shell
+    inject:  "docker pause mastodon-web-1 && ( (sleep 20; docker unpause mastodon-web-1) >/dev/null 2>&1 & )"
+    restore: "docker unpause mastodon-web-1 >/dev/null 2>&1 || true"
+    verify_injected: { payload: "docker inspect -f '{{.State.Paused}}' mastodon-web-1", equals: "true" }
+    verify_restored: { payload: "docker inspect -f '{{.State.Paused}}' mastodon-web-1", equals: "false" }
+
+  APP_EXTAPI_FAIL:              # the link-preview fetch cannot leave the host
+    # Sidekiq keeps the internal network (db, redis); only outbound HTTP is cut
+    timing: gate
+    mechanism: shell
+    inject:  "docker network disconnect mastodon_external_network mastodon-sidekiq-1"
+    restore: "docker network connect mastodon_external_network mastodon-sidekiq-1 2>/dev/null || true"
+    verify_injected: { payload: "docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}' mastodon-sidekiq-1 | grep -c external_network || true", equals: "0" }
+    verify_restored: { payload: "docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}} {{end}}' mastodon-sidekiq-1 | grep -c external_network", equals: "1" }
+
+  APP_CACHE_STALE:              # the stored text changes under the client's view
+    # SQL bypasses fan-out, so no status.update event reaches the browser
+    timing: gate
+    mechanism: postgres
+    inject:  "UPDATE statuses SET text = replace(text, 'ioco note C', 'ioco note C revised') WHERE account_id = 117353415630680785 AND text LIKE '%ioco note C%' AND text NOT LIKE '%revised%'"
+    restore: "UPDATE statuses SET text = replace(text, 'ioco note C revised', 'ioco note C') WHERE account_id = 117353415630680785"
+    verify_injected: { payload: "SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND text LIKE '%ioco note C revised%'", equals: "1" }
+    verify_restored: { payload: "SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND text LIKE '%revised%'", equals: "0" }
+
+  APP_LAZY_PROCESSING:          # Sidekiq stops taking jobs (quiet, TSTP forwarded by tini)
+    # the quiet flag reaches Redis on the next heartbeat (every 10 s); a
+    # restart is the only way out of quiet. sidekiq_state.sh reads only
+    # processes with a fresh heartbeat, so a dead one's entry is not counted.
+    timing: gate
+    mechanism: shell
+    inject:  "docker kill -s TSTP mastodon-sidekiq-1 >/dev/null && for i in $(seq 1 25); do [ \"$(sh systems/mastodon/sidekiq_state.sh)\" = true ] && exit 0; sleep 1; done; exit 1"
+    restore: "docker restart mastodon-sidekiq-1 >/dev/null && for i in $(seq 1 60); do [ \"$(sh systems/mastodon/sidekiq_state.sh)\" = false ] && exit 0; sleep 1; done; exit 1"
+    verify_injected: { payload: "sh systems/mastodon/sidekiq_state.sh", equals: "true" }
+    verify_restored: { payload: "sh systems/mastodon/sidekiq_state.sh", equals: "false" }
+
+  DB_ABORT:                     # a status write is aborted inside Postgres
+    # INSERT (a post) and UPDATE (a delete is a soft delete: deleted_at is set,
+    # statuses_controller.rb:84 -> status.rb:400-404)
+    timing: gate
+    mechanism: postgres
+    inject: >-
+      CREATE OR REPLACE FUNCTION fault_abort_write() RETURNS trigger AS $$
+      BEGIN RAISE EXCEPTION 'injected transaction abort'; END $$ LANGUAGE plpgsql;
+      DROP TRIGGER IF EXISTS fault_abort_write ON statuses;
+      CREATE TRIGGER fault_abort_write BEFORE INSERT OR UPDATE ON statuses FOR EACH ROW EXECUTE FUNCTION fault_abort_write();
+    restore: >-
+      DROP TRIGGER IF EXISTS fault_abort_write ON statuses;
+      DROP FUNCTION IF EXISTS fault_abort_write();
+    verify_injected: { payload: "SELECT count(*) FROM pg_trigger WHERE tgname = 'fault_abort_write'", equals: "1" }
+    verify_restored: { payload: "SELECT count(*) FROM pg_trigger WHERE tgname = 'fault_abort_write'", equals: "0" }
+
+  DB_CORRUPT:                   # the fixture post's text is blanked (violates status.rb:121)
+    timing: gate
+    mechanism: postgres
+    inject:  "UPDATE statuses SET text = '' WHERE account_id = 117353415630680785 AND text LIKE '%ioco note C%'"
+    restore: "UPDATE statuses SET text = '@alice ioco note C https://example.com' WHERE account_id = 117353415630680785 AND text = ''"
+    verify_injected: { payload: "SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND text = ''", equals: "1" }
+    verify_restored: { payload: "SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND text = ''", equals: "0" }
+
+  DB_EVENT_LOSS:                # the committed row is deleted by SQL (cascades in place)
+    timing: gate
+    mechanism: postgres
+    inject:  "DELETE FROM statuses WHERE account_id = 117353415630680785 AND text LIKE '%ioco note C%'"
+    # the counter cache is re-derived from the rows, which is what the fault broke
+    restore: "UPDATE account_stats SET statuses_count = (SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND deleted_at IS NULL) WHERE account_id = 117353415630680785"
+    verify_injected: { payload: "SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND text LIKE '%ioco note C%'", equals: "0" }
+    verify_restored: { payload: "SELECT (statuses_count = (SELECT count(*) FROM statuses WHERE account_id = 117353415630680785 AND deleted_at IS NULL))::int FROM account_stats WHERE account_id = 117353415630680785", equals: "1" }
+
+  INFRA_DB_DOWN:                # the database container is paused across the write
+    timing: gate
+    mechanism: shell
+    inject:  "docker pause mastodon-db-1 && ( (sleep 25; docker unpause mastodon-db-1) >/dev/null 2>&1 & )"
+    restore: "docker unpause mastodon-db-1 >/dev/null 2>&1 || true"
+    verify_injected: { payload: "docker inspect -f '{{.State.Paused}}' mastodon-db-1", equals: "true" }
+    verify_restored: { payload: "docker inspect -f '{{.State.Paused}}' mastodon-db-1", equals: "false" }
+
+  INFRA_SIDEKIQ_DEAD:           # the Sidekiq container is paused before a post
+    timing: gate
+    mechanism: shell
+    inject:  "docker pause mastodon-sidekiq-1"
+    restore: "docker unpause mastodon-sidekiq-1 >/dev/null 2>&1 || true"
+    verify_injected: { payload: "docker inspect -f '{{.State.Paused}}' mastodon-sidekiq-1", equals: "true" }
+    verify_restored: { payload: "docker inspect -f '{{.State.Paused}}' mastodon-sidekiq-1", equals: "false" }
+
+  INFRA_STORAGE_FULL:           # the database refuses writes (read-only), reads still work
+    # ALTER SYSTEM cannot run in a transaction block, and the restore must
+    # override the read-only default for its own session
+    timing: gate
+    mechanism: shell
+    inject:  "docker exec -i mastodon-db-1 psql -U postgres -tAc 'ALTER SYSTEM SET default_transaction_read_only = on' >/dev/null && docker exec -i mastodon-db-1 psql -U postgres -tAc 'SELECT pg_reload_conf()' >/dev/null && sleep 1"
+    restore: "docker exec -i -e PGOPTIONS='-c default_transaction_read_only=off' mastodon-db-1 psql -U postgres -tAc 'ALTER SYSTEM RESET default_transaction_read_only' >/dev/null && docker exec -i mastodon-db-1 psql -U postgres -tAc 'SELECT pg_reload_conf()' >/dev/null && sleep 1"
+    verify_injected: { payload: "docker exec -i mastodon-db-1 psql -U postgres -d mastodon_production -tAc 'SHOW default_transaction_read_only'", equals: "on" }
+    verify_restored: { payload: "docker exec -i mastodon-db-1 psql -U postgres -d mastodon_production -tAc 'SHOW default_transaction_read_only'", equals: "off" }
+
+  # parameter-borne purposes: no injection, the SI types the value
+  INPUT_INVALID:
+    timing: none
+    mechanism: none
+  INPUT_OVERLIMIT:
+    timing: none
+    mechanism: none

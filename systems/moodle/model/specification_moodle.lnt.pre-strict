@@ -1,0 +1,334 @@
+module specification_moodle (moodle_types)
+with ==
+is
+
+process STUDENT [
+    ENROL   : EnrolChannel,
+    VIEW_QUIZ : ViewQuizChannel,
+    START_ATTEMPT : AttemptChannel,
+    SAVE_ATTEMPT    : SaveChannel,
+    PROCESS_ATTEMPT : SubmitChannel,
+    GRADE_PERSISTED : GradeChannel,
+    VIEW_ASSIGN     : ViewAssignChannel,
+    SUBMIT_DRAFT    : AssignChannel,
+    UPDATE_SUBMISSION   : UpdateChannel,
+    CONFIRMED_GRADE : ConfirmedGradeChannel,
+    UE1_LOSE_CONN      : none,
+    UE2_SESSION_EXPIRE : none
+] is
+    var
+        crs : CourseId,
+        qz : QuizId,
+        att : AttemptId,
+        g : Grade,
+        s   : AttemptStatus,
+        asn : AssignId,
+        enrolled : Bool,
+        ver : SubmissionVersion
+    in
+        crs := crs_0;
+        qz := qz_0;
+        att := att_0;
+        g := Grade (100);
+        s := IN_PROGRESS;
+        asn := asn_0;
+        enrolled := false;
+        loop
+        disrupt
+            loop
+                alt
+                    only if not(enrolled) then
+                        ENROL (crs);
+                        enrolled := true
+                    end if
+                []
+                    only if enrolled then
+                        VIEW_QUIZ (crs, qz);
+                        START_ATTEMPT (crs, qz, ?att);
+                        SAVE_ATTEMPT (att);
+                        PROCESS_ATTEMPT (att);
+                        GRADE_PERSISTED (?att, ?g)
+                    end if
+                []
+                    only if enrolled then
+                        VIEW_ASSIGN (crs, asn);
+                        SUBMIT_DRAFT (crs, asn, PLACEHOLDER);
+                        UPDATE_SUBMISSION (crs, asn, FINAL);
+                        CONFIRMED_GRADE (?asn, ?g, ?ver)
+                    end if
+                end alt
+            end loop
+        by
+            alt
+                UE1_LOSE_CONN
+            []
+                UE2_SESSION_EXPIRE
+            end alt
+        end disrupt
+        end loop
+    end var
+end process
+
+
+process TEACHER [
+    GRADE_SUBMISSION : AssignChannel
+    ] is
+    var
+        crs : CourseId,
+        asn : AssignId,
+        ver : SubmissionVersion
+    in
+        crs := crs_0;
+        asn := asn_0;
+        loop
+            GRADE_SUBMISSION (?crs, ?asn, ?ver)
+            -- receives old data on rendezvous
+        end loop
+    end var
+end process
+
+
+process APP [
+    START_ATTEMPT   : AttemptChannel,
+    PROCESS_ATTEMPT : SubmitChannel,
+    WRITE_ATTEMPT   : AttemptChannel,
+    ATTEMPT_PERSISTED : StatusChannel,
+    GRADE_PERSISTED     : GradeChannel,
+    APP1_WRITE_FAIL     : none,
+    BGJOB_FAIL          : none,
+    SUBMIT_DRAFT        : AssignChannel,
+    WRITE_SUBMISSION    : AssignChannel,
+    UPDATE_PERSISTED   :  UpdateStatusChannel,
+    GRADE_SUBMISSION    : AssignChannel,
+    SUB_PERSISTED       : SubmissionStatusChannel,
+    UPDATE_SUBMISSION   : UpdateChannel,
+    CONFIRMED_GRADE     : ConfirmedGradeChannel,
+    DISRUPTION_DB       : none
+    ] is
+    var
+        crs : CourseId,
+        qz  : QuizId,
+        att : AttemptId,
+        asn : AssignId,
+        s   : AttemptStatus,
+        g   : Grade,
+        ver : SubmissionVersion,
+        newver : SubmissionVersion
+
+    in 
+        crs := crs_0;
+        qz   := qz_0;
+        att := att_0;
+        asn := asn_0;
+        s   := IN_PROGRESS;
+        g   := Grade (100);
+        loop
+            alt
+                START_ATTEMPT (?crs, ?qz, att);
+                att := any AttemptId
+            []
+                PROCESS_ATTEMPT (?att);
+                WRITE_ATTEMPT (crs, qz, att);
+                disrupt
+                    ATTEMPT_PERSISTED (?att, ?s)
+                by
+                    APP1_WRITE_FAIL;
+                    loop i end loop
+                end disrupt;
+                -- The grade is propagated by a background (cron/adhoc) task.
+                -- BGJOB_FAIL: that task dies, so the grade is never written
+                -- back. The APP — being optimistic — has nothing to relay and
+                -- goes silent (livelock); GRADE_PERSISTED never fires. This is
+                -- the quiz-path counterpart of the existing APP1_WRITE_FAIL
+                -- vulnerability.
+                disrupt
+                    GRADE_PERSISTED (att, g)
+                by
+                    BGJOB_FAIL;
+                    loop i end loop
+                end disrupt
+            []
+                SUBMIT_DRAFT (?crs, ?asn, ?ver);
+                WRITE_SUBMISSION (crs, asn, ver);
+                SUB_PERSISTED (?asn, ?s, ?ver);
+                UPDATE_SUBMISSION (?crs, ?asn, ?newver); -- update failed, so update persisted still old data
+                disrupt
+                    UPDATE_PERSISTED (?asn, ?s) where s == SUBMITTED;
+                    ver := newver -- fired by the DB, received by the APP
+                    -- 
+                by
+                    DISRUPTION_DB;
+                    loop i end loop
+                end disrupt;
+                GRADE_SUBMISSION (crs, asn, ver); -- fired by the teacher, received by the APP
+                CONFIRMED_GRADE (asn, g, ver)
+            end alt
+        end loop
+    end var
+end process
+
+
+
+process DATABASE [
+    WRITE_ATTEMPT : AttemptChannel,
+    ATTEMPT_PERSISTED : StatusChannel,
+    WRITE_SUBMISSION    : AssignChannel,
+    SUB_PERSISTED       : SubmissionStatusChannel,
+    UPDATE_PERSISTED    : UpdateStatusChannel,
+    UPDATE_SUBMISSION   : UpdateChannel,
+    SLOW_QUERY          : none
+] is
+    var
+        crs : CourseId,
+        qz  : QuizId,
+        asn : AssignId,
+        att : AttemptId,
+        ver : SubmissionVersion
+    in
+        crs := crs_0;
+        qz := qz_0;
+        asn := asn_0;
+        att := att_0;
+        loop
+            alt
+                WRITE_ATTEMPT (?crs, ?qz, ?att);
+                ATTEMPT_PERSISTED (att, GRADED)
+            []
+                WRITE_SUBMISSION (?crs, ?asn, ?ver);
+                -- SLOW_QUERY: the submission-write query hangs past timeout, so
+                -- the DB never acknowledges persistence. The waiting APP blocks
+                -- (livelock) and SUB_PERSISTED never fires — a DB-side
+                -- vulnerability distinct from the APP-side DISRUPTION_DB.
+                disrupt
+                    SUB_PERSISTED (asn, SUBMITTED, ver)
+                by
+                    SLOW_QUERY;
+                    loop i end loop
+                end disrupt
+            []
+                UPDATE_SUBMISSION (?crs, ?asn, ?ver);
+                UPDATE_PERSISTED (asn, SUBMITTED)
+            end alt
+        end loop
+    end var
+end process
+
+
+process DISRUPTOR [
+    APP1_WRITE_FAIL, DISRUPTION_DB, BGJOB_FAIL, SLOW_QUERY,
+    NET_CONGESTION, HIGH_LATENCY : none
+    ] is
+    loop
+        alt
+            i 
+        []
+            APP1_WRITE_FAIL
+        []
+            DISRUPTION_DB
+        []
+            BGJOB_FAIL
+        []
+            SLOW_QUERY
+        []
+            -- Infrastructure
+            NET_CONGESTION;
+            alt
+                APP1_WRITE_FAIL;
+                DISRUPTION_DB
+            []
+                DISRUPTION_DB;
+                APP1_WRITE_FAIL
+            end alt
+        []
+            HIGH_LATENCY;
+            alt
+                BGJOB_FAIL;
+                SLOW_QUERY
+            []
+                SLOW_QUERY;
+                BGJOB_FAIL
+            end alt
+
+        end alt
+    end loop
+end process
+
+process INFRA_DISRUPTOR [NET_CONGESTION, HIGH_LATENCY : none] is
+    loop
+        alt
+            i
+        []
+            NET_CONGESTION
+        []
+            HIGH_LATENCY
+        end alt
+    end loop
+end process
+
+
+
+process SPEC [
+    ENROL            : EnrolChannel,
+    VIEW_QUIZ        : ViewQuizChannel,
+    START_ATTEMPT    : AttemptChannel,
+    SAVE_ATTEMPT     : SaveChannel,
+    PROCESS_ATTEMPT  : SubmitChannel,
+    GRADE_PERSISTED  : GradeChannel,
+    VIEW_ASSIGN      : ViewAssignChannel,
+    SUBMIT_DRAFT     : AssignChannel,
+    UPDATE_SUBMISSION: UpdateChannel,
+    UPDATE_PERSISTED : UpdateStatusChannel,
+    GRADE_SUBMISSION : AssignChannel,
+    CONFIRMED_GRADE  : ConfirmedGradeChannel,
+    WRITE_ATTEMPT    : AttemptChannel,
+    ATTEMPT_PERSISTED: StatusChannel,
+    WRITE_SUBMISSION : AssignChannel,
+    SUB_PERSISTED    : SubmissionStatusChannel,
+    APP1_WRITE_FAIL  : none,
+    DISRUPTION_DB    : none,
+    BGJOB_FAIL       : none,
+    SLOW_QUERY       : none,
+    NET_CONGESTION   : none,
+    HIGH_LATENCY     : none,
+    UE1_LOSE_CONN    : none,
+    UE2_SESSION_EXPIRE : none
+] is
+    -- Core synchronises with the disruptor subtree on the four tester-observed
+    -- behaviour faults: APP1_WRITE_FAIL / BGJOB_FAIL (APP) and DISRUPTION_DB
+    -- (APP) / SLOW_QUERY (DATABASE).
+    -- NET_CONGESTION / HIGH_LATENCY are internal to the disruptor subtree
+    -- (DISRUPTOR <-> INFRA_DISRUPTOR) and never reach the core.
+    -- UE1_LOSE_CONN / UE2_SESSION_EXPIRE (STUDENT) are local disrupts, not
+    -- synchronised across processes — exposed only for observation.
+
+
+    par APP1_WRITE_FAIL, DISRUPTION_DB, BGJOB_FAIL, SLOW_QUERY in
+        par PROCESS_ATTEMPT, GRADE_PERSISTED, CONFIRMED_GRADE, START_ATTEMPT in
+            STUDENT [ENROL, VIEW_QUIZ, START_ATTEMPT, SAVE_ATTEMPT, PROCESS_ATTEMPT, GRADE_PERSISTED,
+                    VIEW_ASSIGN, SUBMIT_DRAFT, UPDATE_SUBMISSION, CONFIRMED_GRADE,
+                    UE1_LOSE_CONN, UE2_SESSION_EXPIRE]
+            ||
+            par GRADE_SUBMISSION in
+                TEACHER [GRADE_SUBMISSION]
+                ||
+                par WRITE_ATTEMPT, ATTEMPT_PERSISTED,
+                    WRITE_SUBMISSION, SUB_PERSISTED, UPDATE_PERSISTED, UPDATE_SUBMISSION in
+                    APP [START_ATTEMPT, PROCESS_ATTEMPT, WRITE_ATTEMPT, ATTEMPT_PERSISTED, GRADE_PERSISTED, APP1_WRITE_FAIL,
+                            BGJOB_FAIL, SUBMIT_DRAFT, WRITE_SUBMISSION, UPDATE_PERSISTED, GRADE_SUBMISSION,
+                            SUB_PERSISTED, UPDATE_SUBMISSION, CONFIRMED_GRADE, DISRUPTION_DB]
+                    ||
+                    DATABASE [WRITE_ATTEMPT, ATTEMPT_PERSISTED, WRITE_SUBMISSION, SUB_PERSISTED, UPDATE_PERSISTED, UPDATE_SUBMISSION, SLOW_QUERY]
+                end par
+            end par
+        end par
+        ||
+        par NET_CONGESTION, HIGH_LATENCY in
+            DISRUPTOR [APP1_WRITE_FAIL, DISRUPTION_DB, BGJOB_FAIL, SLOW_QUERY,
+                       NET_CONGESTION, HIGH_LATENCY]
+            ||
+            INFRA_DISRUPTOR [NET_CONGESTION, HIGH_LATENCY]
+        end par
+    end par
+end process
+
+end module

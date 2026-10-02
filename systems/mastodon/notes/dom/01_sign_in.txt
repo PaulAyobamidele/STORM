@@ -1,0 +1,17 @@
+# 01_sign_in  url=https://mastodon.localhost/auth/sign_in  
+
+<a> {"href": "https://mastodon.localhost/"} class='' :: 
+<input> {"name": "authenticity_token", "type": "hidden", "value": "LJg_v9cPCHh58BBg6z-JFG80SQybQTLbfg7m6q9MnaCc0igcviReqxV8hEli_qm9q2T3DoOYblG4Grwq9lTaXQ"} class='' :: 
+<h1> {} class='title' :: Login to mastodon.localhost
+<p> {} class='lead' :: Login with your mastodon.localhost credentials. If your account is hosted on a different server, you
+<label> {} class='email required' :: E-mail address *
+<input> {"id": "user_email", "name": "user[email]", "type": "email", "aria-label": "E-mail address"} class='string email required' :: 
+<label> {} class='password required' :: Password *
+<input> {"id": "user_password", "name": "user[password]", "type": "password", "aria-label": "Password"} class='password required' :: 
+<button> {"name": "button", "type": "submit"} class='btn' :: Log in
+<li> {"value": "0"} class='' :: Sign up
+<a> {"href": "https://joinmastodon.org/"} class='' :: Sign up
+<li> {"value": "0"} class='' :: Forgot your password?
+<a> {"href": "https://mastodon.localhost/auth/password/new"} class='' :: Forgot your password?
+<li> {"value": "0"} class='' :: Didn't receive a confirmation link?
+<a> {"href": "https://mastodon.localhost/auth/confirmation/new"} class='' :: Didn't receive a confirmation link?

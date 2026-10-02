@@ -1,0 +1,6 @@
+# Spliit tc variants -- purpose: db_abort -- 2026-10-01 22:57 -- rev 64b9e19 (dirty)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	80	80	15	FAIL	
+2	122	122	16	FAIL	
+3	58	58	15	FAIL	
+4	58	58	15	FAIL	

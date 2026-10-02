@@ -1,0 +1,163 @@
+# disruption_mapping.yml -- how each MedTimer fault is injected into the running
+# app, out of band, and how it is undone. Android schema
+# (framework/concretization/fault_injector.py): `mechanism: sqlite | adb |
+# connectivity | none`; `{pkg}` and `{db}` are the substitution tokens; adb
+# commands are split on ';' (use && inside a compound command); sqlite payloads
+# run as ONE statement list through `run-as {pkg} sqlite3 {db}`.
+#
+#   faults: keys are EXACTLY the fault gate names of specification_medtimer.lnt
+#   timing: gate = when the walk reaches the fault's label; pre = before the
+#           walk; none = the System Interface realises it with its own steps
+#
+# TIMING HERE. The fixture is created by the SI's prelude INSIDE the walk, so
+# a write-blocking fault armed `pre` would break the prelude, not the dose.
+# Every write-path fault is therefore `gate`, and the SI places the gate
+# BEFORE the commit tap (…; FAULT; tap (cv_taken); …), so the injection lands
+# while the popup is open and before the write it exists to break.
+#
+# The verify_* probes below are READ by the Android injector (fault_injector.py,
+# `_probe`): the payload runs through the fault's mechanism right after the
+# inject / restore command and its first output line must equal `equals`. A
+# disagreement is logged, the gate is recorded as unconfirmed, and
+# `manifested()` answers from the same probe. Probes are paren-free: `count(*)`
+# has tripped the device shell before. Prove them once on the device with
+#   PYTHONPATH=framework .venv/bin/python framework/scripts/check_faults.py systems/medtimer
+
+android:
+  package: com.futsch1.medtimer
+  db: databases/medTimer                 # Room database "medTimer" (DatabaseModule.kt:36)
+  seed_script: systems/medtimer/seed.sh  # pm clear + permission grant; the prelude builds the fixture
+
+faults:
+
+  UE_KILL:                         # the process is killed right after the dose is marked
+    # PROCESS layer, realised by the System Interface (timing none): its
+    # `navigate (rt_home)` step right after the Taken tap is executed as
+    # terminate + activate, i.e. the kill and the relaunch. Firing an
+    # out-of-band force-stop at the gate instead landed BEFORE the tap (the
+    # gate stands before the commit tap) and dismissed the popup, so the
+    # first sweep's walk could not finish. The kill window between the three
+    # writes is not reachable deterministically; the results say so.
+    timing: none
+    mechanism: none
+
+  APP_WRITE_FAIL:                  # the record update fails after the stock moved
+    # SQL layer, second statement of the dose action (§4.1): Room's @Update on
+    # ReminderEvent raises, the stock UPDATE before it has already committed.
+    timing: gate
+    mechanism: sqlite
+    inject:  "CREATE TRIGGER IF NOT EXISTS fault_event_update BEFORE UPDATE ON ReminderEvent BEGIN SELECT RAISE(ABORT, 'injected update failure'); END"
+    restore: "DROP TRIGGER IF EXISTS fault_event_update"
+    # paren-free probes: the value read is the trigger's NAME, "" when absent
+    verify_injected: { payload: "SELECT name FROM sqlite_master WHERE type='trigger' AND name='fault_event_update'", equals: "fault_event_update" }
+    verify_restored: { payload: "SELECT name FROM sqlite_master WHERE type='trigger' AND name='fault_event_update'", equals: "" }
+
+  DB_ABORT:                        # the record insert fails
+    # SQL layer, first statement of the dose action on a scheduled row (§4.2):
+    # the RAISED insert raises, nothing else runs.
+    timing: gate
+    mechanism: sqlite
+    inject:  "CREATE TRIGGER IF NOT EXISTS fault_event_insert BEFORE INSERT ON ReminderEvent BEGIN SELECT RAISE(ABORT, 'injected insert failure'); END"
+    restore: "DROP TRIGGER IF EXISTS fault_event_insert"
+    verify_injected: { payload: "SELECT name FROM sqlite_master WHERE type='trigger' AND name='fault_event_insert'", equals: "fault_event_insert" }
+    verify_restored: { payload: "SELECT name FROM sqlite_master WHERE type='trigger' AND name='fault_event_insert'", equals: "" }
+
+  INFRA_STORAGE_FULL:              # the data partition is full when the dose is written
+    # FILESYSTEM layer. The partition is filled COMPLETELY (dd until ENOSPC):
+    # any headroom lets a four-kilobyte SQLite page through and the fault
+    # never bites. The emulator survives a full /data for the seconds this
+    # takes; restore frees it at once. If the platform misbehaves, the run is
+    # not a verdict: walk it again.
+    timing: gate
+    mechanism: adb
+    timeout: 120                   # the fill took 6 s live; the default 30 s is too tight a margin
+    # No ';' inside the quoted command: the injector splits adb strings on it.
+    # Measured 2026-09-29: the fill takes 6 s, df then reports 0 available and
+    # a SQLite write fails with "database or disk is full (13)".
+    inject:  "run-as {pkg} sh -c 'dd if=/dev/zero of=files/fault_ballast bs=1048576 2>/dev/null || true'"
+    restore: "run-as {pkg} rm -f files/fault_ballast ; sync"
+    verify_injected: { payload: "run-as {pkg} sh -c 'df -k . | tail -1 | tr -s \" \" | cut -d\" \" -f4'", equals: "0" }
+    verify_restored: { payload: "run-as {pkg} test -f files/fault_ballast && echo present || echo absent", equals: "absent" }
+
+  DB_CORRUPT:                      # a dose record's status is made unreadable
+    # Room reads the status column through its enum converter; a value
+    # outside the enum throws on the next read that decodes it (the
+    # scheduler reads the last records of every reminder on relaunch). The
+    # newest record is the one the purpose just wrote or deleted; its old
+    # status is kept in a marker table so the restore puts back what was there.
+    timing: gate
+    mechanism: sqlite
+    inject:  "CREATE TABLE IF NOT EXISTS fault_corrupt(id INTEGER, status TEXT); DELETE FROM fault_corrupt; INSERT INTO fault_corrupt SELECT reminderEventId, status FROM ReminderEvent WHERE reminderEventId = (SELECT MAX(reminderEventId) FROM ReminderEvent); UPDATE ReminderEvent SET status = 'BOGUS' WHERE reminderEventId = (SELECT id FROM fault_corrupt)"
+    restore: "UPDATE ReminderEvent SET status = (SELECT status FROM fault_corrupt) WHERE reminderEventId = (SELECT id FROM fault_corrupt); DROP TABLE IF EXISTS fault_corrupt"
+    verify_injected: { payload: "SELECT status FROM ReminderEvent WHERE status = 'BOGUS' LIMIT 1", equals: "BOGUS" }
+    verify_restored: { payload: "SELECT status FROM ReminderEvent WHERE status = 'BOGUS' LIMIT 1", equals: "" }
+
+  DB_CORRUPT_STOCK:                # the medicines' stock is made impossible
+    # A negative pill count, which no UI path can produce (the amount field
+    # deletes a minus sign as it is typed, observed_behaviour.md §4.8). The
+    # old amounts are kept in a marker table for the restore.
+    timing: gate
+    mechanism: sqlite
+    inject:  "CREATE TABLE IF NOT EXISTS fault_stock(id INTEGER, amount REAL); DELETE FROM fault_stock; INSERT INTO fault_stock SELECT medicineId, amount FROM Medicine; UPDATE Medicine SET amount = -1"
+    restore: "UPDATE Medicine SET amount = (SELECT amount FROM fault_stock WHERE fault_stock.id = Medicine.medicineId) WHERE medicineId IN (SELECT id FROM fault_stock); DROP TABLE IF EXISTS fault_stock"
+    verify_injected: { payload: "SELECT amount FROM Medicine WHERE amount < 0 LIMIT 1", equals: "-1.0" }
+    verify_restored: { payload: "SELECT amount FROM Medicine WHERE amount < 0 LIMIT 1", equals: "" }
+
+  DB_EVENT_LOSS:                   # the dose record just written is deleted
+    # The purposes place the loss right after a dose is MARKED, which
+    # inserts that dose's record, so the newest record is its record. Its id
+    # is kept in a marker table so the probe can prove that row is gone.
+    timing: gate
+    mechanism: sqlite
+    inject:  "CREATE TABLE IF NOT EXISTS fault_loss(id INTEGER); DELETE FROM fault_loss; INSERT INTO fault_loss SELECT MAX(reminderEventId) FROM ReminderEvent; DELETE FROM ReminderEvent WHERE reminderEventId = (SELECT id FROM fault_loss)"
+    restore: "DROP TABLE IF EXISTS fault_loss"
+    verify_injected: { payload: "SELECT reminderEventId FROM ReminderEvent WHERE reminderEventId = (SELECT id FROM fault_loss)", equals: "" }
+
+  INFRA_STORAGE_MEDIA:             # the store becomes unreadable
+    # The mode change alone does nothing to a running app that holds the file
+    # open; force-stop + relaunch makes the fault reach it. Restore to the modes
+    # the platform created the files with (read live 2026-09-29: 660 for the
+    # database, 600 for -wal and -shm) then relaunch.
+    timing: gate
+    mechanism: adb
+    inject:  "run-as {pkg} sh -c 'chmod 0000 databases/medTimer*' ; am force-stop {pkg} ; am start -W -n {pkg}/.MainActivity"
+    restore: "run-as {pkg} sh -c 'chmod 0660 databases/medTimer && chmod 0600 databases/medTimer-wal databases/medTimer-shm' ; am force-stop {pkg} ; am start -W -n {pkg}/.MainActivity"
+    verify_injected: { payload: "run-as {pkg} stat -c %a {db}", equals: "0" }
+    verify_restored: { payload: "run-as {pkg} stat -c %a {db}", equals: "660" }
+
+  APP_CACHE_STALE:                 # the medicine list was read before the write
+    timing: none                   # realised by the SI: visit the Medicine tab, then act
+    mechanism: none
+
+  # --- parameter-borne: no injection, the SI drives the variant -------------
+  INPUT_INVALID:                   # the empty medicine name
+    timing: none
+    mechanism: none
+  CANNOT_SKIP:                     # the switch is set, then the dose is skipped from the overview
+    timing: none
+    mechanism: none
+  DELETE_SKIPPED:                  # a skipped dose is deleted
+    timing: none
+    mechanism: none
+  EDIT_FLIP:                       # a skipped dose is edited to Taken
+    timing: none
+    mechanism: none
+
+# --- expectations, campaign two (observed_behaviour.md §13 and the first
+# sweep), stated before any run. Points are steps of the happy path.
+# happy path (3 orderings)  FAIL at the edit (last step): the edit sheet moves
+#                           no stock; every earlier step PASS
+# UE_KILL (6 points)        PASS: the writes finish before the relaunch kills
+# APP_WRITE_FAIL (6)        FAIL: no report; at a take the stock has moved and
+#                           the record is still pending (measured, sweep one)
+# DB_ABORT (4)              FAIL: no report; nothing committed
+# INFRA_STORAGE_FULL (6)    FAIL: no report
+# APP_CACHE_STALE (5)       PASS: the list is a Room flow, no cache
+# DB_CORRUPT (5)            FAIL: the app dies on relaunch, nothing flagged
+# DB_CORRUPT_STOCK (5)      FAIL: "-1 pills left" shown, nothing flagged
+# INFRA_STORAGE_MEDIA (5)   FAIL: the app dies at the first query
+# DB_EVENT_LOSS (4)         FAIL: the stock stays decremented, dose due again
+# INPUT_INVALID             FAIL: the empty name is accepted
+# CANNOT_SKIP               FAIL: the popup still skips
+# DELETE_SKIPPED            FAIL: a unit is refunded
+# EDIT_FLIP                 FAIL: the status flips, the stock does not

@@ -1,0 +1,86 @@
+module tp_input_invalid (sutname_types, sutname_fixture) is
+
+(* ===========================================================================
+   SHAPE    PARAMETER. The disruption is not a gate but a channel field
+            (Validity on ADD), so the accept path is linear and no inner
+            disrupt is needed: the specification routes on the value --
+
+       ADD (?ctx, ?id, ?valid);
+       if valid == VALID then ... else CONFIRM (REJECTED, band, id) end if
+
+   -- and `band` on that branch is the value from BEFORE the attempt.
+
+   TARGET   User / environment -- INPUT_INVALID: the user enters an invalid
+            input.
+
+   THE SUT MUST: reject the entry and leave the aggregate EXACTLY as it was.
+            Nothing partial, nothing silently coerced to a default. A
+            rejected input that still moves the aggregate is the
+            counter-example.
+
+   ACCEPT   an invalid input is submitted and the SUT reports REJECTED with
+            the band unchanged.
+   REFUSE   ANY gate-level fault. This purpose is about the SUT's own input
+            validation; a fault firing during the run would make the
+            rejection attributable to the fault instead.
+
+   Observable owed: CONFIRM (REJECTED, ?band, IDF).
+
+   Note for the System Interface: a SUT may refuse by WITHHOLDING the commit
+   control rather than by showing an error. Then there is no tap to model
+   and no error element to observe; the refusal is checked where it matters,
+   in the unchanged aggregate -- a stronger oracle than the presence of a
+   message.
+
+   disruption_mapping.yml still needs an entry named INPUT_INVALID with
+   timing `none` (the SI itself types the invalid input); the entry is what
+   tells the concretizer the target is known and needs no injection.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ItemId, CTX : Context in
+        IDF := defaultItem;
+        CTX := defaultContext;
+        disrupt
+            SEARCH  (IDF, LOCAL);
+            INFO    (IDF, ?any Value);
+            ADD     (CTX, IDF, INVALID);
+            CONFIRM (REJECTED, ?any StateBand, IDF);
+            loop TP_ACCEPT end loop
+        by
+            -- all gate-level faults refuse: this purpose targets validation
+            alt
+                UE_KILL
+            []  APP_EXTAPI_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

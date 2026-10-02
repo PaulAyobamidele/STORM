@@ -1,0 +1,4 @@
+# mastodon tc variants -- purpose: ue_kill -- 2026-09-30 15:25 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	33	34	28	PASS	injected=1 restored=0 
+2	21	22	27	PASS	injected=1 restored=0 

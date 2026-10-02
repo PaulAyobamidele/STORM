@@ -1,0 +1,97 @@
+module tp_db_abort (sutname_types, sutname_fixture) is
+
+(* ===========================================================================
+   SHAPE    WRITE-PATH. Copy this file for every fault the specification
+            places as a SIBLING of the commit inside DATABASE's ADD branch:
+            DB_ABORT (this file), UE_KILL, INFRA_STORAGE_FULL. Three
+            stressors on ONE requirement -- an aborted write must not move
+            the aggregate -- failing at three layers (SQL, process,
+            filesystem). Each needs its own, genuinely different, injection;
+            three names over one command are three rows that cannot disagree.
+
+   TARGET   Database -- DB_ABORT: the write transaction rolls back.
+
+   THE SUT MUST: report ROLLED_BACK with the band EXACTLY where it was. A
+            rollback that still moves the aggregate, or a crash to an error
+            boundary instead of any report at all (quiescence where an output
+            is owed), is the counter-example.
+
+   The specification places the fault as a sibling of the commit --
+
+       ADD (?ctx, ?id, ?valid);
+       alt   band := bump (band); CONFIRM (COMMITTED, band, id)
+       []    DB_ABORT;            CONFIRM (ROLLED_BACK, band, id)
+       ...
+
+   -- so a purpose that only names its own target leaves the commit AND the
+   other two abort faults reachable as siblings, and the walker will wander
+   into one of them. Hence the STAGED, NESTED disrupt below: the inner one
+   pins the choice between "commits" and "this specific fault"; the outer one
+   refuses every OTHER fault explicitly.
+
+   ACCEPT   the write is interrupted by DB_ABORT and the SUT reports
+            ROLLED_BACK.
+   REFUSE   the write COMMITS (the fault never bit); any OTHER fault.
+
+   Observable owed: CONFIRM (ROLLED_BACK, ?band, IDF). The band is left
+   free here and checked by the concretization oracle against the value
+   BEFORE the attempt.
+
+   INJECTION TIMING (properties/disruption_mapping.yml): this fault must be
+   ARMED BEFORE the write's concrete steps run. Armed at the gate, it fires
+   after the commit has already happened, and every case then fails for a
+   reason the SUT did not cause.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ItemId, CTX : Context in
+        IDF := defaultItem;
+        CTX := defaultContext;
+        disrupt
+            SEARCH (IDF, LOCAL);
+            INFO   (IDF, ?any Value);
+            ADD    (CTX, IDF, VALID);
+            disrupt
+                CONFIRM (COMMITTED, ?any StateBand, IDF);
+                loop TP_REFUSE end loop
+            by
+                DB_ABORT;
+                CONFIRM (ROLLED_BACK, ?any StateBand, IDF);
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- any OTHER fault: this purpose's own target excluded
+            alt
+                UE_KILL
+            []  APP_EXTAPI_FAIL
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

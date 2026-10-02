@@ -1,0 +1,121 @@
+module tp_app_lazy_regrade (moodle_types) is
+
+(* GRADE_PERSISTED needs a graded attempt to exist first -- fixture reset
+   wipes attempts, so START_ATTEMPT;SAVE_ATTEMPT;PROCESS_ATTEMPT creates one. *)
+
+(* 2026-09-11: same don't-care-gate bug already found and fixed for
+   ue1_lose_conn/app1_write_fail/app_grade_stale_sub/ue2_session_expire.
+   Confirmed live: tc_app_lazy_regrade.144.aut walked a COMPLETE, correct
+   assignment-submission cycle (VIEW_ASSIGN through UPDATE_SUBMISSION,
+   real captured text at each step) before ever touching this purpose's OWN
+   accept sequence below, then died waiting for a grade-input field after an
+   unexpected re-login -- the assignment/grading flow was free to fire as a
+   detour because none of its gates were refused. Fixed by refusing every
+   declared-but-unused gate below, same treatment as tp_ue1_lose_conn.lnt.
+   SAVE_ATTEMPT, PROCESS_ATTEMPT and GRADE_PERSISTED are deliberately NOT in
+   the refuse list -- they are this purpose's own accept steps, not
+   don't-care gates. VIEW_QUIZ is also deliberately not refused -- it is the
+   required first step of this disrupted sequence in the spec (same
+   reasoning as tp_ue1_lose_conn.lnt), not a competing branch. *)
+
+(* 2026-09-12, TRIED AND REVERTED: read disruption_mapping.yml's prose
+   ("The oracle is COURSE_TOTAL(crs, g)...") instead of the actual formal
+   spec first, and rewrote the accept sequence to
+   `APP_LAZY_REGRADE; VIEW_COURSE_TOTAL; COURSE_TOTAL(crs, GRADE_FULL)'.
+   WRONG: specification_moodle.lnt's own APP process has
+
+       VIEW_COURSE_TOTAL (?crs);
+       disrupt
+           COURSE_TOTAL (crs, g)
+       by
+           APP_LAZY_REGRADE;
+           -- Not offered: a stale total with no indication. A correct
+           -- system either recomputes or reports it cannot yet.
+           WRITE_ERROR_SHOWN
+       end disrupt
+
+   `disrupt X by Y' makes X and Y MUTUALLY EXCLUSIVE alternatives, not
+   sequence-then-check: once APP_LAZY_REGRADE fires, COURSE_TOTAL is
+   explicitly excluded from every subsequent step ("Not offered"), and
+   WRITE_ERROR_SHOWN is the only continuation the spec allows. The rewrite
+   demanded COURSE_TOTAL AFTER APP_LAZY_REGRADE, which the spec forbids --
+   confirmed by narval regeneration: 0 states reach :PASS:, "no-pass",
+   collapsed exactly like infra_cron_dead. Reverted to the original
+   `APP_LAZY_REGRADE; WRITE_ERROR_SHOWN', which matches the spec correctly.
+
+   The original 5/5 INCONC finding (full happy-path cycle completes, fault
+   injected and confirmed, then "SUT produced none of [WRITE_ERROR_SHOWN,
+   CONN_ERROR_SHOWN], and this state PERMITS quiescence... INCONCLUSIVE")
+   is therefore NOT explained yet. The spec's own comment gives WRITE_ERROR_
+   SHOWN as APP's only continuation with no quiescence written into that
+   arm, so an empirically-permitted quiescence at that composed state is a
+   real, unexplained discrepancy between the read spec and the built graph
+   -- needs a direct CTG/BFS check (bcg_io on the full pre-collapse graph,
+   same as the still-pending infra_cron_dead one), not a sixth guess. *)
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId);
+        SAVE_ATTEMPT (?any AttemptId);
+        PROCESS_ATTEMPT (?any AttemptId);
+        GRADE_PERSISTED (?any AttemptId, GRADE_FULL);
+        VIEW_COURSE_TOTAL (?any CourseId);
+        APP_LAZY_REGRADE;
+        WRITE_ERROR_SHOWN;
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  DB_ATTEMPT_STEP_LOSS
+            []  INFRA_CRON_DEAD
+            []  UE1_LOSE_CONN
+            []  UE2_SESSION_EXPIRE
+            (* Every gate below carries real parameters -- only the 7 faults
+               above are none-typed. `?any TYPE' matches the arity each
+               channel actually declares, copied from the already-proven
+               tp_ue1_lose_conn.lnt rather than re-derived. *)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            []  ENROL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

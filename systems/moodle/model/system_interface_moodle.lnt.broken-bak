@@ -1,0 +1,281 @@
+module system_interface_moodle (moodle_types)
+with ==, !=
+is
+
+type Screen is
+    SCR_ANY,
+    SCR_LOGIN,
+    SCR_DASHBOARD,
+    SCR_COURSE,
+    SCR_QUIZ_VIEW,
+    SCR_QUIZ_ATTEMPT,
+    SCR_QUIZ_SUMMARY,
+    SCR_QUIZ_REVIEW,
+    SCR_ASSIGN_VIEW,
+    SCR_ASSIGN_SUBMIT
+end type
+
+process SI [
+    navigate        : Ch_Route,
+    click           : Ch_Selector,
+    type_into       : Ch_TypeIn, 
+    wait_for        : Ch_Selector,
+    observe         : Ch_Selector,
+    ENROL           : EnrolChannel,
+    VIEW_QUIZ       : ViewQuizChannel,
+    START_ATTEMPT   : AttemptChannel,
+    SAVE_ATTEMPT    : SaveChannel,
+    PROCESS_ATTEMPT : SubmitChannel,
+    GRADE_PERSISTED : GradeChannel,
+    VIEW_ASSIGN     : ViewAssignChannel,
+    SUBMIT_DRAFT    : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    CONFIRMED_GRADE : ConfirmedGradeChannel,
+    UE1_LOSE_CONN   : none,
+    UE2_SESSION_EXPIRE : none
+] is
+var
+    screen     : Screen,
+    logged_in  : Bool,
+    course_id  : String,
+    quiz_id    : String,
+    assign_id  : String,
+    attempt_id : String,
+    g          : Grade
+in
+    screen     := SCR_ANY;
+    logged_in  := false;
+    course_id  := "2";
+    quiz_id    := "2";
+    assign_id  := "3";
+    attempt_id := "";
+
+    loop
+      alt
+        
+        -- LOGIN GUARD
+        
+        if not(logged_in) then
+            navigate ("/login/index.php");
+            screen := SCR_LOGIN;
+            type_into ("username", "admin");
+            type_into ("password", "Test1234!");
+            click ("id=loginbtn");
+            wait_for (sel_dashboard);
+            screen := SCR_DASHBOARD;
+            logged_in := true
+        end if
+
+      []
+        
+        -- ENROL
+        
+        if logged_in then
+            case screen in
+                SCR_COURSE -> null
+              | any ->
+                    navigate ("/course/view.php?id=" & course_id);
+                    wait_for (sel_course_page);
+                    screen := SCR_COURSE
+            end case;
+
+            click ("id=id_submitbutton");
+            wait_for (sel_enrol_confirm);
+            ENROL (course_id);
+            screen := SCR_COURSE
+        end if
+
+      []
+        
+        -- VIEW_QUIZ
+        
+        if logged_in then
+            case screen in
+                SCR_COURSE -> null
+              | any ->
+                    navigate ("/course/view.php?id=" & course_id);
+                    wait_for (sel_course_page);
+                    screen := SCR_COURSE
+            end case;
+
+            click ("link=Model_Quiz");
+            wait_for (sel_quiz_heading);
+            screen := SCR_QUIZ_VIEW;
+            VIEW_QUIZ (course_id, quiz_id)
+        end if
+
+      []
+        
+        -- START_ATTEMPT (output attempt_id)
+        
+        if logged_in then
+            case screen in
+                SCR_QUIZ_VIEW -> null
+              | any ->
+                    navigate ("/mod/quiz/view.php?id=" & quiz_id);
+                    wait_for (sel_quiz_heading);
+                    screen := SCR_QUIZ_VIEW
+            end case;
+
+            click ("xpath=//button[contains(text(),'Attempt quiz')]");
+            wait_for (sel_attempt_page);
+            screen := SCR_QUIZ_ATTEMPT;
+            observe (sel_current_url);       -- captures driver.current_url
+            START_ATTEMPT (course_id, quiz_id, ?attempt_id)
+        end if
+
+      []
+        
+        -- SAVE_ATTEMPT
+        
+        if logged_in then
+            case screen in
+                SCR_QUIZ_ATTEMPT -> null
+              | any -> null
+            end case;
+
+            click ("id=q2:1_answer0");
+            click ("id=mod_quiz-next-nav");
+            wait_for (sel_summary_page);
+            screen := SCR_QUIZ_SUMMARY;
+            SAVE_ATTEMPT (attempt_id)
+        end if
+
+      []
+        
+        -- PROCESS_ATTEMPT
+        
+        if logged_in then
+            case screen in
+                SCR_QUIZ_SUMMARY -> null
+              | any -> null
+            end case;
+
+            click ("xpath=//button[contains(text(),'Submit all and finish')]");
+            wait_for (sel_confirm_popup);
+            click ("xpath=//button[@data-action='save']");
+            wait_for (sel_review_page);
+            screen := SCR_QUIZ_REVIEW;
+            PROCESS_ATTEMPT (attempt_id)
+        end if
+
+      []
+        
+        -- GRADE_PERSISTED (output attempt_id, grade)
+        
+        if logged_in then
+            case screen in
+                SCR_QUIZ_REVIEW -> null
+              | any -> null
+            end case;
+
+            observe (sel_grade_display);
+            GRADE_PERSISTED (?attempt_id, ?g);
+            screen := SCR_QUIZ_REVIEW
+        end if
+
+      []
+        
+        -- VIEW_ASSIGN
+        
+        if logged_in then
+            case screen in
+                SCR_COURSE -> null
+              | any ->
+                    navigate ("/course/view.php?id=" & course_id);
+                    wait_for (sel_course_page);
+                    screen := SCR_COURSE
+            end case;
+
+            click ("link=Model_Assignment");
+            wait_for (sel_assign_heading);
+            screen := SCR_ASSIGN_VIEW;
+            VIEW_ASSIGN (course_id, assign_id)
+        end if
+
+      []
+        
+        -- SUBMIT_DRAFT
+        
+        if logged_in then
+            case screen in
+                SCR_ASSIGN_VIEW -> null
+              | any -> null
+            end case;
+
+            navigate ("/mod/assign/view.php?id=" & assign_id & "&action=editsubmission");
+            wait_for (sel_file_upload_btn);
+            screen := SCR_ASSIGN_SUBMIT;
+
+            -- Moodle's file input is dynamically created by the file picker.
+            -- We use a pre‑uploaded file via the repository picker instead.
+            -- Click "Add file" → choose a file from the file picker.
+            click ("xpath=//button[contains(text(),'Add')]");
+            wait_for (sel_file_picker);
+            click ("xpath=//button[contains(text(),'Upload this file')]");
+            click ("id=id_submitbutton");        -- "Save changes"
+            wait_for (sel_draft_confirmation);
+            SUBMIT_DRAFT (course_id, assign_id, PLACEHOLDER);
+            screen := SCR_ASSIGN_VIEW
+        end if
+
+      []
+        
+        -- UPDATE_SUBMISSION
+        
+        if logged_in then
+            case screen in
+                SCR_ASSIGN_VIEW -> null
+              | any -> null
+            end case;
+
+            navigate ("/mod/assign/view.php?id=" & assign_id & "&action=editsubmission");
+            wait_for (sel_file_upload_btn);
+            screen := SCR_ASSIGN_SUBMIT;
+
+            click ("xpath=//button[contains(text(),'Add')]");
+            wait_for (sel_file_picker);
+            click ("xpath=//button[contains(text(),'Upload this file')]");
+            click ("id=id_submitbutton");
+            wait_for (sel_final_confirmation);
+            UPDATE_SUBMISSION (course_id, assign_id, FINAL);
+            screen := SCR_ASSIGN_VIEW
+        end if
+
+      []
+        
+        -- CONFIRMED_GRADE (output assign_id, grade, version)
+        
+        if logged_in then
+            case screen in
+                SCR_ASSIGN_VIEW -> null
+              | any -> null
+            end case;
+
+            observe (sel_assign_grade);
+            CONFIRMED_GRADE (?assign_id, ?g, ?ver);
+            screen := SCR_ASSIGN_VIEW
+        end if
+
+      []
+        
+        -- UE1_LOSE_CONN
+        
+        if logged_in then
+            UE1_LOSE_CONN
+        end if
+
+      []
+        
+        -- UE2_SESSION_EXPIRE
+        
+        if logged_in then
+            UE2_SESSION_EXPIRE
+        end if
+
+      end alt
+    end loop
+end var
+end process
+
+end module

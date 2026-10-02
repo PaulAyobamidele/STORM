@@ -1,0 +1,132 @@
+# concrete_domain.yml -- I() for system_interface_medtimer.lnt, campaign two
+# (Android, Appium / UiAutomator2). Selectors read off the live hierarchy dumps
+# in notes/ui/ (2026-09-29, emulator medtimer_test, API 34). Keys are
+# lower-case and equal to the LNT enum values.
+#
+# A dose row is located by its reminder time: the row text starts with it
+# ("  11:57 PM, 3 pills", "  11:57 PM ➡ 10:21 AM, 2 pills"), so a deleted row
+# does not shift the others. A row's state button is its sibling, reached by
+# XPath through the row's content container (overview_item.xml). Runs must
+# start before 11:56 PM: a reminder created after its own time is scheduled
+# for tomorrow (observed_behaviour.md §7.2).
+
+routes:
+  rt_home: "home"          # navigate = relaunch the launcher activity
+
+selectors:
+  sel_name_field:   'new UiSelector().resourceId("com.futsch1.medtimer:id/medicineName")'
+  sel_amount_field: 'new UiSelector().className("android.widget.EditText")'
+  sel_unit_field:   'new UiSelector().className("android.widget.EditText")'
+  sel_dose_field:   'new UiSelector().resourceId("com.futsch1.medtimer:id/editAmount")'
+  sel_time_field:   'new UiSelector().resourceId("com.futsch1.medtimer:id/editReminderTime")'
+
+elements:
+  # screen anchors
+  el_overview:        'new UiSelector().resourceId("com.futsch1.medtimer:id/logManualDose")'
+  el_medicines:       'new UiSelector().resourceId("com.futsch1.medtimer:id/addMedicine")'
+  # prelude and journey preconditions
+  el_add_dialog:      'new UiSelector().resourceId("com.futsch1.medtimer:id/medicineName")'
+  el_edit_medicine:   'new UiSelector().resourceId("com.futsch1.medtimer:id/editMedicineName")'
+  el_stock_settings:  'new UiSelector().text("Medicine stock settings")'
+  el_stock_set_a:     'new UiSelector().text("3 pills")'
+  el_stock_set_b:     'new UiSelector().text("2 pills")'
+  el_reminder_dialog: 'new UiSelector().resourceId("com.futsch1.medtimer:id/createReminder")'
+  el_rem_a1:          'new UiSelector().resourceId("com.futsch1.medtimer:id/editReminderTime").text("11:57 PM")'
+  el_rem_a2:          'new UiSelector().resourceId("com.futsch1.medtimer:id/editReminderTime").text("11:58 PM")'
+  el_rem_a3:          'new UiSelector().resourceId("com.futsch1.medtimer:id/editReminderTime").text("11:59 PM")'
+  el_rem_b:          'new UiSelector().resourceId("com.futsch1.medtimer:id/editReminderTime").text("11:56 PM")'
+  el_med_settings:    'new UiSelector().text("Medicine cannot be skipped")'
+  el_no_skip_on:      'new UiSelector().resourceId("com.futsch1.medtimer:id/switchWidget").checked(true)'
+  el_row_a1:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:57 PM")'
+  el_row_a2:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:58 PM")'
+  el_row_a3:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:59 PM")'
+  el_row_b:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:56 PM")'
+  el_edit_sheet:      'new UiSelector().resourceId("com.futsch1.medtimer:id/editEventToggleGroup")'
+  el_delete_dialog:   'new UiSelector().text("Are you sure to delete the reminder event?")'
+  # ORACLES: the dose row's state ("Please wait…" / "Taken" / "Skipped")
+  el_state_a1:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:57 PM')]]]"
+    by: xpath
+    attribute: content-desc
+  el_state_a2:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:58 PM')]]]"
+    by: xpath
+    attribute: content-desc
+  el_state_a3:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:59 PM')]]]"
+    by: xpath
+    attribute: content-desc
+  el_state_b:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:56 PM')]]]"
+    by: xpath
+    attribute: content-desc
+  # ORACLES: a medicine's stock, "Vitamin C (N pills left)" / "Zinc (N pills left)"
+  el_card_a:          'new UiSelector().resourceId("com.futsch1.medtimer:id/medicineName").textContains("Vitamin C")'
+  el_card_b:          'new UiSelector().resourceId("com.futsch1.medtimer:id/medicineName").textContains("Zinc")'
+  el_medicine_shown:  'new UiSelector().resourceId("com.futsch1.medtimer:id/editMedicineName").text("Vitamin D")'
+  # ORACLES owed after a fault or a rejection; the app renders none today
+  el_name_error:      'new UiSelector().resourceId("com.futsch1.medtimer:id/textinput_error")'
+  el_write_error:     'new UiSelector().textMatches("(?is).*(error|failed|could not|couldn.t|not saved).*")'
+  el_corrupt_error:   'new UiSelector().textMatches("(?is).*(corrupt|damaged|invalid|unreadable).*")'
+  el_storage_error:   'new UiSelector().textMatches("(?is).*(storage|database|data).*(error|unavailable|cannot|could not|unreadable).*")'
+
+concrete_values:
+  cv_tab_overview:    'new UiSelector().resourceId("nav_overview")'
+  cv_tab_medicines:   'new UiSelector().resourceId("nav_medicines")'
+  cv_add_medicine:    'new UiSelector().resourceId("com.futsch1.medtimer:id/addMedicine")'
+  cv_name_a:          "Vitamin C"          # no digits: the card's first number is the stock
+  cv_name_b:          "Zinc"
+  cv_name_valid:      "Vitamin D"
+  cv_name_invalid:    ""
+  cv_ok:              'new UiSelector().text("OK")'
+  cv_cancel:          'new UiSelector().text("Cancel")'
+  cv_back:            'KEYCODE_BACK'
+  cv_stock_settings:  'new UiSelector().resourceId("com.futsch1.medtimer:id/openStockTracking")'
+  cv_stock_amount:    'new UiSelector().text("Amount")'
+  cv_stock_unit:      'new UiSelector().text("Unit")'
+  cv_stock_a:         "3"
+  cv_stock_b:         "2"
+  cv_unit_value:      "pills"
+  cv_add_reminder:    'new UiSelector().resourceId("com.futsch1.medtimer:id/addReminder")'
+  cv_type_time_based: 'new UiSelector().resourceId("com.futsch1.medtimer:id/timeBasedCard")'
+  cv_dose_field:      'new UiSelector().resourceId("com.futsch1.medtimer:id/editAmount")'
+  cv_dose:            "1"
+  cv_time_field:      'new UiSelector().resourceId("com.futsch1.medtimer:id/editReminderTime")'
+  cv_time_a1:         "11:57 PM"
+  cv_time_a2:         "11:58 PM"
+  cv_time_a3:         "11:59 PM"
+  cv_time_b:         "11:56 PM"
+  cv_create_reminder: 'new UiSelector().resourceId("com.futsch1.medtimer:id/createReminder")'
+  cv_card_a:          'new UiSelector().resourceId("com.futsch1.medtimer:id/medicineName").textContains("Vitamin C")'
+  cv_card_b:          'new UiSelector().resourceId("com.futsch1.medtimer:id/medicineName").textContains("Zinc")'
+  cv_med_settings:    'new UiSelector().resourceId("com.futsch1.medtimer:id/openMedicineSettings")'
+  cv_cannot_skip:     'new UiSelector().text("Medicine cannot be skipped")'
+  cv_state_a1:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:57 PM')]]]"
+    by: xpath
+  cv_state_a2:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:58 PM')]]]"
+    by: xpath
+  cv_state_a3:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:59 PM')]]]"
+    by: xpath
+  cv_state_b:
+    selector: "//*[@resource-id='com.futsch1.medtimer:id/stateButton'][following-sibling::*[@resource-id='com.futsch1.medtimer:id/overviewContentContainer'][.//*[contains(@text,'11:56 PM')]]]"
+    by: xpath
+  cv_row_a1:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:57 PM")'
+  cv_row_a2:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:58 PM")'
+  cv_row_a3:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:59 PM")'
+  cv_row_b:          'new UiSelector().resourceId("com.futsch1.medtimer:id/reminderText").textContains("11:56 PM")'
+  cv_taken:           'new UiSelector().resourceId("com.futsch1.medtimer:id/takenButton")'
+  cv_skipped:         'new UiSelector().resourceId("com.futsch1.medtimer:id/skippedButton")'
+  cv_delete:          'new UiSelector().resourceId("com.futsch1.medtimer:id/deleteButton")'
+  cv_confirm_delete:  'new UiSelector().text("Yes")'
+  cv_toggle_taken:    'new UiSelector().resourceId("com.futsch1.medtimer:id/takenToggleButton")'
+  cv_toggle_skipped:  'new UiSelector().resourceId("com.futsch1.medtimer:id/skippedToggleButton")'
+  # abstract init values, for the parser's `tap (L_f (var))` resolution only
+  TAKE: "Taken"
+  SKIP: "Skipped"
+
+screen_anchors:
+  SCR_HOME:      el_overview
+  SCR_MEDICINES: el_medicines

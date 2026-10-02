@@ -1,0 +1,676 @@
+-- coverage.svl -- version 1.75 -- 2026/03/27 13:41:15
+-- Lina Marsso, Radu Mateescu, and Wendelin Serwe
+
+-- extraction of a "complete" test suite
+
+---------------------------------------------------------------------------
+-- parsing command line options
+
+% EXECUTE_PHASE_1=yes
+% EXECUTE_PHASE_2=yes
+% EXECUTE_PHASE_3=yes
+
+% OPTION_MATCHING=-total
+% OPTION_STRICT=yes
+
+% while true ; do
+%	case "$1" in
+%	-check )
+%		OPTION_CHECK=yes
+%		;;
+%	-force )
+%		OPTION_FORCE=yes
+%		;;
+%	-gate )
+%		OPTION_MATCHING=-gate
+%		;;
+%	-keep )
+%		KEEP_INCONCLUSIVE=yes
+%		;;
+%	-no-phase-1 | -no-labels | -skip )
+%		EXECUTE_PHASE_1=no
+%		;;
+%	-no-phase-2 | -no-completion )
+%		EXECUTE_PHASE_2=no
+%		;;
+%	-no-phase-3 | -no-tc )
+%		EXECUTE_PHASE_3=no
+%		;;
+%	-no-strict )
+%		OPTION_STRICT=no
+%		;;
+%	-pass )
+%		KEEP_INCONCLUSIVE=no
+%		;;
+%	-precise )
+%		OPTION_PRECISE=yes
+%		;;
+%	-p1-input )
+%		PHASE1_VARIANT=input
+%		;;
+%	-p1-output )
+%		PHASE1_VARIANT=input
+%		;;
+%	-total )
+%		OPTION_MATCHING=-total
+%		;;
+%	-* )
+%		SVL_ERROR "unknown option \"$1\""
+%		;;
+%	* )
+%		break
+%		;;
+%	esac
+%	shift
+% done
+
+---------------------------------------------------------------------------
+-- parsing command line arguments
+
+% if [ "$1" = "" ] ; then
+%	SVL_ERROR "missing parameter for the model"
+% fi
+% MODEL=`$CADP/src/com/cadp_basename $1 .bcg`
+% if [ ! -r $MODEL.bcg ] ; then
+%	MODEL=`$CADP/src/com/cadp_basename $1 .aut`
+%	if [ -r $MODEL.aut ] ; then
+		"$MODEL.bcg" = "$MODEL.aut" ;
+%	else
+%		MODEL=`$CADP/src/com/cadp_basename $1 .bcg`
+%		SVL_ERROR "cannot read model \"$MODEL.bcg\""
+%	fi
+% fi
+% if `bcg_info -labels $MODEL | grep '"' > /dev/null 2>&1` ; then
+%	SVL_ERROR "labels must not contain double quotes '\"' (rename appropriately)"
+% fi
+% shift
+
+% case "$1" in
+% -gate | -partial | -total )
+%	IO=$1
+%	shift
+%	;;
+% -* )
+%	SVL_ERROR "unsupported matching mode \"$1\" for I/O file"
+% esac
+% if [ "$1" = "" ] ; then
+%	SVL_ERROR "missing parameter for I/O file"
+% fi
+% IO=" $1"
+% if [ ! -r "$1" ] ; then
+%	SVL_ERROR "cannot read I/O file \"$1\""
+% fi
+% shift
+
+% if [ `ls -1 CTG*.bcg 2> /dev/null | wc -l` -gt 0 ] ; then
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "WARNING: presence of BCG files starting with CTG"
+%	SVL_PRINT_MESSAGE "         (may disturb extraction of test cases)"
+%	SVL_PRINT_NEWLINE
+% fi
+
+% COVER=COVER
+% HIDING=HIDING
+% INCONCLUSIVE=INCONCLUSIVE
+
+% ARCH=`$CADP/com/arch`
+
+---------------------------------------------------------------------------
+
+% NB_TRANSITIONS () {
+% # $1 : BCG graph
+
+%	bcg_info -size $1 | sed -e 's/^.*states, //' -e 's/ transitions.*//'
+
+% }
+
+---------------------------------------------------------------------------
+-- preliminary steps
+
+% if [ -f $MODEL.saved.bcg -a "$OPTION_FORCE" != yes ] ; then
+
+	"$MODEL.suspension.bcg" = "$MODEL.saved.bcg" ;
+
+% else
+
+	"$MODEL.divbranching.bcg" = divbranching reduction of "$MODEL.bcg" ;
+
+	% SVL_PRINT_NEWLINE
+	% SVL_PRINT_MESSAGE "compute suspension automaton for $MODEL.divbranching"
+
+	% SVL_PRINT_LOG_MESSAGE "bcg_open $MODEL.divbranching.bcg $TESTOR_DIR/bin.$ARCH/testor.a -io $IO -suspension $MODEL.suspension.brut.bcg"
+	% bcg_open $MODEL.divbranching.bcg $TESTOR_DIR/bin.$ARCH/testor.a -io $IO -suspension $MODEL.suspension.brut.bcg >> $SVL_LOG_FILE 2>&1
+	% SVL_INFO $MODEL.suspension.brut.bcg
+	% SVL_RECORD_FOR_CLEAN "$MODEL@1.o"
+	% SVL_RECORD_FOR_CLEAN $MODEL.suspension.brut.bcg
+
+	"$MODEL.suspension.bcg" =
+		strong reduction of "$MODEL.suspension.brut.bcg" ;
+
+	% cp -pi $MODEL.suspension.bcg $MODEL.saved.bcg
+
+% fi
+
+"$MODEL.red.bcg" = hide ":DELTA:" in "$MODEL.suspension.bcg" ;
+
+"$MODEL.det.bcg" = weak trace reduction of "$MODEL.red.bcg" ;
+
+% if [ "$OPTION_PRECISE" = yes ] ; then
+%	NB_TRANSITIONS_MODEL=`NB_TRANSITIONS $MODEL.suspension.bcg`
+% else
+%	NB_TRANSITIONS_MODEL=`NB_TRANSITIONS $MODEL.det.bcg`
+% fi
+
+-- create the automaton corresponding to an empty CTG
+% echo "des (0, 1, 1)" > $INCONCLUSIVE.aut
+% echo '(0, ":INCONCLUSIVE:", 0)' >> $INCONCLUSIVE.aut
+% SVL_RECORD_FOR_SWEEP $INCONCLUSIVE.aut
+"$INCONCLUSIVE.bcg" = "$INCONCLUSIVE.aut" ;
+
+-- initialize the merge of already generated CTGs
+% N=0
+% echo "des (0, 0, 1)" > $COVER$N.aut
+% SVL_RECORD_FOR_SWEEP $COVER$N.aut
+"$COVER$N.bcg" = "$COVER$N.aut" ;
+
+-- create sync file for the projector tool
+% echo "sync" > $MODEL.sync
+% bcg_info -labels $MODEL.suspension |
+% $CADP/src/com/cadp_tail -n +3 >> $MODEL.sync
+% SVL_RECORD_FOR_SWEEP $MODEL.sync
+
+---------------------------------------------------------------------------
+
+% DISCARD_REDUNDANT_CTG () {
+% # $1 : CTG
+% # $2 : reason (text to be displayed)
+
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "$1 is redundant ($2)"
+%	mv $1.bcg $1.redundant.bcg
+%	rm -f $1@1.o
+%	SVL_RECORD_FOR_CLEAN $1.redundant.bcg
+
+% }
+
+---------------------------------------------------------------------------
+
+property INCREASING_COVERAGE (PREDN, N)
+	"$COVER$PREDN < $COVER$N <= $MODEL"
+is
+	% if [ "$OPTION_CHECK" = yes ] ; then
+		comparison "$COVER$N.bcg" >= "$COVER$PREDN.bcg" ;
+		expected TRUE ;
+
+		comparison "$COVER$N.bcg" <= "$MODEL.suspension.bcg" ;
+		expected TRUE ;
+	% fi
+
+	comparison "$COVER$N.bcg" == "$COVER$PREDN.bcg" ;
+	result REDUNDANT expected FALSE ;
+end property
+
+---------------------------------------------------------------------------
+
+property SANITY (N)
+	"CTG$N <= $COVER$N"
+	"CTG$N |= < true * . \":PASS:\" > true"
+is
+	weak trace comparison
+		"$COVER$N.bcg"
+	>=
+		"CTG$N.cover.bcg" ;
+	expected TRUE ;
+
+	"CTG$N.bcg" |= < true * . ":PASS:" > true ;
+	expected TRUE ;
+end property
+
+---------------------------------------------------------------------------
+-- merging two covers
+
+% MERGE_COVER () {
+% # $1 : NEW_COVER (CTG)
+% # $2 : CURRENT_COVER (COVER_{n-1})
+% # $3 : RESULTING_COVER (COVER_n)
+
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "merge $2 and $1"
+
+%	SVL_PRINT_LOG_MESSAGE "$TESTOR_DIR/bin.$ARCH/bcg_union $2.bcg $1.bcg $3.brut.bcg"
+%	$CADP_TIME $TESTOR_DIR/bin.$ARCH/bcg_union $2.bcg $1.bcg $3.brut.bcg >> $SVL_LOG_FILE 2>&1
+%	SVL_INFO $3.brut.bcg
+%	SVL_RECORD_FOR_SWEEP $3.brut.bcg
+
+	"$3.bcg" =
+		total abstraction "$3.brut.bcg"
+		sync using "$MODEL.sync" of
+		"$MODEL.suspension.bcg" ;
+
+% }
+
+---------------------------------------------------------------------------
+-- complete test graph extraction
+
+% EXTRACT_CTG_AND_MERGE () {
+% # $1 : TP
+% # $2 : CTG
+% # $3 : COVER_{n-1}
+% # $4 : COVER_n
+% # $5 : MATCHING_MODE (-total or -gate)
+% # $6 : CHECK (yes or empty)
+
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "extracting $2 for $1"
+
+%	SVL_PRINT_LOG_MESSAGE "bcg_open $MODEL.red $TESTOR_DIR/bin.$ARCH/testor.a $5 -io $IO -all $1 $2.bcg"
+%	$CADP_TIME bcg_open $MODEL.red $TESTOR_DIR/bin.$ARCH/testor.a $5 -io $IO -all $1 $2.bcg >> $SVL_LOG_FILE 2>&1
+%	SVL_RECORD_FOR_CLEAN $2.bcg
+%	SVL_RECORD_FOR_SWEEP testor
+%	SVL_INFO $2.bcg
+
+%	if [ "$OPTION_CHECK" = yes ] ; then
+%		SVL_PRINT_LOG_MESSAGE "bcg_open $MODEL $TESTOR_DIR/bin.$ARCH/testor.a $5 -io $IO -all $1 $2.orig.bcg"
+%		$CADP_TIME bcg_open $MODEL $TESTOR_DIR/bin.$ARCH/testor.a $5 -io $IO -all $1 $2.orig.bcg >> $SVL_LOG_FILE 2>&1
+%		SVL_RECORD_FOR_SWEEP $2.orig
+		comparison "$2.bcg" == "$2.orig.bcg" ;
+%	fi
+
+	comparison "$2.bcg" == "$INCONCLUSIVE.bcg" ;
+	result EMPTY ;
+
+%	if [ "$EMPTY" = TRUE ] ; then
+%		SVL_ERROR "$2.bcg is empty (ACCEPT unreachable in \"$1\")"
+%	fi
+
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "compute cover of $2"
+
+%	if [ "$KEEP_INCONCLUSIVE" = yes ] ; then
+
+		"$2.cover.bcg" =
+			hide ":INCONCLUSIVE:", ":PASS:" in "$2.bcg" ;
+
+%	else
+		-- remove from $2 all transitions leading to an inconclusive
+%		SVL_PRINT_LOG_MESSAGE "$TESTOR_DIR/bin.$ARCH/bcg_union -strip $2.bcg $2.stripped.bcg"
+%		$CADP_TIME $TESTOR_DIR/bin.$ARCH/bcg_union -strip $2.bcg $2.stripped.bcg >> $SVL_LOG_FILE 2>&1
+%		SVL_RECORD_FOR_SWEEP $2.stripped.bcg
+
+		"$2.cover.bcg" = hide ":PASS:" in "$2.stripped.bcg" ;
+
+%	fi
+
+%	MERGE_COVER $2.cover $3 $4
+
+%	if [ "$6" = yes ] ; then
+		check SANITY ("$N") ;
+		check INCREASING_COVERAGE ("$PREDN", "$N") ;
+%		if [ "$REDUNDANT" = TRUE ] ; then
+%			DISCARD_REDUNDANT_CTG CTG$N "does not increase coverage"
+%		fi
+%	fi
+
+	"$4.red.bcg" = weak trace reduction of hide ":DELTA:" in "$4.bcg" ;
+
+%	if [ "$OPTION_PRECISE" = yes ] ; then
+%		NB_TRANSITIONS_COVER=`NB_TRANSITIONS $4.bcg`
+%	else
+%		NB_TRANSITIONS_COVER=`NB_TRANSITIONS $4.red.bcg`
+%	fi
+%	(
+%		printf "\npercentage of covered transitions so far: "
+%		echo "$NB_TRANSITIONS_COVER / $NB_TRANSITIONS_MODEL" | bc -l
+%	) 2>&1 | tee -a $SVL_LOG_FILE
+% }
+
+---------------------------------------------------------------------------
+-- remove any offers from a label (cutting after ' ' and '!')
+
+% REMOVE_OFFERS () {
+%	if [ "$OPTION_MATCHING" != -total ] ; then
+%		cut -d " " -f 1 |
+%		cut -d "!" -f 1
+%	else
+%		cat
+%	fi
+% }
+
+---------------------------------------------------------------------------
+-- extraction of the labels of the specification or a CTG
+-- ignore special labels (:PASS:, :DELTA:, and :INCONCLUSIVE:)
+-- ensure that each label is enclosed by double-quotes
+
+% LIST_LABELS () {
+% # $1 : BCG_FILE
+% # $2 : empty, "input", "output"
+
+%	if [ "$2" = "" ] ; then
+%		FILE="$1"
+%	else
+%		if [ ! -f $HIDING.hid ] ; then
+%			if [ "$2" = input ] ; then
+%				sed 's/input/hide all but/' $IO > $HIDING.hid
+%			else
+%				sed 's/input/hide/' $IO > $HIDING.hid
+%			fi
+%			SVL_RECORD_FOR_SWEEP $HIDING.hid
+%		fi
+%		FILE="$1.hidden"
+%		SVL_RECORD_FOR_SWEEP $FILE.bcg
+
+		"$FILE.bcg" = total hide using "$HIDING.hid" in "$1.bcg" ;
+
+%	fi
+
+%	SVL_PRINT_NEWLINE
+% 	SVL_PRINT_MESSAGE "\"$1.labels\" = $2 labels of \"$FILE.bcg\""
+
+%	bcg_info -labels $FILE.bcg |
+%	$CADP/src/com/cadp_tail -n +3 |
+%	REMOVE_OFFERS |
+%	sort -u |
+%	grep -v ':PASS:' |
+%	grep -v ':DELTA:' |
+%	grep -v ':INCONCLUSIVE:' |
+%	sed -e 's/^/"/' -e 's/$/"/' > $1.labels
+
+%	SVL_RECORD_FOR_SWEEP $1.labels
+% }
+
+---------------------------------------------------------------------------
+-- hide special transitions in a test purpose
+
+% HIDE_TP () {
+%	if [ ! -f $1.hidden.bcg ] ; then
+		"$1.hidden.bcg" =
+			branching reduction of hide "ACCEPT" in "$1.bcg" ;
+%		SVL_RECORD_FOR_SWEEP "$1.hidden.bcg"
+%	fi
+% }
+
+---------------------------------------------------------------------------
+-- (optional) phase 0
+
+% if [ $# -gt 0 ] ; then
+
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "------------------------------------------"
+%	SVL_PRINT_MESSAGE "-- Handling user provided test purposes --"
+%	SVL_PRINT_MESSAGE "------------------------------------------"
+
+%	while [ $# -gt 0 ] ; do
+%		BASE=`$CADP/src/com/cadp_basename $1 .aut`
+%		shift
+%		if [ -r $BASE.aut ] ; then
+			"$BASE.bcg" = "$BASE.aut" ;
+%		else
+%			BASE=`$CADP/src/com/cadp_basename $BASE .bcg`
+%		fi
+%		if [ ! -r $BASE.bcg ] ; then
+%			SVL_PRINT_MESSAGE "skipping unreadable purpose \"$BASE.bcg\""
+%			continue
+%		fi
+
+%		PREDN=$N
+%		N=`expr $N + 1`
+
+ 		"TP$N.bcg" = "$BASE.bcg" ;
+
+%		EXTRACT_CTG_AND_MERGE TP$N CTG$N $COVER$PREDN $COVER$N -total $OPTION_CHECK
+
+%	done
+
+% fi
+
+---------------------------------------------------------------------------
+-- phase 1
+
+% if [ "$EXECUTE_PHASE_1" = yes ] ; then
+
+% SVL_PRINT_NEWLINE
+% SVL_PRINT_MESSAGE "----------------------------------------------"
+% SVL_PRINT_MESSAGE "-- Generating a test purpose for each label --"
+% SVL_PRINT_MESSAGE "----------------------------------------------"
+
+-- initialize the list of labels not yet in the combined CTGs
+
+% LIST_LABELS $MODEL $PHASE1_VARIANT
+% mv $MODEL.labels $MODEL.labels.0
+% SVL_RECORD_FOR_SWEEP $MODEL.labels.0
+
+% if [ $N -gt 0 ] ; then
+%	LIST_LABELS $COVER$N $PHASE1_VARIANT
+%	diff $MODEL.labels.0 $COVER$N.labels |
+%	grep '^<' | sed 's/^< //' > $MODEL.labels.$N
+%	SVL_RECORD_FOR_SWEEP $MODEL.labels.$N
+% fi
+
+-- compute a CTG for a test purpose directed to a yet uncovered label
+
+% while [ -s $MODEL.labels.$N ] ; do
+%	LABEL=`head -n 1 $MODEL.labels.$N`
+%	PREDN=$N
+%	N=`expr $N + 1`
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "generating test purpose TP$N for $LABEL"
+
+%	echo "des (0, 2, 2)" > TP$N.aut
+%	echo "(0, $LABEL, 1)" >> TP$N.aut
+%	echo "(1, ACCEPT, 1)" >> TP$N.aut
+%	SVL_RECORD_FOR_SWEEP TP$N.aut
+
+	"TP$N.bcg" = "TP$N.aut" ;
+
+	-- checking for redundant test purposes is not necessary, because
+	-- by construction they focus on not yet covered labels (and thus
+	-- transitions)
+%	EXTRACT_CTG_AND_MERGE TP$N CTG$N $COVER$PREDN $COVER$N "$OPTION_MATCHING" no
+
+%	LIST_LABELS $COVER$N
+%	diff $MODEL.labels.0 $COVER$N.labels |
+%	grep '^<' | sed 's/^< //' > $MODEL.labels.$N
+%	SVL_RECORD_FOR_SWEEP $MODEL.labels.$N
+% done
+
+% fi
+
+---------------------------------------------------------------------------
+-- phase 2
+
+% if [ "$EXECUTE_PHASE_2" = yes ] ; then
+
+% SVL_PRINT_NEWLINE
+% SVL_PRINT_MESSAGE "------------------------------------------------------"
+% SVL_PRINT_MESSAGE "-- Extending coverage to completely cover the model --"
+% SVL_PRINT_MESSAGE "------------------------------------------------------"
+
+% while true ; do
+
+%	PREDN=$N
+%	N=`expr $N + 1`
+
+%	if [ "$OPTION_PRECISE" = yes ] ; then
+
+		"TP$N.bcg" =
+			comparison using bfs with bisimulator
+			"$MODEL.suspension.bcg" == "$COVER$PREDN.bcg" ;
+		result EQUAL ;
+
+%	else
+
+		"TP$N.bcg" =
+			comparison using bfs with bisimulator
+			"$MODEL.det.bcg"
+			==
+			"$COVER$PREDN.red.bcg" ;
+		result EQUAL ;
+
+%	fi
+
+%	if [ "$EQUAL" = TRUE ] ; then
+		-- stop, because the model is completely covered
+%		break
+%	fi
+
+	-- transformation of the diagnostics sequence into a test purpose
+
+%	STATES=`bcg_info -size TP$N.bcg | sed 's/ states.*//'`
+%	TRANSITIONS=`bcg_info -size TP$N.bcg | sed -e 's/^.*states, //' -e 's/ transitions.*//'`
+	-- the source state of the ACCEPT self-loop is the last state of the
+	-- diagnostics sequence
+%	ACCEPT_SOURCE=`expr $STATES - 1`
+%	if [ "$OPTION_STRICT" = no ] ; then
+		-- the transitions of the test purpose are those of the
+		-- diagnostic sequence, plus the ACCEPT self-loop
+%		TRANSITIONS=`expr $TRANSITIONS + 1`
+%	else
+		-- add a new REFUSE state
+%		REFUSE_SOURCE=$STATES
+%		STATES=`expr $STATES + 1`
+		-- the transitions of the test purpose are those of the
+		-- diagnostic sequence, plus two self-loops (ACCEPT and
+		-- REFUSE) and a *-transition to the REFUSE state for each
+		-- non-verdict state
+%		TRANSITIONS=`expr $TRANSITIONS + $STATES`
+%	fi
+
+	-- copy the transitions from the diagnostic sequence
+%	bcg_io "TP$N.bcg" -aldebaran - |
+%	grep -v '^des' |
+%	sed "s/\"Absent in .*\.bcg: \(.*\)\",/\"\1\",/" > GATES$N.tmp
+%	SVL_RECORD_FOR_SWEEP GATES$N.tmp
+%	if [ "$OPTION_MATCHING" = -total ] ; then
+%		mv GATES$N.tmp TP$N.tmp
+%	else
+%		printf "%s" "" > TP$N.tmp
+%		GATES=`cat GATES$N.tmp | cut -d "," -f 2 | sed 's/"//g' | cut -d " " -f 2`
+%		STATE_N=0
+%		for GATE in $GATES ; do
+%			STATE_N1=`expr $STATE_N + 1`
+%			if [ "$GATE" = :DELTA: ] ; then
+%				GATE="\"$GATE\""
+%			fi
+%			echo "($STATE_N, $GATE, $STATE_N1)" >> TP$N.tmp
+%			STATE_N=$STATE_N1
+%		done
+%	fi
+%	if [ "$OPTION_STRICT" = yes ] ; then
+		-- add the transitions to the REFUSE state
+%		I=0
+%		while [ $I -lt $ACCEPT_SOURCE ] ; do
+%			echo "($I, \"*\", $REFUSE_SOURCE)" >> TP$N.tmp
+%			I=`expr $I + 1`
+%		done
+%	fi
+	-- add the self-loops
+%	echo "($ACCEPT_SOURCE, ACCEPT, $ACCEPT_SOURCE)" >> TP$N.tmp
+%	if [ "$OPTION_STRICT" = yes ] ; then
+%		echo "($REFUSE_SOURCE, REFUSE, $REFUSE_SOURCE)" >> TP$N.tmp
+%	fi
+%	SVL_RECORD_FOR_SWEEP TP$N.tmp
+	-- write the header
+%	echo "des (0, $TRANSITIONS, $STATES)" > TP$N.aut
+	-- add the transitions sorted by source state (required by BCG_IO)
+%	sort TP$N.tmp >> TP$N.aut
+%	SVL_RECORD_FOR_CLEAN TP$N.aut
+
+	"TP$N.bcg" = "TP$N.aut" ;
+
+%	SVL_PRINT_NEWLINE
+%	SVL_INFO TP$N.bcg
+
+%	EXTRACT_CTG_AND_MERGE TP$N CTG$N $COVER$PREDN $COVER$N "$OPTION_MATCHING" no
+% done
+
+comparison using bfs with bisimulator
+"$MODEL.suspension.bcg" == "$COVER$PREDN.bcg" ;
+result EQUAL ;
+
+% if [ "$EQUAL" = FALSE ] ; then
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "*** suspension automaton not completely covered ***"
+%	SVL_PRINT_MESSAGE "    rerun with -precise"
+% fi
+
+% fi
+
+---------------------------------------------------------------------------
+
+%SVL_PRINT_NEWLINE
+%SVL_PRINT_MESSAGE "---------------------------------------------"
+%SVL_PRINT_MESSAGE "-- Flagging redundant complete test graphs --"
+%SVL_PRINT_MESSAGE "---------------------------------------------"
+ 
+%M=`expr $N - 1`
+%COVER=REVERSE_$COVER
+
+-- LOCAL PATCH: CTGs are numbered from 1, so with a single test purpose (N=1)
+-- M is 0 and the statement below reads CTG0.cover.bcg, which no code path ever
+-- creates -- SVL aborts here, before phase 3 has extracted any test case. The
+-- `while` below is already guarded; this statement was not. Redundancy is a
+-- comparison BETWEEN test purposes, so with fewer than two there is simply
+-- nothing to flag and the whole phase can be skipped.
+% if [ $M -gt 0 ] ; then
+
+"$COVER$M.bcg" =
+	total abstraction "CTG$M.cover.bcg"
+	sync using "$MODEL.sync" of
+	"$MODEL.suspension.bcg" ;
+
+% while [ $M -gt 1 ] ; do
+%	PREDM=$M
+%	M=`expr $M - 1`
+
+%	MERGE_COVER CTG$M $COVER$PREDM $COVER$M
+
+ 	check INCREASING_COVERAGE ("$PREDM", "$M") ;
+%	if [ "$REDUNDANT" = TRUE ] ; then
+%		DISCARD_REDUNDANT_CTG CTG$M "does not increase coverage"
+%	fi
+% done
+
+% else
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "only $N test purpose -- nothing to compare, phase skipped"
+% fi
+
+---------------------------------------------------------------------------
+-- phase 3
+
+% if [ "$EXECUTE_PHASE_3" = yes ] ; then
+
+% SVL_PRINT_NEWLINE
+% SVL_PRINT_MESSAGE "-----------------------------------------------------"
+% SVL_PRINT_MESSAGE "-- Extracting test cases from complete test graphs --"
+% SVL_PRINT_MESSAGE "-----------------------------------------------------"
+
+% for CTG in `ls -1 CTG*.bcg` ; do
+
+%	if `echo $CTG | grep cover > /dev/null` ; then
+%		continue
+%	fi
+%	if `echo $CTG | grep redundant > /dev/null` ; then
+%		continue
+%	fi
+%	if `echo $CTG | grep stripped > /dev/null` ; then
+%		continue
+%	fi
+
+%	SVL_PRINT_NEWLINE
+%	SVL_PRINT_MESSAGE "extracting test cases from $CTG"
+
+%	TC_PREFIX=TC.`$CADP/src/com/cadp_basename $CTG .bcg`
+
+%	SVL_PRINT_LOG_MESSAGE "$TESTOR_DIR/com/extract_all -check -copy -io $IO $CTG $TC_PREFIX"
+%	$CADP_TIME $TESTOR_DIR/com/extract_all -check -copy -io $IO $CTG $TC_PREFIX 2>&1 |
+%	tee -a $SVL_LOG_FILE | grep -v '^Exit' | grep -v 'Max.VSize.=.'
+
+%	for TC in `ls -1 $TC_PREFIX.*.bcg 2> /dev/null` ; do
+%		SVL_RECORD_FOR_CLEAN $TC
+%	done
+% done
+
+% fi
+
+---------------------------------------------------------------------------

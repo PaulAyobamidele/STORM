@@ -1,0 +1,2 @@
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	39	59	99	FAIL	ERROR  State 36 waits for OBSERVE !EL_STORAGE_ERROR — it never appeared and this state does NOT permit quiescence. The specification required an output here and

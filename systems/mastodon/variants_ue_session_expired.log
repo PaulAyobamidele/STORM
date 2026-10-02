@@ -1,0 +1,5 @@
+# mastodon tc variants -- purpose: ue_session_expired -- 2026-09-30 15:26 -- rev 04959f1 (dirty), campaign campaign_2026-09-30b
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	52	52	5	PASS	injected=1 restored=1 
+2	40	40	4	PASS	injected=1 restored=1 
+3	28	28	3	PASS	injected=1 restored=1 

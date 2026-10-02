@@ -1,0 +1,80 @@
+module tp_nominal (sutname_types, sutname_fixture) is
+
+(* ===========================================================================
+   SHAPE    NOMINAL. The baseline every fault purpose is measured against.
+
+   TARGET   No fault. The default item is searched locally, written once with
+            a valid input, and the SUT reports a committed write.
+
+   THE SUT MUST: answer the search with the item's authoritative value and
+            report COMMITTED with the band moved by exactly one rung. (The
+            band's rung is checked by the concretization oracle; the purpose
+            leaves the band FREE -- choosing among outputs is never the
+            tester's right.)
+
+   ACCEPT   the journey completes.
+   REFUSE   ANY fault firing during the run. Every off-target branch must
+            dead-end in TP_REFUSE; a branch left PASS-reachable is one the
+            pass-steering walker WILL take, and the run then fails for a
+            reason the SUT did not cause. This purpose leaked twice that way
+            (an EXTERNAL search, an INVALID input) before both were refused
+            explicitly.
+
+   Observable owed: CONFIRM (COMMITTED, ?band, IDF).
+
+   HOLE 19  Rename the file to tp_<fault>.lnt for every purpose you copy: the
+            concretizer derives the TARGET fault from the generated test
+            case's filename (tc_<fault>.aut, uppercased). A nominal purpose
+            has no fault and no injection; any name not matching a fault in
+            disruption_mapping.yml runs untargeted, which is what you want
+            here and ONLY here.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH  : SearchChannel,
+    INFO    : InfoChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    APP_EXTAPI_WARNING  : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ItemId, CTX : Context in
+        IDF := defaultItem;
+        CTX := defaultContext;
+        disrupt
+            SEARCH  (IDF, LOCAL);
+            INFO    (IDF, ?any Value);
+            ADD     (CTX, IDF, VALID);
+            CONFIRM (COMMITTED, ?any StateBand, IDF);
+            loop TP_ACCEPT end loop
+        by
+            -- complete negative closure: every fault the specification can
+            -- offer, none omitted (no dead gates exist to special-case)
+            alt
+                UE_KILL
+            []  APP_EXTAPI_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module
