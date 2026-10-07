@@ -1,9 +1,0 @@
-# 13_time_picker  Material time picker in clock mode
-
-<FrameLayout> {'resource-id': 'android:id/content'}  bounds=[42,512][1038,1133]
-<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/editAmountLayout'}  bounds=[79,549][1001,710]
-<EditText> {'resource-id': 'com.futsch1.medtimer:id/editAmount', 'text': '1'} clickable focused bounds=[79,563][1001,710]
-<LinearLayout> {'resource-id': 'com.futsch1.medtimer:id/editReminderTimeLayout'}  bounds=[79,757][1001,918]
-<EditText> {'resource-id': 'com.futsch1.medtimer:id/editReminderTime', 'text': '8:00 AM'} clickable bounds=[79,771][1001,918]
-<Button> {'resource-id': 'com.futsch1.medtimer:id/cancelCreateReminder', 'text': 'Cancel'} clickable bounds=[81,968][370,1094]
-<Button> {'resource-id': 'com.futsch1.medtimer:id/createReminder', 'text': 'Create reminder'} clickable bounds=[396,968][999,1094]

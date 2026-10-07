@@ -18,25 +18,7 @@ This repository holds the STORM tool and the six case studies used to evaluate i
 
 ## How it works
 
-```
- Behaviour model (LNT)        System Interface model (LNT)
- USER · APP · DATABASE ·      screens, concrete UI steps,
- DISRUPTOR, under SPEC        abstract gate last
-            \                     /
-             \___ SPEC || SI ____/          composed with CADP
-                       |
-           test purpose + .io file           which gates the tester controls
-                       |
-          TESTOR: complete test graph        one per purpose, under ioco
-                       |
-      extract_all: controllable test cases   concrete UI steps + fault gates
-                       |
-   Walker ── Selenium / Appium ── application under test
-     │
-     └── Disruption executor: inject, confirm, restore
-                       |
-     PASS · FAIL · INCONCLUSIVE   (UNEXECUTABLE = no verdict)
-```
+![STORM overview: formal modelling and test generation (off-line), then execution and concretization (on-line)](figures/storm_overview.png)
 
 1. **Model the behaviour.** Write USER, APP, DATABASE and DISRUPTOR processes in LNT. A fault takes one of four shapes: interrupt, write-path, pre-armed or parameter.
 2. **Model the interface.** The System Interface gives each abstract action its concrete UI steps.
@@ -77,7 +59,6 @@ EVALUATION/
                          disruption_mapping.yml
     setup/               our patches and configuration for the application
     variants_*.log       one verdict row per test case
-    RESULTS_campaign.md  campaign results and threats to validity
 ```
 
 ## Requirements
@@ -110,7 +91,7 @@ Check the installation:
 sh EVALUATION/template/new_system.sh myapp
 ```
 
-This copies every template file into `EVALUATION/myapp/`, renames it, and prints the number of HOLE markers left to fill. `EVALUATION/myapp/notes/template_guide.md` explains each hole.
+This copies every template file into `EVALUATION/myapp/`, renames it, and prints the number of HOLE markers left to fill. Each HOLE comment in the copied files says what to put there.
 
 **2. Check the models agree.**
 
@@ -125,7 +106,7 @@ cd EVALUATION/myapp/testor
 sh generate_tc_all.sh
 ```
 
-This writes the test cases to `Test_Cases/variants/<purpose>/`, `model_size.txt` (size of the composed model) and `gen_times.tsv` (generation time per purpose).
+This writes the test cases to `Test_Cases/variants/<purpose>/`, the size of the composed model, and `gen_times.tsv` (generation time per purpose).
 
 **4. Execute a test case.** Web example:
 
@@ -152,12 +133,12 @@ Use `--platform android` for an Android application. The command prints the verd
 
 | Application | Platform | Domain | What is modelled | Results |
 |---|---|---|---|---|
-| [FoodYou](https://github.com/maksimowiczm/FoodYou) | Android | Nutrition | Searching foods, logging and removing diary entries, the daily calorie total | [EVALUATION/foodyou](EVALUATION/foodyou/RESULTS_campaign.md) |
-| [MedTimer](https://github.com/Futsch1/medTimer) | Android | Health | Creating medicines, marking doses taken or skipped, correcting and deleting dose records, pill stock | [EVALUATION/medtimer](EVALUATION/medtimer/RESULTS_campaign.md) |
-| [SimpleBaby](https://github.com/adulbrich/SimpleBaby) | Android | Childcare | Logging and deleting feedings, the feeding history, manual sleep entries, the sleep stopwatch | [EVALUATION/simplebaby](EVALUATION/simplebaby/RESULTS_table.tex) |
-| [Spliit](https://github.com/spliit-app/spliit) | Web | Finance | Creating, viewing and deleting group expenses, the group total, the activity log | [EVALUATION/spliit](EVALUATION/spliit/RESULTS_campaign.md) |
+| [FoodYou](https://github.com/maksimowiczm/FoodYou) | Android | Nutrition | Searching foods, logging and removing diary entries, the daily calorie total | [EVALUATION/foodyou](EVALUATION/foodyou) |
+| [MedTimer](https://github.com/Futsch1/medTimer) | Android | Health | Creating medicines, marking doses taken or skipped, correcting and deleting dose records, pill stock | [EVALUATION/medtimer](EVALUATION/medtimer) |
+| [SimpleBaby](https://github.com/adulbrich/SimpleBaby) | Android | Childcare | Logging and deleting feedings, the feeding history, manual sleep entries, the sleep stopwatch | [EVALUATION/simplebaby](EVALUATION/simplebaby) |
+| [Spliit](https://github.com/spliit-app/spliit) | Web | Finance | Creating, viewing and deleting group expenses, the group total, the activity log | [EVALUATION/spliit](EVALUATION/spliit) |
 | [Moodle](https://github.com/moodle/moodle) | Web | Education | Quiz attempts, assignment submission and grading | [EVALUATION/moodle](EVALUATION/moodle) |
-| [Mastodon](https://github.com/mastodon/mastodon) | Web | Social networking | Publishing and deleting posts, the home timeline and profile, the post count | [EVALUATION/mastodon](EVALUATION/mastodon/RESULTS_campaign.md) |
+| [Mastodon](https://github.com/mastodon/mastodon) | Web | Social networking | Publishing and deleting posts, the home timeline and profile, the post count | [EVALUATION/mastodon](EVALUATION/mastodon) |
 
 Disruptions are organised by the layer they strike:
 
@@ -169,7 +150,7 @@ Disruptions are organised by the layer they strike:
 | Infrastructure | database or background worker down, full or failing storage |
 | Input | invalid or over-limit values |
 
-Every campaign's results file records the commands, logs and inputs needed to regenerate its numbers. The [Mastodon campaign](EVALUATION/mastodon/RESULTS_campaign.md) is a complete example: 16 test purposes, 31 test cases, every number regenerable from the files in its directory.
+Each case study's folder holds what is needed to regenerate its numbers: one verdict row per test case (`variants_*.log`), the CTGs, the test cases, and the generator inputs and logs. Run `eval_tables.py` on a folder to rebuild its results table. [Mastodon](EVALUATION/mastodon) is a complete example: 16 test purposes and 31 test cases.
 
 ## Setting up the case studies
 

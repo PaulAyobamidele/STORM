@@ -10,3 +10,7 @@ compose_*.bcg
 CADP_LICENSE*
 .env
 .env.*
+*.md
+!/README.md
+*.txt
+!/requirements.txt
