@@ -1,0 +1,87 @@
+module tp_storage_media (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   Infra -- STORAGE_MEDIA: the storage medium errors on a read.
+
+   THE APP MUST: surface a storage error. It may not present a wrong entry, and
+   it may not present a partially-read one as though it were whole. A read
+   failure the user never sees is the counter-example.
+
+   The specification places the fault as an interrupt of the diary read --
+
+       disrupt VIEW_DIARY (?eid); DIARY_INFO (?eid, ?fid)
+       by      STORAGE_MEDIA; STORAGE_ERROR_SHOWN end disrupt
+
+   ACCEPT   the diary read is interrupted and the app shows the storage error.
+   REFUSE   the read COMPLETES -- the medium was healthy, so the fault never
+            fired; and any OTHER fault interrupting the run.
+
+   Observable owed: STORAGE_ERROR_SHOWN.
+
+   WHY AN ENTRY IS LOGGED FIRST: a diary read needs something to read. The
+   System Interface guards the diary branches on a row actually existing, so
+   without this prefix the composed model has no reachable VIEW_DIARY and the
+   purpose would select nothing. IDE is pinned to entry_2 because
+   food_of (entry_2) = food_oil = defaultF, keeping one food threaded through
+   the whole trace so the oracle can correlate what it observes.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId, IDE : EntryId in
+        IDF := defaultF;
+        IDE := entry_2;                 -- food_of (entry_2) = food_oil = defaultF
+        disrupt
+            -- Log one entry so there is a diary row to read.
+            SEARCH_FOOD   (IDF, LOCAL);
+            FOOD_INFO     (IDF, ?any Calorie);
+            ADD_ENTRY     (BREAKFAST, IDF, VALID);
+            CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF);
+            disrupt
+                VIEW_DIARY (IDE);
+                DIARY_INFO (IDE, IDF);
+                loop TP_REFUSE end loop
+            by
+                STORAGE_MEDIA;
+                STORAGE_ERROR_SHOWN;
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- Any OTHER fault. NETWORK_DEGRADED is omitted deliberately: a
+            -- synchronisation gate neither disruptor ever offers.
+            alt
+                EXTAPI_FAIL
+            []  UE1_KILL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module

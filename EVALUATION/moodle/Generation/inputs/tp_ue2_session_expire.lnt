@@ -1,0 +1,116 @@
+module tp_ue2_session_expire (moodle_types) is
+
+(* SESSION INVALIDATED MID-FLOW. Deleting the m_sessions row is what Moodle's
+   own garbage collector does, so the next request takes the genuine expiry
+   path and must render 'Your session has timed out. Please log in again.'
+   (lang/en/error.php:548).
+
+   PRECURSOR IS ENROL, NOT VIEW_ASSIGN. VIEW_ASSIGN exists in the spec only
+   as the first step of STUDENT's disrupt-wrapped save/revise sequence, whose
+   own by-branch offers SESSION_ERROR_SHOWN bare -- UE2_SESSION_EXPIRE never
+   precedes it there. UE2_SESSION_EXPIRE only exists in its own separate,
+   untied top-level STUDENT arm. Requiring VIEW_ASSIGN immediately before it
+   is unsatisfiable directly -- confirmed empirically, 0 of 351 extracted
+   variants ever place UE2_SESSION_EXPIRE right after VIEW_ASSIGN -- and
+   testor can only satisfy it by stitching in an unrelated later occurrence,
+   which is what produced the session-clobbering ENROL-after-OPEN_GRADING
+   walk this purpose actually failed on. ENROL is a sibling, untied,
+   top-level STUDENT arm at the same level as UE2_SESSION_EXPIRE itself, so
+   reaching one from the other needs nothing more than finishing one loop
+   iteration and picking the other next -- no disrupt-nesting detour. This
+   is a hypothesis from spec structure, not yet re-confirmed the same
+   empirical way; re-check adjacency after regenerating.
+
+   STRUCTURE: `disrupt <accept sequence> by <refused faults> end disrupt'.
+
+   NOT a flat `alt'. In an alt the refuse arms are ALTERNATIVES to the accept
+   sequence, so they are reachable only from the purpose's INITIAL state. The
+   moment the purpose advances one step, every fault arm becomes unreachable,
+   the faults are implicitly accepted, and they wander into the generated test
+   case. Observed directly: tc_happy.1.aut came back with 311 transitions and
+   fired INFRA_CRON_DEAD, DB_ATTEMPT_STEP_LOSS, APP_GRADE_STALE_SUB,
+   UE1_LOSE_CONN and UE2_SESSION_EXPIRE before reaching :PASS: -- a "happy
+   path" control in which five things had gone wrong.
+
+   `disrupt ... by ...' lets the refuse branch PREEMPT the sequence at any
+   point, which is what "refuse this fault anywhere" actually means. It is also
+   what keeps the prefix set small: an unrefused fault makes every fault
+   interleaving a legal prefix, and a purpose cannot constrain prefixes --
+   they are specification behaviour.
+
+   Both verdicts LOOP, so they are proper sinks. *)
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        ENROL (?any CourseId);
+        UE2_SESSION_EXPIRE;
+        SESSION_ERROR_SHOWN;
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  DB_ATTEMPT_STEP_LOSS
+            []  INFRA_CRON_DEAD
+            []  UE1_LOSE_CONN
+            (* CORRECTION, 2026-09-10: this purpose does not need a
+               walker-level fix as previously assessed -- it needs the same
+               declared-but-unconstrained escape route closed as
+               tp_ue1_lose_conn.lnt. Confirmed live: the exact spurious FAIL
+               traced earlier reached SESSION_ERROR_SHOWN via GRADE_SUBMISSION
+               with zero UE2_SESSION_EXPIRE transitions on that path --
+               GRADE_SUBMISSION was declared but never constrained here,
+               exactly the same class of gap. *)
+            []  VIEW_QUIZ (?any CourseId, ?any QuizId)
+            []  START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId)
+            []  SAVE_ATTEMPT (?any AttemptId)
+            []  PROCESS_ATTEMPT (?any AttemptId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+            []  WRITE_ERROR_SHOWN
+            []  STALE_WARNING_SHOWN
+            []  CONN_ERROR_SHOWN
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

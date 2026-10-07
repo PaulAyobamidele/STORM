@@ -1,0 +1,77 @@
+module tp_ue_kill (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    write-path (nested disrupt).
+   TARGET   UE_KILL: the process is killed right after the dose is marked and
+            relaunched.
+   ACCEPT   the read-back is one of the two consistent outcomes: the whole
+            action (Taken, stock moved) or none of it (pending, stock
+            unmoved). A half-written state fits neither and is the FAIL.
+   REFUSE   the write commits without the fault; any other fault; any other
+            input.
+   Owed     CONFIRM (COMMITTED, ?band, TAKEN, IDF) or
+            CONFIRM (ROLLED_BACK, ?band, PENDING, IDF).
+   Expected PASS likely: the writes take milliseconds and the kill lands
+            after them; the window is real but not reachable
+            deterministically (§4.2, §13). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            ACT (IDF, TAKE);
+            disrupt
+                CONFIRM (COMMITTED, ?any StockBand, TAKEN, IDF);
+                loop TP_REFUSE end loop
+            by
+                UE_KILL;
+                alt
+                    CONFIRM (COMMITTED, ?any StockBand, TAKEN, IDF)
+                []  CONFIRM (ROLLED_BACK, ?any StockBand, PENDING, IDF)
+                end alt;
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            alt
+                APP_WRITE_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  DB_EVENT_LOSS
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (?any Validity)
+            []  NO_SKIP (?any MedicineId)
+            []  ACT (?any MedicineId, SKIP)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            []  VIEW (?any MedicineId)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

@@ -1,0 +1,237 @@
+module medtimer_types is
+
+(* MedTimer, campaign two: two medicines, four doses tonight, one happy path.
+   Medicine A ("Vitamin C", 3 pills) has doses d_a1 11:57 PM, d_a2 11:58 PM,
+   d_a3 11:59 PM; medicine B ("Zinc", 2 pills) has d_b 11:56 PM; every dose is
+   one pill. Ground truth: notes/observed_behaviour.md. *)
+
+(* ---- abstract domain ---------------------------------------------------- *)
+
+type MedicineId is
+    med_a, med_b
+with ==, !=
+end type
+
+type DoseId is
+    d_a1, d_a2, d_a3, d_b
+with ==, !=
+end type
+
+function med_of (d : DoseId) : MedicineId is
+    case d in
+        d_b -> return med_b
+      | any -> return med_a
+    end case
+end function
+
+type DoseAction is
+    TAKE, SKIP
+with ==, !=
+end type
+
+(* INVALID is the empty medicine name (observed_behaviour.md §4.8). *)
+type Validity is
+    VALID, INVALID
+with ==, !=
+end type
+
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, REJECTED
+with ==, !=
+end type
+
+(* A dose row's state on the overview. PENDING = scheduled ("Please wait…");
+   ABSENT = the record was deleted, no row for the day. *)
+type DoseState is
+    PENDING, TAKEN, SKIPPED, ABSENT
+with ==, !=
+end type
+
+function res (a : DoseAction) : DoseState is
+    case a in
+        TAKE -> return TAKEN
+      | SKIP -> return SKIPPED
+    end case
+end function
+
+(* The day: one state per dose. *)
+type Day is
+    day (a1, a2, a3, b : DoseState)
+with ==, !=, get, set
+end type
+
+function get_state (dy : Day, d : DoseId) : DoseState is
+    case d in
+        d_a1 -> return dy.a1
+      | d_a2 -> return dy.a2
+      | d_a3 -> return dy.a3
+      | d_b  -> return dy.b
+    end case
+end function
+
+function put_state (dy : Day, d : DoseId, s : DoseState) : Day is
+    case d in
+        d_a1 -> return dy.{a1 -> s}
+      | d_a2 -> return dy.{a2 -> s}
+      | d_a3 -> return dy.{a3 -> s}
+      | d_b  -> return dy.{b -> s}
+    end case
+end function
+
+(* Some dose can still be written (not every record deleted). *)
+function writable (dy : Day) : Bool is
+    return (dy.a1 != ABSENT) or (dy.a2 != ABSENT) or (dy.a3 != ABSENT) or (dy.b != ABSENT)
+end function
+
+
+(* A medicine's stock in units of one dose, saturating at S4. *)
+type StockBand is
+    S0, S1, S2, S3, S4
+with ==, !=
+end type
+
+function down (b : StockBand) : StockBand is
+    case b in
+        S4 -> return S3
+      | S3 -> return S2
+      | S2 -> return S1
+      | S1 -> return S0
+      | S0 -> return S0
+    end case
+end function
+
+function up (b : StockBand) : StockBand is
+    case b in
+        S0 -> return S1
+      | S1 -> return S2
+      | S2 -> return S3
+      | S3 -> return S4
+      | S4 -> return S4
+    end case
+end function
+
+(* The stock of medicine m after dose d moves from `before` to `after`: a dose
+   that becomes Taken consumes a unit, one that stops being Taken gives it
+   back; any other move, or a dose of another medicine, leaves m alone (O5). *)
+function move (m : MedicineId, d : DoseId, before, after : DoseState,
+               s : StockBand) : StockBand is
+    if med_of (d) != m then
+        return s
+    elsif (before != TAKEN) and (after == TAKEN) then
+        return down (s)
+    elsif (before == TAKEN) and (after != TAKEN) then
+        return up (s)
+    else
+        return s
+    end if
+end function
+
+function stock_of (m : MedicineId, sa, sb : StockBand) : StockBand is
+    case m in
+        med_a -> return sa
+      | med_b -> return sb
+    end case
+end function
+
+(* ---- observable channels ------------------------------------------------ *)
+
+channel AddMedChannel  is (vld : Validity)                     end channel
+channel MedChannel     is (m : MedicineId)                     end channel
+channel DoseChannel    is (d : DoseId)                         end channel
+channel ActChannel     is (d : DoseId, act : DoseAction)       end channel
+
+(* The fate of the write, the acted dose's medicine stock (from its card), the
+   dose row's state (from its state button), and the dose as provenance. *)
+channel ConfirmChannel is
+    (status : WriteStatus, stock : StockBand, state : DoseState, d : DoseId)
+end channel
+
+(* ---- concrete domain D_sys and L : D_abs -> D_sys (used by the SI) --------
+   Every name is interpreted in properties/concrete_domain.yml; selectors
+   were read off the live dumps in notes/ui/. Rows are located by their
+   reminder time, so a deleted row does not shift the others. *)
+
+type Route is
+    rt_home
+with ==
+end type
+
+(* type_into targets *)
+type Selector is
+    sel_name_field, sel_amount_field, sel_unit_field, sel_dose_field, sel_time_field
+with ==
+end type
+
+(* wait_for = PRECONDITION; observe = ORACLE (absence is a FAIL) *)
+type Element is
+    el_overview, el_medicines, el_add_dialog, el_edit_medicine,
+    el_stock_settings, el_stock_set_a, el_stock_set_b, el_reminder_dialog,
+    el_rem_a1, el_rem_a2, el_rem_a3, el_rem_b,     (* a created reminder's card *)
+    el_med_settings, el_no_skip_on,
+    el_row_a1, el_row_a2, el_row_a3, el_row_b,     (* a dose's row on the overview *)
+    el_state_a1, el_state_a2, el_state_a3, el_state_b,  (* ORACLE: DoseState *)
+    el_card_a, el_card_b,                          (* ORACLE: StockBand *)
+    el_medicine_shown, el_edit_sheet, el_delete_dialog,
+    el_name_error, el_write_error, el_corrupt_error, el_storage_error
+with ==
+end type
+
+type ConcreteValue is
+    cv_tab_overview, cv_tab_medicines, cv_add_medicine,
+    cv_name_a, cv_name_b, cv_name_valid, cv_name_invalid,
+    cv_ok, cv_cancel, cv_back,
+    cv_stock_settings, cv_stock_amount, cv_stock_unit,
+    cv_stock_a, cv_stock_b, cv_unit_value,
+    cv_add_reminder, cv_type_time_based, cv_dose_field, cv_dose,
+    cv_time_field, cv_time_a1, cv_time_a2, cv_time_a3, cv_time_b,
+    cv_create_reminder,
+    cv_card_a, cv_card_b, cv_med_settings, cv_cannot_skip,
+    cv_state_a1, cv_state_a2, cv_state_a3, cv_state_b,   (* a row's state button *)
+    cv_row_a1, cv_row_a2, cv_row_a3, cv_row_b,           (* a row's text: the edit sheet *)
+    cv_taken, cv_skipped, cv_delete, cv_confirm_delete,
+    cv_toggle_taken, cv_toggle_skipped
+with ==
+end type
+
+function L_action (a : DoseAction) : ConcreteValue is
+    case a in TAKE -> return cv_taken | SKIP -> return cv_skipped end case
+end function
+
+function L_toggle (a : DoseAction) : ConcreteValue is
+    case a in TAKE -> return cv_toggle_taken | SKIP -> return cv_toggle_skipped end case
+end function
+
+function L_state_tap (d : DoseId) : ConcreteValue is
+    case d in d_a1 -> return cv_state_a1 | d_a2 -> return cv_state_a2
+            | d_a3 -> return cv_state_a3 | d_b -> return cv_state_b end case
+end function
+
+function L_row_tap (d : DoseId) : ConcreteValue is
+    case d in d_a1 -> return cv_row_a1 | d_a2 -> return cv_row_a2
+            | d_a3 -> return cv_row_a3 | d_b -> return cv_row_b end case
+end function
+
+function L_row (d : DoseId) : Element is
+    case d in d_a1 -> return el_row_a1 | d_a2 -> return el_row_a2
+            | d_a3 -> return el_row_a3 | d_b -> return el_row_b end case
+end function
+
+function L_state (d : DoseId) : Element is
+    case d in d_a1 -> return el_state_a1 | d_a2 -> return el_state_a2
+            | d_a3 -> return el_state_a3 | d_b -> return el_state_b end case
+end function
+
+function L_card (m : MedicineId) : Element is
+    case m in med_a -> return el_card_a | med_b -> return el_card_b end case
+end function
+
+function L_card_tap (m : MedicineId) : ConcreteValue is
+    case m in med_a -> return cv_card_a | med_b -> return cv_card_b end case
+end function
+
+channel Ch_Route   is (r : Route)                        end channel
+channel Ch_Value   is (v : ConcreteValue)                end channel
+channel Ch_TypeIn  is (s : Selector, v : ConcreteValue)  end channel
+channel Ch_Element is (e : Element)                      end channel
+
+end module

@@ -1,0 +1,81 @@
+module tp_input_invalid (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   User/Env -- INPUT_INVALID: the user enters an invalid amount.
+
+   THE APP MUST: reject the entry and leave the daily total EXACTLY as it was.
+   Nothing partial, nothing silently coerced to a default. A rejected input
+   that still moves the total is a conformance counter-example.
+
+   UNLIKE THE OTHER SEVEN, this disruption is not a gate. It is carried by the
+   Validity parameter of ADD_ENTRY, which is why the accept path is linear and
+   no inner `disrupt` is needed: the specification routes on the parameter --
+
+       ADD_ENTRY (?meal, ?fid, ?amount_ok);
+       if amount_ok == VALID then ... else CONFIRM_TOTAL (REJECTED, total, fid)
+
+   -- and `total` on that branch is the value from BEFORE the attempt.
+
+   ACCEPT   an invalid amount is submitted and the app reports REJECTED with
+            the total unchanged.
+   REFUSE   ANY of the seven gate-level faults. This purpose is about the
+            app's own input validation; a fault firing during the run would
+            make the rejection attributable to the fault instead.
+
+   Observable owed: CONFIRM_TOTAL (REJECTED, ...), checked by the band oracle
+   AND the exact-sum ledger -- the ledger stages no movement for a rejected
+   entry, so a total that moved is caught to the calorie.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD   (IDF, LOCAL);
+            FOOD_INFO     (IDF, ?any Calorie);
+            ADD_ENTRY     (BREAKFAST, IDF, INVALID);
+            CONFIRM_TOTAL (REJECTED, ?any DailyTotal, IDF);
+            loop TP_ACCEPT end loop
+        by
+            -- All seven gate-level faults refuse: this purpose targets the
+            -- app's validation, not its fault handling. NETWORK_DEGRADED is
+            -- omitted deliberately -- a synchronisation gate neither disruptor
+            -- ever offers.
+            alt
+                EXTAPI_FAIL
+            []  UE1_KILL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  STORAGE_MEDIA
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module

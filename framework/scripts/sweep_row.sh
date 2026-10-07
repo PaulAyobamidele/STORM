@@ -7,7 +7,7 @@
 #     sweep_row "$i" "$aut_file" "$elapsed_seconds" "$verdict" "$note"
 #
 # CANONICAL SCHEMA -- tab-separated, one row per variant, written to
-# systems/<sut>/variants_<purpose>.log (and optionally
+# EVALUATION/<sut>/variants_<purpose>.log (and optionally
 # variants_<purpose>.recheck.log for a subset re-run, which eval_tables.py
 # layers on top of the base file by variant number):
 #

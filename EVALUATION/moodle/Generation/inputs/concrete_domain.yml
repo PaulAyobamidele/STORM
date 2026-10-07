@@ -1,0 +1,265 @@
+# concrete_domain.yml  —  Moodle case study
+# ---------------------------------------------------------------------------
+# Interpretation  I(L) : D_sys-enum  ->  runtime string.
+#
+# Maps the LNT concrete-domain enums declared in model/moodle_types.lnt
+#   type Route (rt_*) / type Selector (sel_*) / type ConcreteValue (cv_*)
+# onto real Moodle URLs, Selenium locators and input strings.
+#
+# Loaded by : framework/concretization/si_lnt_parser.py  (_load_domain)
+# Consumed  : HTMLExecutor (Selenium) via LNTSIExecutorAdapter
+#
+# ===========================================================================
+# SELECTORS VERIFIED AGAINST THE RUNNING SUT (2026-08-24)
+# ===========================================================================
+# The student journey was driven live as student1 and the grading form opened
+# as teacher1: attempt started, answered, finished, review read (Grade 100.00
+# out of 100.00), submission saved (m_assign_submission.status='submitted'; drafts=0).
+#
+# Every selector below was then evaluated as real XPath against live pages with
+# lxml (not eyeballed): 9 of 12 matched first time. The three that did not are
+# annotated with what was actually wrong. An oracle that never matches is a
+# TESTER defect, not a conformance result, which is why they are checked before
+# generation rather than triaged afterwards.
+#
+# BUTTONS ARE NEVER ADDRESSED BY id. Moodle regenerates submit-button ids per
+# request — observed 'single_button6a8c82ed72b5f5' then
+# 'single_button6a8c82ee132cd6' on two loads of the same page. Buttons are
+# located by enclosing form action or visible text. The stable ids that DO
+# exist (#id_onlinetext_editor, #id_submitbutton, #mod_quiz-next-nav,
+# #id_grade, #id_savegrade) come from Moodle's mform/quiz layer.
+#
+# Runtime ids for THIS instance (localhost:8080, read from the DB). These are
+# volume-scoped: re-read them from seed_moodle.php's final block after any
+# re-seed rather than trusting this header.
+#   course id = 2 (MOD)  |  quiz cmid = 1  |  assign cmid = 2  |  student1 = 3
+# ---------------------------------------------------------------------------
+
+# Navigating to this URL clears the browser session before the request.
+#
+# Moodle's logout cannot be driven through the UI: /login/logout.php renders a
+# CSRF-confirmation page whose Continue button is type="submit" inside a form
+# carrying a valid sesskey, and clicking it does NOT end the session (verified
+# repeatedly in a real browser -- the user remained logged in). Only
+# GET /login/logout.php?sesskey=<runtime value> works, and a route cannot carry
+# a runtime value. Without a working logout the SI cannot switch actors, and
+# every teacher gate is undriveable.
+session_reset_url: "/login/logout.php"
+
+bindings:
+  CRS_0:       "2"
+  QUIZ_CMID:   "1"
+  ASSIGN_CMID: "2"
+  STUDENT_ID:  "3"
+
+routes:
+  rt_dashboard:    "/my/"
+  rt_course:       "/course/view.php?id={{CRS_0}}"
+  rt_enrol:        "/enrol/index.php?id={{CRS_0}}"
+  rt_quiz_view:    "/mod/quiz/view.php?id={{QUIZ_CMID}}"
+  rt_quiz_attempt: "/mod/quiz/attempt.php?attempt={{ATTEMPT_ID}}&cmid={{QUIZ_CMID}}"
+  rt_quiz_summary: "/mod/quiz/summary.php?attempt={{ATTEMPT_ID}}&cmid={{QUIZ_CMID}}"
+  rt_quiz_review:  "/mod/quiz/review.php?attempt={{ATTEMPT_ID}}&cmid={{QUIZ_CMID}}"
+  rt_assign_view:  "/mod/assign/view.php?id={{ASSIGN_CMID}}"
+  rt_assign_edit:  "/mod/assign/view.php?id={{ASSIGN_CMID}}&action=editsubmission"
+  # action=grade renders REAL server-side controls (#id_grade, #id_savegrade)
+  # and shows the submission text. action=grader is a JS application whose
+  # controls are absent from the served HTML and cannot be driven.
+  rt_assign_grader: "/mod/assign/view.php?id={{ASSIGN_CMID}}&action=grade&rownum=0&userid={{STUDENT_ID}}"
+  # Every /grade/report/* route used to 404 here, for the teacher too. ROOT
+  # CAUSE FOUND: $CFG->gradebookroles was NULL — core config normally set at
+  # install, missing for the same reason the admin had no email and
+  # enrol_manual had no defaults. Without it the gradebook cannot tell which
+  # roles are graded users. seed_moodle.php now sets it, so Moodle's real user
+  # report is usable and APP_LAZY_REGRADE has a genuine oracle rather than a
+  # workaround. RE-VERIFY this route after re-seeding.
+  rt_course_total: "/grade/report/user/index.php?id={{CRS_0}}&userid={{STUDENT_ID}}"
+  # Authentication. rt_logout is logout.php WITHOUT a sesskey: Moodle answers
+  # with a confirmation page carrying a Continue button (verified live). The
+  # sesskey-bearing URL is unusable because the key is per-session and a route
+  # cannot carry a runtime value.
+  rt_login:        "/login/index.php"
+  rt_logout:       "/login/logout.php"
+
+selectors:
+  # ── Enrolment / course ───────────────────────────────────────────────────
+  sel_enrol_btn:            "//form[contains(@action,'enrol')]//button[@type='submit'] | //input[@id='id_submitbutton']"
+  sel_course_heading:       "//div[@id='page-header']//h1 | //header//h1"
+
+  # ── Quiz attempt flow ────────────────────────────────────────────────────
+  sel_attempt_quiz_btn:     "//form[contains(@action,'startattempt.php')]//button[@type='submit']"
+  # CORRECTED. The previous note here said "the fixture quiz has no password,
+  # so Moodle shows no start-confirmation dialogue; the SI does not wait on
+  # this" -- and the SI accordingly never clicked it. Both halves were wrong.
+  # The confirmation is caused by the quiz's TIME LIMIT (seed sets
+  # timelimit=60), not by a password, and it is unavoidable: pressing "Attempt
+  # quiz" posts to startattempt.php, which renders a confirm form. Measured
+  # against the live SUT, the old modal-only XPath matched 0 elements there,
+  # so every quiz test case stopped at an attempt that was never created.
+  # Server-side form first (deterministic); the modal variant is kept second
+  # because a JS click can open it instead when Moodle's AMD module resolves.
+  sel_start_attempt_confirm: "//form[contains(@action,'startattempt.php')]//input[@type='submit'][@name='submitbutton'] | //div[contains(@class,'modal')]//button[contains(normalize-space(.),'Start attempt')]"
+  sel_quiz_question:        "//form[@id='responseform']//div[contains(@class,'que')]"
+  # The radio group is named q<usageid>:<slot>_answer and the usage id
+  # increments with EVERY attempt, so the NAME cannot be used. Located
+  # structurally: value="0" is the first option and the fixture question has
+  # shuffleanswers disabled, so it is reliably 'London' (correct).
+  sel_quiz_answer_input:    "//form[@id='responseform']//input[@type='radio'][@value='0']"
+  sel_finish_attempt_link:  "//input[@id='mod_quiz-next-nav']"
+  sel_submit_all_btn:       "//form[@id='frm-finishattempt']//button[@type='submit']"
+  # DB_ATTEMPT_STEP_LOSS makes Moodle land on an error page directly after
+  # sel_finish_attempt_link's click, before summary.php (and its submit
+  # button) ever renders. A LOTOS `alt' between two wait_for branches was
+  # tried here 2026-09-12 and reverted: TESTOR resolves that choice once,
+  # arbitrarily, per test case at GENERATION time, with nothing telling it
+  # the fault is only sometimes active -- confirmed live when a purpose that
+  # never injects this fault (tp_app_lazy_regrade.lnt) got the error-page
+  # branch baked into its own canonical AUT anyway, and hung forever
+  # waiting for a banner Moodle was never going to show. Same shape as the
+  # already-proven sel_logout_confirm below: ONE selector, a union, so the
+  # choice is never made by TESTOR at all -- it is discovered live by the
+  # walker on every test case, fault active or not. This is the ANCHOR
+  # (confirms we left the answer page, whichever way); the click target is
+  # sel_finish_attempt_click_target below.
+  sel_finish_attempt_anchor: "//form[@id='frm-finishattempt']//button[@type='submit'] | //div[contains(@class,'errorbox')] | //*[contains(normalize-space(.),'Error writing to database')] | //div[contains(@class,'alert-danger')][contains(.,'error')]"
+  # Click the real submit button if the normal page is showing; otherwise
+  # //body, which always exists and does nothing -- there is no button to
+  # click on the error page, and PROCESS_ATTEMPT still fires either way
+  # (the tester performed the click; what Moodle did with it is what
+  # WRITE_ERROR_SHOWN's own oracle judges next, not this step).
+  sel_finish_attempt_click_target: "//form[@id='frm-finishattempt']//button[@type='submit'] | //body"
+  # UNUSED by the SI, deliberately. Measured through HTMLExecutor: submitting
+  # the summary form goes straight to review.php with the attempt finished and
+  # no confirmation rendered, so this matched nothing and the SI's wait_for on
+  # it timed out. Kept only for a fixture that restores the modal.
+  sel_submit_confirm_btn:   "//div[contains(@class,'modal')]//button[@data-action='save'] | //div[contains(@class,'modal')]//button[contains(normalize-space(.),'Submit all and finish')]"
+  sel_quiz_grade_value:     "//table[contains(@class,'quizreviewsummary')]//th[contains(normalize-space(.),'Grade')]/following-sibling::td"
+  # VERIFIED -> 'Finished'. The attempt-summary table on mod/quiz/view.php
+  # carries a State cell reading "Finished" / "In progress" / "Never
+  # submitted". Oracle for INFRA_CRON_DEAD and DB_ATTEMPT_STEP_LOSS.
+  sel_attempt_state_cell:   "//table[contains(@class,'quizattemptsummary')]//td[contains(@class,'c2')] | //table[contains(@class,'generaltable')]//td[contains(normalize-space(.),'Finished') or contains(normalize-space(.),'In progress') or contains(normalize-space(.),'Never submitted')]"
+
+  # ── Assignment submission flow ───────────────────────────────────────────
+  sel_add_submission_btn:   "//form[contains(@action,'/mod/assign/view.php')]//button[contains(normalize-space(.),'Add submission')]"
+  sel_edit_submission_btn:  "//form[contains(@action,'/mod/assign/view.php')]//button[contains(normalize-space(.),'Edit submission')]"
+  sel_online_text_editor:   "//textarea[@id='id_onlinetext_editor']"
+  sel_save_changes_btn:     "//input[@id='id_submitbutton']"
+  # VERIFIED -> 'Submit assignment'. submissiondrafts=1, so a draft must be
+  # explicitly submitted before a teacher can grade it.
+  sel_submit_for_grading_btn: "//form[contains(@action,'/mod/assign/view.php')]//button[contains(normalize-space(.),'Submit assignment')]"
+  sel_submission_status:    "//table[contains(@class,'generaltable')]//th[contains(normalize-space(.),'Submission status')]/following-sibling::td"
+  # LOAD-BEARING: this is what makes SubmissionVersion observable at all. The
+  # 'Online text' row renders the STORED text, so the oracle can tell
+  # cv_assign_text from cv_assign_update. Without it APP_PARTIAL_SUBMISSION
+  # cannot be detected.
+  # VERIFIED -> 'REVISION-PLACEHOLDER'. Restricted to the innermost node: the
+  # earlier alternation matched a wrapper AND its child, so the first hit read
+  # the text TWICE ('REVISION-PLACEHOLDERREVISION-PLACEHOLDER') and an oracle
+  # comparing exact text would never match.
+  # VERIFIED -> exactly one node reading 'REVISION-PLACEHOLDER'.
+  # The 'Online text' cell holds TWO copies of the submission: a
+  # .plugincontentsummary box and a hidden .full_assignsubmission_onlinetext
+  # box, each wrapping the text in div.no-overflow > p. Matching the <td>
+  # returned BOTH concatenated ("REVISION-PLACEHOLDERREVISION-PLACEHOLDER"),
+  # so an oracle comparing exact text could never match. Take the first <p>.
+  # VERIFIED -> one node reading 'REVISION-PLACEHOLDER'.
+  # The earlier form required a <p> INSIDE div.no-overflow. That held while
+  # TinyMCE was the editor (it wraps content in <p>), but the fixture now forces
+  # the PLAIN textarea, which stores the text unwrapped -- so the <p> never
+  # exists and the oracle could never fire. Matching the innermost div is
+  # editor-independent, and [1] avoids the summary/full duplication Moodle
+  # renders for every submission.
+  sel_submission_text:      "(//th[contains(normalize-space(.),'Online text')]/following-sibling::td//div[not(.//div)])[1]"
+
+  # ── Teacher grading ──────────────────────────────────────────────────────
+  sel_grade_input:          "//input[@id='id_grade']"
+  # NOTE: an earlier revision had #id_savechanges here, which does not exist.
+  sel_grade_save_btn:       "//input[@id='id_savegrade']"
+  # VERIFIED -> 'REVISION-PLACEHOLDER'. The submission text as rendered INSIDE
+  # the grading form — what the teacher actually judged. Oracle for
+  # APP_GRADE_STALE_SUB.
+  # VERIFIED -> exactly one node reading 'REVISION-PLACEHOLDER'. Same
+  # summary/full doubling as sel_submission_text: the grading form renders the
+  # submission twice, so matching the wrapper returned the text concatenated.
+  # This is the oracle for APP_GRADE_STALE_SUB — it is what the teacher
+  # actually read — so a doubled value would make the stale-grade property
+  # untestable in exactly the vacuous way the old `ver` parameter was.
+  # Same editor-independence fix as sel_submission_text: innermost div, not a
+  # <p>. This is the oracle for APP_GRADE_STALE_SUB -- what the teacher read.
+  sel_grading_submission_text: "(//div[contains(@class,'assignsubmission_onlinetext')]//div[not(.//div)])[1]"
+  # VERIFIED ABSENT (0 matches), exactly as predicted: process_save_grade() performs no
+  # submission-changed check, so Moodle most likely renders nothing here. That
+  # absence is the counter-example, which is exactly why this must be an
+  # `observe' (oracle -> FAIL on timeout) and never a `wait_for'.
+  sel_stale_warning:        "//*[contains(normalize-space(.),'has been modified')] | //div[contains(@class,'alert')][contains(.,'modified since')]"
+
+  # ── Grade outputs ────────────────────────────────────────────────────────
+  # VERIFIED. The assignment page has NO plain 'Grade' row until the submission
+  # is actually graded; 'Grading status' ("Not graded" / "Graded") always
+  # exists. Matching either keeps the oracle meaningful before and after
+  # grading, and note 'Grading status' does NOT contain the substring 'Grade',
+  # so the previous XPath matched nothing at all.
+  sel_assign_grade_cell:    "//table[contains(@class,'generaltable')]//th[normalize-space(.)='Grade']/following-sibling::td | //table[contains(@class,'generaltable')]//th[contains(normalize-space(.),'Grading status')]/following-sibling::td"
+  # UNVERIFIED. Course total on course/user.php?mode=grade.
+  # The course-total row of gradereport_user. Requires $CFG->gradebookroles to
+  # be set — it was NULL on this database, which is why every grade route
+  # failed; seed_moodle.php now sets it.
+  # VERIFIED -> '100.00'. gradereport_user renders table.user-grade with one
+  # row per grade item; the aggregate row is headed "Course total" and its
+  # grade lives in the cell classed column-grade. Requires
+  # $CFG->gradebookroles, which seed_moodle.php now sets — it was NULL, which
+  # is why every /grade/report/* route failed.
+  sel_course_total_cell:    "//table[contains(@class,'user-grade')]//tr[th[contains(normalize-space(.),'Course total')]]/td[contains(@class,'column-grade')]"
+
+  # ── Surfaced errors (ORACLES: a timeout here is a FAIL) ───────────────────
+  # Moodle's own element: /mod/quiz/attempt.php ships
+  # <div id="connection-error" style="display:none" role="alert"> and unhides
+  # it when autosave cannot reach the server. VERIFIED present in served HTML.
+  sel_connection_error:     "//div[@id='connection-error']"
+  # lang/en/error.php:548 — 'Your session has timed out. Please log in again.'
+  sel_session_error:        "//*[contains(normalize-space(.),'session has timed out')] | //div[contains(@class,'alert')][contains(.,'log in again')]"
+  # VERIFIED: Moodle renders <div class="box py-3 errorbox alert alert-danger">.
+  # Deliberately NOT the bare .alert-danger, which also matches ordinary
+  # notifications (6 such on a normal page) and would pass vacuously.
+  # ── Authentication (all verified live on /login/index.php) ───────────────
+  sel_username:             "//input[@id='username']"
+  sel_password:             "//input[@id='password']"
+  sel_login_btn:            "//button[@id='loginbtn']"
+  # VERIFIED -> 'Continue'. Addressed by enclosing form action, not id: the
+  # button id is single_button<random> and is regenerated per request.
+  # The session is already ended by navigating to session_reset_url, so this
+  # click is deliberately INERT. The Continue button is matched first if it
+  # happens to be present; otherwise //body, which always exists and does
+  # nothing. Keeping the click in the SI avoids regenerating every test case
+  # for a step that is now a no-op.
+  sel_logout_confirm:       "//form[contains(@action,'logout.php')]//button[@type='submit'] | //body"
+  # Only renders when a session exists, so waiting on it is what confirms the
+  # login actually took rather than silently bouncing back to the form.
+  sel_user_menu:            "//*[@id='user-menu-toggle']"
+
+  sel_write_error:          "//div[contains(@class,'errorbox')] | //*[contains(normalize-space(.),'Error writing to database')] | //div[contains(@class,'alert-danger')][contains(.,'error')]"
+
+concrete_values:
+  cv_quiz_answer:   "London"                       # correct multichoice option
+  # The two revisions the oracle distinguishes. They must be textually
+  # unmistakable: if both revisions rendered similar text, sel_submission_text
+  # could not tell PLACEHOLDER from FINAL and the property would be vacuous.
+  cv_assign_text:   "REVISION-PLACEHOLDER"
+  cv_assign_update: "REVISION-FINAL"
+  cv_grade_100:     "100"
+  cv_grade_0:       "0"
+  # Credentials as seeded by seed_moodle.php. The teacher is a DIFFERENT
+  # account on purpose: the stale-read property is only expressible if the
+  # grader and the submitter are genuinely different users.
+  #
+  # Passwords changed 2026-09-12 from Student1!/Teacher1! -- Chrome's
+  # leak-detection warning fired against those on every login, a plausible
+  # contributor to a StaleElementReferenceException chased earlier (see
+  # executors.py's ChromeOptions prefs, which now also disable the feature
+  # outright). These are long enough to clear Moodle's complexity check, not
+  # dictionary words, and the #Test suffix keeps them out of any real breach
+  # corpus while staying readable at a glance in logs.
+  cv_student_user:  "student1"
+  cv_student_pass:  "Tr1angleP0int#Test"
+  cv_teacher_user:  "teacher1"
+  cv_teacher_pass:  "Br1dgeV4ult#Test"

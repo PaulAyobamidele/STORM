@@ -1776,7 +1776,7 @@ class ConcretizationAlgorithm:
         holding 100 g of fat cannot also hold 0 kcal. When the app reports both,
         it is contradicting itself, and no external reference is needed to see it.
 
-        FOUND THIS WAY, 2026-08-23 (systems/foodyou/TODO.md): under DB_CORRUPT the
+        FOUND THIS WAY, 2026-08-23 (EVALUATION/foodyou/TODO.md): under DB_CORRUPT the
         app correctly flagged a record "missing required fields" and refused to
         show its energy -- then counted that same record's 100 g of fat into the
         daily total, so the header read "0 / 2000 kcal, 2000 calories left"

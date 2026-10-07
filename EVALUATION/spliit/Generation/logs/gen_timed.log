@@ -1,0 +1,1648 @@
+using testor:      /home/paulad/cadp/bin.x64/testor.a
+using extract_all: /home/paulad/cadp/com/extract_all
+limiting virtual memory to 210844902 kbytes
+  composed model: compose_spliit.bcg -> model_size.txt
+======================================================================
+==> nominal
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+tp_nominal.lnt:103: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_nominal.lnt:104: warning: event parameter REJECT_SHOWN never accessed
+tp_nominal.lnt:105: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_nominal.lnt:106: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_nominal.lnt:107: warning: event parameter UE_KILL never accessed
+tp_nominal.lnt:108: warning: event parameter APP_UNAVAILABLE never accessed
+tp_nominal.lnt:109: warning: event parameter APP_CACHE_STALE never accessed
+tp_nominal.lnt:110: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_nominal.lnt:111: warning: event parameter DB_ABORT never accessed
+tp_nominal.lnt:112: warning: event parameter DB_CORRUPT never accessed
+tp_nominal.lnt:113: warning: event parameter INFRA_DB_DOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_nominal.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_2nTFYR/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_2nTFYR/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_2nTFYR/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_2nTFYR/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_2nTFYR/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_nominal.bcg spliit_nominal.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 191 states, 297 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/nominal/tc_nominal.1.aut (297 transitions)
+     canonical: tc_nominal.aut (= variant 1)
+======================================================================
+==> ue_kill
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_ue_kill.lnt:102: warning: event parameter VIEW never accessed
+tp_ue_kill.lnt:103: warning: event parameter DETAIL never accessed
+tp_ue_kill.lnt:104: warning: event parameter REMOVE never accessed
+tp_ue_kill.lnt:105: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_ue_kill.lnt:106: warning: event parameter REJECT_SHOWN never accessed
+tp_ue_kill.lnt:107: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_ue_kill.lnt:108: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_ue_kill.lnt:110: warning: event parameter APP_UNAVAILABLE never accessed
+tp_ue_kill.lnt:111: warning: event parameter APP_CACHE_STALE never accessed
+tp_ue_kill.lnt:112: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_ue_kill.lnt:113: warning: event parameter DB_ABORT never accessed
+tp_ue_kill.lnt:114: warning: event parameter DB_CORRUPT never accessed
+tp_ue_kill.lnt:115: warning: event parameter INFRA_DB_DOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue_kill.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_OSNMjl/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_OSNMjl/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_OSNMjl/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_OSNMjl/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_OSNMjl/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_ue_kill.bcg spliit_ue_kill.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 122 states, 204 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/ue_kill/tc_ue_kill.1.aut (204 transitions)
+     canonical: tc_ue_kill.aut (= variant 1)
+======================================================================
+==> app_unavailable
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_app_unavailable.lnt:102: warning: event parameter VIEW never accessed
+tp_app_unavailable.lnt:103: warning: event parameter DETAIL never accessed
+tp_app_unavailable.lnt:104: warning: event parameter REMOVE never accessed
+tp_app_unavailable.lnt:106: warning: event parameter REJECT_SHOWN never accessed
+tp_app_unavailable.lnt:107: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_app_unavailable.lnt:108: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_app_unavailable.lnt:109: warning: event parameter UE_KILL never accessed
+tp_app_unavailable.lnt:111: warning: event parameter APP_CACHE_STALE never accessed
+tp_app_unavailable.lnt:112: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_app_unavailable.lnt:113: warning: event parameter DB_ABORT never accessed
+tp_app_unavailable.lnt:114: warning: event parameter DB_CORRUPT never accessed
+tp_app_unavailable.lnt:115: warning: event parameter INFRA_DB_DOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_unavailable.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_uEXnzN/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_uEXnzN/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_uEXnzN/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_uEXnzN/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_uEXnzN/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_app_unavailable.bcg spliit_app_unavailable.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 125 states, 201 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/app_unavailable/tc_app_unavailable.1.aut (201 transitions)
+     canonical: tc_app_unavailable.aut (= variant 1)
+======================================================================
+==> app_cache_stale
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_app_cache_stale.lnt:110: warning: event parameter VIEW never accessed
+tp_app_cache_stale.lnt:111: warning: event parameter DETAIL never accessed
+tp_app_cache_stale.lnt:112: warning: event parameter REMOVE never accessed
+tp_app_cache_stale.lnt:113: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_cache_stale.lnt:114: warning: event parameter REJECT_SHOWN never accessed
+tp_app_cache_stale.lnt:115: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_app_cache_stale.lnt:116: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_app_cache_stale.lnt:117: warning: event parameter UE_KILL never accessed
+tp_app_cache_stale.lnt:118: warning: event parameter APP_UNAVAILABLE never accessed
+tp_app_cache_stale.lnt:120: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_app_cache_stale.lnt:121: warning: event parameter DB_ABORT never accessed
+tp_app_cache_stale.lnt:122: warning: event parameter DB_CORRUPT never accessed
+tp_app_cache_stale.lnt:123: warning: event parameter INFRA_DB_DOWN never accessed
+tp_app_cache_stale.lnt:125: warning: event parameter TP_REFUSE never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_cache_stale.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_YcKNGI/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_YcKNGI/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_YcKNGI/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_YcKNGI/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_YcKNGI/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_app_cache_stale.bcg spliit_app_cache_stale.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 117 states, 192 transitions
+  3. extract_all -> controllable test cases
+extract_all: 4 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: 2 test cases extracted
+  4. BCG -> AUT
+     variants/app_cache_stale/tc_app_cache_stale.1.aut (49 transitions)
+     variants/app_cache_stale/tc_app_cache_stale.2.aut (27 transitions)
+     canonical: tc_app_cache_stale.aut (= variant 1)
+======================================================================
+==> app_extapi_fail
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_app_extapi_fail.lnt:110: warning: event parameter VIEW never accessed
+tp_app_extapi_fail.lnt:111: warning: event parameter DETAIL never accessed
+tp_app_extapi_fail.lnt:112: warning: event parameter REMOVE never accessed
+tp_app_extapi_fail.lnt:113: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_extapi_fail.lnt:114: warning: event parameter REJECT_SHOWN never accessed
+tp_app_extapi_fail.lnt:116: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_app_extapi_fail.lnt:117: warning: event parameter UE_KILL never accessed
+tp_app_extapi_fail.lnt:118: warning: event parameter APP_UNAVAILABLE never accessed
+tp_app_extapi_fail.lnt:119: warning: event parameter APP_CACHE_STALE never accessed
+tp_app_extapi_fail.lnt:121: warning: event parameter DB_ABORT never accessed
+tp_app_extapi_fail.lnt:122: warning: event parameter DB_CORRUPT never accessed
+tp_app_extapi_fail.lnt:123: warning: event parameter INFRA_DB_DOWN never accessed
+tp_app_extapi_fail.lnt:125: warning: event parameter TP_REFUSE never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_extapi_fail.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_q8eafb/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_q8eafb/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_q8eafb/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_q8eafb/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_q8eafb/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_app_extapi_fail.bcg spliit_app_extapi_fail.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 135 states, 219 transitions
+  3. extract_all -> controllable test cases
+extract_all: 4 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: 2 test cases extracted
+  4. BCG -> AUT
+     variants/app_extapi_fail/tc_app_extapi_fail.1.aut (55 transitions)
+     variants/app_extapi_fail/tc_app_extapi_fail.2.aut (33 transitions)
+     canonical: tc_app_extapi_fail.aut (= variant 1)
+======================================================================
+==> db_abort
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_db_abort.lnt:102: warning: event parameter VIEW never accessed
+tp_db_abort.lnt:103: warning: event parameter DETAIL never accessed
+tp_db_abort.lnt:104: warning: event parameter REMOVE never accessed
+tp_db_abort.lnt:106: warning: event parameter REJECT_SHOWN never accessed
+tp_db_abort.lnt:107: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_db_abort.lnt:108: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_db_abort.lnt:109: warning: event parameter UE_KILL never accessed
+tp_db_abort.lnt:110: warning: event parameter APP_UNAVAILABLE never accessed
+tp_db_abort.lnt:111: warning: event parameter APP_CACHE_STALE never accessed
+tp_db_abort.lnt:112: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_db_abort.lnt:114: warning: event parameter DB_CORRUPT never accessed
+tp_db_abort.lnt:115: warning: event parameter INFRA_DB_DOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_abort.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_Q4dthT/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_Q4dthT/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_Q4dthT/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_Q4dthT/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_Q4dthT/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_db_abort.bcg spliit_db_abort.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 125 states, 201 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/db_abort/tc_db_abort.1.aut (201 transitions)
+     canonical: tc_db_abort.aut (= variant 1)
+======================================================================
+==> db_corrupt
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+tp_db_corrupt.lnt:101: warning: event parameter REMOVE never accessed
+tp_db_corrupt.lnt:102: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_db_corrupt.lnt:103: warning: event parameter REJECT_SHOWN never accessed
+tp_db_corrupt.lnt:104: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_db_corrupt.lnt:106: warning: event parameter UE_KILL never accessed
+tp_db_corrupt.lnt:107: warning: event parameter APP_UNAVAILABLE never accessed
+tp_db_corrupt.lnt:108: warning: event parameter APP_CACHE_STALE never accessed
+tp_db_corrupt.lnt:109: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_db_corrupt.lnt:110: warning: event parameter DB_ABORT never accessed
+tp_db_corrupt.lnt:112: warning: event parameter INFRA_DB_DOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_corrupt.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_npjlLB/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_npjlLB/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_npjlLB/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_npjlLB/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_npjlLB/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_db_corrupt.bcg spliit_db_corrupt.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 147 states, 235 transitions
+  3. extract_all -> controllable test cases
+extract_all: 2 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: 1 test case extracted
+  4. BCG -> AUT
+     variants/db_corrupt/tc_db_corrupt.1.aut (38 transitions)
+     canonical: tc_db_corrupt.aut (= variant 1)
+======================================================================
+==> infra_db_down
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_infra_db_down.lnt:102: warning: event parameter VIEW never accessed
+tp_infra_db_down.lnt:103: warning: event parameter DETAIL never accessed
+tp_infra_db_down.lnt:104: warning: event parameter REMOVE never accessed
+tp_infra_db_down.lnt:106: warning: event parameter REJECT_SHOWN never accessed
+tp_infra_db_down.lnt:107: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_infra_db_down.lnt:108: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_infra_db_down.lnt:109: warning: event parameter UE_KILL never accessed
+tp_infra_db_down.lnt:110: warning: event parameter APP_UNAVAILABLE never accessed
+tp_infra_db_down.lnt:111: warning: event parameter APP_CACHE_STALE never accessed
+tp_infra_db_down.lnt:112: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_infra_db_down.lnt:113: warning: event parameter DB_ABORT never accessed
+tp_infra_db_down.lnt:114: warning: event parameter DB_CORRUPT never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_infra_db_down.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_91zwcy/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_91zwcy/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_91zwcy/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_91zwcy/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_91zwcy/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_infra_db_down.bcg spliit_infra_db_down.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 125 states, 201 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/infra_db_down/tc_infra_db_down.1.aut (201 transitions)
+     canonical: tc_infra_db_down.aut (= variant 1)
+======================================================================
+==> input_invalid
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_input_invalid.lnt:99: warning: event parameter VIEW never accessed
+tp_input_invalid.lnt:100: warning: event parameter DETAIL never accessed
+tp_input_invalid.lnt:101: warning: event parameter REMOVE never accessed
+tp_input_invalid.lnt:102: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_input_invalid.lnt:104: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_input_invalid.lnt:105: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_input_invalid.lnt:106: warning: event parameter UE_KILL never accessed
+tp_input_invalid.lnt:107: warning: event parameter APP_UNAVAILABLE never accessed
+tp_input_invalid.lnt:108: warning: event parameter APP_CACHE_STALE never accessed
+tp_input_invalid.lnt:109: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_input_invalid.lnt:110: warning: event parameter DB_ABORT never accessed
+tp_input_invalid.lnt:111: warning: event parameter DB_CORRUPT never accessed
+tp_input_invalid.lnt:112: warning: event parameter INFRA_DB_DOWN never accessed
+tp_input_invalid.lnt:114: warning: event parameter TP_REFUSE never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_input_invalid.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_3UybXI/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_3UybXI/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_3UybXI/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_3UybXI/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_3UybXI/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_input_invalid.bcg spliit_input_invalid.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 122 states, 195 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/input_invalid/tc_input_invalid.1.aut (195 transitions)
+     canonical: tc_input_invalid.aut (= variant 1)
+======================================================================
+==> input_overlimit
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:15: warning: function recurringExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_input_overlimit.lnt:99: warning: event parameter VIEW never accessed
+tp_input_overlimit.lnt:100: warning: event parameter DETAIL never accessed
+tp_input_overlimit.lnt:101: warning: event parameter REMOVE never accessed
+tp_input_overlimit.lnt:102: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_input_overlimit.lnt:104: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_input_overlimit.lnt:105: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_input_overlimit.lnt:106: warning: event parameter UE_KILL never accessed
+tp_input_overlimit.lnt:107: warning: event parameter APP_UNAVAILABLE never accessed
+tp_input_overlimit.lnt:108: warning: event parameter APP_CACHE_STALE never accessed
+tp_input_overlimit.lnt:109: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_input_overlimit.lnt:110: warning: event parameter DB_ABORT never accessed
+tp_input_overlimit.lnt:111: warning: event parameter DB_CORRUPT never accessed
+tp_input_overlimit.lnt:112: warning: event parameter INFRA_DB_DOWN never accessed
+tp_input_overlimit.lnt:114: warning: event parameter TP_REFUSE never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_input_overlimit.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_IDBrC4/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_IDBrC4/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_IDBrC4/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_IDBrC4/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_IDBrC4/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_input_overlimit.bcg spliit_input_overlimit.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 122 states, 195 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/input_overlimit/tc_input_overlimit.1.aut (195 transitions)
+     canonical: tc_input_overlimit.aut (= variant 1)
+======================================================================
+==> weekly
+  1. tp -> BCG
+spliit_types.lnt:222: warning: channel Ch_Route never employed
+spliit_types.lnt:223: warning: channel Ch_Selector never employed
+spliit_types.lnt:224: warning: channel Ch_TypeIn never employed
+spliit_types.lnt:225: warning: channel Ch_Element never employed
+spliit_types.lnt:81: warning: function grow never called
+spliit_types.lnt:89: warning: function drop never called
+spliit_types.lnt:99: warning: function item_of never called
+spliit_types.lnt:190: warning: function L_title never called
+spliit_types.lnt:198: warning: function L_amount never called
+spliit_types.lnt:206: warning: function L_payer never called
+spliit_types.lnt:214: warning: function L_record never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:36: warning: "with" function == of type Validity never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:49: warning: "with" function == of type WriteStatus never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:67: warning: "with" function == of type SpendBand never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:9: warning: function defaultExpense never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+tp_weekly.lnt:99: warning: event parameter VIEW never accessed
+tp_weekly.lnt:100: warning: event parameter DETAIL never accessed
+tp_weekly.lnt:101: warning: event parameter REMOVE never accessed
+tp_weekly.lnt:102: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_weekly.lnt:103: warning: event parameter REJECT_SHOWN never accessed
+tp_weekly.lnt:104: warning: event parameter RATE_ERROR_SHOWN never accessed
+tp_weekly.lnt:105: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_weekly.lnt:106: warning: event parameter UE_KILL never accessed
+tp_weekly.lnt:107: warning: event parameter APP_UNAVAILABLE never accessed
+tp_weekly.lnt:108: warning: event parameter APP_CACHE_STALE never accessed
+tp_weekly.lnt:109: warning: event parameter APP_EXTAPI_FAIL never accessed
+tp_weekly.lnt:110: warning: event parameter DB_ABORT never accessed
+tp_weekly.lnt:111: warning: event parameter DB_CORRUPT never accessed
+tp_weekly.lnt:112: warning: event parameter INFRA_DB_DOWN never accessed
+tp_weekly.lnt:114: warning: event parameter TP_REFUSE never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_weekly.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_spliit.lnt''
+spliit_types.lnt:14: warning: "with" function == of type ExpenseId never called
+spliit_types.lnt:20: warning: "with" function == of type Payer never called
+spliit_types.lnt:27: warning: "with" function == of type RecordId never called
+spliit_types.lnt:43: warning: "with" function == of type Recurrence never called
+spliit_types.lnt:60: warning: "with" function == of type LogState never called
+spliit_types.lnt:140: warning: "with" function == of type Route never called
+spliit_types.lnt:154: warning: "with" function == of type Selector never called
+spliit_types.lnt:176: warning: "with" function == of type Element never called
+spliit_types.lnt:187: warning: "with" function == of type InputValue never called
+spliit_fixture.lnt:19: warning: function defaultPayer never called
+spliit_fixture.lnt:24: warning: function defaultRecord never called
+specification_spliit.lnt:67: warning: useless assignment to log
+specification_spliit.lnt:67: warning: useless assignment to band
+specification_spliit.lnt:67: warning: useless assignment to status
+specification_spliit.lnt:71: warning: useless assignment to band
+specification_spliit.lnt:75: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to log
+specification_spliit.lnt:85: warning: useless assignment to band
+specification_spliit.lnt:85: warning: useless assignment to status
+specification_spliit.lnt:92: warning: useless assignment to id
+specification_spliit.lnt:100: warning: useless assignment to log
+specification_spliit.lnt:100: warning: useless assignment to band
+specification_spliit.lnt:100: warning: useless assignment to status
+specification_spliit.lnt:57: warning: useless assignment to log
+specification_spliit.lnt:56: warning: useless assignment to band
+specification_spliit.lnt:55: warning: useless assignment to status
+specification_spliit.lnt:54: warning: useless assignment to rec
+specification_spliit.lnt:53: warning: useless assignment to vld
+specification_spliit.lnt:52: warning: useless assignment to rid
+specification_spliit.lnt:51: warning: useless assignment to id
+specification_spliit.lnt:50: warning: useless assignment to payer
+specification_spliit.lnt:148: warning: useless assignment to log
+specification_spliit.lnt:148: warning: useless assignment to band
+specification_spliit.lnt:148: warning: useless assignment to status
+specification_spliit.lnt:153: warning: useless assignment to band
+specification_spliit.lnt:158: warning: useless assignment to band
+specification_spliit.lnt:163: warning: useless assignment to band
+specification_spliit.lnt:169: warning: useless assignment to band
+specification_spliit.lnt:144: warning: useless assignment to rec
+specification_spliit.lnt:144: warning: useless assignment to payer
+specification_spliit.lnt:176: warning: useless assignment to log
+specification_spliit.lnt:176: warning: useless assignment to band
+specification_spliit.lnt:176: warning: useless assignment to status
+specification_spliit.lnt:175: warning: useless assignment to rec
+specification_spliit.lnt:175: warning: useless assignment to payer
+specification_spliit.lnt:183: warning: useless assignment to log
+specification_spliit.lnt:183: warning: useless assignment to band
+specification_spliit.lnt:183: warning: useless assignment to status
+specification_spliit.lnt:182: warning: useless assignment to rec
+specification_spliit.lnt:182: warning: useless assignment to payer
+specification_spliit.lnt:188: warning: useless assignment to id
+specification_spliit.lnt:199: warning: useless assignment to band
+specification_spliit.lnt:141: warning: useless assignment to log
+specification_spliit.lnt:140: warning: useless assignment to band
+specification_spliit.lnt:139: warning: useless assignment to status
+specification_spliit.lnt:138: warning: useless assignment to rec
+specification_spliit.lnt:137: warning: useless assignment to vld
+specification_spliit.lnt:136: warning: useless assignment to rid
+specification_spliit.lnt:135: warning: useless assignment to id
+specification_spliit.lnt:134: warning: useless assignment to payer
+specification_spliit.lnt:234: warning: useless assignment to payer
+specification_spliit.lnt:230: warning: useless assignment to rec
+specification_spliit.lnt:229: warning: useless assignment to vld
+specification_spliit.lnt:228: warning: useless assignment to rid
+specification_spliit.lnt:227: warning: useless assignment to id
+specification_spliit.lnt:226: warning: useless assignment to payer
+system_interface_spliit.lnt:119: warning: useless assignment to screen
+system_interface_spliit.lnt:221: warning: useless assignment to screen
+system_interface_spliit.lnt:290: warning: useless assignment to screen
+system_interface_spliit.lnt:352: warning: useless assignment to screen
+system_interface_spliit.lnt:414: warning: useless assignment to screen
+system_interface_spliit.lnt:477: warning: useless assignment to screen
+system_interface_spliit.lnt:564: warning: useless assignment to id
+system_interface_spliit.lnt:555: warning: useless assignment to screen
+system_interface_spliit.lnt:603: warning: useless assignment to screen
+system_interface_spliit.lnt:71: warning: useless assignment to screen
+system_interface_spliit.lnt:67: warning: useless assignment to st
+system_interface_spliit.lnt:66: warning: useless assignment to rid
+system_interface_spliit.lnt:65: warning: useless assignment to id
+system_interface_spliit.lnt:64: warning: useless assignment to payer
+
+lnt.open: translating ``spliit_types.lnt'' to ``/tmp/paulad_lnt.open_SxHnRM/SPLIIT_TYPES.lib'' ...
+
+lnt.open: translating ``spliit_fixture.lnt'' to ``/tmp/paulad_lnt.open_SxHnRM/SPLIIT_FIXTURE.lib'' ...
+
+lnt.open: translating ``specification_spliit.lnt'' to ``/tmp/paulad_lnt.open_SxHnRM/SPECIFICATION_SPLIIT.lib'' ...
+
+lnt.open: translating ``system_interface_spliit.lnt'' to ``/tmp/paulad_lnt.open_SxHnRM/SYSTEM_INTERFACE_SPLIIT.lib'' ...
+
+lnt.open: translating ``compose_spliit.lnt'' to ``/tmp/paulad_lnt.open_SxHnRM/compose_spliit.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_spliit.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_spliit''
+cadp_indent: cannot find ``indent''
+             file ``compose_spliit.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_spliit''
+lotos.open: running ``testor -io spliit.io -all tp_weekly.bcg spliit_weekly.ctg.bcg'' for ``compose_spliit.lotos''
+     ctg: 134 states, 225 transitions
+  3. extract_all -> controllable test cases
+extract_all: controllable CTG: no new test case extracted
+  4. BCG -> AUT
+     variants/weekly/tc_weekly.1.aut (225 transitions)
+     canonical: tc_weekly.aut (= variant 1)
+======================================================================
+test cases per purpose:
+  nominal: 1 test case(s)
+  ue_kill: 1 test case(s)
+  app_unavailable: 1 test case(s)
+  app_cache_stale: 2 test case(s)
+  app_extapi_fail: 2 test case(s)
+  db_abort: 1 test case(s)
+  db_corrupt: 1 test case(s)
+  infra_db_down: 1 test case(s)
+  input_invalid: 1 test case(s)
+  input_overlimit: 1 test case(s)
+  weekly: 1 test case(s)
+
+canonical AUTs (walked by run.py): tc_app_cache_stale.aut tc_app_extapi_fail.aut tc_app_unavailable.aut tc_db_abort.aut tc_db_corrupt.aut tc_infra_db_down.aut tc_input_invalid.aut tc_input_overlimit.aut tc_nominal.aut tc_ue_kill.aut tc_weekly.aut 
+alternatives:                      variants/<purpose>/tc_<purpose>.N.aut
+
+bring back tc_*.aut and variants/ to EVALUATION/spliit/Test_Cases/
+DONE

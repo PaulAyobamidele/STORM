@@ -1,0 +1,54 @@
+-- compose_medtimer.lnt -- COMPOSED = SPEC || SI, synchronised on the whole
+-- abstract alphabet (journeys, observables and faults); the five concrete
+-- primitives stay visible for the generated test case.
+--
+--   lnt.open -main COMPOSED compose_medtimer.lnt generator compose_medtimer.bcg
+
+module compose_medtimer (medtimer_types, specification_medtimer, system_interface_medtimer)
+is
+
+process COMPOSED [
+    navigate  : Ch_Route,
+    tap       : Ch_Value,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    par ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+        WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+        UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+        INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+        SPEC [ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+              WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+              UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+              INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    ||
+        SI [navigate, tap, type_into, wait_for, observe,
+            ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+            WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+            UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+            INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    end par
+end process
+
+end module

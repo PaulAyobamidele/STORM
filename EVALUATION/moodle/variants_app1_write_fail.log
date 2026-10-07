@@ -1,0 +1,4 @@
+# moodle tc variants -- purpose: app1_write_fail -- converted 2026-10-06 from variant_results_app1_write_fail.log (sweep 2026-10-02 03:03-06:20, EVALUATION/moodle/sweep_20261002.log); rev not recorded, framework/ dirty; one row per case = its LAST recorded row (the one its per-case log describes)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	28	30	32	PASS	injected=APP1_WRITE_FAIL (timing: pre); reached :PASS:
+2	28	30	31	PASS	injected=APP1_WRITE_FAIL (timing: pre); reached :PASS:

@@ -1,0 +1,12 @@
+purpose	seconds	cases
+nominal	17	1
+ue_kill	45	4
+app_unavailable	44	4
+app_cache_stale	73	8
+app_extapi_fail	164	8
+db_abort	44	4
+db_corrupt	103	12
+infra_db_down	52	4
+input_invalid	15	1
+input_overlimit	16	1
+weekly	16	1

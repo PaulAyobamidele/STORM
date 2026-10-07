@@ -1,0 +1,14 @@
+medtimer_app_cache_stale.ctg	420 states, 654 transitions 
+medtimer_app_write_fail.ctg	632 states, 938 transitions 
+medtimer_cannot_skip.ctg	167 states, 271 transitions 
+medtimer_db_abort.ctg	379 states, 569 transitions 
+medtimer_db_corrupt.ctg	265 states, 436 transitions 
+medtimer_db_corrupt_stock.ctg	265 states, 436 transitions 
+medtimer_db_event_loss.ctg	286 states, 440 transitions 
+medtimer_delete_skipped.ctg	156 states, 255 transitions 
+medtimer_edit_flip.ctg	158 states, 257 transitions 
+medtimer_infra_storage_full.ctg	632 states, 938 transitions 
+medtimer_infra_storage_media.ctg	265 states, 436 transitions 
+medtimer_input_invalid.ctg	83 states, 140 transitions 
+medtimer_nominal.ctg	471 states, 737 transitions 
+medtimer_ue_kill.ctg	593 states, 977 transitions 

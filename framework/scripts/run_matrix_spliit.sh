@@ -10,7 +10,7 @@ cd "$PROJECT"
 
 # Start the fault-injection proxy (Spliit must already be running on :3000)
 source .venv/bin/activate 2>/dev/null || true
-python systems/spliit/sut/fault_middleware.py &
+python EVALUATION/spliit/sut/fault_middleware.py &
 PROXY_PID=$!
 
 for i in {1..15}; do
@@ -51,24 +51,24 @@ reset_proxy() {
 }
 
 BASE_ARGS=(
-  --aut        systems/spliit/model/tc_a4.aut
+  --aut        EVALUATION/spliit/model/tc_a4.aut
   --platform   html
   --url        http://localhost:3002
-  --system-interface   systems/spliit/model/system_interface_spliit.lnt
-  --type-description   systems/spliit/properties/type_description.yml
+  --system-interface   EVALUATION/spliit/model/system_interface_spliit.lnt
+  --type-description   EVALUATION/spliit/properties/type_description.yml
   --verbose
 )
 
 BASE_ARGS_U1=(
-  --aut        systems/spliit/model/tc_u1.aut
+  --aut        EVALUATION/spliit/model/tc_u1.aut
   --platform   html
   --url        http://localhost:3002
-  --system-interface   systems/spliit/model/system_interface_spliit.lnt
-  --type-description   systems/spliit/properties/type_description.yml
+  --system-interface   EVALUATION/spliit/model/system_interface_spliit.lnt
+  --type-description   EVALUATION/spliit/properties/type_description.yml
   --verbose
 )
 
-MAPPING=systems/spliit/properties/disruption_mapping.yml
+MAPPING=EVALUATION/spliit/properties/disruption_mapping.yml
 
 run_disruption() {
   local KEY="$1"

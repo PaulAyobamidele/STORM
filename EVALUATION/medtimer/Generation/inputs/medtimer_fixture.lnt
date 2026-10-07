@@ -1,0 +1,13 @@
+module medtimer_fixture (medtimer_types) is
+
+(* Test selection only; imported by the SI and the purposes, never by the
+   specification. The prelude creates medicine A "Vitamin C" (3 pills) with
+   doses at 11:57, 11:58 and 11:59 PM, and medicine B "Zinc" (2 pills) with a
+   dose at 11:56 PM, one pill each; the specification's initial bands S3 / S2
+   encode that. Strings in properties/concrete_domain.yml. *)
+
+function defaultMedicine : MedicineId is
+    return med_a
+end function
+
+end module

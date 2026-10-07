@@ -1,0 +1,79 @@
+module tp_disruption_db (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   Database -- DISRUPTION_DB: the write transaction aborts.
+
+   THE APP MUST: report the failure and leave the daily total EXACTLY as it
+   was. An aborted transaction that still moves the total means the app is
+   reporting a rollback it did not perform -- the most damaging shape of this
+   defect, because the user is told nothing was saved while the figures say
+   otherwise.
+
+   ACCEPT   the entry is submitted, the transaction aborts, and the app
+            reports ROLLED_BACK with the total unchanged.
+   REFUSE   CONFIRM_TOTAL (COMMITTED, ...) -- the abort never happened; and any
+            OTHER fault interrupting the run.
+
+   Observable owed: CONFIRM_TOTAL (ROLLED_BACK, ...), checked by the band
+   oracle AND the exact-sum ledger. The ledger is the sharp instrument here:
+   it holds the sum of what was actually logged, so a total that crept upward
+   during a "rollback" is caught to the calorie.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD (IDF, LOCAL);
+            FOOD_INFO   (IDF, ?any Calorie);
+            ADD_ENTRY   (BREAKFAST, IDF, VALID);
+            disrupt
+                CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF);
+                loop TP_REFUSE end loop
+            by
+                DISRUPTION_DB;
+                CONFIRM_TOTAL (ROLLED_BACK, ?any DailyTotal, IDF);
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- Any OTHER fault: the observation would be evidence about that
+            -- fault, not about the aborted transaction. NETWORK_DEGRADED is
+            -- omitted deliberately: it is a synchronisation gate that neither
+            -- disruptor ever offers.
+            alt
+                EXTAPI_FAIL
+            []  UE1_KILL
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  STORAGE_MEDIA
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module

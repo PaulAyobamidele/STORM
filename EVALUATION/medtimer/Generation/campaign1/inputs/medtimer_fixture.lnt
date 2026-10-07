@@ -1,0 +1,20 @@
+module medtimer_fixture (medtimer_types) is
+
+(* Test selection only. Imported by the System Interface and the purposes,
+   never by the specification. One definition; edit here to retarget the
+   whole sweep.
+
+   The prelude creates this medicine through the UI with three units of stock
+   ("3", unit "pills") and one time-based reminder late in the day with dose
+   "1", so that the overview shows the dose as scheduled (PENDING) for today
+   and the stock band starts at S3, one rung below the saturating S4
+   (specification_medtimer.lnt, DATABASE), so an unjustified refund is visible.
+   The concrete strings are in properties/concrete_domain.yml
+   (cv_name_fixture, cv_stock_value, cv_unit_value, cv_reminder_time, cv_dose)
+   and type_description.yml (StockBand.bucket_unit_from names the dose). *)
+
+function defaultMedicine : MedicineId is
+    return med_a
+end function
+
+end module

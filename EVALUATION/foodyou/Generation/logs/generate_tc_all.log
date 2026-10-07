@@ -1,0 +1,3012 @@
+using testor:      /home/paulad/cadp/bin.x64/testor.a
+using extract_all: /home/paulad/cadp/com/extract_all
+limiting virtual memory to 210844883 kbytes
+======================================================================
+==> happy
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_happy.lnt:8: warning: event parameter VIEW_DIARY never accessed
+tp_happy.lnt:9: warning: event parameter DIARY_INFO never accessed
+tp_happy.lnt:10: warning: event parameter REMOVE_ENTRY never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_happy.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_jsCOhV/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_jsCOhV/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_jsCOhV/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_jsCOhV/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_happy.bcg foodyou_happy.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 1811 states, 3944 transitions
+  3. extract_all -> controllable test cases
+extract_all: 246 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: extracting test case #49
+extract_all: checking test case #49
+extract_all: extracting test case #50
+extract_all: checking test case #50
+extract_all: extracting test case #51
+extract_all: checking test case #51
+extract_all: extracting test case #52
+extract_all: checking test case #52
+extract_all: extracting test case #53
+extract_all: checking test case #53
+extract_all: extracting test case #54
+extract_all: checking test case #54
+extract_all: extracting test case #55
+extract_all: checking test case #55
+extract_all: extracting test case #56
+extract_all: checking test case #56
+extract_all: extracting test case #57
+extract_all: checking test case #57
+extract_all: extracting test case #58
+extract_all: checking test case #58
+extract_all: extracting test case #59
+extract_all: checking test case #59
+extract_all: extracting test case #60
+extract_all: checking test case #60
+extract_all: extracting test case #61
+extract_all: checking test case #61
+extract_all: extracting test case #62
+extract_all: checking test case #62
+extract_all: extracting test case #63
+extract_all: checking test case #63
+extract_all: extracting test case #64
+extract_all: checking test case #64
+extract_all: extracting test case #65
+extract_all: checking test case #65
+extract_all: extracting test case #66
+extract_all: checking test case #66
+extract_all: extracting test case #67
+extract_all: checking test case #67
+extract_all: extracting test case #68
+extract_all: checking test case #68
+extract_all: extracting test case #69
+extract_all: checking test case #69
+extract_all: extracting test case #70
+extract_all: checking test case #70
+extract_all: extracting test case #71
+extract_all: checking test case #71
+extract_all: extracting test case #72
+extract_all: checking test case #72
+extract_all: extracting test case #73
+extract_all: checking test case #73
+extract_all: extracting test case #74
+extract_all: checking test case #74
+extract_all: extracting test case #75
+extract_all: checking test case #75
+extract_all: extracting test case #76
+extract_all: checking test case #76
+extract_all: extracting test case #77
+extract_all: checking test case #77
+extract_all: extracting test case #78
+extract_all: checking test case #78
+extract_all: extracting test case #79
+extract_all: checking test case #79
+extract_all: extracting test case #80
+extract_all: checking test case #80
+extract_all: extracting test case #81
+extract_all: checking test case #81
+extract_all: extracting test case #82
+extract_all: checking test case #82
+extract_all: extracting test case #83
+extract_all: checking test case #83
+extract_all: extracting test case #84
+extract_all: checking test case #84
+extract_all: extracting test case #85
+extract_all: checking test case #85
+extract_all: extracting test case #86
+extract_all: checking test case #86
+extract_all: extracting test case #87
+extract_all: checking test case #87
+extract_all: extracting test case #88
+extract_all: checking test case #88
+extract_all: extracting test case #89
+extract_all: checking test case #89
+extract_all: extracting test case #90
+extract_all: checking test case #90
+extract_all: extracting test case #91
+extract_all: checking test case #91
+extract_all: extracting test case #92
+extract_all: checking test case #92
+extract_all: extracting test case #93
+extract_all: checking test case #93
+extract_all: extracting test case #94
+extract_all: checking test case #94
+extract_all: extracting test case #95
+extract_all: checking test case #95
+extract_all: extracting test case #96
+extract_all: checking test case #96
+extract_all: extracting test case #97
+extract_all: checking test case #97
+extract_all: extracting test case #98
+extract_all: checking test case #98
+extract_all: extracting test case #99
+extract_all: checking test case #99
+extract_all: extracting test case #100
+extract_all: checking test case #100
+extract_all: extracting test case #101
+extract_all: checking test case #101
+extract_all: extracting test case #102
+extract_all: checking test case #102
+extract_all: extracting test case #103
+extract_all: checking test case #103
+extract_all: extracting test case #104
+extract_all: checking test case #104
+extract_all: 104 test cases extracted
+  4. BCG -> AUT
+     variants/happy/tc_happy.1.aut (390 transitions)
+     variants/happy/tc_happy.2.aut (403 transitions)
+     variants/happy/tc_happy.3.aut (398 transitions)
+     variants/happy/tc_happy.4.aut (392 transitions)
+     variants/happy/tc_happy.5.aut (384 transitions)
+     variants/happy/tc_happy.6.aut (392 transitions)
+     variants/happy/tc_happy.7.aut (384 transitions)
+     variants/happy/tc_happy.8.aut (384 transitions)
+     variants/happy/tc_happy.9.aut (381 transitions)
+     variants/happy/tc_happy.10.aut (429 transitions)
+     variants/happy/tc_happy.11.aut (432 transitions)
+     variants/happy/tc_happy.12.aut (423 transitions)
+     variants/happy/tc_happy.13.aut (426 transitions)
+     variants/happy/tc_happy.14.aut (436 transitions)
+     variants/happy/tc_happy.15.aut (449 transitions)
+     variants/happy/tc_happy.16.aut (436 transitions)
+     variants/happy/tc_happy.17.aut (439 transitions)
+     variants/happy/tc_happy.18.aut (381 transitions)
+     variants/happy/tc_happy.19.aut (425 transitions)
+     variants/happy/tc_happy.20.aut (422 transitions)
+     variants/happy/tc_happy.21.aut (435 transitions)
+     variants/happy/tc_happy.22.aut (432 transitions)
+     variants/happy/tc_happy.23.aut (416 transitions)
+     variants/happy/tc_happy.24.aut (429 transitions)
+     variants/happy/tc_happy.25.aut (366 transitions)
+     variants/happy/tc_happy.26.aut (408 transitions)
+     variants/happy/tc_happy.27.aut (421 transitions)
+     variants/happy/tc_happy.28.aut (415 transitions)
+     variants/happy/tc_happy.29.aut (374 transitions)
+     variants/happy/tc_happy.30.aut (374 transitions)
+     variants/happy/tc_happy.31.aut (363 transitions)
+     variants/happy/tc_happy.32.aut (366 transitions)
+     variants/happy/tc_happy.33.aut (410 transitions)
+     variants/happy/tc_happy.34.aut (427 transitions)
+     variants/happy/tc_happy.35.aut (428 transitions)
+     variants/happy/tc_happy.36.aut (422 transitions)
+     variants/happy/tc_happy.37.aut (424 transitions)
+     variants/happy/tc_happy.38.aut (370 transitions)
+     variants/happy/tc_happy.39.aut (344 transitions)
+     variants/happy/tc_happy.40.aut (415 transitions)
+     variants/happy/tc_happy.41.aut (415 transitions)
+     variants/happy/tc_happy.42.aut (402 transitions)
+     variants/happy/tc_happy.43.aut (405 transitions)
+     variants/happy/tc_happy.44.aut (424 transitions)
+     variants/happy/tc_happy.45.aut (340 transitions)
+     variants/happy/tc_happy.46.aut (353 transitions)
+     variants/happy/tc_happy.47.aut (411 transitions)
+     variants/happy/tc_happy.48.aut (409 transitions)
+     variants/happy/tc_happy.49.aut (402 transitions)
+     variants/happy/tc_happy.50.aut (415 transitions)
+     variants/happy/tc_happy.51.aut (397 transitions)
+     variants/happy/tc_happy.52.aut (381 transitions)
+     variants/happy/tc_happy.53.aut (394 transitions)
+     variants/happy/tc_happy.54.aut (349 transitions)
+     variants/happy/tc_happy.55.aut (362 transitions)
+     variants/happy/tc_happy.56.aut (393 transitions)
+     variants/happy/tc_happy.57.aut (396 transitions)
+     variants/happy/tc_happy.58.aut (383 transitions)
+     variants/happy/tc_happy.59.aut (413 transitions)
+     variants/happy/tc_happy.60.aut (414 transitions)
+     variants/happy/tc_happy.61.aut (396 transitions)
+     variants/happy/tc_happy.62.aut (358 transitions)
+     variants/happy/tc_happy.63.aut (410 transitions)
+     variants/happy/tc_happy.64.aut (348 transitions)
+     variants/happy/tc_happy.65.aut (393 transitions)
+     variants/happy/tc_happy.66.aut (393 transitions)
+     variants/happy/tc_happy.67.aut (380 transitions)
+     variants/happy/tc_happy.68.aut (383 transitions)
+     variants/happy/tc_happy.69.aut (410 transitions)
+     variants/happy/tc_happy.70.aut (328 transitions)
+     variants/happy/tc_happy.71.aut (389 transitions)
+     variants/happy/tc_happy.72.aut (387 transitions)
+     variants/happy/tc_happy.73.aut (383 transitions)
+     variants/happy/tc_happy.74.aut (359 transitions)
+     variants/happy/tc_happy.75.aut (372 transitions)
+     variants/happy/tc_happy.76.aut (327 transitions)
+     variants/happy/tc_happy.77.aut (348 transitions)
+     variants/happy/tc_happy.78.aut (379 transitions)
+     variants/happy/tc_happy.79.aut (382 transitions)
+     variants/happy/tc_happy.80.aut (376 transitions)
+     variants/happy/tc_happy.81.aut (377 transitions)
+     variants/happy/tc_happy.82.aut (336 transitions)
+     variants/happy/tc_happy.83.aut (373 transitions)
+     variants/happy/tc_happy.84.aut (326 transitions)
+     variants/happy/tc_happy.85.aut (373 transitions)
+     variants/happy/tc_happy.86.aut (306 transitions)
+     variants/happy/tc_happy.87.aut (346 transitions)
+     variants/happy/tc_happy.88.aut (307 transitions)
+     variants/happy/tc_happy.89.aut (328 transitions)
+     variants/happy/tc_happy.90.aut (342 transitions)
+     variants/happy/tc_happy.91.aut (345 transitions)
+     variants/happy/tc_happy.92.aut (153 transitions)
+     variants/happy/tc_happy.93.aut (149 transitions)
+     variants/happy/tc_happy.94.aut (297 transitions)
+     variants/happy/tc_happy.95.aut (310 transitions)
+     variants/happy/tc_happy.96.aut (149 transitions)
+     variants/happy/tc_happy.97.aut (284 transitions)
+     variants/happy/tc_happy.98.aut (113 transitions)
+     variants/happy/tc_happy.99.aut (116 transitions)
+     variants/happy/tc_happy.100.aut (77 transitions)
+     variants/happy/tc_happy.101.aut (111 transitions)
+     variants/happy/tc_happy.102.aut (93 transitions)
+     variants/happy/tc_happy.103.aut (84 transitions)
+     variants/happy/tc_happy.104.aut (105 transitions)
+     canonical: tc_happy.aut (= variant 1)
+======================================================================
+==> ue1_kill
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_ue1_kill.lnt:8: warning: event parameter VIEW_DIARY never accessed
+tp_ue1_kill.lnt:9: warning: event parameter DIARY_INFO never accessed
+tp_ue1_kill.lnt:10: warning: event parameter REMOVE_ENTRY never accessed
+tp_ue1_kill.lnt:12: warning: event parameter EXTAPI_WARNING never accessed
+tp_ue1_kill.lnt:16: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_ue1_kill.lnt:19: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_ue1_kill.lnt:21: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue1_kill.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_n1FYyv/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_n1FYyv/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_n1FYyv/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_n1FYyv/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_ue1_kill.bcg foodyou_ue1_kill.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 1894 states, 4132 transitions
+  3. extract_all -> controllable test cases
+extract_all: 264 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: extracting test case #49
+extract_all: checking test case #49
+extract_all: extracting test case #50
+extract_all: checking test case #50
+extract_all: extracting test case #51
+extract_all: checking test case #51
+extract_all: extracting test case #52
+extract_all: checking test case #52
+extract_all: extracting test case #53
+extract_all: checking test case #53
+extract_all: extracting test case #54
+extract_all: checking test case #54
+extract_all: extracting test case #55
+extract_all: checking test case #55
+extract_all: extracting test case #56
+extract_all: checking test case #56
+extract_all: extracting test case #57
+extract_all: checking test case #57
+extract_all: extracting test case #58
+extract_all: checking test case #58
+extract_all: extracting test case #59
+extract_all: checking test case #59
+extract_all: extracting test case #60
+extract_all: checking test case #60
+extract_all: extracting test case #61
+extract_all: checking test case #61
+extract_all: extracting test case #62
+extract_all: checking test case #62
+extract_all: extracting test case #63
+extract_all: checking test case #63
+extract_all: extracting test case #64
+extract_all: checking test case #64
+extract_all: extracting test case #65
+extract_all: checking test case #65
+extract_all: extracting test case #66
+extract_all: checking test case #66
+extract_all: extracting test case #67
+extract_all: checking test case #67
+extract_all: extracting test case #68
+extract_all: checking test case #68
+extract_all: extracting test case #69
+extract_all: checking test case #69
+extract_all: extracting test case #70
+extract_all: checking test case #70
+extract_all: extracting test case #71
+extract_all: checking test case #71
+extract_all: extracting test case #72
+extract_all: checking test case #72
+extract_all: extracting test case #73
+extract_all: checking test case #73
+extract_all: extracting test case #74
+extract_all: checking test case #74
+extract_all: extracting test case #75
+extract_all: checking test case #75
+extract_all: extracting test case #76
+extract_all: checking test case #76
+extract_all: extracting test case #77
+extract_all: checking test case #77
+extract_all: extracting test case #78
+extract_all: checking test case #78
+extract_all: extracting test case #79
+extract_all: checking test case #79
+extract_all: extracting test case #80
+extract_all: checking test case #80
+extract_all: extracting test case #81
+extract_all: checking test case #81
+extract_all: extracting test case #82
+extract_all: checking test case #82
+extract_all: extracting test case #83
+extract_all: checking test case #83
+extract_all: extracting test case #84
+extract_all: checking test case #84
+extract_all: extracting test case #85
+extract_all: checking test case #85
+extract_all: extracting test case #86
+extract_all: checking test case #86
+extract_all: extracting test case #87
+extract_all: checking test case #87
+extract_all: extracting test case #88
+extract_all: checking test case #88
+extract_all: extracting test case #89
+extract_all: checking test case #89
+extract_all: extracting test case #90
+extract_all: checking test case #90
+extract_all: extracting test case #91
+extract_all: checking test case #91
+extract_all: extracting test case #92
+extract_all: checking test case #92
+extract_all: extracting test case #93
+extract_all: checking test case #93
+extract_all: extracting test case #94
+extract_all: checking test case #94
+extract_all: extracting test case #95
+extract_all: checking test case #95
+extract_all: extracting test case #96
+extract_all: checking test case #96
+extract_all: extracting test case #97
+extract_all: checking test case #97
+extract_all: extracting test case #98
+extract_all: checking test case #98
+extract_all: extracting test case #99
+extract_all: checking test case #99
+extract_all: extracting test case #100
+extract_all: checking test case #100
+extract_all: extracting test case #101
+extract_all: checking test case #101
+extract_all: extracting test case #102
+extract_all: checking test case #102
+extract_all: extracting test case #103
+extract_all: checking test case #103
+extract_all: extracting test case #104
+extract_all: checking test case #104
+extract_all: extracting test case #105
+extract_all: checking test case #105
+extract_all: extracting test case #106
+extract_all: checking test case #106
+extract_all: extracting test case #107
+extract_all: checking test case #107
+extract_all: extracting test case #108
+extract_all: checking test case #108
+extract_all: 108 test cases extracted
+  4. BCG -> AUT
+     variants/ue1_kill/tc_ue1_kill.1.aut (528 transitions)
+     variants/ue1_kill/tc_ue1_kill.2.aut (541 transitions)
+     variants/ue1_kill/tc_ue1_kill.3.aut (529 transitions)
+     variants/ue1_kill/tc_ue1_kill.4.aut (542 transitions)
+     variants/ue1_kill/tc_ue1_kill.5.aut (525 transitions)
+     variants/ue1_kill/tc_ue1_kill.6.aut (538 transitions)
+     variants/ue1_kill/tc_ue1_kill.7.aut (539 transitions)
+     variants/ue1_kill/tc_ue1_kill.8.aut (525 transitions)
+     variants/ue1_kill/tc_ue1_kill.9.aut (523 transitions)
+     variants/ue1_kill/tc_ue1_kill.10.aut (535 transitions)
+     variants/ue1_kill/tc_ue1_kill.11.aut (535 transitions)
+     variants/ue1_kill/tc_ue1_kill.12.aut (466 transitions)
+     variants/ue1_kill/tc_ue1_kill.13.aut (469 transitions)
+     variants/ue1_kill/tc_ue1_kill.14.aut (454 transitions)
+     variants/ue1_kill/tc_ue1_kill.15.aut (457 transitions)
+     variants/ue1_kill/tc_ue1_kill.16.aut (466 transitions)
+     variants/ue1_kill/tc_ue1_kill.17.aut (469 transitions)
+     variants/ue1_kill/tc_ue1_kill.18.aut (454 transitions)
+     variants/ue1_kill/tc_ue1_kill.19.aut (457 transitions)
+     variants/ue1_kill/tc_ue1_kill.20.aut (465 transitions)
+     variants/ue1_kill/tc_ue1_kill.21.aut (461 transitions)
+     variants/ue1_kill/tc_ue1_kill.22.aut (449 transitions)
+     variants/ue1_kill/tc_ue1_kill.23.aut (464 transitions)
+     variants/ue1_kill/tc_ue1_kill.24.aut (475 transitions)
+     variants/ue1_kill/tc_ue1_kill.25.aut (488 transitions)
+     variants/ue1_kill/tc_ue1_kill.26.aut (444 transitions)
+     variants/ue1_kill/tc_ue1_kill.27.aut (425 transitions)
+     variants/ue1_kill/tc_ue1_kill.28.aut (508 transitions)
+     variants/ue1_kill/tc_ue1_kill.29.aut (472 transitions)
+     variants/ue1_kill/tc_ue1_kill.30.aut (463 transitions)
+     variants/ue1_kill/tc_ue1_kill.31.aut (476 transitions)
+     variants/ue1_kill/tc_ue1_kill.32.aut (504 transitions)
+     variants/ue1_kill/tc_ue1_kill.33.aut (507 transitions)
+     variants/ue1_kill/tc_ue1_kill.34.aut (448 transitions)
+     variants/ue1_kill/tc_ue1_kill.35.aut (429 transitions)
+     variants/ue1_kill/tc_ue1_kill.36.aut (489 transitions)
+     variants/ue1_kill/tc_ue1_kill.37.aut (490 transitions)
+     variants/ue1_kill/tc_ue1_kill.38.aut (472 transitions)
+     variants/ue1_kill/tc_ue1_kill.39.aut (455 transitions)
+     variants/ue1_kill/tc_ue1_kill.40.aut (486 transitions)
+     variants/ue1_kill/tc_ue1_kill.41.aut (462 transitions)
+     variants/ue1_kill/tc_ue1_kill.42.aut (486 transitions)
+     variants/ue1_kill/tc_ue1_kill.43.aut (346 transitions)
+     variants/ue1_kill/tc_ue1_kill.44.aut (349 transitions)
+     variants/ue1_kill/tc_ue1_kill.45.aut (334 transitions)
+     variants/ue1_kill/tc_ue1_kill.46.aut (337 transitions)
+     variants/ue1_kill/tc_ue1_kill.47.aut (438 transitions)
+     variants/ue1_kill/tc_ue1_kill.48.aut (442 transitions)
+     variants/ue1_kill/tc_ue1_kill.49.aut (425 transitions)
+     variants/ue1_kill/tc_ue1_kill.50.aut (344 transitions)
+     variants/ue1_kill/tc_ue1_kill.51.aut (357 transitions)
+     variants/ue1_kill/tc_ue1_kill.52.aut (370 transitions)
+     variants/ue1_kill/tc_ue1_kill.53.aut (401 transitions)
+     variants/ue1_kill/tc_ue1_kill.54.aut (459 transitions)
+     variants/ue1_kill/tc_ue1_kill.55.aut (354 transitions)
+     variants/ue1_kill/tc_ue1_kill.56.aut (428 transitions)
+     variants/ue1_kill/tc_ue1_kill.57.aut (441 transitions)
+     variants/ue1_kill/tc_ue1_kill.58.aut (455 transitions)
+     variants/ue1_kill/tc_ue1_kill.59.aut (458 transitions)
+     variants/ue1_kill/tc_ue1_kill.60.aut (405 transitions)
+     variants/ue1_kill/tc_ue1_kill.61.aut (411 transitions)
+     variants/ue1_kill/tc_ue1_kill.62.aut (371 transitions)
+     variants/ue1_kill/tc_ue1_kill.63.aut (372 transitions)
+     variants/ue1_kill/tc_ue1_kill.64.aut (354 transitions)
+     variants/ue1_kill/tc_ue1_kill.65.aut (425 transitions)
+     variants/ue1_kill/tc_ue1_kill.66.aut (365 transitions)
+     variants/ue1_kill/tc_ue1_kill.67.aut (259 transitions)
+     variants/ue1_kill/tc_ue1_kill.68.aut (262 transitions)
+     variants/ue1_kill/tc_ue1_kill.69.aut (247 transitions)
+     variants/ue1_kill/tc_ue1_kill.70.aut (250 transitions)
+     variants/ue1_kill/tc_ue1_kill.71.aut (401 transitions)
+     variants/ue1_kill/tc_ue1_kill.72.aut (405 transitions)
+     variants/ue1_kill/tc_ue1_kill.73.aut (307 transitions)
+     variants/ue1_kill/tc_ue1_kill.74.aut (257 transitions)
+     variants/ue1_kill/tc_ue1_kill.75.aut (283 transitions)
+     variants/ue1_kill/tc_ue1_kill.76.aut (341 transitions)
+     variants/ue1_kill/tc_ue1_kill.77.aut (310 transitions)
+     variants/ue1_kill/tc_ue1_kill.78.aut (323 transitions)
+     variants/ue1_kill/tc_ue1_kill.79.aut (337 transitions)
+     variants/ue1_kill/tc_ue1_kill.80.aut (340 transitions)
+     variants/ue1_kill/tc_ue1_kill.81.aut (287 transitions)
+     variants/ue1_kill/tc_ue1_kill.82.aut (293 transitions)
+     variants/ue1_kill/tc_ue1_kill.83.aut (290 transitions)
+     variants/ue1_kill/tc_ue1_kill.84.aut (291 transitions)
+     variants/ue1_kill/tc_ue1_kill.85.aut (307 transitions)
+     variants/ue1_kill/tc_ue1_kill.86.aut (284 transitions)
+     variants/ue1_kill/tc_ue1_kill.87.aut (283 transitions)
+     variants/ue1_kill/tc_ue1_kill.88.aut (287 transitions)
+     variants/ue1_kill/tc_ue1_kill.89.aut (254 transitions)
+     variants/ue1_kill/tc_ue1_kill.90.aut (223 transitions)
+     variants/ue1_kill/tc_ue1_kill.91.aut (269 transitions)
+     variants/ue1_kill/tc_ue1_kill.92.aut (250 transitions)
+     variants/ue1_kill/tc_ue1_kill.93.aut (253 transitions)
+     variants/ue1_kill/tc_ue1_kill.94.aut (206 transitions)
+     variants/ue1_kill/tc_ue1_kill.95.aut (141 transitions)
+     variants/ue1_kill/tc_ue1_kill.96.aut (137 transitions)
+     variants/ue1_kill/tc_ue1_kill.97.aut (220 transitions)
+     variants/ue1_kill/tc_ue1_kill.98.aut (237 transitions)
+     variants/ue1_kill/tc_ue1_kill.99.aut (137 transitions)
+     variants/ue1_kill/tc_ue1_kill.100.aut (196 transitions)
+     variants/ue1_kill/tc_ue1_kill.101.aut (200 transitions)
+     variants/ue1_kill/tc_ue1_kill.102.aut (101 transitions)
+     variants/ue1_kill/tc_ue1_kill.103.aut (104 transitions)
+     variants/ue1_kill/tc_ue1_kill.104.aut (78 transitions)
+     variants/ue1_kill/tc_ue1_kill.105.aut (119 transitions)
+     variants/ue1_kill/tc_ue1_kill.106.aut (81 transitions)
+     variants/ue1_kill/tc_ue1_kill.107.aut (85 transitions)
+     variants/ue1_kill/tc_ue1_kill.108.aut (93 transitions)
+     canonical: tc_ue1_kill.aut (= variant 1)
+======================================================================
+==> input_invalid
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_input_invalid.lnt:35: warning: event parameter VIEW_DIARY never accessed
+tp_input_invalid.lnt:36: warning: event parameter DIARY_INFO never accessed
+tp_input_invalid.lnt:37: warning: event parameter REMOVE_ENTRY never accessed
+tp_input_invalid.lnt:39: warning: event parameter EXTAPI_WARNING never accessed
+tp_input_invalid.lnt:43: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_input_invalid.lnt:46: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_input_invalid.lnt:48: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_input_invalid.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_0c4lca/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_0c4lca/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_0c4lca/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_0c4lca/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_input_invalid.bcg foodyou_input_invalid.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 1795 states, 3912 transitions
+  3. extract_all -> controllable test cases
+extract_all: 238 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: extracting test case #49
+extract_all: checking test case #49
+extract_all: extracting test case #50
+extract_all: checking test case #50
+extract_all: extracting test case #51
+extract_all: checking test case #51
+extract_all: extracting test case #52
+extract_all: checking test case #52
+extract_all: extracting test case #53
+extract_all: checking test case #53
+extract_all: extracting test case #54
+extract_all: checking test case #54
+extract_all: extracting test case #55
+extract_all: checking test case #55
+extract_all: extracting test case #56
+extract_all: checking test case #56
+extract_all: extracting test case #57
+extract_all: checking test case #57
+extract_all: extracting test case #58
+extract_all: checking test case #58
+extract_all: extracting test case #59
+extract_all: checking test case #59
+extract_all: extracting test case #60
+extract_all: checking test case #60
+extract_all: extracting test case #61
+extract_all: checking test case #61
+extract_all: extracting test case #62
+extract_all: checking test case #62
+extract_all: extracting test case #63
+extract_all: checking test case #63
+extract_all: extracting test case #64
+extract_all: checking test case #64
+extract_all: extracting test case #65
+extract_all: checking test case #65
+extract_all: extracting test case #66
+extract_all: checking test case #66
+extract_all: extracting test case #67
+extract_all: checking test case #67
+extract_all: extracting test case #68
+extract_all: checking test case #68
+extract_all: extracting test case #69
+extract_all: checking test case #69
+extract_all: extracting test case #70
+extract_all: checking test case #70
+extract_all: extracting test case #71
+extract_all: checking test case #71
+extract_all: extracting test case #72
+extract_all: checking test case #72
+extract_all: extracting test case #73
+extract_all: checking test case #73
+extract_all: extracting test case #74
+extract_all: checking test case #74
+extract_all: extracting test case #75
+extract_all: checking test case #75
+extract_all: extracting test case #76
+extract_all: checking test case #76
+extract_all: extracting test case #77
+extract_all: checking test case #77
+extract_all: extracting test case #78
+extract_all: checking test case #78
+extract_all: extracting test case #79
+extract_all: checking test case #79
+extract_all: extracting test case #80
+extract_all: checking test case #80
+extract_all: extracting test case #81
+extract_all: checking test case #81
+extract_all: extracting test case #82
+extract_all: checking test case #82
+extract_all: extracting test case #83
+extract_all: checking test case #83
+extract_all: extracting test case #84
+extract_all: checking test case #84
+extract_all: extracting test case #85
+extract_all: checking test case #85
+extract_all: extracting test case #86
+extract_all: checking test case #86
+extract_all: 86 test cases extracted
+  4. BCG -> AUT
+     variants/input_invalid/tc_input_invalid.1.aut (654 transitions)
+     variants/input_invalid/tc_input_invalid.2.aut (654 transitions)
+     variants/input_invalid/tc_input_invalid.3.aut (641 transitions)
+     variants/input_invalid/tc_input_invalid.4.aut (644 transitions)
+     variants/input_invalid/tc_input_invalid.5.aut (642 transitions)
+     variants/input_invalid/tc_input_invalid.6.aut (642 transitions)
+     variants/input_invalid/tc_input_invalid.7.aut (629 transitions)
+     variants/input_invalid/tc_input_invalid.8.aut (650 transitions)
+     variants/input_invalid/tc_input_invalid.9.aut (653 transitions)
+     variants/input_invalid/tc_input_invalid.10.aut (654 transitions)
+     variants/input_invalid/tc_input_invalid.11.aut (615 transitions)
+     variants/input_invalid/tc_input_invalid.12.aut (568 transitions)
+     variants/input_invalid/tc_input_invalid.13.aut (568 transitions)
+     variants/input_invalid/tc_input_invalid.14.aut (565 transitions)
+     variants/input_invalid/tc_input_invalid.15.aut (565 transitions)
+     variants/input_invalid/tc_input_invalid.16.aut (658 transitions)
+     variants/input_invalid/tc_input_invalid.17.aut (658 transitions)
+     variants/input_invalid/tc_input_invalid.18.aut (643 transitions)
+     variants/input_invalid/tc_input_invalid.19.aut (646 transitions)
+     variants/input_invalid/tc_input_invalid.20.aut (620 transitions)
+     variants/input_invalid/tc_input_invalid.21.aut (633 transitions)
+     variants/input_invalid/tc_input_invalid.22.aut (621 transitions)
+     variants/input_invalid/tc_input_invalid.23.aut (624 transitions)
+     variants/input_invalid/tc_input_invalid.24.aut (660 transitions)
+     variants/input_invalid/tc_input_invalid.25.aut (652 transitions)
+     variants/input_invalid/tc_input_invalid.26.aut (645 transitions)
+     variants/input_invalid/tc_input_invalid.27.aut (494 transitions)
+     variants/input_invalid/tc_input_invalid.28.aut (441 transitions)
+     variants/input_invalid/tc_input_invalid.29.aut (438 transitions)
+     variants/input_invalid/tc_input_invalid.30.aut (431 transitions)
+     variants/input_invalid/tc_input_invalid.31.aut (489 transitions)
+     variants/input_invalid/tc_input_invalid.32.aut (622 transitions)
+     variants/input_invalid/tc_input_invalid.33.aut (635 transitions)
+     variants/input_invalid/tc_input_invalid.34.aut (483 transitions)
+     variants/input_invalid/tc_input_invalid.35.aut (545 transitions)
+     variants/input_invalid/tc_input_invalid.36.aut (419 transitions)
+     variants/input_invalid/tc_input_invalid.37.aut (419 transitions)
+     variants/input_invalid/tc_input_invalid.38.aut (594 transitions)
+     variants/input_invalid/tc_input_invalid.39.aut (594 transitions)
+     variants/input_invalid/tc_input_invalid.40.aut (554 transitions)
+     variants/input_invalid/tc_input_invalid.41.aut (597 transitions)
+     variants/input_invalid/tc_input_invalid.42.aut (420 transitions)
+     variants/input_invalid/tc_input_invalid.43.aut (554 transitions)
+     variants/input_invalid/tc_input_invalid.44.aut (596 transitions)
+     variants/input_invalid/tc_input_invalid.45.aut (581 transitions)
+     variants/input_invalid/tc_input_invalid.46.aut (610 transitions)
+     variants/input_invalid/tc_input_invalid.47.aut (551 transitions)
+     variants/input_invalid/tc_input_invalid.48.aut (277 transitions)
+     variants/input_invalid/tc_input_invalid.49.aut (274 transitions)
+     variants/input_invalid/tc_input_invalid.50.aut (267 transitions)
+     variants/input_invalid/tc_input_invalid.51.aut (590 transitions)
+     variants/input_invalid/tc_input_invalid.52.aut (319 transitions)
+     variants/input_invalid/tc_input_invalid.53.aut (346 transitions)
+     variants/input_invalid/tc_input_invalid.54.aut (311 transitions)
+     variants/input_invalid/tc_input_invalid.55.aut (311 transitions)
+     variants/input_invalid/tc_input_invalid.56.aut (395 transitions)
+     variants/input_invalid/tc_input_invalid.57.aut (395 transitions)
+     variants/input_invalid/tc_input_invalid.58.aut (398 transitions)
+     variants/input_invalid/tc_input_invalid.59.aut (398 transitions)
+     variants/input_invalid/tc_input_invalid.60.aut (256 transitions)
+     variants/input_invalid/tc_input_invalid.61.aut (355 transitions)
+     variants/input_invalid/tc_input_invalid.62.aut (397 transitions)
+     variants/input_invalid/tc_input_invalid.63.aut (382 transitions)
+     variants/input_invalid/tc_input_invalid.64.aut (441 transitions)
+     variants/input_invalid/tc_input_invalid.65.aut (352 transitions)
+     variants/input_invalid/tc_input_invalid.66.aut (296 transitions)
+     variants/input_invalid/tc_input_invalid.67.aut (391 transitions)
+     variants/input_invalid/tc_input_invalid.68.aut (275 transitions)
+     variants/input_invalid/tc_input_invalid.69.aut (277 transitions)
+     variants/input_invalid/tc_input_invalid.70.aut (272 transitions)
+     variants/input_invalid/tc_input_invalid.71.aut (231 transitions)
+     variants/input_invalid/tc_input_invalid.72.aut (231 transitions)
+     variants/input_invalid/tc_input_invalid.73.aut (248 transitions)
+     variants/input_invalid/tc_input_invalid.74.aut (248 transitions)
+     variants/input_invalid/tc_input_invalid.75.aut (233 transitions)
+     variants/input_invalid/tc_input_invalid.76.aut (320 transitions)
+     variants/input_invalid/tc_input_invalid.77.aut (218 transitions)
+     variants/input_invalid/tc_input_invalid.78.aut (235 transitions)
+     variants/input_invalid/tc_input_invalid.79.aut (241 transitions)
+     variants/input_invalid/tc_input_invalid.80.aut (274 transitions)
+     variants/input_invalid/tc_input_invalid.81.aut (193 transitions)
+     variants/input_invalid/tc_input_invalid.82.aut (193 transitions)
+     variants/input_invalid/tc_input_invalid.83.aut (108 transitions)
+     variants/input_invalid/tc_input_invalid.84.aut (116 transitions)
+     variants/input_invalid/tc_input_invalid.85.aut (161 transitions)
+     variants/input_invalid/tc_input_invalid.86.aut (160 transitions)
+     canonical: tc_input_invalid.aut (= variant 1)
+======================================================================
+==> extapi_fail
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_extapi_fail.lnt:37: warning: event parameter ADD_ENTRY never accessed
+tp_extapi_fail.lnt:38: warning: event parameter CONFIRM_TOTAL never accessed
+tp_extapi_fail.lnt:39: warning: event parameter VIEW_DIARY never accessed
+tp_extapi_fail.lnt:40: warning: event parameter DIARY_INFO never accessed
+tp_extapi_fail.lnt:41: warning: event parameter REMOVE_ENTRY never accessed
+tp_extapi_fail.lnt:47: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_extapi_fail.lnt:50: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_extapi_fail.lnt:52: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_extapi_fail.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_hKMkrf/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_hKMkrf/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_hKMkrf/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_hKMkrf/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_extapi_fail.bcg foodyou_extapi_fail.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 939 states, 2090 transitions
+  WARNING: CTG is INCONCLUSIVE-only -- tp_extapi_fail is unsatisfiable
+======================================================================
+==> cache_stale
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_cache_stale.lnt:37: warning: event parameter ADD_ENTRY never accessed
+tp_cache_stale.lnt:38: warning: event parameter CONFIRM_TOTAL never accessed
+tp_cache_stale.lnt:39: warning: event parameter VIEW_DIARY never accessed
+tp_cache_stale.lnt:40: warning: event parameter DIARY_INFO never accessed
+tp_cache_stale.lnt:41: warning: event parameter REMOVE_ENTRY never accessed
+tp_cache_stale.lnt:43: warning: event parameter EXTAPI_WARNING never accessed
+tp_cache_stale.lnt:47: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_cache_stale.lnt:50: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_cache_stale.lnt:52: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_cache_stale.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_jrFKJO/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_jrFKJO/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_jrFKJO/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_jrFKJO/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_cache_stale.bcg foodyou_cache_stale.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 1342 states, 2923 transitions
+  3. extract_all -> controllable test cases
+extract_all: 155 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: 48 test cases extracted
+  4. BCG -> AUT
+     variants/cache_stale/tc_cache_stale.1.aut (397 transitions)
+     variants/cache_stale/tc_cache_stale.2.aut (400 transitions)
+     variants/cache_stale/tc_cache_stale.3.aut (395 transitions)
+     variants/cache_stale/tc_cache_stale.4.aut (395 transitions)
+     variants/cache_stale/tc_cache_stale.5.aut (392 transitions)
+     variants/cache_stale/tc_cache_stale.6.aut (379 transitions)
+     variants/cache_stale/tc_cache_stale.7.aut (382 transitions)
+     variants/cache_stale/tc_cache_stale.8.aut (377 transitions)
+     variants/cache_stale/tc_cache_stale.9.aut (378 transitions)
+     variants/cache_stale/tc_cache_stale.10.aut (391 transitions)
+     variants/cache_stale/tc_cache_stale.11.aut (371 transitions)
+     variants/cache_stale/tc_cache_stale.12.aut (346 transitions)
+     variants/cache_stale/tc_cache_stale.13.aut (379 transitions)
+     variants/cache_stale/tc_cache_stale.14.aut (295 transitions)
+     variants/cache_stale/tc_cache_stale.15.aut (298 transitions)
+     variants/cache_stale/tc_cache_stale.16.aut (348 transitions)
+     variants/cache_stale/tc_cache_stale.17.aut (365 transitions)
+     variants/cache_stale/tc_cache_stale.18.aut (378 transitions)
+     variants/cache_stale/tc_cache_stale.19.aut (295 transitions)
+     variants/cache_stale/tc_cache_stale.20.aut (332 transitions)
+     variants/cache_stale/tc_cache_stale.21.aut (335 transitions)
+     variants/cache_stale/tc_cache_stale.22.aut (281 transitions)
+     variants/cache_stale/tc_cache_stale.23.aut (294 transitions)
+     variants/cache_stale/tc_cache_stale.24.aut (328 transitions)
+     variants/cache_stale/tc_cache_stale.25.aut (332 transitions)
+     variants/cache_stale/tc_cache_stale.26.aut (222 transitions)
+     variants/cache_stale/tc_cache_stale.27.aut (225 transitions)
+     variants/cache_stale/tc_cache_stale.28.aut (331 transitions)
+     variants/cache_stale/tc_cache_stale.29.aut (222 transitions)
+     variants/cache_stale/tc_cache_stale.30.aut (237 transitions)
+     variants/cache_stale/tc_cache_stale.31.aut (240 transitions)
+     variants/cache_stale/tc_cache_stale.32.aut (208 transitions)
+     variants/cache_stale/tc_cache_stale.33.aut (221 transitions)
+     variants/cache_stale/tc_cache_stale.34.aut (242 transitions)
+     variants/cache_stale/tc_cache_stale.35.aut (233 transitions)
+     variants/cache_stale/tc_cache_stale.36.aut (237 transitions)
+     variants/cache_stale/tc_cache_stale.37.aut (236 transitions)
+     variants/cache_stale/tc_cache_stale.38.aut (164 transitions)
+     variants/cache_stale/tc_cache_stale.39.aut (167 transitions)
+     variants/cache_stale/tc_cache_stale.40.aut (169 transitions)
+     variants/cache_stale/tc_cache_stale.41.aut (160 transitions)
+     variants/cache_stale/tc_cache_stale.42.aut (164 transitions)
+     variants/cache_stale/tc_cache_stale.43.aut (163 transitions)
+     variants/cache_stale/tc_cache_stale.44.aut (91 transitions)
+     variants/cache_stale/tc_cache_stale.45.aut (94 transitions)
+     variants/cache_stale/tc_cache_stale.46.aut (96 transitions)
+     variants/cache_stale/tc_cache_stale.47.aut (91 transitions)
+     variants/cache_stale/tc_cache_stale.48.aut (90 transitions)
+     canonical: tc_cache_stale.aut (= variant 1)
+======================================================================
+==> disruption_db
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_disruption_db.lnt:28: warning: event parameter VIEW_DIARY never accessed
+tp_disruption_db.lnt:29: warning: event parameter DIARY_INFO never accessed
+tp_disruption_db.lnt:30: warning: event parameter REMOVE_ENTRY never accessed
+tp_disruption_db.lnt:32: warning: event parameter EXTAPI_WARNING never accessed
+tp_disruption_db.lnt:36: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_disruption_db.lnt:39: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_disruption_db.lnt:41: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_disruption_db.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_Pa83Wi/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_Pa83Wi/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_Pa83Wi/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_Pa83Wi/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_disruption_db.bcg foodyou_disruption_db.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 1894 states, 4132 transitions
+  3. extract_all -> controllable test cases
+extract_all: 264 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: extracting test case #49
+extract_all: checking test case #49
+extract_all: extracting test case #50
+extract_all: checking test case #50
+extract_all: extracting test case #51
+extract_all: checking test case #51
+extract_all: extracting test case #52
+extract_all: checking test case #52
+extract_all: extracting test case #53
+extract_all: checking test case #53
+extract_all: extracting test case #54
+extract_all: checking test case #54
+extract_all: extracting test case #55
+extract_all: checking test case #55
+extract_all: extracting test case #56
+extract_all: checking test case #56
+extract_all: extracting test case #57
+extract_all: checking test case #57
+extract_all: extracting test case #58
+extract_all: checking test case #58
+extract_all: extracting test case #59
+extract_all: checking test case #59
+extract_all: extracting test case #60
+extract_all: checking test case #60
+extract_all: extracting test case #61
+extract_all: checking test case #61
+extract_all: extracting test case #62
+extract_all: checking test case #62
+extract_all: extracting test case #63
+extract_all: checking test case #63
+extract_all: extracting test case #64
+extract_all: checking test case #64
+extract_all: extracting test case #65
+extract_all: checking test case #65
+extract_all: extracting test case #66
+extract_all: checking test case #66
+extract_all: extracting test case #67
+extract_all: checking test case #67
+extract_all: extracting test case #68
+extract_all: checking test case #68
+extract_all: extracting test case #69
+extract_all: checking test case #69
+extract_all: extracting test case #70
+extract_all: checking test case #70
+extract_all: extracting test case #71
+extract_all: checking test case #71
+extract_all: extracting test case #72
+extract_all: checking test case #72
+extract_all: extracting test case #73
+extract_all: checking test case #73
+extract_all: extracting test case #74
+extract_all: checking test case #74
+extract_all: extracting test case #75
+extract_all: checking test case #75
+extract_all: extracting test case #76
+extract_all: checking test case #76
+extract_all: extracting test case #77
+extract_all: checking test case #77
+extract_all: extracting test case #78
+extract_all: checking test case #78
+extract_all: extracting test case #79
+extract_all: checking test case #79
+extract_all: extracting test case #80
+extract_all: checking test case #80
+extract_all: extracting test case #81
+extract_all: checking test case #81
+extract_all: extracting test case #82
+extract_all: checking test case #82
+extract_all: extracting test case #83
+extract_all: checking test case #83
+extract_all: extracting test case #84
+extract_all: checking test case #84
+extract_all: extracting test case #85
+extract_all: checking test case #85
+extract_all: extracting test case #86
+extract_all: checking test case #86
+extract_all: extracting test case #87
+extract_all: checking test case #87
+extract_all: extracting test case #88
+extract_all: checking test case #88
+extract_all: extracting test case #89
+extract_all: checking test case #89
+extract_all: extracting test case #90
+extract_all: checking test case #90
+extract_all: extracting test case #91
+extract_all: checking test case #91
+extract_all: extracting test case #92
+extract_all: checking test case #92
+extract_all: extracting test case #93
+extract_all: checking test case #93
+extract_all: extracting test case #94
+extract_all: checking test case #94
+extract_all: extracting test case #95
+extract_all: checking test case #95
+extract_all: extracting test case #96
+extract_all: checking test case #96
+extract_all: extracting test case #97
+extract_all: checking test case #97
+extract_all: extracting test case #98
+extract_all: checking test case #98
+extract_all: extracting test case #99
+extract_all: checking test case #99
+extract_all: extracting test case #100
+extract_all: checking test case #100
+extract_all: extracting test case #101
+extract_all: checking test case #101
+extract_all: extracting test case #102
+extract_all: checking test case #102
+extract_all: extracting test case #103
+extract_all: checking test case #103
+extract_all: extracting test case #104
+extract_all: checking test case #104
+extract_all: extracting test case #105
+extract_all: checking test case #105
+extract_all: extracting test case #106
+extract_all: checking test case #106
+extract_all: extracting test case #107
+extract_all: checking test case #107
+extract_all: extracting test case #108
+extract_all: checking test case #108
+extract_all: extracting test case #109
+extract_all: checking test case #109
+extract_all: 109 test cases extracted
+  4. BCG -> AUT
+     variants/disruption_db/tc_disruption_db.1.aut (521 transitions)
+     variants/disruption_db/tc_disruption_db.2.aut (534 transitions)
+     variants/disruption_db/tc_disruption_db.3.aut (522 transitions)
+     variants/disruption_db/tc_disruption_db.4.aut (535 transitions)
+     variants/disruption_db/tc_disruption_db.5.aut (518 transitions)
+     variants/disruption_db/tc_disruption_db.6.aut (531 transitions)
+     variants/disruption_db/tc_disruption_db.7.aut (532 transitions)
+     variants/disruption_db/tc_disruption_db.8.aut (518 transitions)
+     variants/disruption_db/tc_disruption_db.9.aut (516 transitions)
+     variants/disruption_db/tc_disruption_db.10.aut (528 transitions)
+     variants/disruption_db/tc_disruption_db.11.aut (528 transitions)
+     variants/disruption_db/tc_disruption_db.12.aut (459 transitions)
+     variants/disruption_db/tc_disruption_db.13.aut (462 transitions)
+     variants/disruption_db/tc_disruption_db.14.aut (447 transitions)
+     variants/disruption_db/tc_disruption_db.15.aut (450 transitions)
+     variants/disruption_db/tc_disruption_db.16.aut (459 transitions)
+     variants/disruption_db/tc_disruption_db.17.aut (462 transitions)
+     variants/disruption_db/tc_disruption_db.18.aut (447 transitions)
+     variants/disruption_db/tc_disruption_db.19.aut (450 transitions)
+     variants/disruption_db/tc_disruption_db.20.aut (458 transitions)
+     variants/disruption_db/tc_disruption_db.21.aut (454 transitions)
+     variants/disruption_db/tc_disruption_db.22.aut (442 transitions)
+     variants/disruption_db/tc_disruption_db.23.aut (457 transitions)
+     variants/disruption_db/tc_disruption_db.24.aut (468 transitions)
+     variants/disruption_db/tc_disruption_db.25.aut (481 transitions)
+     variants/disruption_db/tc_disruption_db.26.aut (437 transitions)
+     variants/disruption_db/tc_disruption_db.27.aut (418 transitions)
+     variants/disruption_db/tc_disruption_db.28.aut (501 transitions)
+     variants/disruption_db/tc_disruption_db.29.aut (465 transitions)
+     variants/disruption_db/tc_disruption_db.30.aut (456 transitions)
+     variants/disruption_db/tc_disruption_db.31.aut (469 transitions)
+     variants/disruption_db/tc_disruption_db.32.aut (497 transitions)
+     variants/disruption_db/tc_disruption_db.33.aut (500 transitions)
+     variants/disruption_db/tc_disruption_db.34.aut (441 transitions)
+     variants/disruption_db/tc_disruption_db.35.aut (422 transitions)
+     variants/disruption_db/tc_disruption_db.36.aut (482 transitions)
+     variants/disruption_db/tc_disruption_db.37.aut (483 transitions)
+     variants/disruption_db/tc_disruption_db.38.aut (465 transitions)
+     variants/disruption_db/tc_disruption_db.39.aut (448 transitions)
+     variants/disruption_db/tc_disruption_db.40.aut (479 transitions)
+     variants/disruption_db/tc_disruption_db.41.aut (455 transitions)
+     variants/disruption_db/tc_disruption_db.42.aut (479 transitions)
+     variants/disruption_db/tc_disruption_db.43.aut (339 transitions)
+     variants/disruption_db/tc_disruption_db.44.aut (342 transitions)
+     variants/disruption_db/tc_disruption_db.45.aut (327 transitions)
+     variants/disruption_db/tc_disruption_db.46.aut (330 transitions)
+     variants/disruption_db/tc_disruption_db.47.aut (431 transitions)
+     variants/disruption_db/tc_disruption_db.48.aut (435 transitions)
+     variants/disruption_db/tc_disruption_db.49.aut (418 transitions)
+     variants/disruption_db/tc_disruption_db.50.aut (337 transitions)
+     variants/disruption_db/tc_disruption_db.51.aut (350 transitions)
+     variants/disruption_db/tc_disruption_db.52.aut (363 transitions)
+     variants/disruption_db/tc_disruption_db.53.aut (394 transitions)
+     variants/disruption_db/tc_disruption_db.54.aut (452 transitions)
+     variants/disruption_db/tc_disruption_db.55.aut (347 transitions)
+     variants/disruption_db/tc_disruption_db.56.aut (421 transitions)
+     variants/disruption_db/tc_disruption_db.57.aut (434 transitions)
+     variants/disruption_db/tc_disruption_db.58.aut (448 transitions)
+     variants/disruption_db/tc_disruption_db.59.aut (451 transitions)
+     variants/disruption_db/tc_disruption_db.60.aut (398 transitions)
+     variants/disruption_db/tc_disruption_db.61.aut (404 transitions)
+     variants/disruption_db/tc_disruption_db.62.aut (364 transitions)
+     variants/disruption_db/tc_disruption_db.63.aut (365 transitions)
+     variants/disruption_db/tc_disruption_db.64.aut (347 transitions)
+     variants/disruption_db/tc_disruption_db.65.aut (418 transitions)
+     variants/disruption_db/tc_disruption_db.66.aut (358 transitions)
+     variants/disruption_db/tc_disruption_db.67.aut (252 transitions)
+     variants/disruption_db/tc_disruption_db.68.aut (255 transitions)
+     variants/disruption_db/tc_disruption_db.69.aut (240 transitions)
+     variants/disruption_db/tc_disruption_db.70.aut (243 transitions)
+     variants/disruption_db/tc_disruption_db.71.aut (394 transitions)
+     variants/disruption_db/tc_disruption_db.72.aut (398 transitions)
+     variants/disruption_db/tc_disruption_db.73.aut (300 transitions)
+     variants/disruption_db/tc_disruption_db.74.aut (250 transitions)
+     variants/disruption_db/tc_disruption_db.75.aut (276 transitions)
+     variants/disruption_db/tc_disruption_db.76.aut (334 transitions)
+     variants/disruption_db/tc_disruption_db.77.aut (303 transitions)
+     variants/disruption_db/tc_disruption_db.78.aut (316 transitions)
+     variants/disruption_db/tc_disruption_db.79.aut (330 transitions)
+     variants/disruption_db/tc_disruption_db.80.aut (333 transitions)
+     variants/disruption_db/tc_disruption_db.81.aut (280 transitions)
+     variants/disruption_db/tc_disruption_db.82.aut (286 transitions)
+     variants/disruption_db/tc_disruption_db.83.aut (283 transitions)
+     variants/disruption_db/tc_disruption_db.84.aut (284 transitions)
+     variants/disruption_db/tc_disruption_db.85.aut (300 transitions)
+     variants/disruption_db/tc_disruption_db.86.aut (277 transitions)
+     variants/disruption_db/tc_disruption_db.87.aut (276 transitions)
+     variants/disruption_db/tc_disruption_db.88.aut (280 transitions)
+     variants/disruption_db/tc_disruption_db.89.aut (247 transitions)
+     variants/disruption_db/tc_disruption_db.90.aut (216 transitions)
+     variants/disruption_db/tc_disruption_db.91.aut (262 transitions)
+     variants/disruption_db/tc_disruption_db.92.aut (243 transitions)
+     variants/disruption_db/tc_disruption_db.93.aut (246 transitions)
+     variants/disruption_db/tc_disruption_db.94.aut (199 transitions)
+     variants/disruption_db/tc_disruption_db.95.aut (154 transitions)
+     variants/disruption_db/tc_disruption_db.96.aut (150 transitions)
+     variants/disruption_db/tc_disruption_db.97.aut (213 transitions)
+     variants/disruption_db/tc_disruption_db.98.aut (230 transitions)
+     variants/disruption_db/tc_disruption_db.99.aut (150 transitions)
+     variants/disruption_db/tc_disruption_db.100.aut (189 transitions)
+     variants/disruption_db/tc_disruption_db.101.aut (193 transitions)
+     variants/disruption_db/tc_disruption_db.102.aut (114 transitions)
+     variants/disruption_db/tc_disruption_db.103.aut (117 transitions)
+     variants/disruption_db/tc_disruption_db.104.aut (78 transitions)
+     variants/disruption_db/tc_disruption_db.105.aut (112 transitions)
+     variants/disruption_db/tc_disruption_db.106.aut (94 transitions)
+     variants/disruption_db/tc_disruption_db.107.aut (85 transitions)
+     variants/disruption_db/tc_disruption_db.108.aut (102 transitions)
+     variants/disruption_db/tc_disruption_db.109.aut (106 transitions)
+     canonical: tc_disruption_db.aut (= variant 1)
+======================================================================
+==> db_corrupt
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_db_corrupt.lnt:30: warning: event parameter ADD_ENTRY never accessed
+tp_db_corrupt.lnt:31: warning: event parameter CONFIRM_TOTAL never accessed
+tp_db_corrupt.lnt:32: warning: event parameter VIEW_DIARY never accessed
+tp_db_corrupt.lnt:33: warning: event parameter DIARY_INFO never accessed
+tp_db_corrupt.lnt:34: warning: event parameter REMOVE_ENTRY never accessed
+tp_db_corrupt.lnt:36: warning: event parameter EXTAPI_WARNING never accessed
+tp_db_corrupt.lnt:43: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_db_corrupt.lnt:45: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_corrupt.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_4kxPUY/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_4kxPUY/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_4kxPUY/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_4kxPUY/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_db_corrupt.bcg foodyou_db_corrupt.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 815 states, 1782 transitions
+  WARNING: CTG is INCONCLUSIVE-only -- tp_db_corrupt is unsatisfiable
+======================================================================
+==> storage_full
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_storage_full.lnt:30: warning: event parameter VIEW_DIARY never accessed
+tp_storage_full.lnt:31: warning: event parameter DIARY_INFO never accessed
+tp_storage_full.lnt:32: warning: event parameter REMOVE_ENTRY never accessed
+tp_storage_full.lnt:34: warning: event parameter EXTAPI_WARNING never accessed
+tp_storage_full.lnt:38: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_storage_full.lnt:41: warning: event parameter STORAGE_ERROR_SHOWN never accessed
+tp_storage_full.lnt:43: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_storage_full.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_xeHdIg/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_xeHdIg/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_xeHdIg/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_xeHdIg/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_storage_full.bcg foodyou_storage_full.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 1894 states, 4132 transitions
+  3. extract_all -> controllable test cases
+extract_all: 264 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: extracting test case #37
+extract_all: checking test case #37
+extract_all: extracting test case #38
+extract_all: checking test case #38
+extract_all: extracting test case #39
+extract_all: checking test case #39
+extract_all: extracting test case #40
+extract_all: checking test case #40
+extract_all: extracting test case #41
+extract_all: checking test case #41
+extract_all: extracting test case #42
+extract_all: checking test case #42
+extract_all: extracting test case #43
+extract_all: checking test case #43
+extract_all: extracting test case #44
+extract_all: checking test case #44
+extract_all: extracting test case #45
+extract_all: checking test case #45
+extract_all: extracting test case #46
+extract_all: checking test case #46
+extract_all: extracting test case #47
+extract_all: checking test case #47
+extract_all: extracting test case #48
+extract_all: checking test case #48
+extract_all: extracting test case #49
+extract_all: checking test case #49
+extract_all: extracting test case #50
+extract_all: checking test case #50
+extract_all: extracting test case #51
+extract_all: checking test case #51
+extract_all: extracting test case #52
+extract_all: checking test case #52
+extract_all: extracting test case #53
+extract_all: checking test case #53
+extract_all: extracting test case #54
+extract_all: checking test case #54
+extract_all: extracting test case #55
+extract_all: checking test case #55
+extract_all: extracting test case #56
+extract_all: checking test case #56
+extract_all: extracting test case #57
+extract_all: checking test case #57
+extract_all: extracting test case #58
+extract_all: checking test case #58
+extract_all: extracting test case #59
+extract_all: checking test case #59
+extract_all: extracting test case #60
+extract_all: checking test case #60
+extract_all: extracting test case #61
+extract_all: checking test case #61
+extract_all: extracting test case #62
+extract_all: checking test case #62
+extract_all: extracting test case #63
+extract_all: checking test case #63
+extract_all: extracting test case #64
+extract_all: checking test case #64
+extract_all: extracting test case #65
+extract_all: checking test case #65
+extract_all: extracting test case #66
+extract_all: checking test case #66
+extract_all: extracting test case #67
+extract_all: checking test case #67
+extract_all: extracting test case #68
+extract_all: checking test case #68
+extract_all: extracting test case #69
+extract_all: checking test case #69
+extract_all: extracting test case #70
+extract_all: checking test case #70
+extract_all: extracting test case #71
+extract_all: checking test case #71
+extract_all: extracting test case #72
+extract_all: checking test case #72
+extract_all: extracting test case #73
+extract_all: checking test case #73
+extract_all: extracting test case #74
+extract_all: checking test case #74
+extract_all: extracting test case #75
+extract_all: checking test case #75
+extract_all: extracting test case #76
+extract_all: checking test case #76
+extract_all: extracting test case #77
+extract_all: checking test case #77
+extract_all: extracting test case #78
+extract_all: checking test case #78
+extract_all: extracting test case #79
+extract_all: checking test case #79
+extract_all: extracting test case #80
+extract_all: checking test case #80
+extract_all: extracting test case #81
+extract_all: checking test case #81
+extract_all: extracting test case #82
+extract_all: checking test case #82
+extract_all: extracting test case #83
+extract_all: checking test case #83
+extract_all: extracting test case #84
+extract_all: checking test case #84
+extract_all: extracting test case #85
+extract_all: checking test case #85
+extract_all: extracting test case #86
+extract_all: checking test case #86
+extract_all: extracting test case #87
+extract_all: checking test case #87
+extract_all: extracting test case #88
+extract_all: checking test case #88
+extract_all: extracting test case #89
+extract_all: checking test case #89
+extract_all: extracting test case #90
+extract_all: checking test case #90
+extract_all: extracting test case #91
+extract_all: checking test case #91
+extract_all: extracting test case #92
+extract_all: checking test case #92
+extract_all: extracting test case #93
+extract_all: checking test case #93
+extract_all: extracting test case #94
+extract_all: checking test case #94
+extract_all: extracting test case #95
+extract_all: checking test case #95
+extract_all: extracting test case #96
+extract_all: checking test case #96
+extract_all: extracting test case #97
+extract_all: checking test case #97
+extract_all: extracting test case #98
+extract_all: checking test case #98
+extract_all: extracting test case #99
+extract_all: checking test case #99
+extract_all: extracting test case #100
+extract_all: checking test case #100
+extract_all: extracting test case #101
+extract_all: checking test case #101
+extract_all: extracting test case #102
+extract_all: checking test case #102
+extract_all: extracting test case #103
+extract_all: checking test case #103
+extract_all: extracting test case #104
+extract_all: checking test case #104
+extract_all: extracting test case #105
+extract_all: checking test case #105
+extract_all: extracting test case #106
+extract_all: checking test case #106
+extract_all: extracting test case #107
+extract_all: checking test case #107
+extract_all: extracting test case #108
+extract_all: checking test case #108
+extract_all: extracting test case #109
+extract_all: checking test case #109
+extract_all: 109 test cases extracted
+  4. BCG -> AUT
+     variants/storage_full/tc_storage_full.1.aut (521 transitions)
+     variants/storage_full/tc_storage_full.2.aut (534 transitions)
+     variants/storage_full/tc_storage_full.3.aut (522 transitions)
+     variants/storage_full/tc_storage_full.4.aut (535 transitions)
+     variants/storage_full/tc_storage_full.5.aut (518 transitions)
+     variants/storage_full/tc_storage_full.6.aut (531 transitions)
+     variants/storage_full/tc_storage_full.7.aut (532 transitions)
+     variants/storage_full/tc_storage_full.8.aut (518 transitions)
+     variants/storage_full/tc_storage_full.9.aut (516 transitions)
+     variants/storage_full/tc_storage_full.10.aut (528 transitions)
+     variants/storage_full/tc_storage_full.11.aut (528 transitions)
+     variants/storage_full/tc_storage_full.12.aut (459 transitions)
+     variants/storage_full/tc_storage_full.13.aut (462 transitions)
+     variants/storage_full/tc_storage_full.14.aut (447 transitions)
+     variants/storage_full/tc_storage_full.15.aut (450 transitions)
+     variants/storage_full/tc_storage_full.16.aut (459 transitions)
+     variants/storage_full/tc_storage_full.17.aut (462 transitions)
+     variants/storage_full/tc_storage_full.18.aut (447 transitions)
+     variants/storage_full/tc_storage_full.19.aut (450 transitions)
+     variants/storage_full/tc_storage_full.20.aut (458 transitions)
+     variants/storage_full/tc_storage_full.21.aut (454 transitions)
+     variants/storage_full/tc_storage_full.22.aut (442 transitions)
+     variants/storage_full/tc_storage_full.23.aut (457 transitions)
+     variants/storage_full/tc_storage_full.24.aut (468 transitions)
+     variants/storage_full/tc_storage_full.25.aut (481 transitions)
+     variants/storage_full/tc_storage_full.26.aut (437 transitions)
+     variants/storage_full/tc_storage_full.27.aut (418 transitions)
+     variants/storage_full/tc_storage_full.28.aut (501 transitions)
+     variants/storage_full/tc_storage_full.29.aut (465 transitions)
+     variants/storage_full/tc_storage_full.30.aut (456 transitions)
+     variants/storage_full/tc_storage_full.31.aut (469 transitions)
+     variants/storage_full/tc_storage_full.32.aut (497 transitions)
+     variants/storage_full/tc_storage_full.33.aut (500 transitions)
+     variants/storage_full/tc_storage_full.34.aut (441 transitions)
+     variants/storage_full/tc_storage_full.35.aut (422 transitions)
+     variants/storage_full/tc_storage_full.36.aut (482 transitions)
+     variants/storage_full/tc_storage_full.37.aut (483 transitions)
+     variants/storage_full/tc_storage_full.38.aut (465 transitions)
+     variants/storage_full/tc_storage_full.39.aut (448 transitions)
+     variants/storage_full/tc_storage_full.40.aut (479 transitions)
+     variants/storage_full/tc_storage_full.41.aut (455 transitions)
+     variants/storage_full/tc_storage_full.42.aut (479 transitions)
+     variants/storage_full/tc_storage_full.43.aut (339 transitions)
+     variants/storage_full/tc_storage_full.44.aut (342 transitions)
+     variants/storage_full/tc_storage_full.45.aut (327 transitions)
+     variants/storage_full/tc_storage_full.46.aut (330 transitions)
+     variants/storage_full/tc_storage_full.47.aut (431 transitions)
+     variants/storage_full/tc_storage_full.48.aut (435 transitions)
+     variants/storage_full/tc_storage_full.49.aut (418 transitions)
+     variants/storage_full/tc_storage_full.50.aut (337 transitions)
+     variants/storage_full/tc_storage_full.51.aut (350 transitions)
+     variants/storage_full/tc_storage_full.52.aut (363 transitions)
+     variants/storage_full/tc_storage_full.53.aut (394 transitions)
+     variants/storage_full/tc_storage_full.54.aut (452 transitions)
+     variants/storage_full/tc_storage_full.55.aut (347 transitions)
+     variants/storage_full/tc_storage_full.56.aut (421 transitions)
+     variants/storage_full/tc_storage_full.57.aut (434 transitions)
+     variants/storage_full/tc_storage_full.58.aut (448 transitions)
+     variants/storage_full/tc_storage_full.59.aut (451 transitions)
+     variants/storage_full/tc_storage_full.60.aut (398 transitions)
+     variants/storage_full/tc_storage_full.61.aut (404 transitions)
+     variants/storage_full/tc_storage_full.62.aut (364 transitions)
+     variants/storage_full/tc_storage_full.63.aut (365 transitions)
+     variants/storage_full/tc_storage_full.64.aut (347 transitions)
+     variants/storage_full/tc_storage_full.65.aut (418 transitions)
+     variants/storage_full/tc_storage_full.66.aut (358 transitions)
+     variants/storage_full/tc_storage_full.67.aut (252 transitions)
+     variants/storage_full/tc_storage_full.68.aut (255 transitions)
+     variants/storage_full/tc_storage_full.69.aut (240 transitions)
+     variants/storage_full/tc_storage_full.70.aut (243 transitions)
+     variants/storage_full/tc_storage_full.71.aut (394 transitions)
+     variants/storage_full/tc_storage_full.72.aut (398 transitions)
+     variants/storage_full/tc_storage_full.73.aut (300 transitions)
+     variants/storage_full/tc_storage_full.74.aut (250 transitions)
+     variants/storage_full/tc_storage_full.75.aut (276 transitions)
+     variants/storage_full/tc_storage_full.76.aut (334 transitions)
+     variants/storage_full/tc_storage_full.77.aut (303 transitions)
+     variants/storage_full/tc_storage_full.78.aut (316 transitions)
+     variants/storage_full/tc_storage_full.79.aut (330 transitions)
+     variants/storage_full/tc_storage_full.80.aut (333 transitions)
+     variants/storage_full/tc_storage_full.81.aut (280 transitions)
+     variants/storage_full/tc_storage_full.82.aut (286 transitions)
+     variants/storage_full/tc_storage_full.83.aut (283 transitions)
+     variants/storage_full/tc_storage_full.84.aut (284 transitions)
+     variants/storage_full/tc_storage_full.85.aut (300 transitions)
+     variants/storage_full/tc_storage_full.86.aut (277 transitions)
+     variants/storage_full/tc_storage_full.87.aut (276 transitions)
+     variants/storage_full/tc_storage_full.88.aut (280 transitions)
+     variants/storage_full/tc_storage_full.89.aut (247 transitions)
+     variants/storage_full/tc_storage_full.90.aut (216 transitions)
+     variants/storage_full/tc_storage_full.91.aut (262 transitions)
+     variants/storage_full/tc_storage_full.92.aut (243 transitions)
+     variants/storage_full/tc_storage_full.93.aut (246 transitions)
+     variants/storage_full/tc_storage_full.94.aut (199 transitions)
+     variants/storage_full/tc_storage_full.95.aut (154 transitions)
+     variants/storage_full/tc_storage_full.96.aut (150 transitions)
+     variants/storage_full/tc_storage_full.97.aut (213 transitions)
+     variants/storage_full/tc_storage_full.98.aut (230 transitions)
+     variants/storage_full/tc_storage_full.99.aut (150 transitions)
+     variants/storage_full/tc_storage_full.100.aut (189 transitions)
+     variants/storage_full/tc_storage_full.101.aut (193 transitions)
+     variants/storage_full/tc_storage_full.102.aut (114 transitions)
+     variants/storage_full/tc_storage_full.103.aut (117 transitions)
+     variants/storage_full/tc_storage_full.104.aut (78 transitions)
+     variants/storage_full/tc_storage_full.105.aut (112 transitions)
+     variants/storage_full/tc_storage_full.106.aut (94 transitions)
+     variants/storage_full/tc_storage_full.107.aut (85 transitions)
+     variants/storage_full/tc_storage_full.108.aut (102 transitions)
+     variants/storage_full/tc_storage_full.109.aut (106 transitions)
+     canonical: tc_storage_full.aut (= variant 1)
+======================================================================
+==> storage_media
+  1. tp -> BCG
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:339: warning: channel Ch_Route never employed
+foodyou_types.lnt:340: warning: channel Ch_Value never employed
+foodyou_types.lnt:341: warning: channel Ch_Element never employed
+foodyou_types.lnt:87: warning: function bump never called
+foodyou_types.lnt:97: warning: function drop never called
+foodyou_types.lnt:144: warning: function kcal_of never called
+foodyou_types.lnt:153: warning: function food_of never called
+foodyou_types.lnt:278: warning: function L_food never called
+foodyou_types.lnt:287: warning: function L_query never called
+foodyou_types.lnt:295: warning: function L_source never called
+foodyou_types.lnt:302: warning: function L_meal never called
+foodyou_types.lnt:310: warning: function L_entry never called
+foodyou_types.lnt:318: warning: function L_back never called
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:72: warning: "with" function == of type Validity never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:84: warning: "with" function == of type DailyTotal never called
+foodyou_types.lnt:109: warning: "with" function == of type WriteStatus never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+tp_storage_media.lnt:36: warning: event parameter REMOVE_ENTRY never accessed
+tp_storage_media.lnt:38: warning: event parameter EXTAPI_WARNING never accessed
+tp_storage_media.lnt:42: warning: event parameter DB_CORRUPT_DETECTED never accessed
+tp_storage_media.lnt:47: warning: event parameter NETWORK_DEGRADED never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_storage_media.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_foodyou_copy.lnt''
+foodyou_types.lnt:189: warning: channel WriteEntryChannel never employed
+foodyou_types.lnt:193: warning: channel EntryPersistedChannel never employed
+foodyou_types.lnt:322: warning: function L_edit_food never called
+foodyou_types.lnt:326: warning: function L_edit_product never called
+foodyou_types.lnt:330: warning: function L_edit_ingredient never called
+foodyou_types.lnt:334: warning: function L_add_ingredient never called
+foodyou_types.lnt:30: warning: "with" function == of type FoodId never called
+foodyou_types.lnt:35: warning: "with" function == of type MealType never called
+foodyou_types.lnt:40: warning: "with" function == of type EntryId never called
+foodyou_types.lnt:66: warning: "with" function == of type FoodSource never called
+foodyou_types.lnt:78: warning: "with" function == of type Calorie never called
+foodyou_types.lnt:217: warning: "with" function == of type Route never called
+foodyou_types.lnt:243: warning: "with" function == of type Element never called
+foodyou_types.lnt:271: warning: "with" function == of type ConcreteValue never called
+foodyou_types.lnt:345: warning: event parameter NETWORK_DEGRADED never accessed
+foodyou_types.lnt:365: warning: event parameter NETWORK_DEGRADED never accessed
+specification_foodyou_copy.lnt:39: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:48: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:59: warning: useless assignment to total
+specification_foodyou_copy.lnt:59: warning: useless assignment to status
+specification_foodyou_copy.lnt:64: warning: useless assignment to fid
+specification_foodyou_copy.lnt:72: warning: useless assignment to total
+specification_foodyou_copy.lnt:72: warning: useless assignment to status
+specification_foodyou_copy.lnt:31: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:30: warning: useless assignment to total
+specification_foodyou_copy.lnt:29: warning: useless assignment to eid
+specification_foodyou_copy.lnt:28: warning: useless assignment to meal
+specification_foodyou_copy.lnt:27: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:26: warning: useless assignment to fid
+specification_foodyou_copy.lnt:115: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:125: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:129: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:136: warning: useless assignment to total
+specification_foodyou_copy.lnt:136: warning: useless assignment to status
+specification_foodyou_copy.lnt:135: warning: useless assignment to meal
+specification_foodyou_copy.lnt:141: warning: useless assignment to fid
+specification_foodyou_copy.lnt:141: warning: useless assignment to eid
+specification_foodyou_copy.lnt:140: warning: useless assignment to eid
+specification_foodyou_copy.lnt:149: warning: useless assignment to total
+specification_foodyou_copy.lnt:149: warning: useless assignment to status
+specification_foodyou_copy.lnt:108: warning: useless assignment to total
+specification_foodyou_copy.lnt:107: warning: useless assignment to status
+specification_foodyou_copy.lnt:106: warning: useless assignment to eid
+specification_foodyou_copy.lnt:105: warning: useless assignment to meal
+specification_foodyou_copy.lnt:104: warning: useless assignment to kcal
+specification_foodyou_copy.lnt:103: warning: useless assignment to fid
+specification_foodyou_copy.lnt:208: warning: useless assignment to meal
+specification_foodyou_copy.lnt:183: warning: useless assignment to amount_ok
+specification_foodyou_copy.lnt:181: warning: useless assignment to eid
+specification_foodyou_copy.lnt:180: warning: useless assignment to meal
+specification_foodyou_copy.lnt:179: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:145: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:83: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:181: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:167: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:227: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:196: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:270: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:251: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:314: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:295: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:381: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:359: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:340: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:421: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:402: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:466: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:447: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:526: warning: useless assignment to fid
+system_interface_foodyou_copy.lnt:520: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:515: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:568: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:563: warning: useless assignment to screen
+system_interface_foodyou_copy.lnt:66: warning: useless assignment to st
+system_interface_foodyou_copy.lnt:65: warning: useless assignment to src
+system_interface_foodyou_copy.lnt:64: warning: useless assignment to eid
+system_interface_foodyou_copy.lnt:62: warning: useless assignment to kcal
+system_interface_foodyou_copy.lnt:61: warning: useless assignment to fid
+
+lnt.open: translating ``foodyou_types.lnt'' to ``/tmp/paulad_lnt.open_kgFCZg/FOODYOU_TYPES.lib'' ...
+
+lnt.open: translating ``specification_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_kgFCZg/SPECIFICATION_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``system_interface_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_kgFCZg/SYSTEM_INTERFACE_FOODYOU_COPY.lib'' ...
+
+lnt.open: translating ``compose_foodyou_copy.lnt'' to ``/tmp/paulad_lnt.open_kgFCZg/compose_foodyou_copy.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_foodyou_copy.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_foodyou_copy''
+cadp_indent: cannot find ``indent''
+             file ``compose_foodyou_copy.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_foodyou_copy''
+lotos.open: running ``testor -io foodyou.io -all tp_storage_media.bcg foodyou_storage_media.ctg.bcg'' for ``compose_foodyou_copy.lotos''
+     ctg: 2871 states, 6308 transitions
+  WARNING: CTG is INCONCLUSIVE-only -- tp_storage_media is unsatisfiable
+======================================================================
+test cases per purpose:
+  happy: 104 test case(s)
+  ue1_kill: 108 test case(s)
+  input_invalid: 86 test case(s)
+  cache_stale: 48 test case(s)
+  disruption_db: 109 test case(s)
+  storage_full: 109 test case(s)
+
+PROBLEM PURPOSES: extapi_fail(inconclusive-ctg) db_corrupt(inconclusive-ctg) storage_media(inconclusive-ctg)
+  An unsatisfiable purpose or an empty extraction is a finding about
+  the model, not a purpose to quietly drop from the sweep.
+canonical AUTs (walked by run.py): tc_cache_stale.aut tc_disruption_db.aut tc_happy.aut tc_input_invalid.aut tc_storage_full.aut tc_ue1_kill.aut 
+alternatives:                      variants/<purpose>/tc_<purpose>.N.aut
+
+bring back tc_*.aut and variants/ to the mac repo under
+EVALUATION/foodyou/Test_Cases/ ; copy tc_happy.aut -> foodyou.tc.aut
+for the default run command.

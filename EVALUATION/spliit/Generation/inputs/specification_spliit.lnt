@@ -1,0 +1,369 @@
+module specification_spliit (spliit_types)
+with ==
+is
+
+(* Behavioural model of Spliit. Three journeys: create an expense (ADD /
+   CONFIRM), open a row (VIEW / DETAIL), delete a row (REMOVE / CONFIRM).
+   CONFIRM reads back the total and the activity log.
+
+   Obligations the model states (observed_behaviour.md tells which Spliit
+   is expected to miss; the verdict is what it earns):
+     O1  a rejected save is reported              REJECT_SHOWN
+     O2  the log covers every row a write made    LOGGED, also for WEEKLY copies
+     O3  the total shown is the committed one     after APP_CACHE_STALE
+     O4  a failed save is reported                WRITE_ERROR_SHOWN
+     O5  the log never claims a write that failed UNLOGGED after a rollback
+     O6  a failed rate lookup is reported         RATE_ERROR_SHOWN
+     O7  a corrupt record is flagged when opened  DB_CORRUPT_DETECTED
+     O8  a delete drops the total and is logged   DELETED, band one rung down
+   Faults, each with a real injection:
+     UE_KILL          the client leaves the form mid-submit (reload)
+     APP_UNAVAILABLE  the request never reaches the server (tRPC 503)
+     APP_CACHE_STALE  the Stats cache is warm when the total is read
+     APP_EXTAPI_FAIL  the currency-rate service is unreachable
+     DB_ABORT         the store aborts the insert (Postgres trigger)
+     DB_CORRUPT       a row's split rows are deleted by SQL
+     INFRA_DB_DOWN    the database container is paused during the write *)
+
+
+process USER [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none
+] is
+    var
+        payer  : Payer,
+        id     : ExpenseId,
+        rid    : RecordId,
+        vld    : Validity,
+        rec    : Recurrence,
+        status : WriteStatus,
+        band   : SpendBand,
+        log    : LogState
+    in
+        payer  := john;
+        id     := exp_a;
+        rid    := row_a;
+        vld    := VALID;
+        rec    := ONCE;
+        status := COMMITTED;
+        band   := S0;
+        log    := UNLOGGED;
+        loop
+            alt
+                -- create an expense, then read the total and the log
+                payer := any Payer;
+                id    := any ExpenseId;
+                vld   := any Validity;
+                rec   := any Recurrence;
+                ADD (payer, id, vld, rec);
+                alt
+                    CONFIRM (?status, ?band, ?log, id)
+                []
+                    -- O4: a failed save is reported, and nothing moved
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?band, UNLOGGED, id)
+                []
+                    -- O1: a rejected save is reported, and nothing moved
+                    REJECT_SHOWN;
+                    CONFIRM (REJECTED, ?band, UNLOGGED, id)
+                end alt
+            []
+                -- O6: the rate lookup failed, the form said so, and the
+                -- expense can still be saved with the amount typed by hand
+                RATE_ERROR_SHOWN;
+                payer := any Payer;
+                id    := any ExpenseId;
+                rec   := any Recurrence;
+                ADD (payer, id, VALID, rec);
+                CONFIRM (?status, ?band, ?log, id)
+            []
+                -- open a row and read which expense it is; a corrupt record
+                -- must be flagged, not shown as sound (O7)
+                rid := any RecordId;
+                disrupt
+                    VIEW (rid);
+                    DETAIL (rid, ?id)
+                by
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                -- delete a row, then read the total and the log
+                rid := any RecordId;
+                REMOVE (rid);
+                CONFIRM (?status, ?band, ?log, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+process APP [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    APP_EXTAPI_FAIL     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none
+] is
+    var
+        payer  : Payer,
+        id     : ExpenseId,
+        rid    : RecordId,
+        vld    : Validity,
+        rec    : Recurrence,
+        status : WriteStatus,
+        band   : SpendBand,
+        log    : LogState
+    in
+        payer  := john;
+        id     := exp_a;
+        rid    := row_a;
+        vld    := VALID;
+        rec    := ONCE;
+        status := COMMITTED;
+        band   := S0;
+        log    := UNLOGGED;
+        loop
+            alt
+                ADD (?payer, ?id, ?vld, ?rec);
+                if vld == VALID then
+                    alt
+                        -- the write reached the store: forward whatever it reports
+                        CONFIRM (?status, ?band, ?log, id)
+                    []
+                        -- the request never got through: the user must be told
+                        APP_UNAVAILABLE;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?band, UNLOGGED, id)
+                    []
+                        -- the store aborted the write: the user must be told
+                        DB_ABORT;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?band, UNLOGGED, id)
+                    []
+                        -- the database was down: the user must be told
+                        INFRA_DB_DOWN;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?band, UNLOGGED, id)
+                    end alt
+                else
+                    -- rejected in the browser (INVALID) or by the server
+                    -- (OVERLIMIT): either way the user must be told
+                    REJECT_SHOWN;
+                    CONFIRM (REJECTED, ?band, UNLOGGED, id)
+                end if
+            []
+                -- O3: the same write with the Stats cache primed beforehand;
+                -- the total read back must still be the committed one
+                APP_CACHE_STALE;
+                ADD (?payer, ?id, VALID, ?rec);
+                CONFIRM (?status, ?band, ?log, id)
+            []
+                -- O6: the rate service is unreachable while the form is filled;
+                -- the form reports it and the write still commits
+                APP_EXTAPI_FAIL;
+                RATE_ERROR_SHOWN;
+                ADD (?payer, ?id, VALID, ?rec);
+                CONFIRM (?status, ?band, ?log, id)
+            []
+                -- O7: a row whose split was destroyed must be flagged on open
+                disrupt
+                    VIEW (?rid);
+                    DETAIL (rid, ?id)
+                by
+                    DB_CORRUPT;
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                -- O8: a deleted row leaves the total and its deletion, not
+                -- its creation, is what the log now shows (DATABASE binds
+                -- the exact band; APP names DELETED so a reader of this
+                -- process alone sees the same expectation DATABASE holds)
+                REMOVE (?rid);
+                CONFIRM (COMMITTED, ?band, DELETED, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    UE_KILL         : none,
+    APP_UNAVAILABLE : none,
+    DB_ABORT        : none,
+    DB_CORRUPT      : none,
+    INFRA_DB_DOWN   : none
+] is
+    var
+        payer : Payer,
+        id    : ExpenseId,
+        rid   : RecordId,
+        vld   : Validity,
+        rec   : Recurrence,
+        band  : SpendBand
+    in
+        payer := john;
+        id    := exp_a;
+        rid   := row_a;
+        vld   := VALID;
+        rec   := ONCE;
+        band  := S0;
+        loop
+            alt
+                ADD (?payer, ?id, ?vld, ?rec);
+                if vld == VALID then
+                    alt
+                        -- commit: every row counted, every row logged (O2)
+                        band := grow (band, rec);
+                        CONFIRM (COMMITTED, band, LOGGED, id)
+                    []
+                        -- request lost before the store: nothing written, nothing logged
+                        APP_UNAVAILABLE;
+                        CONFIRM (ROLLED_BACK, band, UNLOGGED, id)
+                    []
+                        -- O5: insert aborted, nothing written, and the log must not
+                        -- claim it. Spliit logs BEFORE inserting (api.ts:53-67).
+                        DB_ABORT;
+                        CONFIRM (ROLLED_BACK, band, UNLOGGED, id)
+                    []
+                        -- database down: neither the log row nor the expense lands
+                        INFRA_DB_DOWN;
+                        CONFIRM (ROLLED_BACK, band, UNLOGGED, id)
+                    []
+                        -- client left mid-flight: the write landed whole or not at all
+                        UE_KILL;
+                        alt
+                            band := grow (band, rec);
+                            CONFIRM (COMMITTED, band, LOGGED, id)
+                        []
+                            CONFIRM (ROLLED_BACK, band, UNLOGGED, id)
+                        end alt
+                    end alt
+                else
+                    -- nothing reaches the store; it still voices the unchanged
+                    -- total, being the authority on it in the rendezvous
+                    CONFIRM (REJECTED, band, UNLOGGED, id)
+                end if
+            []
+                -- the row's split rows were deleted by SQL: abandon the read
+                disrupt
+                    VIEW (?rid);
+                    DETAIL (rid, item_of (rid))
+                by
+                    DB_CORRUPT
+                end disrupt
+            []
+                -- O8: delete drops one rung (at the saturating rung either
+                -- answer is right) and the log must show DELETED, not the
+                -- creation entry it replaces (observed_behaviour.md: the
+                -- app renders "deleted by", distinct text from "created by")
+                REMOVE (?rid);
+                if band == S_MORE then
+                    alt
+                        band := S3
+                    []
+                        band := S_MORE
+                    end alt
+                else
+                    band := drop (band)
+                end if;
+                CONFIRM (COMMITTED, band, DELETED, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+(* Every fault always offerable; when one fires is left to the purpose.
+   NO `i` branch: "no fault" needs no action, the DISRUPTOR simply waits.
+   An `i` here is an internal self-loop in every state of the composition,
+   which TESTOR reads as livelock, i.e. quiescence allowed everywhere: every
+   generated case then carried a :DELTA: self-loop at every state, including
+   the states where the specification requires WRITE_ERROR_SHOWN, and a
+   silent SUT could never fail. *)
+process DISRUPTOR [
+    UE_KILL, APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+    DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN : none
+] is
+    loop
+        alt
+            UE_KILL
+        []  APP_UNAVAILABLE
+        []  APP_CACHE_STALE
+        []  APP_EXTAPI_FAIL
+        []  DB_ABORT
+        []  DB_CORRUPT
+        []  INFRA_DB_DOWN
+        end alt
+    end loop
+end process
+
+
+(* Flat three-way rendezvous, nothing hidden. This gate list is the alphabet
+   the SI, the composition, the .io and every purpose must reproduce.
+   Observables: USER <-> APP.  APP_CACHE_STALE, APP_EXTAPI_FAIL: APP only.
+   UE_KILL: DATABASE only.  The other faults: APP <-> DATABASE. *)
+process SPEC [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    APP_EXTAPI_FAIL     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none
+] is
+    par UE_KILL, APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+        DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN in
+        par ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+            WRITE_ERROR_SHOWN, REJECT_SHOWN, RATE_ERROR_SHOWN, DB_CORRUPT_DETECTED in
+            USER [ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                  WRITE_ERROR_SHOWN, REJECT_SHOWN, RATE_ERROR_SHOWN, DB_CORRUPT_DETECTED]
+        ||
+            par ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                APP_UNAVAILABLE, DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN in
+                APP [ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                     WRITE_ERROR_SHOWN, REJECT_SHOWN, RATE_ERROR_SHOWN, DB_CORRUPT_DETECTED,
+                     APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+                     DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN]
+            ||
+                DATABASE [ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+                          UE_KILL, APP_UNAVAILABLE, DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN]
+            end par
+        end par
+    ||
+        DISRUPTOR [UE_KILL, APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+                   DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN]
+    end par
+end process
+
+end module

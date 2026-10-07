@@ -1,0 +1,468 @@
+module specification_medtimer (medtimer_types)
+with ==
+is
+
+(* Behavioural model of MedTimer's dose journey. Ground truth and every
+   forecast: notes/observed_behaviour.md (§ references below).
+
+   Journeys: create a medicine (ADD_MEDICINE / MEDICINE_SHOWN | REJECT_SHOWN);
+   forbid skipping it (NO_SKIP); mark the day's dose (ACT / CONFIRM); delete
+   the record (DELETE / CONFIRM); correct the record (EDIT / CONFIRM); re-read
+   the day (VIEW / CONFIRM). CONFIRM carries the fate of the write, the stock
+   band read from the medicine list and the dose row's state read from the
+   overview. One dose per day is modelled: ACT is offered while the row is
+   PENDING, DELETE and EDIT while a record exists.
+
+   Obligations the model states (honest and strict: the verdict is whatever
+   the app earns):
+     O1  a dose marked Taken is recorded Taken and the stock moves by one unit
+     O2  a dose marked Skipped is recorded Skipped and the stock is unchanged
+     O3  what is displayed after a write is the committed state, also when
+         the medicine list was read before the write      (APP_CACHE_STALE)
+     O4  a failed write is reported, and nothing moved     WRITE_ERROR_SHOWN
+         then CONFIRM (ROLLED_BACK, stock unchanged, PENDING)
+     O5  the stock never drifts from the records: a deleted Taken gives its
+         unit back, a deleted Skipped changes nothing, a correction moves the
+         stock with it, a lost record leaves the stock the records imply
+         (the weakest obligation here: the app keeps stock as a counter of
+         its own, §8.4; stated because §4.4 and §4.5 already break it)
+     O6  a corrupt record is flagged when read              DB_CORRUPT_DETECTED
+     O7  an unreadable store is reported                    INFRA_STORAGE_ERROR
+     O8  a medicine that cannot be skipped is not skipped   CONFIRM (REJECTED, ...)
+     O9  an invalid name is rejected                        REJECT_SHOWN
+   Faults, each with an injection (notes/DISRUPTION_COVERAGE.md):
+     UE_KILL              the process is killed right after the dose is marked
+     APP_WRITE_FAIL       the record update fails after the stock moved (trigger)
+     APP_CACHE_STALE      the medicine list was read before the write (SI-driven)
+     DB_ABORT             the record insert fails (trigger)
+     DB_CORRUPT           the day's record is made unreadable (SQL)
+     DB_EVENT_LOSS        the day's record is deleted after the write (SQL)
+     INFRA_STORAGE_FULL   the data partition is full (ballast)
+     INFRA_STORAGE_MEDIA  the store is unreadable (chmod, restart)
+   Parameter-borne (no gate): Validity on ADD_MEDICINE; NO_SKIP then ACT SKIP;
+   ACT SKIP then DELETE; ACT SKIP then EDIT TAKE.
+
+   Shapes: WRITE-PATH for the four write-failure faults (siblings of the
+   commit under ACT), PRE-ARMED for APP_CACHE_STALE, INTERRUPT of VIEW for
+   DB_CORRUPT and INFRA_STORAGE_MEDIA, a standalone state change for
+   DB_EVENT_LOSS, PARAMETER for the rest. *)
+
+
+process USER [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none
+] is
+    var
+        id     : MedicineId,
+        act    : DoseAction,
+        vld    : Validity,      -- not `valid`: LNT is case-insensitive, it would shadow VALID
+        status : WriteStatus,
+        stock  : StockBand,
+        state  : DoseState
+    in
+        id     := med_a;
+        act    := TAKE;
+        vld    := VALID;
+        status := COMMITTED;
+        stock  := S3;
+        state  := PENDING;
+        loop
+            alt
+                -- O9: a medicine is created, or an invalid name is refused
+                vld := any Validity;
+                ADD_MEDICINE (vld);
+                if vld == VALID then
+                    MEDICINE_SHOWN
+                else
+                    REJECT_SHOWN
+                end if
+            []
+                -- O8: the user forbids skipping this medicine
+                NO_SKIP (id)
+            []
+                -- O1, O2, O4, O8: mark the day's dose, then read the outcome
+                act := any DoseAction;
+                ACT (id, act);
+                alt
+                    CONFIRM (?status, ?stock, ?state, id)
+                []
+                    -- a failed write is reported, and nothing moved
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, PENDING, id)
+                end alt
+            []
+                -- O5: remove the record; the stock follows the record
+                DELETE (id);
+                CONFIRM (COMMITTED, ?stock, ABSENT, id)
+            []
+                -- O5: correct the record; the stock follows the correction
+                act := any DoseAction;
+                EDIT (id, act);
+                CONFIRM (COMMITTED, ?stock, ?state, id)
+            []
+                -- O6, O7: re-read the day; corruption must be flagged and an
+                -- unreadable store reported, never rendered as sound or silent
+                disrupt
+                    VIEW (id);
+                    CONFIRM (COMMITTED, ?stock, ?state, id)
+                by
+                    alt
+                        DB_CORRUPT_DETECTED
+                    []  INFRA_STORAGE_ERROR
+                    end alt
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+process APP [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    var
+        id     : MedicineId,
+        act    : DoseAction,
+        vld    : Validity,
+        status : WriteStatus,
+        stock  : StockBand,
+        state  : DoseState
+    in
+        id     := med_a;
+        act    := TAKE;
+        vld    := VALID;
+        status := COMMITTED;
+        stock  := S3;
+        state  := PENDING;
+        loop
+            alt
+                -- an invalid name is refused in the app; a valid one is shown
+                ADD_MEDICINE (?vld);
+                if vld == VALID then
+                    MEDICINE_SHOWN
+                else
+                    REJECT_SHOWN
+                end if
+            []
+                NO_SKIP (?id)
+            []
+                -- WRITE-PATH shape: the dose action; every write-failure fault
+                -- is a sibling of the commit and owes a report (O4). The kill
+                -- has no report to owe: the outcome is read back on relaunch.
+                ACT (?id, ?act);
+                alt
+                    CONFIRM (?status, ?stock, ?state, id)
+                []
+                    APP_WRITE_FAIL;
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, PENDING, id)
+                []
+                    DB_ABORT;
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, PENDING, id)
+                []
+                    INFRA_STORAGE_FULL;
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, PENDING, id)
+                end alt
+            []
+                -- PRE-ARMED shape (O3): the medicine list was read before the
+                -- write; what it shows afterwards is still the committed stock
+                APP_CACHE_STALE;
+                ACT (?id, ?act);
+                CONFIRM (?status, ?stock, ?state, id)
+            []
+                DELETE (?id);
+                CONFIRM (COMMITTED, ?stock, ABSENT, id)
+            []
+                EDIT (?id, ?act);
+                CONFIRM (COMMITTED, ?stock, ?state, id)
+            []
+                -- INTERRUPT shape (O6, O7): the re-read is abandoned by
+                -- corruption or an unreadable store, which the app must say
+                disrupt
+                    VIEW (?id);
+                    CONFIRM (COMMITTED, ?stock, ?state, id)
+                by
+                    alt
+                        DB_CORRUPT;
+                        DB_CORRUPT_DETECTED
+                    []
+                        INFRA_STORAGE_MEDIA;
+                        INFRA_STORAGE_ERROR
+                    end alt
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    var
+        id        : MedicineId,
+        act       : DoseAction,
+        vld       : Validity,
+        stock     : StockBand,
+        state     : DoseState,
+        skippable : Bool
+    in
+        id        := med_a;
+        act       := TAKE;
+        vld       := VALID;
+        stock     := S3;        -- the fixture: three units (medtimer_fixture.lnt)
+        state     := PENDING;   -- the day's dose is scheduled, not acted on
+        skippable := true;
+        loop
+            alt
+                -- an invalid name never reaches the store
+                ADD_MEDICINE (?vld);
+                if vld == VALID then
+                    MEDICINE_SHOWN
+                end if
+            []
+                NO_SKIP (?id);
+                skippable := false
+            []
+                -- the day's dose, once: the record and the stock move together
+                if state == PENDING then
+                    ACT (?id, ?act);
+                    if (act == SKIP) and not (skippable) then
+                        -- O8: refused; nothing moves
+                        CONFIRM (REJECTED, stock, state, id)
+                    else
+                        alt
+                            -- commit (O1, O2)
+                            if act == TAKE then
+                                stock := down (stock);
+                                state := TAKEN
+                            else
+                                state := SKIPPED
+                            end if;
+                            CONFIRM (COMMITTED, stock, state, id)
+                        []
+                            -- write-path faults: the record is not written and
+                            -- the stock is the one from BEFORE the attempt
+                            APP_WRITE_FAIL;
+                            CONFIRM (ROLLED_BACK, stock, PENDING, id)
+                        []
+                            DB_ABORT;
+                            CONFIRM (ROLLED_BACK, stock, PENDING, id)
+                        []
+                            INFRA_STORAGE_FULL;
+                            CONFIRM (ROLLED_BACK, stock, PENDING, id)
+                        []
+                            -- killed mid-action: whole or nothing, never half
+                            UE_KILL;
+                            alt
+                                if act == TAKE then
+                                    stock := down (stock);
+                                    state := TAKEN
+                                else
+                                    state := SKIPPED
+                                end if;
+                                CONFIRM (COMMITTED, stock, state, id)
+                            []
+                                CONFIRM (ROLLED_BACK, stock, PENDING, id)
+                            end alt
+                        end alt
+                    end if
+                else
+                    stop
+                end if
+            []
+                -- the medicine list was read before the write: the store still
+                -- answers with the committed stock (O3)
+                if state == PENDING then
+                    APP_CACHE_STALE;
+                    ACT (?id, ?act);
+                    if (act == SKIP) and not (skippable) then
+                        CONFIRM (REJECTED, stock, state, id)
+                    else
+                        if act == TAKE then
+                            stock := down (stock);
+                            state := TAKEN
+                        else
+                            state := SKIPPED
+                        end if;
+                        CONFIRM (COMMITTED, stock, state, id)
+                    end if
+                else
+                    stop
+                end if
+            []
+                -- O5: deleting a Taken gives its unit back; deleting a Skipped
+                -- changes nothing
+                if (state == TAKEN) or (state == SKIPPED) then
+                    DELETE (?id);
+                    if state == TAKEN then
+                        stock := up (stock)
+                    end if;
+                    state := ABSENT;
+                    CONFIRM (COMMITTED, stock, ABSENT, id)
+                else
+                    stop
+                end if
+            []
+                -- O5: a correction moves the stock with the record
+                if (state == TAKEN) or (state == SKIPPED) then
+                    EDIT (?id, ?act);
+                    if (act == TAKE) and (state == SKIPPED) then
+                        stock := down (stock);
+                        state := TAKEN
+                    elsif (act == SKIP) and (state == TAKEN) then
+                        stock := up (stock);
+                        state := SKIPPED
+                    end if;
+                    CONFIRM (COMMITTED, stock, state, id)
+                else
+                    stop
+                end if
+            []
+                -- O5: the day's record is lost after the write; the stock is
+                -- what the records imply, and the dose is due again
+                DB_EVENT_LOSS;
+                if state == TAKEN then
+                    stock := up (stock)
+                end if;
+                state := PENDING
+            []
+                -- the re-read, abandoned in lock-step with APP by corruption or
+                -- an unreadable store
+                disrupt
+                    VIEW (?id);
+                    CONFIRM (COMMITTED, stock, state, id)
+                by
+                    alt
+                        DB_CORRUPT
+                    []  INFRA_STORAGE_MEDIA
+                    end alt
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+(* Every fault always offerable; when one fires is left to the purpose. No
+   `i` branch: "no fault" needs no action. *)
+process DISRUPTOR [
+    UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+    DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA : none
+] is
+    loop
+        alt
+            UE_KILL
+        []  APP_WRITE_FAIL
+        []  APP_CACHE_STALE
+        []  DB_ABORT
+        []  DB_CORRUPT
+        []  DB_EVENT_LOSS
+        []  INFRA_STORAGE_FULL
+        []  INFRA_STORAGE_MEDIA
+        end alt
+    end loop
+end process
+
+
+(* Flat three-way rendezvous, nothing hidden. This gate list is the alphabet
+   the SI, the composition, the .io and every purpose must reproduce.
+   Observables USER <-> APP <-> DATABASE: ADD_MEDICINE, MEDICINE_SHOWN, NO_SKIP,
+   ACT, DELETE, EDIT, VIEW, CONFIRM. USER <-> APP only: REJECT_SHOWN,
+   WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR.
+   Faults APP <-> DATABASE <-> DISRUPTOR: APP_WRITE_FAIL, APP_CACHE_STALE,
+   DB_ABORT, DB_CORRUPT, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA.
+   DATABASE <-> DISRUPTOR only: UE_KILL, DB_EVENT_LOSS. *)
+process SPEC [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    par UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+        DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+        par ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT,
+            VIEW, CONFIRM, WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR in
+            USER [ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT,
+                  VIEW, CONFIRM, WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR]
+        ||
+            par ADD_MEDICINE, MEDICINE_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+                APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+                INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+                APP [ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT,
+                     VIEW, CONFIRM, WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+                     APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+                     INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+            ||
+                DATABASE [ADD_MEDICINE, MEDICINE_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+                          UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+                          DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+            end par
+        end par
+    ||
+        DISRUPTOR [UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+                   DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    end par
+end process
+
+end module

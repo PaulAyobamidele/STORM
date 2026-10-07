@@ -1,0 +1,22 @@
+2026-10-07 04:58:28
+testor_moodle/compose_moodle.bcg:
+created by caesar
+	709813 states
+	4088868 transitions
+	90 labels
+	initial state: 0
+	no deadlock state
+	branching factor: average = 5.76, minimal = 2, maximal = 33
+	1494857 transition(s) with a hidden label ("i")
+	non-deterministic behavior for:
+	   label "i" at state(s): 0 1 2 3 4 5 6 ... (709813 states in total)
+	   label "NAVIGATE !RT_COURSE" at state(s): 1580 1590 1630 1720 1818 1819 1820 ... (3850 states in total)
+	   label "UE2_SESSION_EXPIRE" at state(s): 0 1 2 3 4 5 8 ... (119527 states in total)
+	   label "UE1_LOSE_CONN" at state(s): 0 1 2 3 4 5 8 ... (119527 states in total)
+	   label "NAVIGATE !RT_LOGIN" at state(s): 0 6 7 8 26 27 28 ... (2689 states in total)
+	   label "NAVIGATE !RT_QUIZ_VIEW" at state(s): 1580 1590 1630 1720 1818 1819 1820 ... (3850 states in total)
+	   label "NAVIGATE !RT_ASSIGN_VIEW" at state(s): 1580 1590 1630 1720 1818 1819 1820 ... (3850 states in total)
+	   label "NAVIGATE !RT_ASSIGN_GRADER" at state(s): 1680 1767 1797 1973 1974 1975 1976 ... (1702 states in total)
+	   label "NAVIGATE !RT_COURSE_TOTAL" at state(s): 1580 1590 1630 1720 1818 1819 1820 ... (3850 states in total)
+	   label "NAVIGATE !RT_LOGOUT" at state(s): 1580 1590 1630 1680 1720 1767 1797 ... (5552 states in total)
+	   label "WRITE_ERROR_SHOWN" at state(s): 7428 9242 13600 14963 15387 16714 16765 ... (194 states in total)

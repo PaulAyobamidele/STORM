@@ -1,0 +1,9 @@
+# moodle tc variants -- purpose: app_lazy_regrade -- converted 2026-10-06 from variant_results_app_lazy_regrade.log (sweep 2026-10-02 03:03-06:20, EVALUATION/moodle/sweep_20261002.log); rev not recorded, framework/ dirty; one row per case = its LAST recorded row (the one its per-case log describes)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	43	50	47	FAIL	injected=APP_LAZY_REGRADE; state 37 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); APP_LAZY_REGRADE injected after the course-total page loaded, no reload before the wait
+2	43	50	48	FAIL	no fault injected; state 35 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); test case waits for the error before APP_LAZY_REGRADE is walked
+3	57	63	62	FAIL	no fault injected; state 36 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); test case waits for the error before APP_LAZY_REGRADE is walked
+4	46	54	28	FAIL	no fault injected; state 8 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); test case waits for the error before APP_LAZY_REGRADE is walked
+5	49	57	27	FAIL	no fault injected; state 8 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); test case waits for the error before APP_LAZY_REGRADE is walked
+6	42	48	28	FAIL	injected=APP_LAZY_REGRADE; state 9 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); APP_LAZY_REGRADE injected after the course-total page loaded, no reload before the wait
+7	42	48	27	FAIL	no fault injected; state 8 WAIT_FOR !SEL_WRITE_ERROR timed out, no :DELTA: (WAIT_FOR is an input, moodle.io:5); test case waits for the error before APP_LAZY_REGRADE is walked

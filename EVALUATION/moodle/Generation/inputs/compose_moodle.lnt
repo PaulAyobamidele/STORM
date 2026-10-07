@@ -1,0 +1,119 @@
+-- lnt.open -main COMPOSED compose_moodle.lnt generator compose_moodle.bcg
+
+(* ===========================================================================
+   Moodle — composition of the specification with the System Interface.
+   This is what TESTOR generates test cases from.
+
+   THREE GATE GROUPS, and the split is load-bearing:
+
+   1. SHARED (the `par' sync set) — abstract gates BOTH processes declare.
+      SPEC says when each is permitted; SI says how to perform or observe it.
+
+      A gate listed here that only ONE side offers is silently DELETED, not
+      diagnosed: the build still reports "no deadlock" and the state space
+      just shrinks. That has now bitten twice in this model — six STUDENT-only
+      gates collapsed SPEC to 85 states, and a value mismatch on
+      CONFIRMED_GRADE removed it entirely. Always diff the composed label set
+      against the expected gate list; state counts do not reveal this.
+
+   2. HIDDEN — the internal APP <-> DATABASE handshake. A browser cannot see
+      these, so leaving them visible would let TESTOR build purposes around
+      events the tester can neither stimulate nor observe.
+
+      WRITE_STATUS and WRITE_CONTENT are two gates rather than one because
+      Moodle performs them as two UNPROTECTED writes (save_submission has no
+      delegated transaction). Merging them would make APP_PARTIAL_SUBMISSION
+      inexpressible.
+
+   3. SPEC-ONLY BUT VISIBLE — the eight fault gates. The SI does not declare
+      them: faults are injected by DisruptionExecutor via
+      disruption_mapping.yml, not driven through the browser. They stay visible
+      so a purpose can target one and so algorithm.py can recognise the gate
+      and call the injector. They are simply absent from the sync set.
+   =========================================================================== *)
+
+module compose_moodle (moodle_types, specification_moodle, system_interface_moodle)
+is
+
+process COMPOSED [
+    -- Concrete interaction gates (what the executor drives)
+    navigate  : Ch_Navigate,
+    click     : Ch_Click,
+    type_into : Ch_TypeInto,
+    wait_for  : Ch_WaitFor,
+    observe   : Ch_Observe,
+
+    -- Abstract gates shared by SPEC and SI
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+
+    -- Surfaced-error oracles, shared
+    WRITE_ERROR_SHOWN   : none,
+    STALE_WARNING_SHOWN : none,
+    SESSION_ERROR_SHOWN : none,
+    CONN_ERROR_SHOWN    : none,
+
+    -- The hybrid eight: injected, visible to purposes, absent from the sync set
+    APP1_WRITE_FAIL        : none,
+    APP_PARTIAL_SUBMISSION : none,
+    APP_GRADE_STALE_SUB    : none,
+    APP_LAZY_REGRADE       : none,
+    DB_ATTEMPT_STEP_LOSS   : none,
+    INFRA_CRON_DEAD        : none,
+    UE1_LOSE_CONN          : none,
+    UE2_SESSION_EXPIRE     : none
+] is
+    hide
+        WRITE_ATTEMPT     : WriteAttemptChannel,
+        ATTEMPT_PERSISTED : StatusChannel,
+        WRITE_STATUS      : StatusWriteChannel,
+        WRITE_CONTENT     : ContentWriteChannel
+    in
+        par ENROL, VIEW_QUIZ, START_ATTEMPT, SAVE_ATTEMPT, PROCESS_ATTEMPT,
+            GRADE_PERSISTED, ATTEMPT_STATE, VIEW_ASSIGN, SAVE_SUBMISSION,
+            UPDATE_SUBMISSION, SUBMISSION_STATUS, SUBMISSION_TEXT, OPEN_GRADING, GRADING_SHOWS,
+            GRADE_SUBMISSION, CONFIRMED_GRADE, VIEW_COURSE_TOTAL, COURSE_TOTAL,
+            WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN, SESSION_ERROR_SHOWN,
+            CONN_ERROR_SHOWN in
+
+            SPEC [ENROL, VIEW_QUIZ, START_ATTEMPT, SAVE_ATTEMPT,
+                  PROCESS_ATTEMPT, GRADE_PERSISTED, ATTEMPT_STATE, VIEW_ASSIGN,
+                  SAVE_SUBMISSION, UPDATE_SUBMISSION, SUBMISSION_STATUS, SUBMISSION_TEXT,
+                  OPEN_GRADING, GRADING_SHOWS, GRADE_SUBMISSION,
+                  CONFIRMED_GRADE, VIEW_COURSE_TOTAL, COURSE_TOTAL,
+                  WRITE_ATTEMPT, ATTEMPT_PERSISTED, WRITE_STATUS, WRITE_CONTENT,
+                  APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+                  APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+                  UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+                  WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN, SESSION_ERROR_SHOWN,
+                  CONN_ERROR_SHOWN]
+        ||
+            SI [navigate, click, type_into, wait_for, observe,
+                ENROL, VIEW_QUIZ, START_ATTEMPT, SAVE_ATTEMPT, PROCESS_ATTEMPT,
+                GRADE_PERSISTED, ATTEMPT_STATE, VIEW_ASSIGN, SAVE_SUBMISSION,
+                UPDATE_SUBMISSION, SUBMISSION_STATUS, SUBMISSION_TEXT, OPEN_GRADING,
+                GRADING_SHOWS, GRADE_SUBMISSION, CONFIRMED_GRADE,
+                VIEW_COURSE_TOTAL, COURSE_TOTAL,
+                WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN, SESSION_ERROR_SHOWN,
+                CONN_ERROR_SHOWN]
+        end par
+    end hide
+end process
+
+end module

@@ -2,7 +2,7 @@
 fault_injector.py
 -----------------
 Out-of-band Android fault injection for the FoodYou concretization, driven by
-systems/foodyou/properties/disruption_mapping.yml.
+EVALUATION/foodyou/properties/disruption_mapping.yml.
 
 The model injects each disruption via the environment (adb / sqlite), not through
 the UI. The graph walker calls this at two moments:
@@ -54,7 +54,7 @@ class AndroidFaultInjector:
         self.package     = package or aconf.get("package")
         self.db          = aconf.get("db", "databases/open_source_database.db")
         self.seed_script = os.path.join(project_root, aconf.get(
-            "seed_script", "systems/foodyou/seed_foods.sh"))
+            "seed_script", "EVALUATION/foodyou/seed_foods.sh"))
         self.adb         = adb
         self.dry_run     = dry_run
         self.project_root = project_root
@@ -497,7 +497,7 @@ class AndroidFaultInjector:
 if __name__ == "__main__":
     import yaml, sys
     root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    mp = os.path.join(root, "systems/foodyou/properties/disruption_mapping.yml")
+    mp = os.path.join(root, "EVALUATION/foodyou/properties/disruption_mapping.yml")
     mapping = yaml.safe_load(open(mp))
     inj = AndroidFaultInjector(mapping, device="emulator-5554",
                                package="com.maksimowiczm.foodyou",

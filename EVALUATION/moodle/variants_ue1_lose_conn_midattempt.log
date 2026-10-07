@@ -1,0 +1,7 @@
+# moodle tc variants -- purpose: ue1_lose_conn_midattempt -- converted 2026-10-06 from variant_results_ue1_lose_conn_midattempt.log (sweep 2026-10-02 03:03-06:20, EVALUATION/moodle/sweep_20261002.log); rev not recorded, framework/ dirty; one row per case = its LAST recorded row (the one its per-case log describes)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	23	25	25	PASS	injected=UE1_LOSE_CONN; reached :PASS:
+2	36	40	151	UNEXECUTABLE	run.py crashed: ReadTimeoutError (selenium driver.get, read timeout=120) after CONN_ERROR_SHOWN; injected=UE1_LOSE_CONN; recorded rows for this case: NONE/NONE/NONE/NONE (last kept)
+3	32	38	27	INCONC	no fault injected; state 8 OBSERVE !SEL_CONNECTION_ERROR never appeared, :DELTA: offered
+4	29	33	27	INCONC	injected=UE1_LOSE_CONN; state 9 OBSERVE !SEL_CONNECTION_ERROR never appeared, :DELTA: offered
+5	26	30	20	INCONC	injected=UE1_LOSE_CONN; state 1 OBSERVE !SEL_CONNECTION_ERROR never appeared, :DELTA: offered

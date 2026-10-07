@@ -1,0 +1,124 @@
+module tp_db_attempt_step_loss (moodle_types) is
+
+(* ANSWER DATA LOST, ATTEMPT STILL FINISHES. Failing the question-step write
+   while the attempt row stays writable asks whether Moodle can report a grade
+   computed from answers it does not have. After this fault the specification
+   offers WRITE_ERROR_SHOWN and NO grade for that attempt -- verified by model
+   checking, not assumed.
+
+   PROCESS_ATTEMPT precedes the fault, not the other way around: the spec
+   nests DB_ATTEMPT_STEP_LOSS's disrupt inside APP's PROCESS_ATTEMPT arm, so
+   the fault only becomes reachable after that click already happened.
+   Reversed order (fault first) is unsatisfiable in one round -- confirmed
+   empirically, the generated graph offers WRITE_ERROR_SHOWN directly after
+   the fault in all 8 occurrences, with no room for PROCESS_ATTEMPT between
+   them.
+
+   STRUCTURE: `disrupt <accept sequence> by <refused faults> end disrupt'.
+
+   NOT a flat `alt'. In an alt the refuse arms are ALTERNATIVES to the accept
+   sequence, so they are reachable only from the purpose's INITIAL state. The
+   moment the purpose advances one step, every fault arm becomes unreachable,
+   the faults are implicitly accepted, and they wander into the generated test
+   case. Observed directly: tc_happy.1.aut came back with 311 transitions and
+   fired INFRA_CRON_DEAD, DB_ATTEMPT_STEP_LOSS, APP_GRADE_STALE_SUB,
+   UE1_LOSE_CONN and UE2_SESSION_EXPIRE before reaching :PASS: -- a "happy
+   path" control in which five things had gone wrong.
+
+   `disrupt ... by ...' lets the refuse branch PREEMPT the sequence at any
+   point, which is what "refuse this fault anywhere" actually means. It is also
+   what keeps the prefix set small: an unrefused fault makes every fault
+   interleaving a legal prefix, and a purpose cannot constrain prefixes --
+   they are specification behaviour.
+
+   Both verdicts LOOP, so they are proper sinks. *)
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId);
+        PROCESS_ATTEMPT (?any AttemptId);
+        DB_ATTEMPT_STEP_LOSS;
+        WRITE_ERROR_SHOWN;
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  INFRA_CRON_DEAD
+            []  UE1_LOSE_CONN
+            []  UE2_SESSION_EXPIRE
+            (* 2026-09-12: closing the rest of the declared-but-unconstrained
+               gate list, same pattern as tp_ue1_lose_conn.lnt and Issue 8's
+               fix to tp_app_partial_submission.lnt. TWO gates are
+               deliberately NOT refused, both required-but-unnamed
+               precursors rather than competing branches:
+                 VIEW_QUIZ -- STUDENT's own body is the strict linear
+                 sequence `VIEW_QUIZ; START_ATTEMPT; SAVE_ATTEMPT;
+                 PROCESS_ATTEMPT; GRADE_PERSISTED', no branch skips a step.
+                 This purpose's accept sequence starts at START_ATTEMPT, so
+                 VIEW_QUIZ is that same required first step, exactly as it
+                 is already excluded in tp_ue1_lose_conn.lnt.
+                 SAVE_ATTEMPT -- PROCESS_ATTEMPT is synchronised between
+                 STUDENT and APP; STUDENT cannot offer it without having
+                 already done SAVE_ATTEMPT first, per that same linear body.
+                 Refusing it would refuse the purpose's own required path to
+                 an attempt actually being in progress when the fault fires.
+               Neither is added to the accept sequence itself -- naming them
+               would not change what gets walked, since both are already
+               unavoidable, and leaving them as documented don't-cares
+               matches how VIEW_QUIZ/WRITE_ERROR_SHOWN are already handled
+               elsewhere in this project.
+               GRADE_PERSISTED, by contrast, IS refused below: it is the
+               genuine competing branch in APP's own nested disrupt (fires
+               INSTEAD of DB_ATTEMPT_STEP_LOSS if the fault does not take),
+               not a precursor. *)
+            []  ENROL (?any CourseId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+            []  STALE_WARNING_SHOWN
+            []  SESSION_ERROR_SHOWN
+            []  CONN_ERROR_SHOWN
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

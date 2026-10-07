@@ -1,0 +1,512 @@
+module specification_mastodon (mastodon_types)
+with ==
+is
+
+(* Behavioural model of Mastodon, seen from one local user. Journeys: post
+   (ADD / CONFIRM), edit (EDIT / SHOW), read a post without refreshing
+   (PEEK / SHOW), read the committed state afresh (CHECK / CONFIRM), delete
+   (REMOVE / CONFIRM). CONFIRM reads back the profile's post count, the home
+   timeline and the profile list.
+
+   Obligations (the best behaviour; observed_behaviour.md §13 forecasts
+   which Mastodon misses, the verdict is what it earns):
+     O1  a rejected input is reported, nothing is written     REJECT_SHOWN
+     O2  a failed write (post or delete) is reported, and
+         nothing moves                                        WRITE_ERROR_SHOWN
+     O3  a post the user was told succeeded is what a fresh
+         read shows, home and profile, also when a background
+         worker or an external lookup has failed              IN_HOME, ON_PROFILE
+     O4  the post count follows the committed rows            the band
+     O5  an edit is what a fresh read shows                   V_EDITED
+     O6  a deleted post is gone everywhere, count follows,
+         also when background processing is lazy              NOT_IN_HOME, band
+     O7  a view read without refresh shows the committed text after APP_CACHE_STALE
+     O8  a corrupt record is flagged, not shown as sound      DB_CORRUPT_DETECTED
+     O9  leaving mid-write leaves a whole write or none       after UE_KILL
+   Faults, each with a real injection (disruption_mapping.yml):
+     UE_KILL              user leaves the page right after Post (SI)
+     UE_SESSION_EXPIRED   the session and its token are revoked
+     APP_WRITE_FAIL       antispam drops the post and answers success
+     APP_UNAVAILABLE      the web process stops answering
+     APP_EXTAPI_FAIL      the link-preview fetch cannot leave the host
+     APP_CACHE_STALE      the newest post's stored text changes under the client's view
+     APP_LAZY_PROCESSING  Sidekiq stops taking jobs (quiet) before a delete
+     DB_ABORT             the insert is aborted by a trigger
+     DB_CORRUPT           the stored text is blanked
+     DB_EVENT_LOSS        the newest committed row is deleted by SQL
+     INFRA_DB_DOWN        the database container is paused across the write
+     INFRA_SIDEKIQ_DEAD   the Sidekiq container is paused before a post
+     INFRA_STORAGE_FULL   the database refuses writes (read-only) *)
+
+
+process USER [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    EDIT    : RecordChannel,
+    REMOVE  : RecordChannel,
+    CHECK   : RecordChannel,
+    PEEK    : RecordChannel,
+    SHOW    : ShowChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none
+] is
+    var
+        id  : ItemId,
+        rid : RecordId,
+        vis : Visibility,
+        vld : Validity
+    in
+        id  := post_a;
+        rid := rec_a;
+        vis := PUBLIC;
+        vld := VALID;
+        loop
+            alt
+                -- post, then read back count, home and profile
+                id  := any ItemId;
+                vis := any Visibility;
+                vld := any Validity;
+                ADD (id, vis, vld);
+                alt
+                    CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                []
+                    -- O2: a failed write is reported, and nothing moved
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                []
+                    -- O1: a rejected input is reported, and nothing moved
+                    REJECT_SHOWN;
+                    CONFIRM (REJECTED, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                end alt
+            []
+                rid := any RecordId;
+                EDIT (rid);
+                SHOW (rid, ?any Value)
+            []
+                rid := any RecordId;
+                PEEK (rid);
+                SHOW (rid, ?any Value)
+            []
+                -- O8: an unsound record is flagged, not shown as sound
+                rid := any RecordId;
+                disrupt
+                    CHECK (rid);
+                    CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+                by
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                rid := any RecordId;
+                REMOVE (rid);
+                alt
+                    CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+                []
+                    -- O2: a failed delete is reported, and nothing moved
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+                end alt
+            end alt
+        end loop
+    end var
+end process
+
+
+process APP [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    EDIT    : RecordChannel,
+    REMOVE  : RecordChannel,
+    CHECK   : RecordChannel,
+    PEEK    : RecordChannel,
+    SHOW    : ShowChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_SESSION_EXPIRED  : none,
+    APP_WRITE_FAIL      : none,
+    APP_UNAVAILABLE     : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_LAZY_PROCESSING : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_SIDEKIQ_DEAD  : none,
+    INFRA_STORAGE_FULL  : none
+] is
+    var
+        id  : ItemId,
+        rid : RecordId,
+        vld : Validity
+    in
+        id  := post_a;
+        rid := rec_a;
+        vld := VALID;
+        loop
+            alt
+                ADD (?id, ?any Visibility, ?vld);
+                if vld == VALID then
+                    alt
+                        -- the write reached the store: forward what it reports
+                        CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    []
+                        UE_SESSION_EXPIRED;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    []
+                        -- the app dropped the post: it must not claim success
+                        APP_WRITE_FAIL;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    []
+                        APP_UNAVAILABLE;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    []
+                        DB_ABORT;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    []
+                        INFRA_DB_DOWN;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    []
+                        INFRA_STORAGE_FULL;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                    end alt
+                else
+                    -- blank (client alert) or over the limit (Post withheld)
+                    REJECT_SHOWN;
+                    CONFIRM (REJECTED, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                end if
+            []
+                -- O3: the link preview cannot be fetched; the post still lands
+                APP_EXTAPI_FAIL;
+                ADD (?id, ?any Visibility, VALID);
+                CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+            []
+                -- O3 / O6: no worker runs; a post must still reach home, and a
+                -- delete must still take effect everywhere. ONE branch on the
+                -- fault, so the journey after it is not decided at the fault.
+                INFRA_SIDEKIQ_DEAD;
+                alt
+                    ADD (?id, ?any Visibility, VALID);
+                    CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+                []
+                    REMOVE (?rid);
+                    CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+                end alt
+            []
+                EDIT (?rid);
+                SHOW (rid, ?any Value)
+            []
+                PEEK (?rid);
+                SHOW (rid, ?any Value)
+            []
+                -- O8: the unsound record must be flagged on a fresh read
+                disrupt
+                    CHECK (?rid);
+                    CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+                by
+                    DB_CORRUPT;
+                    DB_CORRUPT_DETECTED
+                end disrupt
+            []
+                REMOVE (?rid);
+                CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            []
+                -- O2 on the delete: the fault strikes as the delete is confirmed;
+                -- the failure is reported and the post stays
+                UE_SESSION_EXPIRED;
+                REMOVE (?rid);
+                WRITE_ERROR_SHOWN;
+                CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            []
+                APP_UNAVAILABLE;
+                REMOVE (?rid);
+                WRITE_ERROR_SHOWN;
+                CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            []
+                DB_ABORT;
+                REMOVE (?rid);
+                WRITE_ERROR_SHOWN;
+                CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            []
+                INFRA_DB_DOWN;
+                REMOVE (?rid);
+                WRITE_ERROR_SHOWN;
+                CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            []
+                INFRA_STORAGE_FULL;
+                REMOVE (?rid);
+                WRITE_ERROR_SHOWN;
+                CONFIRM (ROLLED_BACK, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            []
+                -- O6: the delete's background half does not run
+                APP_LAZY_PROCESSING;
+                REMOVE (?rid);
+                CONFIRM (?any WriteStatus, ?any CountBand, ?any HomeState, ?any ProfileState, item_of (rid))
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    EDIT    : RecordChannel,
+    REMOVE  : RecordChannel,
+    CHECK   : RecordChannel,
+    PEEK    : RecordChannel,
+    SHOW    : ShowChannel,
+    UE_KILL             : none,
+    UE_SESSION_EXPIRED  : none,
+    APP_WRITE_FAIL      : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_FULL  : none
+] is
+    var
+        id     : ItemId,
+        rid    : RecordId,
+        vld    : Validity,
+        band   : CountBand,
+        posted : Presence,
+        text   : Versions,
+        last   : ItemId       -- the newest committed post: what the stale and loss faults strike
+    in
+        id     := post_a;
+        rid    := rec_a;
+        vld    := VALID;
+        band   := N0;
+        posted := Posts (false, false, false);
+        text   := Texts (V_ORIG, V_ORIG, V_ORIG);
+        last   := post_a;
+        loop
+            alt
+                ADD (?id, ?any Visibility, ?vld);
+                if vld == VALID then
+                    alt
+                        -- commit: counted, in home, on the profile (O3, O4)
+                        band   := bump (band);
+                        posted := put (posted, id, true);
+                        text   := set_ver (text, id, V_ORIG);
+                        last   := id;
+                        CONFIRM (COMMITTED, band, IN_HOME, ON_PROFILE, id)
+                    []
+                        -- O9: the write landed whole or not at all
+                        UE_KILL;
+                        alt
+                            band   := bump (band);
+                            posted := put (posted, id, true);
+                            text   := set_ver (text, id, V_ORIG);
+                            last   := id;
+                            CONFIRM (COMMITTED, band, IN_HOME, ON_PROFILE, id)
+                        []
+                            CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                        end alt
+                    []
+                        -- O2: every failed write leaves the state unmoved
+                        UE_SESSION_EXPIRED;
+                        CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                    []
+                        APP_WRITE_FAIL;
+                        CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                    []
+                        APP_UNAVAILABLE;
+                        CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                    []
+                        DB_ABORT;
+                        CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                    []
+                        INFRA_DB_DOWN;
+                        CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                    []
+                        INFRA_STORAGE_FULL;
+                        CONFIRM (ROLLED_BACK, band, home_of (posted, id), prof_of (posted, id), id)
+                    end alt
+                else
+                    CONFIRM (REJECTED, band, home_of (posted, id), prof_of (posted, id), id)
+                end if
+            []
+                -- O5: the edit is the committed text
+                EDIT (?rid);
+                text := set_ver (text, item_of (rid), V_EDITED);
+                SHOW (rid, V_EDITED)
+            []
+                -- O7: what is shown is what is stored
+                PEEK (?rid);
+                SHOW (rid, ver_of (text, item_of (rid)))
+            []
+                disrupt
+                    CHECK (?rid);
+                    CONFIRM (status_of (posted, item_of (rid)), band,
+                             home_of (posted, item_of (rid)), prof_of (posted, item_of (rid)),
+                             item_of (rid))
+                by
+                    DB_CORRUPT
+                end disrupt
+            []
+                -- O6: gone everywhere, one rung down (either answer at the top)
+                REMOVE (?rid);
+                if has (posted, item_of (rid)) then
+                    posted := put (posted, item_of (rid), false);
+                    if band == N_MORE then
+                        alt band := N3 [] band := N_MORE end alt
+                    else
+                        band := drop (band)
+                    end if
+                end if;
+                CONFIRM (COMMITTED, band, NOT_IN_HOME, OFF_PROFILE, item_of (rid))
+            []
+                -- O2 on the delete: a failed delete leaves post and count as they were
+                UE_SESSION_EXPIRED;
+                REMOVE (?rid);
+                CONFIRM (ROLLED_BACK, band, home_of (posted, item_of (rid)),
+                         prof_of (posted, item_of (rid)), item_of (rid))
+            []
+                APP_UNAVAILABLE;
+                REMOVE (?rid);
+                CONFIRM (ROLLED_BACK, band, home_of (posted, item_of (rid)),
+                         prof_of (posted, item_of (rid)), item_of (rid))
+            []
+                DB_ABORT;
+                REMOVE (?rid);
+                CONFIRM (ROLLED_BACK, band, home_of (posted, item_of (rid)),
+                         prof_of (posted, item_of (rid)), item_of (rid))
+            []
+                INFRA_DB_DOWN;
+                REMOVE (?rid);
+                CONFIRM (ROLLED_BACK, band, home_of (posted, item_of (rid)),
+                         prof_of (posted, item_of (rid)), item_of (rid))
+            []
+                INFRA_STORAGE_FULL;
+                REMOVE (?rid);
+                CONFIRM (ROLLED_BACK, band, home_of (posted, item_of (rid)),
+                         prof_of (posted, item_of (rid)), item_of (rid))
+            []
+                -- the stored text of the newest post changes underneath the view
+                if has (posted, last) then
+                    APP_CACHE_STALE;
+                    text := set_ver (text, last, V_EDITED)
+                else
+                    stop
+                end if
+            []
+                -- O4: the newest row is lost after commit; the count must follow the rows
+                if has (posted, last) then
+                    DB_EVENT_LOSS;
+                    posted := put (posted, last, false);
+                    if band == N_MORE then
+                        alt band := N3 [] band := N_MORE end alt
+                    else
+                        band := drop (band)
+                    end if
+                else
+                    stop
+                end if
+            end alt
+        end loop
+    end var
+end process
+
+
+(* Every fault always offerable; when one fires is left to the purpose.
+   NO `i` branch: an internal loop in every composed state makes TESTOR
+   treat every state as quiescent, and a silent app could never fail. *)
+process DISRUPTOR [
+    UE_KILL, UE_SESSION_EXPIRED, APP_WRITE_FAIL, APP_UNAVAILABLE,
+    APP_EXTAPI_FAIL, APP_CACHE_STALE, APP_LAZY_PROCESSING,
+    DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+    INFRA_DB_DOWN, INFRA_SIDEKIQ_DEAD, INFRA_STORAGE_FULL : none
+] is
+    loop
+        alt
+            UE_KILL
+        []  UE_SESSION_EXPIRED
+        []  APP_WRITE_FAIL
+        []  APP_UNAVAILABLE
+        []  APP_EXTAPI_FAIL
+        []  APP_CACHE_STALE
+        []  APP_LAZY_PROCESSING
+        []  DB_ABORT
+        []  DB_CORRUPT
+        []  DB_EVENT_LOSS
+        []  INFRA_DB_DOWN
+        []  INFRA_SIDEKIQ_DEAD
+        []  INFRA_STORAGE_FULL
+        end alt
+    end loop
+end process
+
+
+(* Flat three-way rendezvous, nothing hidden. This gate list is the alphabet.
+   Faults in APP only: APP_EXTAPI_FAIL, APP_LAZY_PROCESSING, INFRA_SIDEKIQ_DEAD.
+   In DATABASE only: UE_KILL, APP_CACHE_STALE, DB_EVENT_LOSS.
+   The others: APP <-> DATABASE. *)
+process SPEC [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    EDIT    : RecordChannel,
+    REMOVE  : RecordChannel,
+    CHECK   : RecordChannel,
+    PEEK    : RecordChannel,
+    SHOW    : ShowChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    UE_SESSION_EXPIRED  : none,
+    APP_WRITE_FAIL      : none,
+    APP_UNAVAILABLE     : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    APP_LAZY_PROCESSING : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_SIDEKIQ_DEAD  : none,
+    INFRA_STORAGE_FULL  : none
+] is
+    par UE_KILL, UE_SESSION_EXPIRED, APP_WRITE_FAIL, APP_UNAVAILABLE,
+        APP_EXTAPI_FAIL, APP_CACHE_STALE, APP_LAZY_PROCESSING,
+        DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+        INFRA_DB_DOWN, INFRA_SIDEKIQ_DEAD, INFRA_STORAGE_FULL in
+        par ADD, CONFIRM, EDIT, REMOVE, CHECK, PEEK, SHOW,
+            WRITE_ERROR_SHOWN, REJECT_SHOWN, DB_CORRUPT_DETECTED in
+            USER [ADD, CONFIRM, EDIT, REMOVE, CHECK, PEEK, SHOW,
+                  WRITE_ERROR_SHOWN, REJECT_SHOWN, DB_CORRUPT_DETECTED]
+        ||
+            par ADD, CONFIRM, EDIT, REMOVE, CHECK, PEEK, SHOW,
+                UE_SESSION_EXPIRED, APP_WRITE_FAIL, APP_UNAVAILABLE,
+                DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN, INFRA_STORAGE_FULL in
+                APP [ADD, CONFIRM, EDIT, REMOVE, CHECK, PEEK, SHOW,
+                     WRITE_ERROR_SHOWN, REJECT_SHOWN, DB_CORRUPT_DETECTED,
+                     UE_SESSION_EXPIRED, APP_WRITE_FAIL, APP_UNAVAILABLE,
+                     APP_EXTAPI_FAIL, APP_LAZY_PROCESSING,
+                     DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN, INFRA_SIDEKIQ_DEAD,
+                     INFRA_STORAGE_FULL]
+            ||
+                DATABASE [ADD, CONFIRM, EDIT, REMOVE, CHECK, PEEK, SHOW,
+                          UE_KILL, UE_SESSION_EXPIRED, APP_WRITE_FAIL,
+                          APP_UNAVAILABLE, APP_CACHE_STALE,
+                          DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+                          INFRA_DB_DOWN, INFRA_STORAGE_FULL]
+            end par
+        end par
+    ||
+        DISRUPTOR [UE_KILL, UE_SESSION_EXPIRED, APP_WRITE_FAIL, APP_UNAVAILABLE,
+                   APP_EXTAPI_FAIL, APP_CACHE_STALE, APP_LAZY_PROCESSING,
+                   DB_ABORT, DB_CORRUPT, DB_EVENT_LOSS,
+                   INFRA_DB_DOWN, INFRA_SIDEKIQ_DEAD, INFRA_STORAGE_FULL]
+    end par
+end process
+
+end module

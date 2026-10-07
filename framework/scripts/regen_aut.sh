@@ -4,7 +4,7 @@
 set -e
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-MODEL="$ROOT/systems/spliit/model"
+MODEL="$ROOT/EVALUATION/spliit/model"
 TP_DIR="$MODEL/test_purpose"
 
 echo "Regenerating .aut files under $MODEL ..."

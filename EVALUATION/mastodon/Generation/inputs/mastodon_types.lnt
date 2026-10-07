@@ -1,0 +1,255 @@
+module mastodon_types is
+
+(* Mastodon: the fixture user posts, edits and deletes short statuses; the
+   app derives the home timeline (Redis, written by Sidekiq) and the
+   profile's post count (a counter cache). Ground truth:
+   notes/observed_behaviour.md. No test-selection helper here: those live in
+   mastodon_fixture.lnt, which the specification does not import. *)
+
+(* ---- abstract domain ---------------------------------------------------- *)
+
+(* The posts the tester writes, told apart by fixed texts (Mastodon ships no
+   catalogue; every post the walk reads is one the walk wrote). Texts in
+   properties/type_description.yml. *)
+type ItemId is
+    post_a, post_b, post_c
+with ==
+end type
+
+(* A persisted status, at most one per ItemId (duplicates out of scope). *)
+type RecordId is
+    rec_a, rec_b, rec_c
+with ==
+end type
+
+(* Domain variant: public or followers-only. The specification states the
+   same obligations for both: visibility must not change what is written. *)
+type Visibility is
+    PUBLIC, FOLLOWERS
+with ==
+end type
+
+(* Parameter-borne disruptions.
+   INVALID   blank text: the client refuses with an alert (§6)
+   OVERLIMIT 501 counted characters: the Post button is withheld (§6) *)
+type Validity is
+    VALID, INVALID, OVERLIMIT
+with ==
+end type
+
+(* The text a post carries: as written, or as edited. *)
+type Value is
+    V_ORIG, V_EDITED
+with ==
+end type
+
+(* Fate of the record as the store holds it. Bookkeeping for the System
+   Interface; manifests in the other fields, never read directly. *)
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, REJECTED, ABSENT
+with ==
+end type
+
+(* Does a fresh home timeline / profile list name the post? *)
+type HomeState is
+    IN_HOME, NOT_IN_HOME
+with ==
+end type
+
+type ProfileState is
+    ON_PROFILE, OFF_PROFILE
+with ==
+end type
+
+(* The profile's "{n} posts" counter as a saturating band, one rung per post. *)
+type CountBand is
+    N0, N1, N2, N3, N_MORE
+with ==
+end type
+
+function bump (b : CountBand) : CountBand is
+    case b in
+        N0     -> return N1
+      | N1     -> return N2
+      | N2     -> return N3
+      | N3     -> return N_MORE
+      | N_MORE -> return N_MORE
+    end case
+end function
+
+(* Exact below the top rung; at N_MORE the specification offers both. *)
+function drop (b : CountBand) : CountBand is
+    case b in
+        N0     -> return N0
+      | N1     -> return N0
+      | N2     -> return N1
+      | N3     -> return N2
+      | N_MORE -> return N3
+    end case
+end function
+
+function item_of (rid : RecordId) : ItemId is
+    case rid in
+        rec_a -> return post_a
+      | rec_b -> return post_b
+      | rec_c -> return post_c
+    end case
+end function
+
+(* Which posts exist, and which text each carries: the DATABASE's state. *)
+type Presence is
+    Posts (pa, pb, pc : Bool)
+with ==, get, set
+end type
+
+function has (s : Presence, id : ItemId) : Bool is
+    case id in
+        post_a -> return s.pa
+      | post_b -> return s.pb
+      | post_c -> return s.pc
+    end case
+end function
+
+function put (s : Presence, id : ItemId, x : Bool) : Presence is
+    case id in
+        post_a -> return s.{pa -> x}
+      | post_b -> return s.{pb -> x}
+      | post_c -> return s.{pc -> x}
+    end case
+end function
+
+function home_of (s : Presence, id : ItemId) : HomeState is
+    if has (s, id) then return IN_HOME else return NOT_IN_HOME end if
+end function
+
+function prof_of (s : Presence, id : ItemId) : ProfileState is
+    if has (s, id) then return ON_PROFILE else return OFF_PROFILE end if
+end function
+
+function status_of (s : Presence, id : ItemId) : WriteStatus is
+    if has (s, id) then return COMMITTED else return ABSENT end if
+end function
+
+type Versions is
+    Texts (ta, tb, tc : Value)
+with ==, get, set
+end type
+
+function ver_of (t : Versions, id : ItemId) : Value is
+    case id in
+        post_a -> return t.ta
+      | post_b -> return t.tb
+      | post_c -> return t.tc
+    end case
+end function
+
+function set_ver (t : Versions, id : ItemId, v : Value) : Versions is
+    case id in
+        post_a -> return t.{ta -> v}
+      | post_b -> return t.{tb -> v}
+      | post_c -> return t.{tc -> v}
+    end case
+end function
+
+(* ---- observable channels (USER <-> APP <-> DATABASE) -------------------- *)
+
+(* WRITE: compose and post, then read back count, home and profile. *)
+channel AddChannel is
+    (id : ItemId, vis : Visibility, vld : Validity)
+end channel
+
+(* `id` is provenance, not an observed value. *)
+channel ConfirmChannel is
+    (st : WriteStatus, band : CountBand, hs : HomeState, ps : ProfileState, id : ItemId)
+end channel
+
+(* EDIT, REMOVE, CHECK (fresh read), PEEK (read without refresh). *)
+channel RecordChannel is
+    (rid : RecordId)
+end channel
+
+(* The text a post is shown with. *)
+channel ShowChannel is
+    (rid : RecordId, v : Value)
+end channel
+
+(* ---- concrete domain D_sys and L : D_abs -> D_sys (used by the SI) ------
+   PROVISIONAL (phase B): names only. Every one is confirmed, renamed or
+   dropped against the live DOM in phase C; interpretations live in
+   properties/concrete_domain.yml. Web SUT: navigate, click, type_into,
+   wait_for, observe. *)
+
+type Route is
+    rt_login,          (* /auth/sign_in *)
+    rt_home,           (* /home *)
+    rt_profile         (* /@bob *)
+with ==
+end type
+
+type Selector is
+    sel_email, sel_password, sel_login_submit,
+    sel_compose_text, sel_post_button,
+    sel_visibility_button, sel_visibility_dropdown,   (* compose button; the dialog's dropdown *)
+    sel_visibility_followers, sel_visibility_save,
+    sel_menu_a, sel_menu_b, sel_menu_c,       (* a post's "…" menu, by its text *)
+    sel_menu_edit, sel_menu_delete, sel_confirm_delete,
+    sel_column_home                           (* the Home column title: scrolls to top, no reload *)
+with ==
+end type
+
+type Element is
+    el_login_form,       (* anchor of the sign-in page *)
+    el_home_loaded,      (* the Home column holds a post: anchor of SCR_TIMELINE *)
+    el_home_column,      (* the home column's whole text (oracle) *)
+    el_update_button,    (* the compose button relabelled "Update" (edit mode) *)
+    el_profile_loaded,   (* the account feed, or its empty state: anchor of SCR_PROFILE *)
+    el_published,        (* "Post published." toast (precondition) *)
+    el_compose_idle,     (* the compose button reads "Post": the PUT has answered *)
+    el_write_error,      (* any error alert (oracle) *)
+    el_reject_message,   (* "Post can't be blank." (oracle) *)
+    el_post_disabled,    (* the Post button, disabled (oracle) *)
+    el_post_count,       (* "Posts | n" (oracle) *)
+    el_profile_posts,    (* the profile list's whole text (oracle) *)
+    el_delete_modal,
+    el_corrupt_notice    (* any warning on an unsound post (oracle) *)
+with ==
+end type
+
+type InputValue is
+    cv_email, cv_password,
+    cv_text_a, cv_text_b, cv_text_c,
+    cv_edit_a, cv_edit_b, cv_edit_c,
+    cv_text_blank, cv_text_overlimit
+with ==
+end type
+
+function L_text (id : ItemId) : InputValue is
+    case id in
+        post_a -> return cv_text_a
+      | post_b -> return cv_text_b
+      | post_c -> return cv_text_c
+    end case
+end function
+
+function L_edit (id : ItemId) : InputValue is
+    case id in
+        post_a -> return cv_edit_a
+      | post_b -> return cv_edit_b
+      | post_c -> return cv_edit_c
+    end case
+end function
+
+function L_menu (rid : RecordId) : Selector is
+    case rid in
+        rec_a -> return sel_menu_a
+      | rec_b -> return sel_menu_b
+      | rec_c -> return sel_menu_c
+    end case
+end function
+
+channel Ch_Route    is (r : Route)                     end channel  (* navigate  *)
+channel Ch_Selector is (s : Selector)                  end channel  (* click     *)
+channel Ch_TypeIn   is (s : Selector, v : InputValue)  end channel  (* type_into *)
+channel Ch_Element  is (e : Element)                   end channel  (* wait_for / observe *)
+
+end module

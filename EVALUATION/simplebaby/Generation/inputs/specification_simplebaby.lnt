@@ -1,0 +1,463 @@
+module specification_simplebaby (simplebaby_types)
+with ==
+is
+
+(* Behavioural model of SimpleBaby. The run starts in one mode (START), then
+   five journeys: log a feeding (ADD / CONFIRM), open the feeding history
+   (READ / LIST), delete a feeding (REMOVE / CONFIRM), log a manual sleep
+   (SLEEP_ADD / SLEEP_SAVED), read the sleep stopwatch (TIMER_START /
+   TIMER_READ). CONFIRM and LIST read the feeding history: whether it
+   names the item, readably.
+
+   Obligations (the best behaviour; observed_behaviour.md forecasts which
+   SimpleBaby misses, the verdict is what it earns):
+     O1  a rejected input is reported               REJECT_SHOWN
+     O2  a record the user was told was saved       SAVED_SHOWN, then
+         (SAVED_SHOWN) is what the history then     LIST SHOWN / CONFIRM NAMED,
+         shows, readable, or its loss is reported   DB_DATA_LOST_DETECTED
+     O3  the history follows the committed records  CONFIRM after a delete
+     O4  a failed save is reported                  WRITE_ERROR_SHOWN
+     O5  a corrupt or unreadable record is flagged  DB_CORRUPT_DETECTED,
+                                                    INFRA_STORAGE_ERROR
+     O6  the stopwatch counts the time that passed  TIMER_READ after INFRA_DOZE
+     O7  a valid overnight sleep is accepted        SLEEP_SAVED
+   Faults, each with a real injection (S = signed in, G = guest):
+     UE_KILL             app killed right after the save tap          S G
+     UE_OFFLINE          device network off before the save           S
+     UE_STORAGE_FULL     device storage full before the save          G
+     APP_UNAVAILABLE     the REST service stopped                     S
+     APP_KEY_LOST        the device encryption key removed            S G
+     APP_CACHE_STALE     the delete is silently cancelled in the store S
+     DB_ABORT            the insert raises in Postgres                S
+     DB_CORRUPT          a stored ciphertext is damaged               S
+     DB_CORRUPT_LOCAL    the on-device feeding table is damaged       G
+     DB_DATA_LOST        a saved row deleted in Postgres after the save S
+     INFRA_DB_DOWN       the database container paused                S
+     INFRA_STORAGE_MEDIA the on-device store made unreadable          G
+     INFRA_DOZE          app backgrounded under Doze for a minute     S G *)
+
+
+process USER [
+    START       : ModeChannel,
+    ADD         : AddChannel,
+    CONFIRM     : ConfirmChannel,
+    READ        : ReadChannel,
+    LIST        : ListChannel,
+    REMOVE      : RemoveChannel,
+    SLEEP_ADD   : SleepChannel,
+    SLEEP_SAVED : none,
+    SAVED_SHOWN : none,
+    TIMER_START : none,
+    TIMER_READ  : TimerChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    DB_DATA_LOST_DETECTED : none,
+    INFRA_STORAGE_ERROR : none
+] is
+    var
+        md  : Mode,
+        id  : FeedId,
+        rid : RecordId,
+        vld : Validity,
+        st  : WriteStatus,
+        n   : NameState,
+        sh  : ShownState,
+        sp  : SleepSpan,
+        t   : TimerBand
+    in
+        md := any Mode;
+        START (md);
+        loop
+            alt
+                -- log a feeding, then read the history
+                id  := any FeedId;
+                vld := any Validity;
+                ADD (id, vld);
+                alt
+                    -- told it was saved (O2), then the history
+                    SAVED_SHOWN;
+                    CONFIRM (?st, ?n, id)
+                []
+                    -- no message: only after the app was killed
+                    CONFIRM (?st, ?n, id)
+                []
+                    -- O4: the failure is reported, nothing moved
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?n, id)
+                []
+                    -- O1: the rejection is reported, nothing moved
+                    REJECT_SHOWN;
+                    CONFIRM (REJECTED, ?n, id)
+                end alt
+            []
+                -- open the history; a damaged or unreadable store is flagged (O5)
+                id := any FeedId;
+                disrupt
+                    READ (id);
+                    LIST (?sh, id)
+                by
+                    alt
+                        DB_CORRUPT_DETECTED
+                    []  DB_DATA_LOST_DETECTED
+                    []  INFRA_STORAGE_ERROR
+                    end alt
+                end disrupt
+            []
+                rid := any RecordId;
+                REMOVE (rid);
+                CONFIRM (?st, ?n, item_of (rid))
+            []
+                -- O7: a valid manual sleep is saved, overnight included
+                sp := any SleepSpan;
+                SLEEP_ADD (sp);
+                SLEEP_SAVED
+            []
+                TIMER_START;
+                TIMER_READ (?t)
+            end alt
+        end loop
+    end var
+end process
+
+
+process APP [
+    START       : ModeChannel,
+    ADD         : AddChannel,
+    CONFIRM     : ConfirmChannel,
+    READ        : ReadChannel,
+    LIST        : ListChannel,
+    REMOVE      : RemoveChannel,
+    SLEEP_ADD   : SleepChannel,
+    SLEEP_SAVED : none,
+    SAVED_SHOWN : none,
+    TIMER_START : none,
+    TIMER_READ  : TimerChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    DB_DATA_LOST_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    UE_OFFLINE          : none,
+    UE_STORAGE_FULL     : none,
+    APP_UNAVAILABLE     : none,
+    APP_KEY_LOST        : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_LOCAL    : none,
+    DB_DATA_LOST        : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_MEDIA : none,
+    INFRA_DOZE          : none
+] is
+    var
+        md  : Mode,
+        id  : FeedId,
+        rid : RecordId,
+        vld : Validity,
+        st  : WriteStatus,
+        n   : NameState,
+        sh  : ShownState,
+        sp  : SleepSpan
+    in
+        START (?md);
+        loop
+            alt
+                ADD (?id, ?vld);
+                if vld == VALID then
+                    alt
+                        -- committed: the user is told, then the history follows
+                        SAVED_SHOWN;
+                        CONFIRM (?st, ?n, id)
+                    []
+                        -- killed mid-flight: no message owed; the store decides
+                        UE_KILL;
+                        CONFIRM (?st, ?n, id)
+                    []
+                        -- the write failed underneath: the user must be told
+                        if md == SIGNED then
+                            alt
+                                UE_OFFLINE
+                            []  APP_UNAVAILABLE
+                            []  DB_ABORT
+                            []  INFRA_DB_DOWN
+                            end alt
+                        else
+                            UE_STORAGE_FULL
+                        end if;
+                        WRITE_ERROR_SHOWN;
+                        CONFIRM (ROLLED_BACK, ?n, id)
+                    end alt
+                else
+                    -- empty amount: refused in the form, the user must be told
+                    REJECT_SHOWN;
+                    CONFIRM (REJECTED, ?n, id)
+                end if
+            []
+                -- a damaged or unreadable store must be flagged on open
+                disrupt
+                    READ (?id);
+                    LIST (?sh, id)
+                by
+                    alt
+                        if md == SIGNED then
+                            DB_CORRUPT
+                        else
+                            DB_CORRUPT_LOCAL
+                        end if;
+                        DB_CORRUPT_DETECTED
+                    []
+                        -- O2: a saved record vanished from the store; the loss is reported
+                        if md == SIGNED then
+                            DB_DATA_LOST;
+                            DB_DATA_LOST_DETECTED
+                        else
+                            stop
+                        end if
+                    []
+                        if md == GUEST then
+                            INFRA_STORAGE_MEDIA;
+                            INFRA_STORAGE_ERROR
+                        else
+                            stop
+                        end if
+                    end alt
+                end disrupt
+            []
+                -- O2: the key is gone before the read; the history must
+                -- still show what the store holds
+                APP_KEY_LOST;
+                READ (?id);
+                LIST (?sh, id)
+            []
+                REMOVE (?rid);
+                CONFIRM (?st, ?n, item_of (rid))
+            []
+                SLEEP_ADD (?sp);
+                SLEEP_SAVED
+            []
+                TIMER_START;
+                alt
+                    -- read at once: under a minute
+                    TIMER_READ (T0)
+                []
+                    -- O6: a minute in the background under Doze still counts
+                    INFRA_DOZE;
+                    alt
+                        TIMER_READ (T1)
+                    []  TIMER_READ (T_MORE)
+                    end alt
+                end alt
+            end alt
+        end loop
+    end var
+end process
+
+
+process DATABASE [
+    START   : ModeChannel,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    READ    : ReadChannel,
+    LIST    : ListChannel,
+    REMOVE  : RemoveChannel,
+    UE_KILL             : none,
+    UE_OFFLINE          : none,
+    UE_STORAGE_FULL     : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_LOCAL    : none,
+    DB_DATA_LOST        : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    var
+        md  : Mode,
+        id  : FeedId,
+        rid : RecordId,
+        vld : Validity,
+        held : Bool
+    in
+        held := false;
+        START (?md);
+        loop
+            alt
+                ADD (?id, ?vld);
+                if vld == VALID then
+                    alt
+                        -- commit: the card is there, readable
+                        held := true;
+                        CONFIRM (COMMITTED, NAMED, id)
+                    []
+                        -- killed mid-flight: the insert landed whole or not at all
+                        UE_KILL;
+                        alt
+                            held := true;
+                            CONFIRM (COMMITTED, NAMED, id)
+                        []
+                            CONFIRM (ROLLED_BACK, named_of (held), id)
+                        end alt
+                    []
+                        -- the write failed: the history is unchanged
+                        if md == SIGNED then
+                            alt
+                                UE_OFFLINE
+                            []  APP_UNAVAILABLE
+                            []  DB_ABORT
+                            []  INFRA_DB_DOWN
+                            end alt
+                        else
+                            UE_STORAGE_FULL
+                        end if;
+                        CONFIRM (ROLLED_BACK, named_of (held), id)
+                    end alt
+                else
+                    CONFIRM (REJECTED, named_of (held), id)
+                end if
+            []
+                -- the store answers with what it holds; a damage fault abandons the read
+                disrupt
+                    READ (?id);
+                    LIST (shown_of (held), id)
+                by
+                    alt
+                        if md == SIGNED then
+                            DB_CORRUPT
+                        else
+                            DB_CORRUPT_LOCAL
+                        end if
+                    []
+                        -- the row was deleted underneath the app
+                        if md == SIGNED then
+                            DB_DATA_LOST;
+                            held := false
+                        else
+                            stop
+                        end if
+                    []
+                        if md == GUEST then
+                            INFRA_STORAGE_MEDIA
+                        else
+                            stop
+                        end if
+                    end alt
+                end disrupt
+            []
+                REMOVE (?rid);
+                alt
+                    -- delete: the card is gone
+                    held := false;
+                    CONFIRM (COMMITTED, UNNAMED, item_of (rid))
+                []
+                    -- O3: the store kept the row; the history must still show it
+                    if md == SIGNED then
+                        APP_CACHE_STALE;
+                        CONFIRM (ROLLED_BACK, named_of (held), item_of (rid))
+                    else
+                        stop
+                    end if
+                end alt
+            end alt
+        end loop
+    end var
+end process
+
+
+(* Every fault always offerable. NO `i` branch: "no fault" needs no action. *)
+process DISRUPTOR [
+    UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE, APP_KEY_LOST,
+    APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST,
+    INFRA_DB_DOWN, INFRA_STORAGE_MEDIA, INFRA_DOZE : none
+] is
+    loop
+        alt
+            UE_KILL
+        []  UE_OFFLINE
+        []  UE_STORAGE_FULL
+        []  APP_UNAVAILABLE
+        []  APP_KEY_LOST
+        []  APP_CACHE_STALE
+        []  DB_ABORT
+        []  DB_CORRUPT
+        []  DB_CORRUPT_LOCAL
+        []  DB_DATA_LOST
+        []  INFRA_DB_DOWN
+        []  INFRA_STORAGE_MEDIA
+        []  INFRA_DOZE
+        end alt
+    end loop
+end process
+
+
+(* Flat rendezvous, nothing hidden; this gate list is the alphabet.
+   Sleep and timer gates: USER <-> APP only (no store fault reaches them).
+   APP_CACHE_STALE: DATABASE only. APP_KEY_LOST, INFRA_DOZE: APP only.
+   The other faults: APP <-> DATABASE. *)
+process SPEC [
+    START       : ModeChannel,
+    ADD         : AddChannel,
+    CONFIRM     : ConfirmChannel,
+    READ        : ReadChannel,
+    LIST        : ListChannel,
+    REMOVE      : RemoveChannel,
+    SLEEP_ADD   : SleepChannel,
+    SLEEP_SAVED : none,
+    SAVED_SHOWN : none,
+    TIMER_START : none,
+    TIMER_READ  : TimerChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    DB_DATA_LOST_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    UE_OFFLINE          : none,
+    UE_STORAGE_FULL     : none,
+    APP_UNAVAILABLE     : none,
+    APP_KEY_LOST        : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_LOCAL    : none,
+    DB_DATA_LOST        : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_MEDIA : none,
+    INFRA_DOZE          : none
+] is
+    par UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE, APP_KEY_LOST,
+        APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST, INFRA_DB_DOWN,
+        INFRA_STORAGE_MEDIA, INFRA_DOZE in
+        par START, ADD, CONFIRM, READ, LIST, REMOVE, SLEEP_ADD, SLEEP_SAVED,
+            SAVED_SHOWN, TIMER_START, TIMER_READ, WRITE_ERROR_SHOWN, REJECT_SHOWN,
+            DB_CORRUPT_DETECTED, DB_DATA_LOST_DETECTED, INFRA_STORAGE_ERROR in
+            USER [START, ADD, CONFIRM, READ, LIST, REMOVE, SLEEP_ADD, SLEEP_SAVED,
+                  SAVED_SHOWN, TIMER_START, TIMER_READ, WRITE_ERROR_SHOWN, REJECT_SHOWN,
+                  DB_CORRUPT_DETECTED, DB_DATA_LOST_DETECTED, INFRA_STORAGE_ERROR]
+        ||
+            par START, ADD, CONFIRM, READ, LIST, REMOVE,
+                UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE, DB_ABORT,
+                DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST, INFRA_DB_DOWN, INFRA_STORAGE_MEDIA in
+                APP [START, ADD, CONFIRM, READ, LIST, REMOVE, SLEEP_ADD, SLEEP_SAVED,
+                     SAVED_SHOWN, TIMER_START, TIMER_READ, WRITE_ERROR_SHOWN, REJECT_SHOWN,
+                     DB_CORRUPT_DETECTED, DB_DATA_LOST_DETECTED, INFRA_STORAGE_ERROR,
+                     UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE, APP_KEY_LOST,
+                     DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST, INFRA_DB_DOWN,
+                     INFRA_STORAGE_MEDIA, INFRA_DOZE]
+            ||
+                DATABASE [START, ADD, CONFIRM, READ, LIST, REMOVE,
+                          UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE,
+                          APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST,
+                          INFRA_DB_DOWN, INFRA_STORAGE_MEDIA]
+            end par
+        end par
+    ||
+        DISRUPTOR [UE_KILL, UE_OFFLINE, UE_STORAGE_FULL, APP_UNAVAILABLE, APP_KEY_LOST,
+                   APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_LOCAL, DB_DATA_LOST,
+                   INFRA_DB_DOWN, INFRA_STORAGE_MEDIA, INFRA_DOZE]
+    end par
+end process
+
+end module

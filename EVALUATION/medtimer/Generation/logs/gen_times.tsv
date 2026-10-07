@@ -1,0 +1,15 @@
+purpose	seconds	cases
+nominal	54	3
+ue_kill	597	39
+app_write_fail	631	39
+db_abort	453	19
+infra_storage_full	1258	39
+app_cache_stale	309	21
+db_corrupt	417	20
+db_corrupt_stock	414	20
+db_event_loss	383	16
+infra_storage_media	441	20
+input_invalid	29	1
+cannot_skip	28	1
+delete_skipped	27	1
+edit_flip	28	1

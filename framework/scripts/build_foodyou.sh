@@ -6,8 +6,8 @@
 #       observable abstract gates (SEARCH_FOOD, FOOD_INFO, ADD_ENTRY,
 #       CONFIRM_TOTAL) plus the concrete SI gates (NAVIGATE, TAP, WAIT_FOR,
 #       OBSERVE). foodyou.io classifies them — no extra hiding needed.
-#   test_purposes/tp_*.lnt  -->  generated/tp/tp_*.bcg  (ACCEPT/REFUSE renamed)
-#   tgv(compose, tp, io)    -->  generated/tc/tc_*.bcg + tc_*.aut
+#   Test_Purposes/tp_*.lnt  -->  generated/tp/tp_*.bcg  (ACCEPT/REFUSE renamed)
+#   tgv(compose, tp, io)    -->  Test_Cases/tc_*.bcg + tc_*.aut
 #
 # Usage:
 #   build_foodyou.sh           build everything (default TP: happy)
@@ -20,9 +20,9 @@ export PATH="$CADP_COM:$PATH"
 export CADP="${CADP:-${CADP_COM%/com}}"
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-SYS="$ROOT/systems/foodyou"
+SYS="$ROOT/EVALUATION/foodyou"
 MODEL="$SYS/model"
-TP_SRC="$SYS/test_purposes"
+TP_SRC="$SYS/Test_Purposes"
 GEN="$SYS/generated"
 BUILD="$GEN/build"
 IO="$MODEL/foodyou.io"

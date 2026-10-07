@@ -1,0 +1,1074 @@
+module system_interface_moodle (moodle_types)
+with ==
+is
+
+(* ===========================================================================
+   Moodle — System Interface for the HYBRID EIGHT.
+
+   ---------------------------------------------------------------------------
+   SHAPE: ACTIONS FIRST, THEN THE GATE
+   ---------------------------------------------------------------------------
+   si_lnt_parser.py reads this in "paper style": inside an alt arm the concrete
+   steps come FIRST and the abstract gate closes the arm, with `observe'
+   immediately preceding an output gate. `only if ... then' guards are NOT
+   understood by the parser — an earlier draft used them, compiled cleanly to
+   3403 states, and every guarded body was invisible, so gates parsed with zero
+   actions and would have generated test cases that did nothing. Availability
+   is the specification's job regardless; the SI only says HOW a gate is
+   performed.
+
+   Moodle is fully URL-addressable, so each arm opens with an absolute
+   `navigate' rather than a screen state machine.
+
+   ---------------------------------------------------------------------------
+   VALUES ARE RECEIVED, NOT ASSERTED
+   ---------------------------------------------------------------------------
+   Output gates receive (`?x'). The SI observes what the SUT shows; it never
+   states what the value ought to be — that belongs in the specification. An
+   earlier draft passed the SI's own local `ver' to CONFIRMED_GRADE, which made
+   the rendezvous unsatisfiable against the specification's FINAL and DELETED
+   the gate from the composition while still reporting "no deadlock".
+
+   ---------------------------------------------------------------------------
+   PRECONDITION vs ORACLE
+   ---------------------------------------------------------------------------
+   `wait_for' = precondition; a timeout is INCONCLUSIVE.
+   `observe'  = oracle; a timeout is a conformance FAIL.
+   Every output gate below is reached through `observe'.
+
+   ---------------------------------------------------------------------------
+   WHAT MAKES SubmissionVersion OBSERVABLE AT ALL
+   ---------------------------------------------------------------------------
+   The abstract PLACEHOLDER/FINAL distinction is read from the submission TEXT
+   (sel_submission_text on the student page, sel_grading_submission_text inside
+   the grading form), not from a grade cell. A grade cell renders "100.00" and
+   contains nothing that distinguishes the revisions, so the previous model's
+   `ver' parameter had no concrete counterpart and its oracle was vacuous.
+   =========================================================================== *)
+
+process SI_CORE [
+    navigate  : Ch_Navigate,
+    click     : Ch_Click,
+    type_into : Ch_TypeInto,
+    wait_for  : Ch_WaitFor,
+    observe   : Ch_Observe,
+
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+
+    WRITE_ERROR_SHOWN   : none,
+    STALE_WARNING_SHOWN : none,
+    SESSION_ERROR_SHOWN : none,
+    CONN_ERROR_SHOWN    : none
+] is
+    var
+        crs : CourseId,
+        qz  : QuizId,
+        att : AttemptId,
+        asn : AssignId,
+        g   : Grade,
+        st  : AttemptStatus,
+        sst : SubmissionStatus,
+        ver : SubmissionVersion,
+        (* WHO the browser is currently authenticated as. Guarding every arm on
+           this is what makes the teacher gates driveable at all, and it is
+           also the state variable that constrains the strategy space: without
+           it every arm is available at every step, which is what produced 491
+           extracted variants for a three-step purpose. *)
+        who : Actor
+    in
+        crs := crs_0;
+        qz  := qz_0;
+        att := att_0;
+        asn := asn_0;
+        g   := GRADE_FULL;
+        st  := IN_PROGRESS;
+        sst := NO_SUBMISSION;
+        ver := PLACEHOLDER;
+        who := NONE;
+
+        loop
+            alt
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_course);
+                wait_for (sel_course_heading);
+                ENROL (crs)
+
+            (* ================= QUIZ PATH ================================= *)
+            []
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_quiz_view);
+                wait_for (sel_attempt_quiz_btn);
+                VIEW_QUIZ (crs, qz)
+            []
+                (* CORRECTED. This previously read "the fixture quiz has no
+                   password, so no start-confirmation dialogue appears;
+                   sel_start_attempt_confirm is deliberately not waited on" --
+                   and the confirmation step was omitted on that basis. It was
+                   wrong in both halves.
+
+                   The confirmation comes from the quiz's TIME LIMIT, not a
+                   password: pressing "Attempt quiz" posts to startattempt.php,
+                   which renders a confirm form. Measured on the live SUT, the
+                   attempt is NOT created until that form is submitted, so
+                   every quiz test case sat waiting for a question that could
+                   never render. This blocked all three quiz-side cases
+                   (APP1_WRITE_FAIL, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD),
+                   which would each have reported a walker timeout rather than
+                   a verdict about Moodle. *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_quiz_view);
+                wait_for (sel_attempt_quiz_btn);
+                click (sel_attempt_quiz_btn);
+                wait_for (sel_start_attempt_confirm);
+                click (sel_start_attempt_confirm);
+                wait_for (sel_quiz_question);
+                START_ATTEMPT (crs, qz, att)
+            []
+                (* Selecting the option is what triggers Moodle's autosave. *)
+                wait_for (sel_quiz_question);
+                click (sel_quiz_answer_input);
+                wait_for (sel_finish_attempt_link);
+                SAVE_ATTEMPT (att)
+            []
+                (* No confirmation step after "Submit all and finish".
+                   Measured through HTMLExecutor against the live SUT: that
+                   click goes straight from summary.php to review.php, the
+                   attempt reaches 'finished' and the steps reach
+                   2:gradedright, while sel_submit_confirm_btn is ABSENT from
+                   the page. Waiting on it timed out on a flow that had
+                   already succeeded.
+
+                   Nothing is waited on AFTER the click on purpose. The review
+                   page only renders when the attempt finishes, so waiting for
+                   it here would turn APP1_WRITE_FAIL -- whose whole point is
+                   that this write does NOT complete -- into a walker timeout
+                   instead of the WRITE_ERROR_SHOWN the specification requires.
+                   The precondition for this gate is sel_submit_all_btn, which
+                   is waited on before the click.
+
+                   UNION SELECTOR, not a branch, for DB_ATTEMPT_STEP_LOSS:
+                   measured live (screenshot + page source, fault installed,
+                   fixture reset first) that this fault fires on the FIRST
+                   click itself -- the click never reaches summary.php at
+                   all, landing directly on an "Error | MOODLESUT" page with
+                   the injected-fault text, before sel_submit_all_btn's page
+                   ever renders. Unlike APP1_WRITE_FAIL (whose fault fires
+                   AFTER sel_submit_all_btn is found and clicked, so the
+                   plain wait_for already covers it), this fault preempts
+                   the wait_for itself.
+
+                   TRIED AND REVERTED, 2026-09-12: a LOTOS `alt' between two
+                   wait_for branches here. WRONG MECHANISM: TESTOR resolves
+                   an `alt' once, arbitrarily, per test case at GENERATION
+                   time -- nothing tells it the fault is only SOMETIMES
+                   active. Confirmed live: tp_app_lazy_regrade.lnt, which
+                   never injects DB_ATTEMPT_STEP_LOSS, got the error-page
+                   branch baked into its own canonical AUT anyway and hung
+                   forever waiting for a banner Moodle was never going to
+                   show. Same class of mistake as the `only if' trap
+                   documented elsewhere in this project, from the opposite
+                   direction: that one silently produces nothing because the
+                   parser can't read it; this one silently produces the
+                   WRONG static choice because TESTOR has no way to read it
+                   either -- both are "the tester's own tooling deciding
+                   something only the live SUT can actually decide."
+
+                   FIX: sel_finish_attempt_anchor and
+                   sel_finish_attempt_click_target (concrete_domain.yml) are
+                   each a single selector, a UNION of both possible pages,
+                   built the same way sel_logout_confirm already is ("match
+                   whichever exists, or //body, which always exists and does
+                   nothing"). One deterministic sequence, byte-identical in
+                   EVERY test case regardless of which fault is active --
+                   TESTOR never gets a choice to resolve, so there is
+                   nothing for it to get wrong. The walker discovers which
+                   page is real at RUN TIME, the only place that actually
+                   knows. *)
+                click (sel_finish_attempt_link);
+                wait_for (sel_finish_attempt_anchor);
+                click (sel_finish_attempt_click_target);
+                PROCESS_ATTEMPT (att)
+            []
+                (* ORACLE. The review page must show the persisted grade. *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                (* rt_quiz_view, NOT rt_quiz_review: the review route
+                   templates {{ATTEMPT_ID}}, which nothing binds -- it would
+                   navigate to a literal placeholder and the oracle could never
+                   fire. Verified live: sel_quiz_grade_value resolves on the
+                   VIEW page to '100.00 out of 100.00'. *)
+                navigate (rt_quiz_view);
+                wait_for (sel_quiz_grade_value);
+                observe (sel_quiz_grade_value);
+                GRADE_PERSISTED (att, ?g)
+            []
+                (* ORACLE for INFRA_CRON_DEAD and DB_ATTEMPT_STEP_LOSS. The
+                   quiz view lists each attempt with its state ("In progress",
+                   "Finished", "Never submitted"). *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_quiz_view);
+                wait_for (sel_attempt_state_cell);
+                observe (sel_attempt_state_cell);
+                ATTEMPT_STATE (att, ?st)
+
+            (* ================= ASSIGNMENT PATH =========================== *)
+            []
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_assign_view);
+                wait_for (sel_submission_status);
+                VIEW_ASSIGN (crs, asn)
+            []
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_assign_view);
+                wait_for (sel_add_submission_btn);
+                click (sel_add_submission_btn);
+                wait_for (sel_online_text_editor);
+                type_into (sel_online_text_editor, cv_assign_text);
+                click (sel_save_changes_btn);
+                (* NOTHING FOLLOWS THE CLICK, DELIBERATELY.
+
+                   This arm used to return to the assignment view and wait for
+                   the status row, to get off the bare /mod/assign/view.php
+                   that Moodle's mform posts to. That return DESTROYED THE
+                   EVIDENCE the next gate needs. When the content write fails,
+                   Moodle answers the save with an error page; leaving it
+                   discards the error, so the write-error oracle found nothing
+                   and the run reported FAIL -- with the fault correctly
+                   injected and confirmed. Measured: the error box matches 11
+                   nodes immediately after the save click, and none once the
+                   browser has moved on.
+
+                   The browser must therefore be left on whatever the SUT
+                   answered the stimulus with. That costs nothing, because
+                   every gate that OBSERVES the assignment page opens by
+                   navigating there itself -- SUBMISSION_STATUS,
+                   SUBMISSION_TEXT and CONFIRMED_GRADE all do -- while the
+                   error oracles deliberately do not, since they must read the
+                   response page, the only place the error exists.
+
+                   NOTE FOR ANYONE EDITING THIS FILE: do not write concrete
+                   action syntax inside a block comment. si_lnt_parser strips
+                   only "--" line comments before extracting actions, so a
+                   parenthesised call written here is parsed as a REAL action.
+                   An earlier version of this very comment quoted the two lines
+                   it was describing and collapsed this gate to a single stray
+                   navigate, with no error reported. *)
+                SAVE_SUBMISSION (crs, asn, PLACEHOLDER)
+            []
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_assign_view);
+                wait_for (sel_edit_submission_btn);
+                click (sel_edit_submission_btn);
+                wait_for (sel_online_text_editor);
+                type_into (sel_online_text_editor, cv_assign_update);
+                click (sel_save_changes_btn);
+                (* No trailing navigation, for the reason given on the
+                   SAVE_SUBMISSION arm above: it would discard the page the SUT
+                   answered the save with, which is the only place a surfaced
+                   write error exists. The gates that observe the assignment
+                   page navigate there themselves. *)
+                UPDATE_SUBMISSION (crs, asn, FINAL)
+            []
+                (* ORACLE for APP_PARTIAL_SUBMISSION.
+                   The STATUS row, as its own gate. With submissiondrafts=0 one
+                   save writes the status AND the content, so the defect is the
+                   status reaching "Submitted for grading" when the content
+                   write failed -- and the status row alone decides it. The
+                   TEXT is observed by the separate gate below, which the happy
+                   path needs; after this fault there is no content row to read
+                   at all, which is why the specification does not require one
+                   on the fault branch. *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_assign_view);
+                wait_for (sel_submission_status);
+                observe (sel_submission_status);
+                SUBMISSION_STATUS (asn, ?sst)
+            []
+                (* The STORED TEXT, as its own gate. si_lnt_parser keeps only
+                   the FIRST observe in a segment, so a second one here was
+                   silently discarded and the version was never observed. *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_assign_view);
+                wait_for (sel_submission_text);
+                observe (sel_submission_text);
+                SUBMISSION_TEXT (asn, ?ver)
+
+            (* ================= TEACHER PATH ============================== *)
+            []
+                (* rt_assign_grader is bound to action=grade, which renders
+                   #id_grade and #id_savegrade as real form controls.
+                   action=grader is a JS application whose controls are absent
+                   from the served HTML and cannot be driven. *)
+                if not (who == AS_TEACHER) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    (* TRIED AND REVERTED, 2026-09-11: added `wait_for
+                       (sel_username)' here and on every AS_STUDENT re-login
+                       arm too, theorizing a race between the logout-confirm
+                       CLICK's own redirect and this navigate(). Tested live
+                       against the real SUT afterward: identical
+                       StaleElementReferenceException, byte-for-byte, so the
+                       wait did not address the actual race (which turned out
+                       to be a beat later, between typing username and
+                       typing password, still unexplained). Reverted because
+                       it was both useless for its own purpose AND -- found
+                       later -- broke tp_infra_cron_dead's satisfiability by
+                       shifting the composed graph, on a purpose already
+                       known to be this fragile (see that file's own
+                       history). Do not re-add without regenerating
+                       infra_cron_dead specifically to confirm it survives. *)
+                    type_into (sel_username, L_user (AS_TEACHER));
+                    type_into (sel_password, L_pass (AS_TEACHER));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_TEACHER
+                end if;
+                navigate (rt_assign_grader);
+                wait_for (sel_grade_input);
+                OPEN_GRADING (crs, asn)
+            []
+                (* ORACLE for APP_GRADE_STALE_SUB: which revision the grading
+                   form is showing the teacher. Defensive preamble added: without
+                   it, GRADING_SHOWS assumed uninterrupted continuity from
+                   OPEN_GRADING's own navigate, which an interleaved STUDENT-side
+                   action (e.g. ENROL) can break -- confirmed live, walking
+                   tc_ue1_lose_conn.1.aut: ENROL fired between OPEN_GRADING and
+                   this gate, forced a re-login as student and a navigate to
+                   rt_course, and this gate then waited forever on a selector
+                   that only exists on the grader page. *)
+                if not (who == AS_TEACHER) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    (* TRIED AND REVERTED, 2026-09-11: added `wait_for
+                       (sel_username)' here and on every AS_STUDENT re-login
+                       arm too, theorizing a race between the logout-confirm
+                       CLICK's own redirect and this navigate(). Tested live
+                       against the real SUT afterward: identical
+                       StaleElementReferenceException, byte-for-byte, so the
+                       wait did not address the actual race (which turned out
+                       to be a beat later, between typing username and
+                       typing password, still unexplained). Reverted because
+                       it was both useless for its own purpose AND -- found
+                       later -- broke tp_infra_cron_dead's satisfiability by
+                       shifting the composed graph, on a purpose already
+                       known to be this fragile (see that file's own
+                       history). Do not re-add without regenerating
+                       infra_cron_dead specifically to confirm it survives. *)
+                    type_into (sel_username, L_user (AS_TEACHER));
+                    type_into (sel_password, L_pass (AS_TEACHER));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_TEACHER
+                end if;
+                navigate (rt_assign_grader);
+                wait_for (sel_grading_submission_text);
+                observe (sel_grading_submission_text);
+                GRADING_SHOWS (asn, ?ver)
+            []
+                (* Same missing-preamble gap as GRADING_SHOWS: this arm assumed
+                   uninterrupted continuity from OPEN_GRADING too. Added
+                   defensively -- does NOT touch the no-trailing-navigation
+                   property below, which is only about what happens AFTER the
+                   click. *)
+                if not (who == AS_TEACHER) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    (* TRIED AND REVERTED, 2026-09-11: added `wait_for
+                       (sel_username)' here and on every AS_STUDENT re-login
+                       arm too, theorizing a race between the logout-confirm
+                       CLICK's own redirect and this navigate(). Tested live
+                       against the real SUT afterward: identical
+                       StaleElementReferenceException, byte-for-byte, so the
+                       wait did not address the actual race (which turned out
+                       to be a beat later, between typing username and
+                       typing password, still unexplained). Reverted because
+                       it was both useless for its own purpose AND -- found
+                       later -- broke tp_infra_cron_dead's satisfiability by
+                       shifting the composed graph, on a purpose already
+                       known to be this fragile (see that file's own
+                       history). Do not re-add without regenerating
+                       infra_cron_dead specifically to confirm it survives. *)
+                    type_into (sel_username, L_user (AS_TEACHER));
+                    type_into (sel_password, L_pass (AS_TEACHER));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_TEACHER
+                end if;
+                navigate (rt_assign_grader);
+                (* The grade field is this gate's precondition. It used to have
+                   none of its own: the only wait_for in the arm was the one
+                   that followed the save, which has been removed, so without
+                   this the tester would type into a form it never confirmed
+                   had loaded. *)
+                wait_for (sel_grade_input);
+                type_into (sel_grade_input, cv_grade_100);
+                click (sel_grade_save_btn);
+                (* No trailing navigation. Same reason as the two submission
+                   arms, and it matters just as much here: APP_GRADE_STALE_SUB
+                   requires STALE_WARNING_SHOWN, and a warning that Moodle
+                   renders on the grading response would be navigated away from
+                   before the oracle could read it -- turning an unobserved
+                   warning into a FAIL that describes the tester. *)
+                GRADE_SUBMISSION (crs, asn, g)
+            []
+                (* ORACLE. Grade AND the revision it landed on. *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_assign_view);
+                (* wait_for is the PRECONDITION that a grade is displayed at
+                   all; observe is the ORACLE for WHICH VERSION it landed on.
+                   The grade is pinned because it is always full marks here --
+                   leaving it free would give the gate two observed parameters,
+                   and only the first is ever captured. *)
+                wait_for (sel_assign_grade_cell);
+                observe (sel_submission_text);
+                (* GRADE_FULL is hardcoded, not received via `?g' -- si_lnt_parser
+                   only captures the FIRST observe per gate, so a second free
+                   parameter here would go uncaptured. Safe today because `g'
+                   is only ever assigned GRADE_FULL anywhere in the spec
+                   (Grade's other constructor, GRADE_ZERO, is declared and has
+                   a concrete-value mapping in moodle_types.lnt's L_grade, but
+                   is currently dead -- never assigned). The moment anything
+                   assigns GRADE_ZERO, this hardcode makes the CONFIRMED_GRADE
+                   rendezvous unsatisfiable against it, the same failure class
+                   documented at the top of this file for an earlier `ver'
+                   mistake here. *)
+                CONFIRMED_GRADE (asn, GRADE_FULL, ?ver)
+
+            (* ================= GRADEBOOK ================================= *)
+            []
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_course_total);
+                wait_for (sel_course_total_cell);
+                VIEW_COURSE_TOTAL (crs)
+            []
+                (* Same missing-preamble gap as GRADING_SHOWS/GRADE_SUBMISSION:
+                   assumed uninterrupted continuity from VIEW_COURSE_TOTAL.
+                   Added defensively -- a genuine robustness fix, not a claim it
+                   changes the already-observed INCONCLUSIVE result, which has a
+                   separate cause (the oracle can't distinguish stale from
+                   fresh, not a page-navigation break). *)
+                if not (who == AS_STUDENT) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_STUDENT));
+                    type_into (sel_password, L_pass (AS_STUDENT));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_STUDENT
+                end if;
+                navigate (rt_course_total);
+                (* ORACLE for APP_LAZY_REGRADE. *)
+                wait_for (sel_course_total_cell);
+                observe (sel_course_total_cell);
+                COURSE_TOTAL (crs, ?g)
+
+            (* ================= SURFACED ERRORS =========================== *)
+            []
+                (* wait_for added 2026-09-11: without it, landing on a page
+                   that never carries this selector at all (wrong context,
+                   not a genuine write failure) produced a FAIL that
+                   described the tester, not the SUT. Now a wrong-page miss
+                   times out to INCONCLUSIVE like every other precondition in
+                   this file, and only a confirmed presence-then-absence on
+                   the right page can still FAIL via the observe below. *)
+                wait_for (sel_write_error);
+                observe (sel_write_error);
+                WRITE_ERROR_SHOWN
+            []
+                (* ORACLE for APP_GRADE_STALE_SUB. GRADE_SUBMISSION cannot sit
+                   in the accept sequence here: the specification's
+                   disrupt(GRADE_SUBMISSION by APP_GRADE_STALE_SUB) makes them
+                   exclusive for the same round, so there is no separate gate
+                   left to perform the save click. Performed here instead,
+                   immediately before checking for the warning it may provoke.
+                   wait_for stays a PRECONDITION: reached from a context where
+                   the grading form was never loaded (e.g. tp_happy's refuse
+                   branch racing this fault in), it times out to INCONCLUSIVE
+                   rather than a false FAIL.
+
+                   Defensive preamble added 2026-09-11: this arm used to
+                   assume uninterrupted continuity from a prior OPEN_GRADING,
+                   the same missing-preamble gap already fixed on
+                   GRADING_SHOWS and GRADE_SUBMISSION (see those arms for the
+                   full explanation) -- an interleaved STUDENT-side action can
+                   land the browser somewhere this selector never appears. *)
+                if not (who == AS_TEACHER) then
+                    if not (who == NONE) then
+                        navigate (rt_logout);
+                        click (sel_logout_confirm)
+                    end if;
+                    navigate (rt_login);
+                    type_into (sel_username, L_user (AS_TEACHER));
+                    type_into (sel_password, L_pass (AS_TEACHER));
+                    click (sel_login_btn);
+                    (* Confirms the session actually took before proceeding.
+                       Added 2026-09-12, evidence-based this time: a captured
+                       failure page (new HTMLExecutor._capture_failure --
+                       Moodle failures had no capture at all before this)
+                       showed the walker landing on a bare, no-error
+                       login/index.php after this exact sequence, meaning the
+                       login did not stick. sel_user_menu only renders once a
+                       session exists (concrete_domain.yml), so waiting on it
+                       here catches that instead of discovering it several
+                       steps later at an unrelated gate's own precondition.
+                       Distinct from the 2026-09-11 `wait_for(sel_username)'
+                       attempt (reverted): that guarded a PRE-typing field on
+                       the theory the race was logout-redirect vs.
+                       navigate(rt_login); this guards session establishment
+                       AFTER submission instead, so the prior revert does not
+                       apply here. Does not cover every observed failure mode
+                       -- a StaleElementReferenceException has also been seen
+                       DURING type_into(sel_password, ...), i.e. before this
+                       point is ever reached, which this wait cannot help. *)
+                    wait_for (sel_user_menu);
+                    who := AS_TEACHER
+                end if;
+                navigate (rt_assign_grader);
+                wait_for (sel_grade_input);
+                type_into (sel_grade_input, cv_grade_100);
+                click (sel_grade_save_btn);
+                observe (sel_stale_warning);
+                STALE_WARNING_SHOWN
+            []
+                (* "Your session has timed out. Please log in again."
+                   — lang/en/error.php:548. NEEDS A FOLLOW-UP REQUEST: Moodle
+                   renders this only on the request that discovers the session
+                   is gone, not on whatever page was already loaded when it
+                   died. navigate(rt_course) is deliberately generic -- this
+                   fault can race into a quiz or assignment context, and the
+                   course page is reachable from either. *)
+                navigate (rt_course);
+                observe (sel_session_error);
+                SESSION_ERROR_SHOWN;
+                (* The session is gone, so the next arm must authenticate
+                   again. Not bookkeeping -- this IS what UE2_SESSION_EXPIRE
+                   does, and leaving `who' stale would have the SI believe it
+                   is logged in while every subsequent action hits the login
+                   page. *)
+                who := NONE
+            []
+                (* Moodle's own element: the quiz attempt page ships
+                   <div id="connection-error" role="alert"> hidden and unhides
+                   it when autosave cannot reach the server. *)
+                observe (sel_connection_error);
+                CONN_ERROR_SHOWN
+
+            (* UE1_LOSE_CONN and UE2_SESSION_EXPIRE have no arm and are absent
+               from the signature on purpose. They are injected by
+               DisruptionExecutor, not performed through the browser. Declaring
+               them here without offering them would, if synchronised, make the
+               specification wait on a rendezvous the SI can never answer —
+               a deadlock that silently kills the client-fault subtree. *)
+            end alt
+        end loop
+    end var
+end process
+
+
+process SI [
+    navigate  : Ch_Navigate,
+    click     : Ch_Click,
+    type_into : Ch_TypeInto,
+    wait_for  : Ch_WaitFor,
+    observe   : Ch_Observe,
+
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+
+    WRITE_ERROR_SHOWN   : none,
+    STALE_WARNING_SHOWN : none,
+    SESSION_ERROR_SHOWN : none,
+    CONN_ERROR_SHOWN    : none
+] is
+    SI_CORE [navigate, click, type_into, wait_for, observe,
+             ENROL, VIEW_QUIZ, START_ATTEMPT, SAVE_ATTEMPT, PROCESS_ATTEMPT,
+             GRADE_PERSISTED, ATTEMPT_STATE, VIEW_ASSIGN, SAVE_SUBMISSION,
+             UPDATE_SUBMISSION, SUBMISSION_STATUS, SUBMISSION_TEXT,
+             OPEN_GRADING, GRADING_SHOWS,
+             GRADE_SUBMISSION, CONFIRMED_GRADE, VIEW_COURSE_TOTAL,
+             COURSE_TOTAL,
+             WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN, SESSION_ERROR_SHOWN,
+             CONN_ERROR_SHOWN]
+end process
+
+end module

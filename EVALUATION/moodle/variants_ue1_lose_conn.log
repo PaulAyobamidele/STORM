@@ -1,0 +1,6 @@
+# moodle tc variants -- purpose: ue1_lose_conn -- converted 2026-10-06 from variant_results_ue1_lose_conn.log (sweep 2026-10-02 03:03-06:20, EVALUATION/moodle/sweep_20261002.log); rev not recorded, framework/ dirty; one row per case = its LAST recorded row (the one its per-case log describes)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	19	21	25	PASS	injected=UE1_LOSE_CONN; reached :PASS:
+2	28	34	28	INCONC	injected=UE1_LOSE_CONN; state 9 OBSERVE !SEL_CONNECTION_ERROR never appeared, :DELTA: offered
+3	28	34	27	INCONC	injected=UE1_LOSE_CONN; state 9 OBSERVE !SEL_CONNECTION_ERROR never appeared, :DELTA: offered
+4	22	26	20	INCONC	injected=UE1_LOSE_CONN; state 1 OBSERVE !SEL_CONNECTION_ERROR never appeared, :DELTA: offered

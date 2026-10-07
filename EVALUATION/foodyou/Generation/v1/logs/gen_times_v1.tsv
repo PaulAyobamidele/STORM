@@ -1,0 +1,9 @@
+happy	0	0
+ue1_kill	0	0
+input_invalid	0	0
+extapi_fail	0	0
+cache_stale	0	0
+disruption_db	0	0
+db_corrupt	0	0
+storage_full	0	0
+storage_media	0	0

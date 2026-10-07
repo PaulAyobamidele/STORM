@@ -59,15 +59,24 @@ framework/
                        check_controllability.py, coverage_report.py,
                        classify_failure.py, eval_tables.py
   tests/               unit tests (pytest)
-systems/
+EVALUATION/
   template/            behaviour, interface, purpose and configuration templates
   <app>/               one directory per case study:
     model/               specification, System Interface, composition (LNT)
-    test_purposes/       tp_*.lnt
+    Test_Purposes/       tp_*.lnt; compiled/ holds them as .aut and .bcg
+    CTG/                 complete test graph per purpose (.ctg.aut, .ctg.bcg),
+                         ctg_sizes.tsv; v1/ for FoodYou's first campaign
+    Test_Cases/          test cases as walked (tc_*.aut, variants/);
+                         as_generated*/ holds them exactly as TESTOR produced
+                         them (.aut, .bcg)
+    Generation/          generator inputs, logs, timings and model sizes
+                         as run on the CADP host
+    Execution_Evidence/  captures and walk logs, where kept
     testor/              <app>.io, generate_tc_all.sh
     properties/          concrete_domain.yml, type_description.yml,
                          disruption_mapping.yml
-    generated/tc/        generated test cases (.aut)
+    setup/               our patches and configuration for the application
+    variants_*.log       one verdict row per test case
     RESULTS_campaign.md  campaign results and threats to validity
 ```
 
@@ -98,36 +107,36 @@ Check the installation:
 **1. Create a new case study from the template.**
 
 ```sh
-sh systems/template/new_system.sh myapp
+sh EVALUATION/template/new_system.sh myapp
 ```
 
-This copies every template file into `systems/myapp/`, renames it, and prints the number of HOLE markers left to fill. `systems/myapp/notes/template_guide.md` explains each hole.
+This copies every template file into `EVALUATION/myapp/`, renames it, and prints the number of HOLE markers left to fill. `EVALUATION/myapp/notes/template_guide.md` explains each hole.
 
 **2. Check the models agree.**
 
 ```sh
-.venv/bin/python framework/scripts/check_alphabet.py systems/myapp
+.venv/bin/python framework/scripts/check_alphabet.py EVALUATION/myapp
 ```
 
 **3. Generate test cases** on the machine that holds the CADP licence:
 
 ```sh
-cd systems/myapp/testor
+cd EVALUATION/myapp/testor
 sh generate_tc_all.sh
 ```
 
-This writes the test cases to `generated/tc/variants/<purpose>/`, `model_size.txt` (size of the composed model) and `gen_times.tsv` (generation time per purpose).
+This writes the test cases to `Test_Cases/variants/<purpose>/`, `model_size.txt` (size of the composed model) and `gen_times.tsv` (generation time per purpose).
 
 **4. Execute a test case.** Web example:
 
 ```sh
-.venv/bin/python framework/scripts/run.py \
-  --aut systems/myapp/generated/tc/tc_nominal.aut \
+PYTHONPATH=framework .venv/bin/python framework/scripts/run.py \
+  --aut EVALUATION/myapp/Test_Cases/tc_nominal.aut \
   --platform html --url http://localhost:3000 \
-  --system-interface   systems/myapp/model/system_interface_myapp.lnt \
-  --concrete-domain    systems/myapp/properties/concrete_domain.yml \
-  --type-description   systems/myapp/properties/type_description.yml \
-  --disruption-mapping systems/myapp/properties/disruption_mapping.yml \
+  --system-interface   EVALUATION/myapp/model/system_interface_myapp.lnt \
+  --concrete-domain    EVALUATION/myapp/properties/concrete_domain.yml \
+  --type-description   EVALUATION/myapp/properties/type_description.yml \
+  --disruption-mapping EVALUATION/myapp/properties/disruption_mapping.yml \
   --timeout 10 --report
 ```
 
@@ -136,19 +145,19 @@ Use `--platform android` for an Android application. The command prints the verd
 **5. Tabulate a campaign.**
 
 ```sh
-.venv/bin/python framework/scripts/eval_tables.py systems/myapp --latex
+.venv/bin/python framework/scripts/eval_tables.py EVALUATION/myapp --latex
 ```
 
 ## Case studies
 
 | Application | Platform | Domain | What is modelled | Results |
 |---|---|---|---|---|
-| [FoodYou](https://github.com/maksimowiczm/FoodYou) | Android | Nutrition | Searching foods, logging and removing diary entries, the daily calorie total | [systems/foodyou](systems/foodyou/RESULTS_campaign.md) |
-| [MedTimer](https://github.com/Futsch1/medTimer) | Android | Health | Creating medicines, marking doses taken or skipped, correcting and deleting dose records, pill stock | [systems/medtimer](systems/medtimer/RESULTS_campaign.md) |
-| [SimpleBaby](https://github.com/adulbrich/SimpleBaby) | Android | Childcare | Logging and deleting feedings, the feeding history, manual sleep entries, the sleep stopwatch | [systems/simplebaby](systems/simplebaby/RESULTS_table.tex) |
-| [Spliit](https://github.com/spliit-app/spliit) | Web | Finance | Creating, viewing and deleting group expenses, the group total, the activity log | [systems/spliit](systems/spliit/RESULTS_campaign.md) |
-| [Moodle](https://github.com/moodle/moodle) | Web | Education | Quiz attempts, assignment submission and grading | [systems/moodle](systems/moodle) |
-| [Mastodon](https://github.com/mastodon/mastodon) | Web | Social networking | Publishing and deleting posts, the home timeline and profile, the post count | [systems/mastodon](systems/mastodon/RESULTS_campaign.md) |
+| [FoodYou](https://github.com/maksimowiczm/FoodYou) | Android | Nutrition | Searching foods, logging and removing diary entries, the daily calorie total | [EVALUATION/foodyou](EVALUATION/foodyou/RESULTS_campaign.md) |
+| [MedTimer](https://github.com/Futsch1/medTimer) | Android | Health | Creating medicines, marking doses taken or skipped, correcting and deleting dose records, pill stock | [EVALUATION/medtimer](EVALUATION/medtimer/RESULTS_campaign.md) |
+| [SimpleBaby](https://github.com/adulbrich/SimpleBaby) | Android | Childcare | Logging and deleting feedings, the feeding history, manual sleep entries, the sleep stopwatch | [EVALUATION/simplebaby](EVALUATION/simplebaby/RESULTS_table.tex) |
+| [Spliit](https://github.com/spliit-app/spliit) | Web | Finance | Creating, viewing and deleting group expenses, the group total, the activity log | [EVALUATION/spliit](EVALUATION/spliit/RESULTS_campaign.md) |
+| [Moodle](https://github.com/moodle/moodle) | Web | Education | Quiz attempts, assignment submission and grading | [EVALUATION/moodle](EVALUATION/moodle) |
+| [Mastodon](https://github.com/mastodon/mastodon) | Web | Social networking | Publishing and deleting posts, the home timeline and profile, the post count | [EVALUATION/mastodon](EVALUATION/mastodon/RESULTS_campaign.md) |
 
 Disruptions are organised by the layer they strike:
 
@@ -160,11 +169,11 @@ Disruptions are organised by the layer they strike:
 | Infrastructure | database or background worker down, full or failing storage |
 | Input | invalid or over-limit values |
 
-Every campaign's results file records the commands, logs and inputs needed to regenerate its numbers. The [Mastodon campaign](systems/mastodon/RESULTS_campaign.md) is a complete example: 16 test purposes, 31 test cases, every number regenerable from the files in its directory.
+Every campaign's results file records the commands, logs and inputs needed to regenerate its numbers. The [Mastodon campaign](EVALUATION/mastodon/RESULTS_campaign.md) is a complete example: 16 test purposes, 31 test cases, every number regenerable from the files in its directory.
 
 ## Setting up the case studies
 
-The applications under test are not part of this repository. Each is cloned at the exact commit the campaigns ran against, into `systems/<app>/sut/`. Our changes to an application's build or deployment are in `systems/<app>/setup/`. You only need an application to **execute** test cases: generating them needs only the models in this repository.
+The applications under test are not part of this repository. Each is cloned at the exact commit the campaigns ran against, into `EVALUATION/<app>/sut/`. Our changes to an application's build or deployment are in `EVALUATION/<app>/setup/`. You only need an application to **execute** test cases: generating them needs only the models in this repository.
 
 | Application | Repository | Version / commit | Platform |
 |---|---|---|---|
@@ -178,8 +187,8 @@ The applications under test are not part of this repository. Each is cloned at t
 Clone any of them the same way, run from the repository root. FoodYou is shown here:
 
 ```sh
-git clone https://github.com/maksimowiczm/FoodYou.git systems/foodyou/sut/foodyou
-git -C systems/foodyou/sut/foodyou checkout 35ab8f1e9ad54194dbc9521fe89d752c913d3cae
+git clone https://github.com/maksimowiczm/FoodYou.git EVALUATION/foodyou/sut/foodyou
+git -C EVALUATION/foodyou/sut/foodyou checkout 35ab8f1e9ad54194dbc9521fe89d752c913d3cae
 ```
 
 Every case study has a seed script that resets the application to a clean, verified state before each test case, and a sweep script that walks every generated test case of a purpose. Read each script's header before running it.
@@ -191,11 +200,11 @@ You need the Android SDK (command-line tools), JDK 21, an Android emulator image
 **FoodYou**
 
 ```sh
-cd systems/foodyou/sut/foodyou && ./gradlew app:assembleDebug && cd -
-source systems/foodyou/env.sh
-bash systems/foodyou/boot_emulator.sh
-bash systems/foodyou/check_env.sh
-bash systems/foodyou/run_variants.sh happy
+cd EVALUATION/foodyou/sut/foodyou && ./gradlew app:assembleDebug && cd -
+source EVALUATION/foodyou/env.sh
+bash EVALUATION/foodyou/boot_emulator.sh
+bash EVALUATION/foodyou/check_env.sh
+bash EVALUATION/foodyou/run_variants.sh happy
 ```
 
 Install the debug APK the build produces on the emulator with `adb install`. `boot_emulator.sh` starts the emulator with working DNS, because a searchable food database requires internet access. `check_env.sh` refuses to run if the device cannot reach it.
@@ -203,10 +212,10 @@ Install the debug APK the build produces on the emulator with `adb install`. `bo
 **MedTimer**
 
 ```sh
-cd systems/medtimer/sut/medtimer && ./gradlew app:assembleDebug && cd -
-source systems/medtimer/env.sh
-sh systems/medtimer/seed.sh
-bash systems/medtimer/run_variants.sh nominal
+cd EVALUATION/medtimer/sut/medtimer && ./gradlew app:assembleDebug && cd -
+source EVALUATION/medtimer/env.sh
+sh EVALUATION/medtimer/seed.sh
+bash EVALUATION/medtimer/run_variants.sh nominal
 ```
 
 Install `MedTimer-foss-debug.apk` from the build output with `adb install`. `seed.sh` clears the app's data and grants the notification permission. The walk itself creates the fixture.
@@ -216,21 +225,21 @@ Install `MedTimer-foss-debug.apk` from the build output with `adb install`. `see
 SimpleBaby needs a local Supabase backend (Supabase CLI and Docker) and runs as a release build.
 
 ```sh
-cd systems/simplebaby/sut/simplebaby
+cd EVALUATION/simplebaby/sut/simplebaby
 git apply ../../setup/simplebaby.patch
 npm install
 supabase start
 npx expo prebuild --platform android
 cd -
-source systems/simplebaby/env.sh
-bash systems/simplebaby/check_env.sh
-sh systems/simplebaby/seed.sh
-bash systems/simplebaby/run_variants.sh nominal_signed
+source EVALUATION/simplebaby/env.sh
+bash EVALUATION/simplebaby/check_env.sh
+sh EVALUATION/simplebaby/seed.sh
+bash EVALUATION/simplebaby/run_variants.sh nominal_signed
 ```
 
 Before you run it, complete these configuration steps:
 
-- **Backend address.** Create `systems/simplebaby/sut/simplebaby/.env` with `EXPO_PUBLIC_SUPABASE_URL=http://10.0.2.2:54321` and `EXPO_PUBLIC_SUPABASE_KEY` set to the anon key that `supabase start` prints.
+- **Backend address.** Create `EVALUATION/simplebaby/sut/simplebaby/.env` with `EXPO_PUBLIC_SUPABASE_URL=http://10.0.2.2:54321` and `EXPO_PUBLIC_SUPABASE_KEY` set to the anon key that `supabase start` prints.
 - **Plain HTTP.** Because the local backend is plain HTTP, set `android:usesCleartextTraffic="true"` in the generated `android/app/src/main/AndroidManifest.xml`.
 - **Release APK.** Build the release APK from `android/` and install it.
 - **Separate emulator.** The case study uses emulator `emulator-5556`, so it never collides with the other Android apps.
@@ -244,14 +253,14 @@ You need Docker and Google Chrome.
 **Spliit**
 
 ```sh
-cd systems/spliit/sut/spliit
+cd EVALUATION/spliit/sut/spliit
 git apply ../../setup/spliit.patch
 npm install --package-lock-only
 cp container.env.example container.env
 docker compose up -d
 cd -
-.venv/bin/python systems/spliit/setup/fault_middleware.py &
-bash systems/spliit/run_variants.sh nominal
+.venv/bin/python EVALUATION/spliit/setup/fault_middleware.py &
+bash EVALUATION/spliit/run_variants.sh nominal
 ```
 
 The patch pins PostgreSQL 17 and fixes the image build. `fault_middleware.py` is a proxy on port 3002 in front of Spliit on port 3000, through which application faults are injected. STORM drives `http://localhost:3002`. The `app_extapi_fail` purpose also needs the currency service redirected:
@@ -263,17 +272,17 @@ sudo sh -c "echo '127.0.0.1 api.frankfurter.app' >> /etc/hosts"
 **Moodle**
 
 ```sh
-export MOODLE_DOCKER_WWWROOT="$PWD/systems/moodle/sut/moodle"
+export MOODLE_DOCKER_WWWROOT="$PWD/EVALUATION/moodle/sut/moodle"
 export MOODLE_DOCKER_DB=pgsql
 export MOODLE_DOCKER_WEB_PORT=8080
-cp systems/moodle/sut/moodle-docker/config.docker-template.php systems/moodle/sut/moodle/config.php
-cd systems/moodle/sut/moodle-docker
+cp EVALUATION/moodle/sut/moodle-docker/config.docker-template.php EVALUATION/moodle/sut/moodle/config.php
+cd EVALUATION/moodle/sut/moodle-docker
 bin/moodle-docker-compose up -d
 bin/moodle-docker-wait-for-db
 bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="STORM" --shortname="storm" --adminpass="test" --adminemail="admin@example.com"
 bin/moodle-docker-compose exec -T webserver php /dev/stdin < ../../seed_moodle.php
 cd -
-bash systems/moodle/run_variants.sh happy
+bash EVALUATION/moodle/run_variants.sh happy
 ```
 
 `seed_moodle.php` creates the course, users, quiz and assignment the models refer to. Before every test case, `reset_moodle.php` clears any fault left behind and restores the fixture.
@@ -281,7 +290,7 @@ bash systems/moodle/run_variants.sh happy
 **Mastodon**
 
 ```sh
-cd systems/mastodon/sut/mastodon
+cd EVALUATION/mastodon/sut/mastodon
 cp ../../setup/docker-compose.override.yml ../../setup/Caddyfile .
 cp .env.production.sample .env.production
 ```
@@ -294,8 +303,8 @@ docker compose up -d
 docker compose exec web bin/tootctl accounts create bob --email bob@mastodon.localhost --confirmed --approve
 cd -
 export MASTODON_PW='<password tootctl printed>'
-sh systems/mastodon/seed.sh
-sh systems/mastodon/run_suite.sh mycampaign
+sh EVALUATION/mastodon/seed.sh
+sh EVALUATION/mastodon/run_suite.sh mycampaign
 ```
 
 The override moves Mastodon's ports out of the way and adds a Caddy proxy that serves `https://mastodon.localhost` with a local certificate, because Mastodon's production mode requires HTTPS. The browser accepts that certificate. `seed.sh` clears every fault, removes bob's posts, and verifies the clean state before each case.
@@ -308,4 +317,5 @@ The override moves Mastodon's ports out of the way and adds a Caddy proxy that s
 | FAIL | The application contradicted the specification: a wrong observed value, or no output where the test case forbids silence. |
 | INCONCLUSIVE | The application behaved correctly, but the test purpose could not be reached, or silence was permitted at that point. |
 | UNEXECUTABLE | Not a verdict. The tester could not carry out the run: a fault not confirmed, a step that could not be applied, a dead end. Fix the cause and run again. |
+
 

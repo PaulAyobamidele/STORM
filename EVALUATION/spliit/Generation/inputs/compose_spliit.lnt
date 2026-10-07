@@ -1,0 +1,50 @@
+-- compose_spliit.lnt -- COMPOSED = SPEC || SI, synchronised on the whole
+-- abstract alphabet (journeys, observables and faults); the five concrete
+-- primitives stay visible for the generated test case.
+--
+--   lnt.open -main COMPOSED compose_spliit.lnt generator compose_spliit.bcg
+
+module compose_spliit (spliit_types, specification_spliit, system_interface_spliit)
+is
+
+process COMPOSED [
+    navigate  : Ch_Route,
+    click     : Ch_Selector,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    APP_EXTAPI_FAIL     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none
+] is
+    par ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+        WRITE_ERROR_SHOWN, REJECT_SHOWN, RATE_ERROR_SHOWN, DB_CORRUPT_DETECTED,
+        UE_KILL, APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+        DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN in
+        SPEC [ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+              WRITE_ERROR_SHOWN, REJECT_SHOWN, RATE_ERROR_SHOWN, DB_CORRUPT_DETECTED,
+              UE_KILL, APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+              DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN]
+    ||
+        SI [navigate, click, type_into, wait_for, observe,
+            ADD, CONFIRM, VIEW, DETAIL, REMOVE,
+            WRITE_ERROR_SHOWN, REJECT_SHOWN, RATE_ERROR_SHOWN, DB_CORRUPT_DETECTED,
+            UE_KILL, APP_UNAVAILABLE, APP_CACHE_STALE, APP_EXTAPI_FAIL,
+            DB_ABORT, DB_CORRUPT, INFRA_DB_DOWN]
+    end par
+end process
+
+end module

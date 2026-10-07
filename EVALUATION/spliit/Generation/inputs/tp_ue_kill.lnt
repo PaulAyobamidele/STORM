@@ -1,0 +1,64 @@
+module tp_ue_kill (spliit_types, spliit_fixture) is
+
+(* TARGET   UE_KILL: the user leaves the page right after submitting.
+   The target sequence; refused: the other faults, and a weekly write
+   (its O2 defect belongs to the weekly purpose). Every other thing the
+   user may do on the way (a plain write, opening or deleting a row) is
+   left open, and TESTOR turns those choices into separate test cases.
+   Expected unknown: depends on whether the request completes (note §11). *)
+
+process MAIN [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    APP_EXTAPI_FAIL     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ExpenseId in
+        IDF := defaultExpense;
+        disrupt
+            ADD (?any Payer, IDF, VALID, ONCE);
+            disrupt
+                CONFIRM (COMMITTED, ?any SpendBand, LOGGED, IDF);
+                loop TP_REFUSE end loop
+            by
+                UE_KILL;
+                alt
+                    CONFIRM (COMMITTED, ?any SpendBand, LOGGED, IDF)
+                []  CONFIRM (ROLLED_BACK, ?any SpendBand, UNLOGGED, IDF)
+                end alt;
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- any OTHER fault: the observation would be evidence about that
+            -- fault, not about this purpose's target
+            alt
+                APP_UNAVAILABLE
+            []  APP_CACHE_STALE
+            []  APP_EXTAPI_FAIL
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_DB_DOWN
+            []  -- a weekly write is the weekly purpose's target: its O2 defect
+                -- would fail this case before its own target is reached
+                ADD (?any Payer, ?any ExpenseId, VALID, WEEKLY)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

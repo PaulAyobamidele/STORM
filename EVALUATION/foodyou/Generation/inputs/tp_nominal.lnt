@@ -1,0 +1,52 @@
+module tp_nominal (foodyou_types) is
+process MAIN [
+    navigate         : Ch_Route,
+    tap              : Ch_Value,
+    enter_text       : Ch_Value,
+    wait_for         : Ch_Element,
+    observe          : Ch_Element,
+    SEARCH_FOOD      : SearchChannel,
+    FOOD_INFO        : FoodInfoChannel,
+    ADD_ENTRY        : AddEntryChannel,
+    CONFIRM_TOTAL    : TotalChannel,
+    VIEW_DIARY       : ViewDiaryChannel,
+    DIARY_INFO       : DiaryInfoChannel,
+    REMOVE_ENTRY     : RemoveEntryChannel,
+    EXTAPI_FAIL      : none,
+    NETWORK_DEGRADED : none,
+    UE1_KILL         : none,
+    DISRUPTION_DB    : none,
+    DB_CORRUPT       : none,
+    STORAGE_FULL     : none,
+    STORAGE_MEDIA    : none,
+    CACHE_STALE      : none,
+    TP_ACCEPT        : none,
+    TP_REFUSE        : none
+] is
+    loop L0 in
+        alt
+            navigate (?any Route)
+        []  tap (?any ConcreteValue)
+        []  enter_text (?any ConcreteValue)
+        []  wait_for (?any Element)
+        []  observe (?any Element)
+        []  SEARCH_FOOD (?any FoodId, ?any FoodSource)
+        []  FOOD_INFO (?any FoodId, ?any Calorie)
+        []  ADD_ENTRY (?any MealType, ?any FoodId, ?any Validity)
+        []  VIEW_DIARY (?any EntryId)
+        []  DIARY_INFO (?any EntryId, ?any FoodId)
+        []  REMOVE_ENTRY (?any EntryId)
+        []  EXTAPI_FAIL;        loop TP_REFUSE end loop
+        []  NETWORK_DEGRADED;   loop TP_REFUSE end loop
+        []  UE1_KILL;           loop TP_REFUSE end loop
+        []  DISRUPTION_DB;      loop TP_REFUSE end loop
+        []  DB_CORRUPT;         loop TP_REFUSE end loop
+        []  STORAGE_FULL;       loop TP_REFUSE end loop
+        []  STORAGE_MEDIA;      loop TP_REFUSE end loop
+        []  CACHE_STALE;        loop TP_REFUSE end loop
+        []  CONFIRM_TOTAL (?any WriteStatus, ?any DailyTotal, ?any FoodId);  break L0
+        end alt
+    end loop;
+    loop TP_ACCEPT end loop
+end process
+end module

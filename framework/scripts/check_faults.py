@@ -2,7 +2,7 @@
 """check_faults.py -- prove, on the device, that every Android fault in a
 system's disruption_mapping.yml bites and lets go, BEFORE a sweep trusts it.
 
-    PYTHONPATH=framework .venv/bin/python framework/scripts/check_faults.py systems/<sut> \
+    PYTHONPATH=framework .venv/bin/python framework/scripts/check_faults.py EVALUATION/<sut> \
         [--device emulator-5554] [--only FAULT,FAULT] [--dry-run]
 
 For each fault whose mechanism is not `none`: inject, run verify_injected,
@@ -30,7 +30,7 @@ from concretization.fault_injector import AndroidFaultInjector  # noqa: E402
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("sysdir", help="systems/<sut>")
+    ap.add_argument("sysdir", help="EVALUATION/<sut>")
     ap.add_argument("--device", default=os.environ.get("DEVICE", "emulator-5554"))
     ap.add_argument("--only", default="", help="comma-separated fault names")
     ap.add_argument("--dry-run", action="store_true")

@@ -1,0 +1,421 @@
+module tp_infra_doze (simplebaby_types, simplebaby_fixture) is
+
+(* SHAPE    pre-armed, P6 (notes/TEST_PATH.md). MODE signed.
+   TARGET   INFRA_DOZE: a minute under Doze.
+   ACCEPT   the one path up to the point, the fault, the owed output.
+   REFUSE   at EVERY step, every tester input other than the step's own
+            (TESTOR lets an unmentioned label through, so each step names them).
+   Owed     TIMER_READ T1 or more (O6).
+   Expected FAIL (forecast, properties/disruption_mapping.yml). *)
+
+process MAIN [
+    START       : ModeChannel,
+    ADD         : AddChannel,
+    CONFIRM     : ConfirmChannel,
+    READ        : ReadChannel,
+    LIST        : ListChannel,
+    REMOVE      : RemoveChannel,
+    SLEEP_ADD   : SleepChannel,
+    SLEEP_SAVED : none,
+    SAVED_SHOWN : none,
+    TIMER_START : none,
+    TIMER_READ  : TimerChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    DB_DATA_LOST_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    UE_OFFLINE          : none,
+    UE_STORAGE_FULL     : none,
+    APP_UNAVAILABLE     : none,
+    APP_KEY_LOST        : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_LOCAL    : none,
+    DB_DATA_LOST        : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_STORAGE_MEDIA : none,
+    INFRA_DOZE          : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : FeedId, RID : RecordId in
+        IDF := defaultItem;
+        RID := defaultRecord;
+            alt
+                START (SIGNED)
+            []
+                alt
+                    START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                ADD (IDF, VALID)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                SAVED_SHOWN
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                CONFIRM (COMMITTED, ?any NameState, IDF)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                READ (IDF)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                LIST (?any ShownState, IDF)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                REMOVE (RID)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                CONFIRM (COMMITTED, ?any NameState, IDF)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                SLEEP_ADD (SAME_DAY)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                SLEEP_SAVED
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                TIMER_START
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                INFRA_DOZE
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                TIMER_READ (?any TimerBand)
+            []
+                alt
+                    START (SIGNED)
+                []  START (GUEST)
+                []  ADD (?any FeedId, VALID)
+                []  ADD (?any FeedId, INVALID)
+                []  READ (?any FeedId)
+                []  REMOVE (?any RecordId)
+                []  SLEEP_ADD (SAME_DAY)
+                []  SLEEP_ADD (OVERNIGHT)
+                []  TIMER_START
+                []  UE_KILL
+                []  UE_OFFLINE
+                []  UE_STORAGE_FULL
+                []  APP_UNAVAILABLE
+                []  APP_KEY_LOST
+                []  APP_CACHE_STALE
+                []  DB_ABORT
+                []  DB_CORRUPT
+                []  DB_CORRUPT_LOCAL
+                []  DB_DATA_LOST
+                []  INFRA_DB_DOWN
+                []  INFRA_STORAGE_MEDIA
+                []  INFRA_DOZE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            loop TP_ACCEPT end loop
+    end var
+end process
+
+end module

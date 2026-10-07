@@ -1,0 +1,1227 @@
+using testor: /home/paulad/cadp/bin.x64/testor.a
+purposes: happy app1_write_fail app_partial_submission app_grade_stale_sub app_lazy_regrade db_attempt_step_loss infra_cron_dead ue1_lose_conn ue2_session_expire
+output dir: .
+======================================================================
+==> composed model
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_igNAxc/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_igNAxc/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_igNAxc/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_igNAxc/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: using ``(direct) caesar''
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent compose_moodle''
+  243505 states, 1154250 transitions
+  all 8 faults and all oracles present in the alphabet
+======================================================================
+==> happy
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_happy.lnt:28: warning: event parameter ENROL never accessed
+tp_happy.lnt:29: warning: event parameter VIEW_QUIZ never accessed
+tp_happy.lnt:30: warning: event parameter START_ATTEMPT never accessed
+tp_happy.lnt:31: warning: event parameter SAVE_ATTEMPT never accessed
+tp_happy.lnt:32: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_happy.lnt:33: warning: event parameter GRADE_PERSISTED never accessed
+tp_happy.lnt:34: warning: event parameter ATTEMPT_STATE never accessed
+tp_happy.lnt:40: warning: event parameter OPEN_GRADING never accessed
+tp_happy.lnt:41: warning: event parameter GRADING_SHOWS never accessed
+tp_happy.lnt:42: warning: event parameter GRADE_SUBMISSION never accessed
+tp_happy.lnt:43: warning: event parameter CONFIRMED_GRADE never accessed
+tp_happy.lnt:44: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_happy.lnt:45: warning: event parameter COURSE_TOTAL never accessed
+tp_happy.lnt:49: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_happy.lnt:49: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_happy.lnt:50: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_happy.lnt:50: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_happy.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_dqBUCF/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_dqBUCF/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_dqBUCF/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_dqBUCF/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_happy.bcg ./tc_happy.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_happy.aut (50 transitions)
+======================================================================
+==> app1_write_fail
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_app1_write_fail.lnt:27: warning: event parameter ENROL never accessed
+tp_app1_write_fail.lnt:30: warning: event parameter SAVE_ATTEMPT never accessed
+tp_app1_write_fail.lnt:32: warning: event parameter GRADE_PERSISTED never accessed
+tp_app1_write_fail.lnt:33: warning: event parameter ATTEMPT_STATE never accessed
+tp_app1_write_fail.lnt:34: warning: event parameter VIEW_ASSIGN never accessed
+tp_app1_write_fail.lnt:35: warning: event parameter SUBMIT_DRAFT never accessed
+tp_app1_write_fail.lnt:36: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_app1_write_fail.lnt:37: warning: event parameter SUBMISSION_STATUS never accessed
+tp_app1_write_fail.lnt:38: warning: event parameter SUBMISSION_TEXT never accessed
+tp_app1_write_fail.lnt:39: warning: event parameter OPEN_GRADING never accessed
+tp_app1_write_fail.lnt:40: warning: event parameter GRADING_SHOWS never accessed
+tp_app1_write_fail.lnt:41: warning: event parameter GRADE_SUBMISSION never accessed
+tp_app1_write_fail.lnt:42: warning: event parameter CONFIRMED_GRADE never accessed
+tp_app1_write_fail.lnt:43: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_app1_write_fail.lnt:44: warning: event parameter COURSE_TOTAL never accessed
+tp_app1_write_fail.lnt:48: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_app1_write_fail.lnt:49: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_app1_write_fail.lnt:49: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app1_write_fail.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_evm2GX/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_evm2GX/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_evm2GX/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_evm2GX/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_app1_write_fail.bcg ./tc_app1_write_fail.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_app1_write_fail.aut (1404 transitions)
+======================================================================
+==> app_partial_submission
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_app_partial_submission.lnt:36: warning: event parameter ENROL never accessed
+tp_app_partial_submission.lnt:37: warning: event parameter VIEW_QUIZ never accessed
+tp_app_partial_submission.lnt:38: warning: event parameter START_ATTEMPT never accessed
+tp_app_partial_submission.lnt:39: warning: event parameter SAVE_ATTEMPT never accessed
+tp_app_partial_submission.lnt:40: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_app_partial_submission.lnt:41: warning: event parameter GRADE_PERSISTED never accessed
+tp_app_partial_submission.lnt:42: warning: event parameter ATTEMPT_STATE never accessed
+tp_app_partial_submission.lnt:43: warning: event parameter VIEW_ASSIGN never accessed
+tp_app_partial_submission.lnt:48: warning: event parameter OPEN_GRADING never accessed
+tp_app_partial_submission.lnt:49: warning: event parameter GRADING_SHOWS never accessed
+tp_app_partial_submission.lnt:50: warning: event parameter GRADE_SUBMISSION never accessed
+tp_app_partial_submission.lnt:51: warning: event parameter CONFIRMED_GRADE never accessed
+tp_app_partial_submission.lnt:52: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_app_partial_submission.lnt:53: warning: event parameter COURSE_TOTAL never accessed
+tp_app_partial_submission.lnt:57: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_partial_submission.lnt:57: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_app_partial_submission.lnt:58: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_app_partial_submission.lnt:58: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_partial_submission.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_g4RHZA/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_g4RHZA/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_g4RHZA/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_g4RHZA/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_app_partial_submission.bcg ./tc_app_partial_submission.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_app_partial_submission.aut (493 transitions)
+======================================================================
+==> app_grade_stale_sub
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_app_grade_stale_sub.lnt:29: warning: event parameter ENROL never accessed
+tp_app_grade_stale_sub.lnt:30: warning: event parameter VIEW_QUIZ never accessed
+tp_app_grade_stale_sub.lnt:31: warning: event parameter START_ATTEMPT never accessed
+tp_app_grade_stale_sub.lnt:32: warning: event parameter SAVE_ATTEMPT never accessed
+tp_app_grade_stale_sub.lnt:33: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_app_grade_stale_sub.lnt:34: warning: event parameter GRADE_PERSISTED never accessed
+tp_app_grade_stale_sub.lnt:35: warning: event parameter ATTEMPT_STATE never accessed
+tp_app_grade_stale_sub.lnt:36: warning: event parameter VIEW_ASSIGN never accessed
+tp_app_grade_stale_sub.lnt:37: warning: event parameter SUBMIT_DRAFT never accessed
+tp_app_grade_stale_sub.lnt:38: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_app_grade_stale_sub.lnt:39: warning: event parameter SUBMISSION_STATUS never accessed
+tp_app_grade_stale_sub.lnt:40: warning: event parameter SUBMISSION_TEXT never accessed
+tp_app_grade_stale_sub.lnt:45: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_app_grade_stale_sub.lnt:46: warning: event parameter COURSE_TOTAL never accessed
+tp_app_grade_stale_sub.lnt:50: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_grade_stale_sub.lnt:50: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_app_grade_stale_sub.lnt:51: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_app_grade_stale_sub.lnt:51: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_grade_stale_sub.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_48rpmD/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_48rpmD/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_48rpmD/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_48rpmD/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_app_grade_stale_sub.bcg ./tc_app_grade_stale_sub.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_app_grade_stale_sub.aut (1651 transitions)
+======================================================================
+==> app_lazy_regrade
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_app_lazy_regrade.lnt:27: warning: event parameter ENROL never accessed
+tp_app_lazy_regrade.lnt:28: warning: event parameter VIEW_QUIZ never accessed
+tp_app_lazy_regrade.lnt:29: warning: event parameter START_ATTEMPT never accessed
+tp_app_lazy_regrade.lnt:30: warning: event parameter SAVE_ATTEMPT never accessed
+tp_app_lazy_regrade.lnt:31: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_app_lazy_regrade.lnt:33: warning: event parameter ATTEMPT_STATE never accessed
+tp_app_lazy_regrade.lnt:34: warning: event parameter VIEW_ASSIGN never accessed
+tp_app_lazy_regrade.lnt:35: warning: event parameter SUBMIT_DRAFT never accessed
+tp_app_lazy_regrade.lnt:36: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_app_lazy_regrade.lnt:37: warning: event parameter SUBMISSION_STATUS never accessed
+tp_app_lazy_regrade.lnt:38: warning: event parameter SUBMISSION_TEXT never accessed
+tp_app_lazy_regrade.lnt:39: warning: event parameter OPEN_GRADING never accessed
+tp_app_lazy_regrade.lnt:40: warning: event parameter GRADING_SHOWS never accessed
+tp_app_lazy_regrade.lnt:41: warning: event parameter GRADE_SUBMISSION never accessed
+tp_app_lazy_regrade.lnt:42: warning: event parameter CONFIRMED_GRADE never accessed
+tp_app_lazy_regrade.lnt:48: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_app_lazy_regrade.lnt:48: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_app_lazy_regrade.lnt:49: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_app_lazy_regrade.lnt:49: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_app_lazy_regrade.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_5UrS7c/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_5UrS7c/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_5UrS7c/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_5UrS7c/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_app_lazy_regrade.bcg ./tc_app_lazy_regrade.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_app_lazy_regrade.aut (1670 transitions)
+======================================================================
+==> db_attempt_step_loss
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_db_attempt_step_loss.lnt:29: warning: event parameter ENROL never accessed
+tp_db_attempt_step_loss.lnt:30: warning: event parameter VIEW_QUIZ never accessed
+tp_db_attempt_step_loss.lnt:32: warning: event parameter SAVE_ATTEMPT never accessed
+tp_db_attempt_step_loss.lnt:34: warning: event parameter GRADE_PERSISTED never accessed
+tp_db_attempt_step_loss.lnt:35: warning: event parameter ATTEMPT_STATE never accessed
+tp_db_attempt_step_loss.lnt:36: warning: event parameter VIEW_ASSIGN never accessed
+tp_db_attempt_step_loss.lnt:37: warning: event parameter SUBMIT_DRAFT never accessed
+tp_db_attempt_step_loss.lnt:38: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_db_attempt_step_loss.lnt:39: warning: event parameter SUBMISSION_STATUS never accessed
+tp_db_attempt_step_loss.lnt:40: warning: event parameter SUBMISSION_TEXT never accessed
+tp_db_attempt_step_loss.lnt:41: warning: event parameter OPEN_GRADING never accessed
+tp_db_attempt_step_loss.lnt:42: warning: event parameter GRADING_SHOWS never accessed
+tp_db_attempt_step_loss.lnt:43: warning: event parameter GRADE_SUBMISSION never accessed
+tp_db_attempt_step_loss.lnt:44: warning: event parameter CONFIRMED_GRADE never accessed
+tp_db_attempt_step_loss.lnt:45: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_db_attempt_step_loss.lnt:46: warning: event parameter COURSE_TOTAL never accessed
+tp_db_attempt_step_loss.lnt:50: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_db_attempt_step_loss.lnt:51: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_db_attempt_step_loss.lnt:51: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_db_attempt_step_loss.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_0GgtQ4/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_0GgtQ4/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_0GgtQ4/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_0GgtQ4/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_db_attempt_step_loss.bcg ./tc_db_attempt_step_loss.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_db_attempt_step_loss.aut (2216 transitions)
+======================================================================
+==> infra_cron_dead
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_infra_cron_dead.lnt:28: warning: event parameter ENROL never accessed
+tp_infra_cron_dead.lnt:29: warning: event parameter VIEW_QUIZ never accessed
+tp_infra_cron_dead.lnt:31: warning: event parameter SAVE_ATTEMPT never accessed
+tp_infra_cron_dead.lnt:32: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_infra_cron_dead.lnt:33: warning: event parameter GRADE_PERSISTED never accessed
+tp_infra_cron_dead.lnt:35: warning: event parameter VIEW_ASSIGN never accessed
+tp_infra_cron_dead.lnt:36: warning: event parameter SUBMIT_DRAFT never accessed
+tp_infra_cron_dead.lnt:37: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_infra_cron_dead.lnt:38: warning: event parameter SUBMISSION_STATUS never accessed
+tp_infra_cron_dead.lnt:39: warning: event parameter SUBMISSION_TEXT never accessed
+tp_infra_cron_dead.lnt:40: warning: event parameter OPEN_GRADING never accessed
+tp_infra_cron_dead.lnt:41: warning: event parameter GRADING_SHOWS never accessed
+tp_infra_cron_dead.lnt:42: warning: event parameter GRADE_SUBMISSION never accessed
+tp_infra_cron_dead.lnt:43: warning: event parameter CONFIRMED_GRADE never accessed
+tp_infra_cron_dead.lnt:44: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_infra_cron_dead.lnt:45: warning: event parameter COURSE_TOTAL never accessed
+tp_infra_cron_dead.lnt:49: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_infra_cron_dead.lnt:49: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_infra_cron_dead.lnt:50: warning: event parameter SESSION_ERROR_SHOWN never accessed
+tp_infra_cron_dead.lnt:50: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_infra_cron_dead.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_hGKkzv/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_hGKkzv/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_hGKkzv/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_hGKkzv/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_infra_cron_dead.bcg ./tc_infra_cron_dead.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_infra_cron_dead.aut (592 transitions)
+======================================================================
+==> ue1_lose_conn
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_ue1_lose_conn.lnt:28: warning: event parameter ENROL never accessed
+tp_ue1_lose_conn.lnt:29: warning: event parameter VIEW_QUIZ never accessed
+tp_ue1_lose_conn.lnt:31: warning: event parameter SAVE_ATTEMPT never accessed
+tp_ue1_lose_conn.lnt:32: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_ue1_lose_conn.lnt:33: warning: event parameter GRADE_PERSISTED never accessed
+tp_ue1_lose_conn.lnt:34: warning: event parameter ATTEMPT_STATE never accessed
+tp_ue1_lose_conn.lnt:35: warning: event parameter VIEW_ASSIGN never accessed
+tp_ue1_lose_conn.lnt:36: warning: event parameter SUBMIT_DRAFT never accessed
+tp_ue1_lose_conn.lnt:37: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_ue1_lose_conn.lnt:38: warning: event parameter SUBMISSION_STATUS never accessed
+tp_ue1_lose_conn.lnt:39: warning: event parameter SUBMISSION_TEXT never accessed
+tp_ue1_lose_conn.lnt:40: warning: event parameter OPEN_GRADING never accessed
+tp_ue1_lose_conn.lnt:41: warning: event parameter GRADING_SHOWS never accessed
+tp_ue1_lose_conn.lnt:42: warning: event parameter GRADE_SUBMISSION never accessed
+tp_ue1_lose_conn.lnt:43: warning: event parameter CONFIRMED_GRADE never accessed
+tp_ue1_lose_conn.lnt:44: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_ue1_lose_conn.lnt:45: warning: event parameter COURSE_TOTAL never accessed
+tp_ue1_lose_conn.lnt:49: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_ue1_lose_conn.lnt:49: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_ue1_lose_conn.lnt:50: warning: event parameter SESSION_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue1_lose_conn.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_LYfVGC/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_LYfVGC/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_LYfVGC/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_LYfVGC/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_ue1_lose_conn.bcg ./tc_ue1_lose_conn.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_ue1_lose_conn.aut (544 transitions)
+======================================================================
+==> ue2_session_expire
+  1. tp -> BCG
+moodle_types.lnt:256: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:260: warning: channel StatusChannel never employed
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:271: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:275: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:410: warning: channel Ch_Navigate never employed
+moodle_types.lnt:411: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:412: warning: channel Ch_Click never employed
+moodle_types.lnt:413: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:414: warning: channel Ch_Observe never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:395: warning: function L_user never called
+moodle_types.lnt:402: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:129: warning: "with" function == of type Actor never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+tp_ue2_session_expire.lnt:28: warning: event parameter ENROL never accessed
+tp_ue2_session_expire.lnt:29: warning: event parameter VIEW_QUIZ never accessed
+tp_ue2_session_expire.lnt:30: warning: event parameter START_ATTEMPT never accessed
+tp_ue2_session_expire.lnt:31: warning: event parameter SAVE_ATTEMPT never accessed
+tp_ue2_session_expire.lnt:32: warning: event parameter PROCESS_ATTEMPT never accessed
+tp_ue2_session_expire.lnt:33: warning: event parameter GRADE_PERSISTED never accessed
+tp_ue2_session_expire.lnt:34: warning: event parameter ATTEMPT_STATE never accessed
+tp_ue2_session_expire.lnt:36: warning: event parameter SUBMIT_DRAFT never accessed
+tp_ue2_session_expire.lnt:37: warning: event parameter UPDATE_SUBMISSION never accessed
+tp_ue2_session_expire.lnt:38: warning: event parameter SUBMISSION_STATUS never accessed
+tp_ue2_session_expire.lnt:39: warning: event parameter SUBMISSION_TEXT never accessed
+tp_ue2_session_expire.lnt:40: warning: event parameter OPEN_GRADING never accessed
+tp_ue2_session_expire.lnt:41: warning: event parameter GRADING_SHOWS never accessed
+tp_ue2_session_expire.lnt:42: warning: event parameter GRADE_SUBMISSION never accessed
+tp_ue2_session_expire.lnt:43: warning: event parameter CONFIRMED_GRADE never accessed
+tp_ue2_session_expire.lnt:44: warning: event parameter VIEW_COURSE_TOTAL never accessed
+tp_ue2_session_expire.lnt:45: warning: event parameter COURSE_TOTAL never accessed
+tp_ue2_session_expire.lnt:49: warning: event parameter WRITE_ERROR_SHOWN never accessed
+tp_ue2_session_expire.lnt:49: warning: event parameter STALE_WARNING_SHOWN never accessed
+tp_ue2_session_expire.lnt:50: warning: event parameter CONN_ERROR_SHOWN never accessed
+cadp_indent: cannot find ``indent''
+             file ``tp_ue2_session_expire.h'' will not be formatted
+  2. COMPOSED x tp -> test case BCG
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:264: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:377: warning: function L_grade never called
+moodle_types.lnt:387: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:102: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:148: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:310: warning: "with" function == of type Route never called
+moodle_types.lnt:361: warning: "with" function == of type Selector never called
+moodle_types.lnt:373: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:115: warning: useless assignment to g
+specification_moodle.lnt:128: warning: useless assignment to st
+specification_moodle.lnt:139: warning: useless assignment to ver
+specification_moodle.lnt:138: warning: useless assignment to sst
+specification_moodle.lnt:136: warning: useless assignment to ver
+specification_moodle.lnt:135: warning: useless assignment to sst
+specification_moodle.lnt:159: warning: useless assignment to sst
+specification_moodle.lnt:161: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to ver
+specification_moodle.lnt:163: warning: useless assignment to g
+specification_moodle.lnt:166: warning: useless assignment to g
+specification_moodle.lnt:102: warning: useless assignment to ver
+specification_moodle.lnt:101: warning: useless assignment to sst
+specification_moodle.lnt:100: warning: useless assignment to st
+specification_moodle.lnt:99: warning: useless assignment to g
+specification_moodle.lnt:206: warning: useless assignment to ver
+specification_moodle.lnt:198: warning: useless assignment to ver
+specification_moodle.lnt:278: warning: useless assignment to s
+specification_moodle.lnt:299: warning: useless assignment to s
+specification_moodle.lnt:328: warning: useless assignment to newver
+specification_moodle.lnt:266: warning: useless assignment to sst
+specification_moodle.lnt:265: warning: useless assignment to shown
+specification_moodle.lnt:263: warning: useless assignment to s
+specification_moodle.lnt:261: warning: useless assignment to asn
+specification_moodle.lnt:415: warning: useless assignment to qz
+specification_moodle.lnt:415: warning: useless assignment to crs
+specification_moodle.lnt:438: warning: useless assignment to sst
+specification_moodle.lnt:438: warning: useless assignment to asn
+specification_moodle.lnt:441: warning: useless assignment to ver
+specification_moodle.lnt:441: warning: useless assignment to asn
+specification_moodle.lnt:408: warning: useless assignment to sst
+specification_moodle.lnt:407: warning: useless assignment to ver
+specification_moodle.lnt:406: warning: useless assignment to asn
+specification_moodle.lnt:404: warning: useless assignment to qz
+specification_moodle.lnt:403: warning: useless assignment to crs
+system_interface_moodle.lnt:213: warning: useless assignment to st
+system_interface_moodle.lnt:305: warning: useless assignment to sst
+system_interface_moodle.lnt:324: warning: useless assignment to ver
+system_interface_moodle.lnt:351: warning: useless assignment to ver
+system_interface_moodle.lnt:385: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_bI62xd/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_bI62xd/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_bI62xd/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_bI62xd/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io ./tp_ue2_session_expire.bcg ./tc_ue2_session_expire.bcg'' for ``compose_moodle.lotos''
+  3. BCG -> AUT
+  done: ./tc_ue2_session_expire.aut (122 transitions)
+======================================================================
+all AUTs: ./tc_app1_write_fail.aut ./tc_app_grade_stale_sub.aut ./tc_app_lazy_regrade.aut ./tc_app_partial_submission.aut ./tc_db_attempt_step_loss.aut ./tc_happy.aut ./tc_infra_cron_dead.aut ./tc_ue1_lose_conn.aut ./tc_ue2_session_expire.aut 
+
+bring back tc_*.aut (and tc_*.bcg) to the mac repo under
+EVALUATION/moodle/Test_Cases/

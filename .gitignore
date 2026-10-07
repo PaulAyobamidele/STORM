@@ -2,10 +2,10 @@
 __pycache__/
 .pytest_cache/
 .DS_Store
-systems/*/sut/
-systems/*/generated/build/
-systems/*/runs/
-*.bcg
+EVALUATION/*/sut/
+EVALUATION/*/generated/
+EVALUATION/*/runs/
+compose_*.bcg
 *.o
 CADP_LICENSE*
 .env

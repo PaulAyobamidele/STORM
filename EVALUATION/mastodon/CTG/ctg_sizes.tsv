@@ -1,0 +1,16 @@
+mastodon_app_cache_stale.ctg	65 states, 94 transitions 
+mastodon_app_extapi_fail.ctg	68 states, 100 transitions 
+mastodon_app_lazy_processing.ctg	100 states, 144 transitions 
+mastodon_app_unavailable.ctg	142 states, 198 transitions 
+mastodon_app_write_fail.ctg	70 states, 98 transitions 
+mastodon_db_abort.ctg	142 states, 198 transitions 
+mastodon_db_corrupt.ctg	61 states, 89 transitions 
+mastodon_db_event_loss.ctg	71 states, 102 transitions 
+mastodon_infra_db_down.ctg	142 states, 198 transitions 
+mastodon_infra_sidekiq_dead.ctg	136 states, 198 transitions 
+mastodon_infra_storage_full.ctg	142 states, 198 transitions 
+mastodon_input_invalid.ctg	71 states, 100 transitions 
+mastodon_input_overlimit.ctg	71 states, 100 transitions 
+mastodon_nominal.ctg	98 states, 140 transitions 
+mastodon_ue_kill.ctg	67 states, 101 transitions 
+mastodon_ue_session_expired.ctg	172 states, 248 transitions 

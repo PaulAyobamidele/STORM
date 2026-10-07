@@ -1,0 +1,2602 @@
+module tp_infra_storage_media (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    the happy path (ordering 1) with INFRA_STORAGE_MEDIA at each of its points.
+   TARGET   the store is made unreadable, at each re-read.
+   ACCEPT   the fault fires at a point and the app answers as owed there.
+   REFUSE   the walk passes every point without the fault; any other fault;
+            any input off the path. One test case per point (extract_all). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_STOCK    : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+        alt
+            ADD_MEDICINE (VALID)
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (INVALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, TAKE)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            []  VIEW (d_a1)
+            []  VIEW (d_a2)
+            []  VIEW (d_a3)
+            []  VIEW (d_b)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt;
+        alt
+            MEDICINE_SHOWN
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (VALID)
+            []  ADD_MEDICINE (INVALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, TAKE)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            []  VIEW (d_a1)
+            []  VIEW (d_a2)
+            []  VIEW (d_a3)
+            []  VIEW (d_b)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt;
+        alt
+            ACT (d_a1, TAKE)
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (VALID)
+            []  ADD_MEDICINE (INVALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            []  VIEW (d_a1)
+            []  VIEW (d_a2)
+            []  VIEW (d_a3)
+            []  VIEW (d_b)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt;
+        alt
+            CONFIRM (COMMITTED, ?any StockBand, TAKEN, d_a1)
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (VALID)
+            []  ADD_MEDICINE (INVALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, TAKE)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            []  VIEW (d_a1)
+            []  VIEW (d_a2)
+            []  VIEW (d_a3)
+            []  VIEW (d_b)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt;
+        alt
+            VIEW (d_a1);
+            alt
+                CONFIRM (COMMITTED, ?any StockBand, TAKEN, d_a1);
+                alt
+                    DELETE (d_a1)
+                []
+                    alt
+                        APP_WRITE_FAIL
+                    []  INFRA_STORAGE_FULL
+                    []  UE_KILL
+                    []  DB_ABORT
+                    []  APP_CACHE_STALE
+                    []  DB_CORRUPT
+                    []  DB_CORRUPT_STOCK
+                    []  INFRA_STORAGE_MEDIA
+                    []  DB_EVENT_LOSS
+                    []  ADD_MEDICINE (VALID)
+                    []  ADD_MEDICINE (INVALID)
+                    []  NO_SKIP (med_a)
+                    []  NO_SKIP (med_b)
+                    []  ACT (d_a1, TAKE)
+                    []  ACT (d_a1, SKIP)
+                    []  ACT (d_a2, TAKE)
+                    []  ACT (d_a2, SKIP)
+                    []  ACT (d_a3, TAKE)
+                    []  ACT (d_a3, SKIP)
+                    []  ACT (d_b, TAKE)
+                    []  ACT (d_b, SKIP)
+                    []  DELETE (d_a2)
+                    []  DELETE (d_a3)
+                    []  DELETE (d_b)
+                    []  EDIT (d_a1, TAKE)
+                    []  EDIT (d_a1, SKIP)
+                    []  EDIT (d_a2, TAKE)
+                    []  EDIT (d_a2, SKIP)
+                    []  EDIT (d_a3, TAKE)
+                    []  EDIT (d_a3, SKIP)
+                    []  EDIT (d_b, TAKE)
+                    []  EDIT (d_b, SKIP)
+                    []  VIEW (d_a1)
+                    []  VIEW (d_a2)
+                    []  VIEW (d_a3)
+                    []  VIEW (d_b)
+                    end alt;
+                    loop TP_REFUSE end loop
+                end alt;
+                alt
+                    CONFIRM (COMMITTED, ?any StockBand, ABSENT, d_a1)
+                []
+                    alt
+                        APP_WRITE_FAIL
+                    []  INFRA_STORAGE_FULL
+                    []  UE_KILL
+                    []  DB_ABORT
+                    []  APP_CACHE_STALE
+                    []  DB_CORRUPT
+                    []  DB_CORRUPT_STOCK
+                    []  INFRA_STORAGE_MEDIA
+                    []  DB_EVENT_LOSS
+                    []  ADD_MEDICINE (VALID)
+                    []  ADD_MEDICINE (INVALID)
+                    []  NO_SKIP (med_a)
+                    []  NO_SKIP (med_b)
+                    []  ACT (d_a1, TAKE)
+                    []  ACT (d_a1, SKIP)
+                    []  ACT (d_a2, TAKE)
+                    []  ACT (d_a2, SKIP)
+                    []  ACT (d_a3, TAKE)
+                    []  ACT (d_a3, SKIP)
+                    []  ACT (d_b, TAKE)
+                    []  ACT (d_b, SKIP)
+                    []  DELETE (d_a1)
+                    []  DELETE (d_a2)
+                    []  DELETE (d_a3)
+                    []  DELETE (d_b)
+                    []  EDIT (d_a1, TAKE)
+                    []  EDIT (d_a1, SKIP)
+                    []  EDIT (d_a2, TAKE)
+                    []  EDIT (d_a2, SKIP)
+                    []  EDIT (d_a3, TAKE)
+                    []  EDIT (d_a3, SKIP)
+                    []  EDIT (d_b, TAKE)
+                    []  EDIT (d_b, SKIP)
+                    []  VIEW (d_a1)
+                    []  VIEW (d_a2)
+                    []  VIEW (d_a3)
+                    []  VIEW (d_b)
+                    end alt;
+                    loop TP_REFUSE end loop
+                end alt;
+                alt
+                    VIEW (d_a1);
+                    alt
+                        CONFIRM (COMMITTED, ?any StockBand, ABSENT, d_a1);
+                        alt
+                            ACT (d_a2, SKIP)
+                        []
+                            alt
+                                APP_WRITE_FAIL
+                            []  INFRA_STORAGE_FULL
+                            []  UE_KILL
+                            []  DB_ABORT
+                            []  APP_CACHE_STALE
+                            []  DB_CORRUPT
+                            []  DB_CORRUPT_STOCK
+                            []  INFRA_STORAGE_MEDIA
+                            []  DB_EVENT_LOSS
+                            []  ADD_MEDICINE (VALID)
+                            []  ADD_MEDICINE (INVALID)
+                            []  NO_SKIP (med_a)
+                            []  NO_SKIP (med_b)
+                            []  ACT (d_a1, TAKE)
+                            []  ACT (d_a1, SKIP)
+                            []  ACT (d_a2, TAKE)
+                            []  ACT (d_a3, TAKE)
+                            []  ACT (d_a3, SKIP)
+                            []  ACT (d_b, TAKE)
+                            []  ACT (d_b, SKIP)
+                            []  DELETE (d_a1)
+                            []  DELETE (d_a2)
+                            []  DELETE (d_a3)
+                            []  DELETE (d_b)
+                            []  EDIT (d_a1, TAKE)
+                            []  EDIT (d_a1, SKIP)
+                            []  EDIT (d_a2, TAKE)
+                            []  EDIT (d_a2, SKIP)
+                            []  EDIT (d_a3, TAKE)
+                            []  EDIT (d_a3, SKIP)
+                            []  EDIT (d_b, TAKE)
+                            []  EDIT (d_b, SKIP)
+                            []  VIEW (d_a1)
+                            []  VIEW (d_a2)
+                            []  VIEW (d_a3)
+                            []  VIEW (d_b)
+                            end alt;
+                            loop TP_REFUSE end loop
+                        end alt;
+                        alt
+                            CONFIRM (COMMITTED, ?any StockBand, SKIPPED, d_a2)
+                        []
+                            alt
+                                APP_WRITE_FAIL
+                            []  INFRA_STORAGE_FULL
+                            []  UE_KILL
+                            []  DB_ABORT
+                            []  APP_CACHE_STALE
+                            []  DB_CORRUPT
+                            []  DB_CORRUPT_STOCK
+                            []  INFRA_STORAGE_MEDIA
+                            []  DB_EVENT_LOSS
+                            []  ADD_MEDICINE (VALID)
+                            []  ADD_MEDICINE (INVALID)
+                            []  NO_SKIP (med_a)
+                            []  NO_SKIP (med_b)
+                            []  ACT (d_a1, TAKE)
+                            []  ACT (d_a1, SKIP)
+                            []  ACT (d_a2, TAKE)
+                            []  ACT (d_a2, SKIP)
+                            []  ACT (d_a3, TAKE)
+                            []  ACT (d_a3, SKIP)
+                            []  ACT (d_b, TAKE)
+                            []  ACT (d_b, SKIP)
+                            []  DELETE (d_a1)
+                            []  DELETE (d_a2)
+                            []  DELETE (d_a3)
+                            []  DELETE (d_b)
+                            []  EDIT (d_a1, TAKE)
+                            []  EDIT (d_a1, SKIP)
+                            []  EDIT (d_a2, TAKE)
+                            []  EDIT (d_a2, SKIP)
+                            []  EDIT (d_a3, TAKE)
+                            []  EDIT (d_a3, SKIP)
+                            []  EDIT (d_b, TAKE)
+                            []  EDIT (d_b, SKIP)
+                            []  VIEW (d_a1)
+                            []  VIEW (d_a2)
+                            []  VIEW (d_a3)
+                            []  VIEW (d_b)
+                            end alt;
+                            loop TP_REFUSE end loop
+                        end alt;
+                        alt
+                            VIEW (d_a2);
+                            alt
+                                CONFIRM (COMMITTED, ?any StockBand, SKIPPED, d_a2);
+                                alt
+                                    NO_SKIP (med_a)
+                                []
+                                    alt
+                                        APP_WRITE_FAIL
+                                    []  INFRA_STORAGE_FULL
+                                    []  UE_KILL
+                                    []  DB_ABORT
+                                    []  APP_CACHE_STALE
+                                    []  DB_CORRUPT
+                                    []  DB_CORRUPT_STOCK
+                                    []  INFRA_STORAGE_MEDIA
+                                    []  DB_EVENT_LOSS
+                                    []  ADD_MEDICINE (VALID)
+                                    []  ADD_MEDICINE (INVALID)
+                                    []  NO_SKIP (med_b)
+                                    []  ACT (d_a1, TAKE)
+                                    []  ACT (d_a1, SKIP)
+                                    []  ACT (d_a2, TAKE)
+                                    []  ACT (d_a2, SKIP)
+                                    []  ACT (d_a3, TAKE)
+                                    []  ACT (d_a3, SKIP)
+                                    []  ACT (d_b, TAKE)
+                                    []  ACT (d_b, SKIP)
+                                    []  DELETE (d_a1)
+                                    []  DELETE (d_a2)
+                                    []  DELETE (d_a3)
+                                    []  DELETE (d_b)
+                                    []  EDIT (d_a1, TAKE)
+                                    []  EDIT (d_a1, SKIP)
+                                    []  EDIT (d_a2, TAKE)
+                                    []  EDIT (d_a2, SKIP)
+                                    []  EDIT (d_a3, TAKE)
+                                    []  EDIT (d_a3, SKIP)
+                                    []  EDIT (d_b, TAKE)
+                                    []  EDIT (d_b, SKIP)
+                                    []  VIEW (d_a1)
+                                    []  VIEW (d_a2)
+                                    []  VIEW (d_a3)
+                                    []  VIEW (d_b)
+                                    end alt;
+                                    loop TP_REFUSE end loop
+                                end alt;
+                                alt
+                                    ACT (d_a3, TAKE)
+                                []
+                                    alt
+                                        APP_WRITE_FAIL
+                                    []  INFRA_STORAGE_FULL
+                                    []  UE_KILL
+                                    []  DB_ABORT
+                                    []  APP_CACHE_STALE
+                                    []  DB_CORRUPT
+                                    []  DB_CORRUPT_STOCK
+                                    []  INFRA_STORAGE_MEDIA
+                                    []  DB_EVENT_LOSS
+                                    []  ADD_MEDICINE (VALID)
+                                    []  ADD_MEDICINE (INVALID)
+                                    []  NO_SKIP (med_a)
+                                    []  NO_SKIP (med_b)
+                                    []  ACT (d_a1, TAKE)
+                                    []  ACT (d_a1, SKIP)
+                                    []  ACT (d_a2, TAKE)
+                                    []  ACT (d_a2, SKIP)
+                                    []  ACT (d_a3, SKIP)
+                                    []  ACT (d_b, TAKE)
+                                    []  ACT (d_b, SKIP)
+                                    []  DELETE (d_a1)
+                                    []  DELETE (d_a2)
+                                    []  DELETE (d_a3)
+                                    []  DELETE (d_b)
+                                    []  EDIT (d_a1, TAKE)
+                                    []  EDIT (d_a1, SKIP)
+                                    []  EDIT (d_a2, TAKE)
+                                    []  EDIT (d_a2, SKIP)
+                                    []  EDIT (d_a3, TAKE)
+                                    []  EDIT (d_a3, SKIP)
+                                    []  EDIT (d_b, TAKE)
+                                    []  EDIT (d_b, SKIP)
+                                    []  VIEW (d_a1)
+                                    []  VIEW (d_a2)
+                                    []  VIEW (d_a3)
+                                    []  VIEW (d_b)
+                                    end alt;
+                                    loop TP_REFUSE end loop
+                                end alt;
+                                alt
+                                    CONFIRM (COMMITTED, ?any StockBand, TAKEN, d_a3)
+                                []
+                                    alt
+                                        APP_WRITE_FAIL
+                                    []  INFRA_STORAGE_FULL
+                                    []  UE_KILL
+                                    []  DB_ABORT
+                                    []  APP_CACHE_STALE
+                                    []  DB_CORRUPT
+                                    []  DB_CORRUPT_STOCK
+                                    []  INFRA_STORAGE_MEDIA
+                                    []  DB_EVENT_LOSS
+                                    []  ADD_MEDICINE (VALID)
+                                    []  ADD_MEDICINE (INVALID)
+                                    []  NO_SKIP (med_a)
+                                    []  NO_SKIP (med_b)
+                                    []  ACT (d_a1, TAKE)
+                                    []  ACT (d_a1, SKIP)
+                                    []  ACT (d_a2, TAKE)
+                                    []  ACT (d_a2, SKIP)
+                                    []  ACT (d_a3, TAKE)
+                                    []  ACT (d_a3, SKIP)
+                                    []  ACT (d_b, TAKE)
+                                    []  ACT (d_b, SKIP)
+                                    []  DELETE (d_a1)
+                                    []  DELETE (d_a2)
+                                    []  DELETE (d_a3)
+                                    []  DELETE (d_b)
+                                    []  EDIT (d_a1, TAKE)
+                                    []  EDIT (d_a1, SKIP)
+                                    []  EDIT (d_a2, TAKE)
+                                    []  EDIT (d_a2, SKIP)
+                                    []  EDIT (d_a3, TAKE)
+                                    []  EDIT (d_a3, SKIP)
+                                    []  EDIT (d_b, TAKE)
+                                    []  EDIT (d_b, SKIP)
+                                    []  VIEW (d_a1)
+                                    []  VIEW (d_a2)
+                                    []  VIEW (d_a3)
+                                    []  VIEW (d_b)
+                                    end alt;
+                                    loop TP_REFUSE end loop
+                                end alt;
+                                alt
+                                    VIEW (d_a3);
+                                    alt
+                                        CONFIRM (COMMITTED, ?any StockBand, TAKEN, d_a3);
+                                        alt
+                                            ACT (d_b, TAKE)
+                                        []
+                                            alt
+                                                APP_WRITE_FAIL
+                                            []  INFRA_STORAGE_FULL
+                                            []  UE_KILL
+                                            []  DB_ABORT
+                                            []  APP_CACHE_STALE
+                                            []  DB_CORRUPT
+                                            []  DB_CORRUPT_STOCK
+                                            []  INFRA_STORAGE_MEDIA
+                                            []  DB_EVENT_LOSS
+                                            []  ADD_MEDICINE (VALID)
+                                            []  ADD_MEDICINE (INVALID)
+                                            []  NO_SKIP (med_a)
+                                            []  NO_SKIP (med_b)
+                                            []  ACT (d_a1, TAKE)
+                                            []  ACT (d_a1, SKIP)
+                                            []  ACT (d_a2, TAKE)
+                                            []  ACT (d_a2, SKIP)
+                                            []  ACT (d_a3, TAKE)
+                                            []  ACT (d_a3, SKIP)
+                                            []  ACT (d_b, SKIP)
+                                            []  DELETE (d_a1)
+                                            []  DELETE (d_a2)
+                                            []  DELETE (d_a3)
+                                            []  DELETE (d_b)
+                                            []  EDIT (d_a1, TAKE)
+                                            []  EDIT (d_a1, SKIP)
+                                            []  EDIT (d_a2, TAKE)
+                                            []  EDIT (d_a2, SKIP)
+                                            []  EDIT (d_a3, TAKE)
+                                            []  EDIT (d_a3, SKIP)
+                                            []  EDIT (d_b, TAKE)
+                                            []  EDIT (d_b, SKIP)
+                                            []  VIEW (d_a1)
+                                            []  VIEW (d_a2)
+                                            []  VIEW (d_a3)
+                                            []  VIEW (d_b)
+                                            end alt;
+                                            loop TP_REFUSE end loop
+                                        end alt;
+                                        alt
+                                            CONFIRM (COMMITTED, ?any StockBand, TAKEN, d_b)
+                                        []
+                                            alt
+                                                APP_WRITE_FAIL
+                                            []  INFRA_STORAGE_FULL
+                                            []  UE_KILL
+                                            []  DB_ABORT
+                                            []  APP_CACHE_STALE
+                                            []  DB_CORRUPT
+                                            []  DB_CORRUPT_STOCK
+                                            []  INFRA_STORAGE_MEDIA
+                                            []  DB_EVENT_LOSS
+                                            []  ADD_MEDICINE (VALID)
+                                            []  ADD_MEDICINE (INVALID)
+                                            []  NO_SKIP (med_a)
+                                            []  NO_SKIP (med_b)
+                                            []  ACT (d_a1, TAKE)
+                                            []  ACT (d_a1, SKIP)
+                                            []  ACT (d_a2, TAKE)
+                                            []  ACT (d_a2, SKIP)
+                                            []  ACT (d_a3, TAKE)
+                                            []  ACT (d_a3, SKIP)
+                                            []  ACT (d_b, TAKE)
+                                            []  ACT (d_b, SKIP)
+                                            []  DELETE (d_a1)
+                                            []  DELETE (d_a2)
+                                            []  DELETE (d_a3)
+                                            []  DELETE (d_b)
+                                            []  EDIT (d_a1, TAKE)
+                                            []  EDIT (d_a1, SKIP)
+                                            []  EDIT (d_a2, TAKE)
+                                            []  EDIT (d_a2, SKIP)
+                                            []  EDIT (d_a3, TAKE)
+                                            []  EDIT (d_a3, SKIP)
+                                            []  EDIT (d_b, TAKE)
+                                            []  EDIT (d_b, SKIP)
+                                            []  VIEW (d_a1)
+                                            []  VIEW (d_a2)
+                                            []  VIEW (d_a3)
+                                            []  VIEW (d_b)
+                                            end alt;
+                                            loop TP_REFUSE end loop
+                                        end alt;
+                                        alt
+                                            VIEW (d_b);
+                                            alt
+                                                CONFIRM (COMMITTED, ?any StockBand, TAKEN, d_b);
+                                                loop TP_REFUSE end loop
+                                            []
+                                                INFRA_STORAGE_MEDIA;
+                                                alt
+                                                    INFRA_STORAGE_ERROR
+                                                []
+                                                    alt
+                                                        APP_WRITE_FAIL
+                                                    []  INFRA_STORAGE_FULL
+                                                    []  UE_KILL
+                                                    []  DB_ABORT
+                                                    []  APP_CACHE_STALE
+                                                    []  DB_CORRUPT
+                                                    []  DB_CORRUPT_STOCK
+                                                    []  INFRA_STORAGE_MEDIA
+                                                    []  DB_EVENT_LOSS
+                                                    []  ADD_MEDICINE (VALID)
+                                                    []  ADD_MEDICINE (INVALID)
+                                                    []  NO_SKIP (med_a)
+                                                    []  NO_SKIP (med_b)
+                                                    []  ACT (d_a1, TAKE)
+                                                    []  ACT (d_a1, SKIP)
+                                                    []  ACT (d_a2, TAKE)
+                                                    []  ACT (d_a2, SKIP)
+                                                    []  ACT (d_a3, TAKE)
+                                                    []  ACT (d_a3, SKIP)
+                                                    []  ACT (d_b, TAKE)
+                                                    []  ACT (d_b, SKIP)
+                                                    []  DELETE (d_a1)
+                                                    []  DELETE (d_a2)
+                                                    []  DELETE (d_a3)
+                                                    []  DELETE (d_b)
+                                                    []  EDIT (d_a1, TAKE)
+                                                    []  EDIT (d_a1, SKIP)
+                                                    []  EDIT (d_a2, TAKE)
+                                                    []  EDIT (d_a2, SKIP)
+                                                    []  EDIT (d_a3, TAKE)
+                                                    []  EDIT (d_a3, SKIP)
+                                                    []  EDIT (d_b, TAKE)
+                                                    []  EDIT (d_b, SKIP)
+                                                    []  VIEW (d_a1)
+                                                    []  VIEW (d_a2)
+                                                    []  VIEW (d_a3)
+                                                    []  VIEW (d_b)
+                                                    end alt;
+                                                    loop TP_REFUSE end loop
+                                                end alt;
+                                                loop TP_ACCEPT end loop
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt
+                                        []
+                                            VIEW (d_a1);
+                                            alt
+                                                INFRA_STORAGE_MEDIA
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt;
+                                            alt
+                                                INFRA_STORAGE_ERROR
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  INFRA_STORAGE_MEDIA
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt;
+                                            loop TP_ACCEPT end loop
+                                        []
+                                            VIEW (d_a2);
+                                            alt
+                                                INFRA_STORAGE_MEDIA
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt;
+                                            alt
+                                                INFRA_STORAGE_ERROR
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  INFRA_STORAGE_MEDIA
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt;
+                                            loop TP_ACCEPT end loop
+                                        []
+                                            VIEW (d_a3);
+                                            alt
+                                                INFRA_STORAGE_MEDIA
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt;
+                                            alt
+                                                INFRA_STORAGE_ERROR
+                                            []
+                                                alt
+                                                    APP_WRITE_FAIL
+                                                []  INFRA_STORAGE_FULL
+                                                []  UE_KILL
+                                                []  DB_ABORT
+                                                []  APP_CACHE_STALE
+                                                []  DB_CORRUPT
+                                                []  DB_CORRUPT_STOCK
+                                                []  INFRA_STORAGE_MEDIA
+                                                []  DB_EVENT_LOSS
+                                                []  ADD_MEDICINE (VALID)
+                                                []  ADD_MEDICINE (INVALID)
+                                                []  NO_SKIP (med_a)
+                                                []  NO_SKIP (med_b)
+                                                []  ACT (d_a1, TAKE)
+                                                []  ACT (d_a1, SKIP)
+                                                []  ACT (d_a2, TAKE)
+                                                []  ACT (d_a2, SKIP)
+                                                []  ACT (d_a3, TAKE)
+                                                []  ACT (d_a3, SKIP)
+                                                []  ACT (d_b, TAKE)
+                                                []  ACT (d_b, SKIP)
+                                                []  DELETE (d_a1)
+                                                []  DELETE (d_a2)
+                                                []  DELETE (d_a3)
+                                                []  DELETE (d_b)
+                                                []  EDIT (d_a1, TAKE)
+                                                []  EDIT (d_a1, SKIP)
+                                                []  EDIT (d_a2, TAKE)
+                                                []  EDIT (d_a2, SKIP)
+                                                []  EDIT (d_a3, TAKE)
+                                                []  EDIT (d_a3, SKIP)
+                                                []  EDIT (d_b, TAKE)
+                                                []  EDIT (d_b, SKIP)
+                                                []  VIEW (d_a1)
+                                                []  VIEW (d_a2)
+                                                []  VIEW (d_a3)
+                                                []  VIEW (d_b)
+                                                end alt;
+                                                loop TP_REFUSE end loop
+                                            end alt;
+                                            loop TP_ACCEPT end loop
+                                        []
+                                            alt
+                                                APP_WRITE_FAIL
+                                            []  INFRA_STORAGE_FULL
+                                            []  UE_KILL
+                                            []  DB_ABORT
+                                            []  APP_CACHE_STALE
+                                            []  DB_CORRUPT
+                                            []  DB_CORRUPT_STOCK
+                                            []  INFRA_STORAGE_MEDIA
+                                            []  DB_EVENT_LOSS
+                                            []  ADD_MEDICINE (VALID)
+                                            []  ADD_MEDICINE (INVALID)
+                                            []  NO_SKIP (med_a)
+                                            []  NO_SKIP (med_b)
+                                            []  ACT (d_a1, TAKE)
+                                            []  ACT (d_a1, SKIP)
+                                            []  ACT (d_a2, TAKE)
+                                            []  ACT (d_a2, SKIP)
+                                            []  ACT (d_a3, TAKE)
+                                            []  ACT (d_a3, SKIP)
+                                            []  ACT (d_b, TAKE)
+                                            []  ACT (d_b, SKIP)
+                                            []  DELETE (d_a1)
+                                            []  DELETE (d_a2)
+                                            []  DELETE (d_a3)
+                                            []  DELETE (d_b)
+                                            []  EDIT (d_a1, TAKE)
+                                            []  EDIT (d_a1, SKIP)
+                                            []  EDIT (d_a2, TAKE)
+                                            []  EDIT (d_a2, SKIP)
+                                            []  EDIT (d_a3, TAKE)
+                                            []  EDIT (d_a3, SKIP)
+                                            []  EDIT (d_b, TAKE)
+                                            []  EDIT (d_b, SKIP)
+                                            end alt;
+                                            loop TP_REFUSE end loop
+                                        end alt
+                                    []
+                                        INFRA_STORAGE_MEDIA;
+                                        alt
+                                            INFRA_STORAGE_ERROR
+                                        []
+                                            alt
+                                                APP_WRITE_FAIL
+                                            []  INFRA_STORAGE_FULL
+                                            []  UE_KILL
+                                            []  DB_ABORT
+                                            []  APP_CACHE_STALE
+                                            []  DB_CORRUPT
+                                            []  DB_CORRUPT_STOCK
+                                            []  INFRA_STORAGE_MEDIA
+                                            []  DB_EVENT_LOSS
+                                            []  ADD_MEDICINE (VALID)
+                                            []  ADD_MEDICINE (INVALID)
+                                            []  NO_SKIP (med_a)
+                                            []  NO_SKIP (med_b)
+                                            []  ACT (d_a1, TAKE)
+                                            []  ACT (d_a1, SKIP)
+                                            []  ACT (d_a2, TAKE)
+                                            []  ACT (d_a2, SKIP)
+                                            []  ACT (d_a3, TAKE)
+                                            []  ACT (d_a3, SKIP)
+                                            []  ACT (d_b, TAKE)
+                                            []  ACT (d_b, SKIP)
+                                            []  DELETE (d_a1)
+                                            []  DELETE (d_a2)
+                                            []  DELETE (d_a3)
+                                            []  DELETE (d_b)
+                                            []  EDIT (d_a1, TAKE)
+                                            []  EDIT (d_a1, SKIP)
+                                            []  EDIT (d_a2, TAKE)
+                                            []  EDIT (d_a2, SKIP)
+                                            []  EDIT (d_a3, TAKE)
+                                            []  EDIT (d_a3, SKIP)
+                                            []  EDIT (d_b, TAKE)
+                                            []  EDIT (d_b, SKIP)
+                                            []  VIEW (d_a1)
+                                            []  VIEW (d_a2)
+                                            []  VIEW (d_a3)
+                                            []  VIEW (d_b)
+                                            end alt;
+                                            loop TP_REFUSE end loop
+                                        end alt;
+                                        loop TP_ACCEPT end loop
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt
+                                []
+                                    VIEW (d_a1);
+                                    alt
+                                        INFRA_STORAGE_MEDIA
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt;
+                                    alt
+                                        INFRA_STORAGE_ERROR
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  INFRA_STORAGE_MEDIA
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt;
+                                    loop TP_ACCEPT end loop
+                                []
+                                    VIEW (d_a2);
+                                    alt
+                                        INFRA_STORAGE_MEDIA
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt;
+                                    alt
+                                        INFRA_STORAGE_ERROR
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  INFRA_STORAGE_MEDIA
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt;
+                                    loop TP_ACCEPT end loop
+                                []
+                                    VIEW (d_b);
+                                    alt
+                                        INFRA_STORAGE_MEDIA
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt;
+                                    alt
+                                        INFRA_STORAGE_ERROR
+                                    []
+                                        alt
+                                            APP_WRITE_FAIL
+                                        []  INFRA_STORAGE_FULL
+                                        []  UE_KILL
+                                        []  DB_ABORT
+                                        []  APP_CACHE_STALE
+                                        []  DB_CORRUPT
+                                        []  DB_CORRUPT_STOCK
+                                        []  INFRA_STORAGE_MEDIA
+                                        []  DB_EVENT_LOSS
+                                        []  ADD_MEDICINE (VALID)
+                                        []  ADD_MEDICINE (INVALID)
+                                        []  NO_SKIP (med_a)
+                                        []  NO_SKIP (med_b)
+                                        []  ACT (d_a1, TAKE)
+                                        []  ACT (d_a1, SKIP)
+                                        []  ACT (d_a2, TAKE)
+                                        []  ACT (d_a2, SKIP)
+                                        []  ACT (d_a3, TAKE)
+                                        []  ACT (d_a3, SKIP)
+                                        []  ACT (d_b, TAKE)
+                                        []  ACT (d_b, SKIP)
+                                        []  DELETE (d_a1)
+                                        []  DELETE (d_a2)
+                                        []  DELETE (d_a3)
+                                        []  DELETE (d_b)
+                                        []  EDIT (d_a1, TAKE)
+                                        []  EDIT (d_a1, SKIP)
+                                        []  EDIT (d_a2, TAKE)
+                                        []  EDIT (d_a2, SKIP)
+                                        []  EDIT (d_a3, TAKE)
+                                        []  EDIT (d_a3, SKIP)
+                                        []  EDIT (d_b, TAKE)
+                                        []  EDIT (d_b, SKIP)
+                                        []  VIEW (d_a1)
+                                        []  VIEW (d_a2)
+                                        []  VIEW (d_a3)
+                                        []  VIEW (d_b)
+                                        end alt;
+                                        loop TP_REFUSE end loop
+                                    end alt;
+                                    loop TP_ACCEPT end loop
+                                []
+                                    alt
+                                        APP_WRITE_FAIL
+                                    []  INFRA_STORAGE_FULL
+                                    []  UE_KILL
+                                    []  DB_ABORT
+                                    []  APP_CACHE_STALE
+                                    []  DB_CORRUPT
+                                    []  DB_CORRUPT_STOCK
+                                    []  INFRA_STORAGE_MEDIA
+                                    []  DB_EVENT_LOSS
+                                    []  ADD_MEDICINE (VALID)
+                                    []  ADD_MEDICINE (INVALID)
+                                    []  NO_SKIP (med_a)
+                                    []  NO_SKIP (med_b)
+                                    []  ACT (d_a1, TAKE)
+                                    []  ACT (d_a1, SKIP)
+                                    []  ACT (d_a2, TAKE)
+                                    []  ACT (d_a2, SKIP)
+                                    []  ACT (d_a3, TAKE)
+                                    []  ACT (d_a3, SKIP)
+                                    []  ACT (d_b, TAKE)
+                                    []  ACT (d_b, SKIP)
+                                    []  DELETE (d_a1)
+                                    []  DELETE (d_a2)
+                                    []  DELETE (d_a3)
+                                    []  DELETE (d_b)
+                                    []  EDIT (d_a1, TAKE)
+                                    []  EDIT (d_a1, SKIP)
+                                    []  EDIT (d_a2, TAKE)
+                                    []  EDIT (d_a2, SKIP)
+                                    []  EDIT (d_a3, TAKE)
+                                    []  EDIT (d_a3, SKIP)
+                                    []  EDIT (d_b, TAKE)
+                                    []  EDIT (d_b, SKIP)
+                                    end alt;
+                                    loop TP_REFUSE end loop
+                                end alt
+                            []
+                                INFRA_STORAGE_MEDIA;
+                                alt
+                                    INFRA_STORAGE_ERROR
+                                []
+                                    alt
+                                        APP_WRITE_FAIL
+                                    []  INFRA_STORAGE_FULL
+                                    []  UE_KILL
+                                    []  DB_ABORT
+                                    []  APP_CACHE_STALE
+                                    []  DB_CORRUPT
+                                    []  DB_CORRUPT_STOCK
+                                    []  INFRA_STORAGE_MEDIA
+                                    []  DB_EVENT_LOSS
+                                    []  ADD_MEDICINE (VALID)
+                                    []  ADD_MEDICINE (INVALID)
+                                    []  NO_SKIP (med_a)
+                                    []  NO_SKIP (med_b)
+                                    []  ACT (d_a1, TAKE)
+                                    []  ACT (d_a1, SKIP)
+                                    []  ACT (d_a2, TAKE)
+                                    []  ACT (d_a2, SKIP)
+                                    []  ACT (d_a3, TAKE)
+                                    []  ACT (d_a3, SKIP)
+                                    []  ACT (d_b, TAKE)
+                                    []  ACT (d_b, SKIP)
+                                    []  DELETE (d_a1)
+                                    []  DELETE (d_a2)
+                                    []  DELETE (d_a3)
+                                    []  DELETE (d_b)
+                                    []  EDIT (d_a1, TAKE)
+                                    []  EDIT (d_a1, SKIP)
+                                    []  EDIT (d_a2, TAKE)
+                                    []  EDIT (d_a2, SKIP)
+                                    []  EDIT (d_a3, TAKE)
+                                    []  EDIT (d_a3, SKIP)
+                                    []  EDIT (d_b, TAKE)
+                                    []  EDIT (d_b, SKIP)
+                                    []  VIEW (d_a1)
+                                    []  VIEW (d_a2)
+                                    []  VIEW (d_a3)
+                                    []  VIEW (d_b)
+                                    end alt;
+                                    loop TP_REFUSE end loop
+                                end alt;
+                                loop TP_ACCEPT end loop
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt
+                        []
+                            VIEW (d_a1);
+                            alt
+                                INFRA_STORAGE_MEDIA
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt;
+                            alt
+                                INFRA_STORAGE_ERROR
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  INFRA_STORAGE_MEDIA
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt;
+                            loop TP_ACCEPT end loop
+                        []
+                            VIEW (d_a3);
+                            alt
+                                INFRA_STORAGE_MEDIA
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt;
+                            alt
+                                INFRA_STORAGE_ERROR
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  INFRA_STORAGE_MEDIA
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt;
+                            loop TP_ACCEPT end loop
+                        []
+                            VIEW (d_b);
+                            alt
+                                INFRA_STORAGE_MEDIA
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt;
+                            alt
+                                INFRA_STORAGE_ERROR
+                            []
+                                alt
+                                    APP_WRITE_FAIL
+                                []  INFRA_STORAGE_FULL
+                                []  UE_KILL
+                                []  DB_ABORT
+                                []  APP_CACHE_STALE
+                                []  DB_CORRUPT
+                                []  DB_CORRUPT_STOCK
+                                []  INFRA_STORAGE_MEDIA
+                                []  DB_EVENT_LOSS
+                                []  ADD_MEDICINE (VALID)
+                                []  ADD_MEDICINE (INVALID)
+                                []  NO_SKIP (med_a)
+                                []  NO_SKIP (med_b)
+                                []  ACT (d_a1, TAKE)
+                                []  ACT (d_a1, SKIP)
+                                []  ACT (d_a2, TAKE)
+                                []  ACT (d_a2, SKIP)
+                                []  ACT (d_a3, TAKE)
+                                []  ACT (d_a3, SKIP)
+                                []  ACT (d_b, TAKE)
+                                []  ACT (d_b, SKIP)
+                                []  DELETE (d_a1)
+                                []  DELETE (d_a2)
+                                []  DELETE (d_a3)
+                                []  DELETE (d_b)
+                                []  EDIT (d_a1, TAKE)
+                                []  EDIT (d_a1, SKIP)
+                                []  EDIT (d_a2, TAKE)
+                                []  EDIT (d_a2, SKIP)
+                                []  EDIT (d_a3, TAKE)
+                                []  EDIT (d_a3, SKIP)
+                                []  EDIT (d_b, TAKE)
+                                []  EDIT (d_b, SKIP)
+                                []  VIEW (d_a1)
+                                []  VIEW (d_a2)
+                                []  VIEW (d_a3)
+                                []  VIEW (d_b)
+                                end alt;
+                                loop TP_REFUSE end loop
+                            end alt;
+                            loop TP_ACCEPT end loop
+                        []
+                            alt
+                                APP_WRITE_FAIL
+                            []  INFRA_STORAGE_FULL
+                            []  UE_KILL
+                            []  DB_ABORT
+                            []  APP_CACHE_STALE
+                            []  DB_CORRUPT
+                            []  DB_CORRUPT_STOCK
+                            []  INFRA_STORAGE_MEDIA
+                            []  DB_EVENT_LOSS
+                            []  ADD_MEDICINE (VALID)
+                            []  ADD_MEDICINE (INVALID)
+                            []  NO_SKIP (med_a)
+                            []  NO_SKIP (med_b)
+                            []  ACT (d_a1, TAKE)
+                            []  ACT (d_a1, SKIP)
+                            []  ACT (d_a2, TAKE)
+                            []  ACT (d_a2, SKIP)
+                            []  ACT (d_a3, TAKE)
+                            []  ACT (d_a3, SKIP)
+                            []  ACT (d_b, TAKE)
+                            []  ACT (d_b, SKIP)
+                            []  DELETE (d_a1)
+                            []  DELETE (d_a2)
+                            []  DELETE (d_a3)
+                            []  DELETE (d_b)
+                            []  EDIT (d_a1, TAKE)
+                            []  EDIT (d_a1, SKIP)
+                            []  EDIT (d_a2, TAKE)
+                            []  EDIT (d_a2, SKIP)
+                            []  EDIT (d_a3, TAKE)
+                            []  EDIT (d_a3, SKIP)
+                            []  EDIT (d_b, TAKE)
+                            []  EDIT (d_b, SKIP)
+                            end alt;
+                            loop TP_REFUSE end loop
+                        end alt
+                    []
+                        INFRA_STORAGE_MEDIA;
+                        alt
+                            INFRA_STORAGE_ERROR
+                        []
+                            alt
+                                APP_WRITE_FAIL
+                            []  INFRA_STORAGE_FULL
+                            []  UE_KILL
+                            []  DB_ABORT
+                            []  APP_CACHE_STALE
+                            []  DB_CORRUPT
+                            []  DB_CORRUPT_STOCK
+                            []  INFRA_STORAGE_MEDIA
+                            []  DB_EVENT_LOSS
+                            []  ADD_MEDICINE (VALID)
+                            []  ADD_MEDICINE (INVALID)
+                            []  NO_SKIP (med_a)
+                            []  NO_SKIP (med_b)
+                            []  ACT (d_a1, TAKE)
+                            []  ACT (d_a1, SKIP)
+                            []  ACT (d_a2, TAKE)
+                            []  ACT (d_a2, SKIP)
+                            []  ACT (d_a3, TAKE)
+                            []  ACT (d_a3, SKIP)
+                            []  ACT (d_b, TAKE)
+                            []  ACT (d_b, SKIP)
+                            []  DELETE (d_a1)
+                            []  DELETE (d_a2)
+                            []  DELETE (d_a3)
+                            []  DELETE (d_b)
+                            []  EDIT (d_a1, TAKE)
+                            []  EDIT (d_a1, SKIP)
+                            []  EDIT (d_a2, TAKE)
+                            []  EDIT (d_a2, SKIP)
+                            []  EDIT (d_a3, TAKE)
+                            []  EDIT (d_a3, SKIP)
+                            []  EDIT (d_b, TAKE)
+                            []  EDIT (d_b, SKIP)
+                            []  VIEW (d_a1)
+                            []  VIEW (d_a2)
+                            []  VIEW (d_a3)
+                            []  VIEW (d_b)
+                            end alt;
+                            loop TP_REFUSE end loop
+                        end alt;
+                        loop TP_ACCEPT end loop
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt
+                []
+                    VIEW (d_a2);
+                    alt
+                        INFRA_STORAGE_MEDIA
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt;
+                    alt
+                        INFRA_STORAGE_ERROR
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  INFRA_STORAGE_MEDIA
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt;
+                    loop TP_ACCEPT end loop
+                []
+                    VIEW (d_a3);
+                    alt
+                        INFRA_STORAGE_MEDIA
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt;
+                    alt
+                        INFRA_STORAGE_ERROR
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  INFRA_STORAGE_MEDIA
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt;
+                    loop TP_ACCEPT end loop
+                []
+                    VIEW (d_b);
+                    alt
+                        INFRA_STORAGE_MEDIA
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt;
+                    alt
+                        INFRA_STORAGE_ERROR
+                    []
+                        alt
+                            APP_WRITE_FAIL
+                        []  INFRA_STORAGE_FULL
+                        []  UE_KILL
+                        []  DB_ABORT
+                        []  APP_CACHE_STALE
+                        []  DB_CORRUPT
+                        []  DB_CORRUPT_STOCK
+                        []  INFRA_STORAGE_MEDIA
+                        []  DB_EVENT_LOSS
+                        []  ADD_MEDICINE (VALID)
+                        []  ADD_MEDICINE (INVALID)
+                        []  NO_SKIP (med_a)
+                        []  NO_SKIP (med_b)
+                        []  ACT (d_a1, TAKE)
+                        []  ACT (d_a1, SKIP)
+                        []  ACT (d_a2, TAKE)
+                        []  ACT (d_a2, SKIP)
+                        []  ACT (d_a3, TAKE)
+                        []  ACT (d_a3, SKIP)
+                        []  ACT (d_b, TAKE)
+                        []  ACT (d_b, SKIP)
+                        []  DELETE (d_a1)
+                        []  DELETE (d_a2)
+                        []  DELETE (d_a3)
+                        []  DELETE (d_b)
+                        []  EDIT (d_a1, TAKE)
+                        []  EDIT (d_a1, SKIP)
+                        []  EDIT (d_a2, TAKE)
+                        []  EDIT (d_a2, SKIP)
+                        []  EDIT (d_a3, TAKE)
+                        []  EDIT (d_a3, SKIP)
+                        []  EDIT (d_b, TAKE)
+                        []  EDIT (d_b, SKIP)
+                        []  VIEW (d_a1)
+                        []  VIEW (d_a2)
+                        []  VIEW (d_a3)
+                        []  VIEW (d_b)
+                        end alt;
+                        loop TP_REFUSE end loop
+                    end alt;
+                    loop TP_ACCEPT end loop
+                []
+                    alt
+                        APP_WRITE_FAIL
+                    []  INFRA_STORAGE_FULL
+                    []  UE_KILL
+                    []  DB_ABORT
+                    []  APP_CACHE_STALE
+                    []  DB_CORRUPT
+                    []  DB_CORRUPT_STOCK
+                    []  INFRA_STORAGE_MEDIA
+                    []  DB_EVENT_LOSS
+                    []  ADD_MEDICINE (VALID)
+                    []  ADD_MEDICINE (INVALID)
+                    []  NO_SKIP (med_a)
+                    []  NO_SKIP (med_b)
+                    []  ACT (d_a1, TAKE)
+                    []  ACT (d_a1, SKIP)
+                    []  ACT (d_a2, TAKE)
+                    []  ACT (d_a2, SKIP)
+                    []  ACT (d_a3, TAKE)
+                    []  ACT (d_a3, SKIP)
+                    []  ACT (d_b, TAKE)
+                    []  ACT (d_b, SKIP)
+                    []  DELETE (d_a1)
+                    []  DELETE (d_a2)
+                    []  DELETE (d_a3)
+                    []  DELETE (d_b)
+                    []  EDIT (d_a1, TAKE)
+                    []  EDIT (d_a1, SKIP)
+                    []  EDIT (d_a2, TAKE)
+                    []  EDIT (d_a2, SKIP)
+                    []  EDIT (d_a3, TAKE)
+                    []  EDIT (d_a3, SKIP)
+                    []  EDIT (d_b, TAKE)
+                    []  EDIT (d_b, SKIP)
+                    end alt;
+                    loop TP_REFUSE end loop
+                end alt
+            []
+                INFRA_STORAGE_MEDIA;
+                alt
+                    INFRA_STORAGE_ERROR
+                []
+                    alt
+                        APP_WRITE_FAIL
+                    []  INFRA_STORAGE_FULL
+                    []  UE_KILL
+                    []  DB_ABORT
+                    []  APP_CACHE_STALE
+                    []  DB_CORRUPT
+                    []  DB_CORRUPT_STOCK
+                    []  INFRA_STORAGE_MEDIA
+                    []  DB_EVENT_LOSS
+                    []  ADD_MEDICINE (VALID)
+                    []  ADD_MEDICINE (INVALID)
+                    []  NO_SKIP (med_a)
+                    []  NO_SKIP (med_b)
+                    []  ACT (d_a1, TAKE)
+                    []  ACT (d_a1, SKIP)
+                    []  ACT (d_a2, TAKE)
+                    []  ACT (d_a2, SKIP)
+                    []  ACT (d_a3, TAKE)
+                    []  ACT (d_a3, SKIP)
+                    []  ACT (d_b, TAKE)
+                    []  ACT (d_b, SKIP)
+                    []  DELETE (d_a1)
+                    []  DELETE (d_a2)
+                    []  DELETE (d_a3)
+                    []  DELETE (d_b)
+                    []  EDIT (d_a1, TAKE)
+                    []  EDIT (d_a1, SKIP)
+                    []  EDIT (d_a2, TAKE)
+                    []  EDIT (d_a2, SKIP)
+                    []  EDIT (d_a3, TAKE)
+                    []  EDIT (d_a3, SKIP)
+                    []  EDIT (d_b, TAKE)
+                    []  EDIT (d_b, SKIP)
+                    []  VIEW (d_a1)
+                    []  VIEW (d_a2)
+                    []  VIEW (d_a3)
+                    []  VIEW (d_b)
+                    end alt;
+                    loop TP_REFUSE end loop
+                end alt;
+                loop TP_ACCEPT end loop
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt
+        []
+            VIEW (d_a2);
+            alt
+                INFRA_STORAGE_MEDIA
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                INFRA_STORAGE_ERROR
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  INFRA_STORAGE_MEDIA
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            loop TP_ACCEPT end loop
+        []
+            VIEW (d_a3);
+            alt
+                INFRA_STORAGE_MEDIA
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                INFRA_STORAGE_ERROR
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  INFRA_STORAGE_MEDIA
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            loop TP_ACCEPT end loop
+        []
+            VIEW (d_b);
+            alt
+                INFRA_STORAGE_MEDIA
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            alt
+                INFRA_STORAGE_ERROR
+            []
+                alt
+                    APP_WRITE_FAIL
+                []  INFRA_STORAGE_FULL
+                []  UE_KILL
+                []  DB_ABORT
+                []  APP_CACHE_STALE
+                []  DB_CORRUPT
+                []  DB_CORRUPT_STOCK
+                []  INFRA_STORAGE_MEDIA
+                []  DB_EVENT_LOSS
+                []  ADD_MEDICINE (VALID)
+                []  ADD_MEDICINE (INVALID)
+                []  NO_SKIP (med_a)
+                []  NO_SKIP (med_b)
+                []  ACT (d_a1, TAKE)
+                []  ACT (d_a1, SKIP)
+                []  ACT (d_a2, TAKE)
+                []  ACT (d_a2, SKIP)
+                []  ACT (d_a3, TAKE)
+                []  ACT (d_a3, SKIP)
+                []  ACT (d_b, TAKE)
+                []  ACT (d_b, SKIP)
+                []  DELETE (d_a1)
+                []  DELETE (d_a2)
+                []  DELETE (d_a3)
+                []  DELETE (d_b)
+                []  EDIT (d_a1, TAKE)
+                []  EDIT (d_a1, SKIP)
+                []  EDIT (d_a2, TAKE)
+                []  EDIT (d_a2, SKIP)
+                []  EDIT (d_a3, TAKE)
+                []  EDIT (d_a3, SKIP)
+                []  EDIT (d_b, TAKE)
+                []  EDIT (d_b, SKIP)
+                []  VIEW (d_a1)
+                []  VIEW (d_a2)
+                []  VIEW (d_a3)
+                []  VIEW (d_b)
+                end alt;
+                loop TP_REFUSE end loop
+            end alt;
+            loop TP_ACCEPT end loop
+        []
+            alt
+                APP_WRITE_FAIL
+            []  INFRA_STORAGE_FULL
+            []  UE_KILL
+            []  DB_ABORT
+            []  APP_CACHE_STALE
+            []  DB_CORRUPT
+            []  DB_CORRUPT_STOCK
+            []  INFRA_STORAGE_MEDIA
+            []  DB_EVENT_LOSS
+            []  ADD_MEDICINE (VALID)
+            []  ADD_MEDICINE (INVALID)
+            []  NO_SKIP (med_a)
+            []  NO_SKIP (med_b)
+            []  ACT (d_a1, TAKE)
+            []  ACT (d_a1, SKIP)
+            []  ACT (d_a2, TAKE)
+            []  ACT (d_a2, SKIP)
+            []  ACT (d_a3, TAKE)
+            []  ACT (d_a3, SKIP)
+            []  ACT (d_b, TAKE)
+            []  ACT (d_b, SKIP)
+            []  DELETE (d_a1)
+            []  DELETE (d_a2)
+            []  DELETE (d_a3)
+            []  DELETE (d_b)
+            []  EDIT (d_a1, TAKE)
+            []  EDIT (d_a1, SKIP)
+            []  EDIT (d_a2, TAKE)
+            []  EDIT (d_a2, SKIP)
+            []  EDIT (d_a3, TAKE)
+            []  EDIT (d_a3, SKIP)
+            []  EDIT (d_b, TAKE)
+            []  EDIT (d_b, SKIP)
+            end alt;
+            loop TP_REFUSE end loop
+        end alt
+end process
+
+end module

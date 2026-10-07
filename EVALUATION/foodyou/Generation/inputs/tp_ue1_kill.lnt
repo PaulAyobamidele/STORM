@@ -1,0 +1,55 @@
+module tp_ue1_kill (foodyou_types) is
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD (IDF, LOCAL);
+            FOOD_INFO   (IDF, ?any Calorie);
+            ADD_ENTRY   (BREAKFAST, IDF, VALID);
+            disrupt
+                CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF);
+                loop TP_REFUSE end loop
+            by
+                UE1_KILL;
+                CONFIRM_TOTAL (ROLLED_BACK, ?any DailyTotal, IDF);
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            alt
+                EXTAPI_FAIL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  STORAGE_MEDIA
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module

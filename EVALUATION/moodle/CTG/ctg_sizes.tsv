@@ -1,0 +1,11 @@
+moodle_app1_write_fail.ctg	31 states, 68 transitions 
+moodle_app_grade_stale_sub.ctg	161 states, 382 transitions 
+moodle_app_lazy_regrade.ctg	68 states, 158 transitions 
+moodle_app_partial_submission.ctg	36 states, 83 transitions 
+moodle_db_attempt_step_loss.ctg	31 states, 68 transitions 
+moodle_happy.ctg	40 states, 86 transitions 
+moodle_happy_quiz.ctg	33 states, 73 transitions 
+moodle_infra_cron_dead.ctg	176 states, 551 transitions 
+moodle_ue1_lose_conn.ctg	30 states, 66 transitions 
+moodle_ue1_lose_conn_midattempt.ctg	51 states, 114 transitions 
+moodle_ue2_session_expire.ctg	22 states, 52 transitions 

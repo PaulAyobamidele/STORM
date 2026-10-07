@@ -2,11 +2,11 @@
 """
 eval_tables.py — build the evaluation tables from a campaign's own artifacts.
 
-    python framework/scripts/eval_tables.py systems/foodyou --domain "Android nutrition tracker"
-    python framework/scripts/eval_tables.py systems/foodyou --latex
-    python framework/scripts/eval_tables.py systems/foodyou --baseline happy
+    python framework/scripts/eval_tables.py EVALUATION/foodyou --domain "Android nutrition tracker"
+    python framework/scripts/eval_tables.py EVALUATION/foodyou --latex
+    python framework/scripts/eval_tables.py EVALUATION/foodyou --baseline happy
 
-Every number comes from `systems/<sut>/variants_<purpose>.log`, the per-purpose
+Every number comes from `EVALUATION/<sut>/variants_<purpose>.log`, the per-purpose
 sweep logs, which carry one row per test case:
 
     VARIANT     STATES    TRANSITNS   VERDICT
@@ -275,7 +275,7 @@ _SUT_DIRS: dict[str, str] = {}
 
 
 def sut_dir_of(sut: str) -> str:
-    return _SUT_DIRS.get(sut, os.path.join("systems", sut))
+    return _SUT_DIRS.get(sut, os.path.join("EVALUATION", sut))
 
 
 def text_tables(rows, sut, domain, baseline):
@@ -397,7 +397,7 @@ def latex_tables(rows, sut, domain, baseline):
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("sut_dir", help="e.g. systems/foodyou")
+    ap.add_argument("sut_dir", help="e.g. EVALUATION/foodyou")
     ap.add_argument("--domain", default="", help="short domain description for Table 1")
     ap.add_argument("--baseline", default="happy",
                     help="nominal purpose used to qualify Table 3 (default: happy)")

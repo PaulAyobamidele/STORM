@@ -1,0 +1,28 @@
+module spliit_fixture (spliit_types) is
+
+(* Test selection only. Imported by the System Interface and the purposes,
+   never by the specification. One definition each; edit here to retarget
+   the whole sweep. *)
+
+(* The expense every purpose creates ONCE. Its amount is the band's unit
+   (type_description.yml: SpendBand.bucket_unit_from must name it). *)
+function defaultExpense : ExpenseId is
+    return exp_c
+end function
+
+(* The expense the WEEKLY purpose creates. Distinct from defaultExpense so
+   rows are still located unambiguously by title after the copy appears. *)
+function recurringExpense : ExpenseId is
+    return exp_b
+end function
+
+function defaultPayer : Payer is
+    return john
+end function
+
+(* Must be the row of defaultExpense: item_of (row_c) = exp_c. *)
+function defaultRecord : RecordId is
+    return row_c
+end function
+
+end module

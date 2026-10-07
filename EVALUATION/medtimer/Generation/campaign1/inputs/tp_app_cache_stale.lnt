@@ -1,0 +1,63 @@
+module tp_app_cache_stale (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    pre-armed.
+   TARGET   APP_CACHE_STALE: the medicine list was read before the write.
+   ACCEPT   the dose is marked Taken and the stock read back afterwards is
+            the committed one (O3).
+   REFUSE   any other fault; any other input.
+   Owed     CONFIRM (COMMITTED, ?band, TAKEN, IDF) with the band moved.
+   Expected PASS: the list is a Room flow, there is no cache (§6.1). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            APP_CACHE_STALE;
+            ACT     (IDF, TAKE);
+            CONFIRM (COMMITTED, ?any StockBand, TAKEN, IDF);
+            loop TP_ACCEPT end loop
+        by
+            alt
+                UE_KILL
+            []  APP_WRITE_FAIL
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  DB_EVENT_LOSS
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (?any Validity)
+            []  NO_SKIP (?any MedicineId)
+            []  ACT (?any MedicineId, SKIP)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            []  VIEW (?any MedicineId)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

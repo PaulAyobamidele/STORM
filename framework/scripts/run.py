@@ -8,19 +8,19 @@ Modes:
         python run.py --labels "REGISTER" "LOGIN" "PASS" --platform mock
 
     Single AUT graph file (v3 graph walker mode):
-        python run.py --aut generated/tc/tc_red_2.aut --platform html
+        python run.py --aut Test_Cases/tc_red_2.aut --platform html
 
     Single BCG file (auto-converts to AUT then walks):
-        python run.py --bcg generated/tc/tc_red_2.bcg --platform html
+        python run.py --bcg Test_Cases/tc_red_2.bcg --platform html
 
     All TCs in a directory (runs every .aut file found):
-        python run.py --aut-dir generated/tc/ --platform html
+        python run.py --aut-dir Test_Cases/ --platform html
 
     All BCG TCs in a directory (converts each then runs):
-        python run.py --bcg-dir generated/tc/ --platform html
+        python run.py --bcg-dir Test_Cases/ --platform html
 
 Fault injection (HTML platform only):
-        python run.py --aut generated/tc/tc_red_2.aut --platform html --fault no_alert
+        python run.py --aut Test_Cases/tc_red_2.aut --platform html --fault no_alert
 """
 
 import argparse

@@ -1,0 +1,350 @@
+-- system_interface_medtimer.lnt -- I : D_abs -> D_sys for MedTimer (Android, Appium).
+--
+-- Every selector comes from a live hierarchy dump (notes/ui/, 2026-09-29).
+-- The prelude creates the fixture through the UI: one medicine "Vitamin C"
+-- with three pills of stock and one time-based reminder at 11:59 PM with
+-- dose 1, so the overview shows the day's dose as scheduled and the stock
+-- band starts at S3. No id is ever captured: every later move is a tap.
+--
+-- Parser contract (framework/concretization/si_lnt_parser.py): line comments
+-- only; concrete steps first, gate last; `screen` is the state variable,
+-- values SCR_*, initial SCR_HOME; guards are exactly `if screen == SCR_X then`.
+-- Faults are injected where their gate stands, BEFORE the commit tap, so the
+-- injection precedes the write it exists to break; the SI-driven one
+-- (APP_CACHE_STALE = reading the medicine list before the write) is realised
+-- by the steps around it.
+--
+-- Two screens only. SCR_HOME is the overview, the app's launch screen and
+-- where every relaunch lands. SCR_MEDICINES is the medicine LIST: the bottom
+-- tab restores the last screen shown in that tab, so every excursion into
+-- the edit screen or a settings screen returns to the list before the tab is
+-- left, and the list is where the stock is read.
+
+module system_interface_medtimer (medtimer_types, medtimer_fixture)
+with ==
+is
+
+type Screen is
+    SCR_HOME,       -- the overview
+    SCR_MEDICINES   -- the medicine list
+end type
+
+process SI [
+    navigate  : Ch_Route,
+    tap       : Ch_Value,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+var
+    screen   : Screen,
+    id       : MedicineId,
+    act      : DoseAction,
+    st       : WriteStatus,
+    -- the day's dose as the app shows it, mirrored from what CONFIRM reads
+    -- back: ACT is offered while PENDING, DELETE and EDIT while a record
+    -- exists (the app offers those buttons only then), nothing after a
+    -- delete (ABSENT) until the record loss makes the dose due again
+    dose     : DoseState,
+    ds       : DoseState
+in
+    id       := defaultMedicine;
+    act      := TAKE;
+    st       := COMMITTED;
+    dose     := PENDING;
+    ds       := PENDING;
+    screen   := SCR_HOME;
+
+    -- prelude: the fixture, ending on the medicine list
+    tap (cv_tab_medicines);
+    wait_for (el_medicines);
+    tap (cv_add_medicine);
+    wait_for (el_add_dialog);
+    type_into (sel_name_field, cv_name_fixture);
+    tap (cv_ok);
+    wait_for (el_edit_medicine);
+    tap (cv_stock_settings);
+    wait_for (el_stock_settings);
+    tap (cv_stock_unit);
+    type_into (sel_unit_field, cv_unit_value);
+    tap (cv_ok);
+    tap (cv_stock_amount);
+    type_into (sel_amount_field, cv_stock_value);
+    tap (cv_ok);
+    wait_for (el_stock_set);
+    tap (cv_back);
+    wait_for (el_edit_medicine);
+    tap (cv_add_reminder);
+    tap (cv_type_time_based);
+    wait_for (el_reminder_dialog);
+    tap (cv_dose_field);
+    type_into (sel_dose_field, cv_dose);
+    tap (cv_time_field);
+    type_into (sel_time_field, cv_reminder_time);
+    tap (cv_create_reminder);
+    wait_for (el_reminder_card);
+    tap (cv_back);
+    wait_for (el_medicines);
+    screen := SCR_MEDICINES;
+
+    loop
+      alt
+        -- =================================================================
+        -- 1. CREATE a second medicine with a valid name: it is shown.
+        -- =================================================================
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        tap (cv_add_medicine);
+        wait_for (el_add_dialog);
+        type_into (sel_name_field, cv_name_valid);
+        tap (cv_ok);
+        ADD_MEDICINE (VALID);
+        wait_for (el_edit_medicine);
+        observe (el_medicine_shown);
+        MEDICINE_SHOWN;
+        tap (cv_back);
+        wait_for (el_medicines);
+        screen := SCR_MEDICINES
+
+      []
+        -- =================================================================
+        -- 2. CREATE with the EMPTY name: the app owes a refusal (O9).
+        -- =================================================================
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        tap (cv_add_medicine);
+        wait_for (el_add_dialog);
+        type_into (sel_name_field, cv_name_invalid);
+        tap (cv_ok);
+        ADD_MEDICINE (INVALID);
+        observe (el_name_error);
+        REJECT_SHOWN;
+        tap (cv_cancel);
+        wait_for (el_medicines);
+        screen := SCR_MEDICINES
+
+      []
+        -- =================================================================
+        -- 3. FORBID skipping: the switch in the medicine's settings.
+        -- =================================================================
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        tap (cv_med_card);
+        wait_for (el_edit_medicine);
+        tap (cv_med_settings);
+        wait_for (el_med_settings);
+        tap (cv_cannot_skip);
+        wait_for (el_no_skip_on);
+        NO_SKIP (id);
+        tap (cv_back);
+        wait_for (el_edit_medicine);
+        tap (cv_back);
+        wait_for (el_medicines);
+        screen := SCR_MEDICINES
+
+      []
+        -- =================================================================
+        -- 4. ACT on the day's dose. The popup is opened, the fault gates
+        --    stand BEFORE the commit tap, and the outcome is read back from
+        --    the row's state and from the stock on the medicine list.
+        -- =================================================================
+        if not (dose == PENDING) then stop end if;
+        if screen == SCR_MEDICINES then
+            tap (cv_tab_overview);
+            wait_for (el_overview);
+            screen := SCR_HOME
+        end if;
+        wait_for (el_dose_row);
+        tap (cv_state_button);
+        act := any DoseAction;
+        ACT (id, act);
+        alt
+            -- commit
+            tap (L_action (act));
+            wait_for (el_dose_row)
+        []
+            -- the record update fails after the stock moved; the app must say
+            -- so. No relaunch here: the writes run in a background broadcast
+            -- after the tap, and a relaunch right after the tap killed the app
+            -- before they ran (first sweep). The observe's timeout is the
+            -- time the app has to attempt the write; a crash fails it too.
+            APP_WRITE_FAIL;
+            tap (L_action (act));
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            DB_ABORT;
+            tap (L_action (act));
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            INFRA_STORAGE_FULL;
+            tap (L_action (act));
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            -- killed right after the tap (the relaunch step IS the kill:
+            -- terminate + activate), back on the overview
+            UE_KILL;
+            tap (L_action (act));
+            navigate (rt_home)
+        end alt;
+        wait_for (el_dose_row);
+        observe (el_state_button);
+        tap (cv_tab_medicines);
+        wait_for (el_medicines);
+        observe (el_med_card);
+        screen := SCR_MEDICINES;
+        CONFIRM (?st, ?any StockBand, ?ds, id);
+        dose := ds
+
+      []
+        -- =================================================================
+        -- 5. ACT with the medicine list read BEFORE the write
+        --    (APP_CACHE_STALE is that priming read); the stock read back
+        --    afterwards must still be the committed one (O3).
+        -- =================================================================
+        if not (dose == PENDING) then stop end if;
+        if screen == SCR_HOME then
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            screen := SCR_MEDICINES
+        end if;
+        observe (el_med_card);
+        APP_CACHE_STALE;
+        tap (cv_tab_overview);
+        wait_for (el_overview);
+        wait_for (el_dose_row);
+        tap (cv_state_button);
+        act := any DoseAction;
+        ACT (id, act);
+        tap (L_action (act));
+        wait_for (el_dose_row);
+        observe (el_state_button);
+        tap (cv_tab_medicines);
+        wait_for (el_medicines);
+        observe (el_med_card);
+        screen := SCR_MEDICINES;
+        CONFIRM (?st, ?any StockBand, ?ds, id);
+        dose := ds
+
+      []
+        -- =================================================================
+        -- 6. DELETE the day's record (Delete in the popup, then Yes).
+        -- =================================================================
+        if not ((dose == TAKEN) or (dose == SKIPPED)) then stop end if;
+        if screen == SCR_MEDICINES then
+            tap (cv_tab_overview);
+            wait_for (el_overview);
+            screen := SCR_HOME
+        end if;
+        wait_for (el_dose_row);
+        tap (cv_state_button);
+        tap (cv_delete);
+        wait_for (el_delete_dialog);
+        tap (cv_confirm_delete);
+        DELETE (id);
+        tap (cv_tab_medicines);
+        wait_for (el_medicines);
+        observe (el_med_card);
+        screen := SCR_MEDICINES;
+        CONFIRM (COMMITTED, ?any StockBand, ABSENT, id);
+        dose := ABSENT
+
+      []
+        -- =================================================================
+        -- 7. EDIT the day's record to Taken through the edit sheet; the
+        --    sheet writes when it is dismissed (BACK).
+        -- =================================================================
+        if not ((dose == TAKEN) or (dose == SKIPPED)) then stop end if;
+        if screen == SCR_MEDICINES then
+            tap (cv_tab_overview);
+            wait_for (el_overview);
+            screen := SCR_HOME
+        end if;
+        wait_for (el_dose_row);
+        tap (cv_dose_row);
+        wait_for (el_edit_sheet);
+        tap (cv_toggle_taken);
+        tap (cv_back);
+        EDIT (id, TAKE);
+        wait_for (el_dose_row);
+        observe (el_state_button);
+        tap (cv_tab_medicines);
+        wait_for (el_medicines);
+        observe (el_med_card);
+        screen := SCR_MEDICINES;
+        CONFIRM (COMMITTED, ?any StockBand, ?ds, id);
+        dose := ds
+
+      []
+        -- =================================================================
+        -- 8. RE-READ the day after a relaunch: the row's state and the
+        --    stock, or the honest error a corrupt or unreadable store owes.
+        -- =================================================================
+        navigate (rt_home);
+        screen := SCR_HOME;
+        VIEW (id);
+        alt
+            wait_for (el_dose_row);
+            observe (el_state_button);
+            tap (cv_tab_medicines);
+            wait_for (el_medicines);
+            observe (el_med_card);
+            screen := SCR_MEDICINES;
+            CONFIRM (COMMITTED, ?any StockBand, ?ds, id);
+            dose := ds
+        []
+            DB_CORRUPT;
+            navigate (rt_home);
+            observe (el_corrupt_error);
+            DB_CORRUPT_DETECTED
+        []
+            INFRA_STORAGE_MEDIA;
+            navigate (rt_home);
+            observe (el_storage_error);
+            INFRA_STORAGE_ERROR
+        end alt
+
+      []
+        -- =================================================================
+        -- 9. The day's record is lost underneath the app (SQL); the dose is
+        --    due again, so the row can be acted on once more.
+        -- =================================================================
+        DB_EVENT_LOSS;
+        dose := PENDING
+      end alt
+    end loop
+end var
+end process
+
+end module

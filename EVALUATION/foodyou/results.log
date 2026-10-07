@@ -1,0 +1,13 @@
+# FoodYou disruption verdict matrix — 2026-07-27 19:03
+DISRUPTION       LAYER      VERDICT   BASIS
+happy            baseline   PASS      nominal happy path
+ue1_kill         User/Env   PASS      kill+relaunch, authoritative read-back
+input_invalid    User/Env   INCONC    invalid amount unreachable (numeric field)
+extapi_fail      App        INCONC    Open Food Facts disabled (local-first config)
+cache_stale      App        FAIL      stale stored energy, no revalidation
+disruption_db    Database   PASS      write abort, authoritative read-back
+db_corrupt       Database   PASS      NULL required field detected
+storage_full     Infra      PASS      write abort, authoritative read-back
+storage_media    Infra      INCONC    open-fd chmod no-op + empty diary
+----------------------------------------------------------------
+matrix written to EVALUATION/foodyou/results.log

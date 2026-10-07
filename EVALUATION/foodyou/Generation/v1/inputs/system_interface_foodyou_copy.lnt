@@ -1,0 +1,633 @@
+module system_interface_foodyou_copy (foodyou_types)
+with ==
+is
+
+
+type Screen is
+    SCR_HOME,
+    SCR_FOOD_SEARCH,
+    SCR_ADD_ENTRY,
+    SCR_VIEW_ENTRY_SHEET
+end type
+
+process SI_CORE [
+    navigate        : Ch_Route,
+    tap             : Ch_Value,
+    enter_text      : Ch_Value,
+    wait_for        : Ch_Element,
+    observe         : Ch_Element,
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    EXTAPI_FAIL     : none,
+    EXTAPI_WARNING  : none,
+    UE1_KILL        : none,
+    DISRUPTION_DB   : none,
+    DB_CORRUPT      : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL    : none,
+    STORAGE_MEDIA   : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE     : none
+] is
+var
+    screen : Screen,
+    fid    : FoodId,
+    kcal   : Calorie,
+    meal   : MealType,
+    eid    : EntryId,
+    src    : FoodSource,
+    st     : WriteStatus,
+    -- WHICH DIARY ROWS CURRENTLY EXIST. FoodYou can only show a row for a food
+    -- that has actually been logged, so without this the model generates tests
+    -- that open rows the app cannot display -- unrunnable against a clean
+    -- fixture, and hidden by pre-seeding the diary, which then invalidates every
+    -- DailyTotal assertion.
+    --
+    -- A flag is set only when the write COMMITS. That is the point for the
+    -- disruption purposes: a UE1_KILL / STORAGE_FULL / DISRUPTION_DB write that
+    -- rolls back leaves no row, and the model now says so rather than assuming
+    -- the save worked.
+    --
+    -- ABSTRACTION: at most one entry per food (entry_N <-> food_of(entry_N)).
+    -- The real app allows the same food logged twice; that is deliberately out
+    -- of scope here.
+    has_peanut, has_butter, has_oil : Bool
+in
+    fid    := food_peanut;
+    kcal   := kcal_peanut;
+    meal   := BREAKFAST;
+    eid    := entry_0;
+    src    := LOCAL;
+    st     := COMMITTED;
+    screen := SCR_HOME;
+    has_peanut := false;
+    has_butter  := false;
+    has_oil   := false;
+
+    loop
+      alt
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        -- ORDERING: concrete steps first, then the abstract gate. That holds for
+        -- inputs AND outputs here, and it is not a style choice -- si_lnt_parser
+        -- attaches to each gate the actions in the segment LEADING UP TO it, so a
+        -- gate placed before its steps gets none of them.
+        --
+        -- The consequence, which is a real limitation: the concrete steps DEPEND
+        -- on the parameter the gate carries -- L_query(fid) is a different string
+        -- per food -- so the SI must decide `fid' itself, before the gate that is
+        -- supposed to determine it. A test purpose therefore cannot choose the
+        -- food; whatever the SI pins is what every test case uses.
+        --
+        -- TWO THINGS WERE TRIED TO LIFT THAT AND BOTH WERE REVERTED. Recorded so
+        -- they are not rediscovered, because each cost a generation run.
+        --
+        -- 1. RECEIVING the food (`SEARCH_FOOD (?fid, src)') so a purpose could
+        --    name it. extract_all went past 187 test cases for tp_happy and was
+        --    still climbing, against 93. Not the target sequence, which the
+        --    purpose pins -- the PREFIXES. The specification's USER process says
+        --    `fid := any FoodId', so a receiving SI makes every prefix path exist
+        --    once per food. A purpose cannot constrain prefixes; they are
+        --    specification behaviour. Multi-food is genuinely available this way
+        --    and genuinely costs roughly a factor of the number of foods.
+        --
+        -- 2. Putting the GATE BEFORE its concrete steps, which is what receiving
+        --    would require (L_query(fid) cannot run before fid is known). That
+        --    breaks the parser: si_lnt_parser attaches to each gate the actions in
+        --    the segment LEADING UP TO it, so a gate placed first ends up with no
+        --    concrete steps and validate_invariants rejects it --
+        --      "gate 'ADD_ENTRY' has neither actions, traversal_paths, nor an
+        --       observe block".
+        --    Gate-first therefore needs a parser change too, not just an SI edit.
+        --
+        -- So: concrete steps first, gate last, food pinned. That is the
+        -- convention the parser implements and the paper's SI property states.
+        src := LOCAL;
+        fid := defaultF;
+        -- FoodYou's search is a three-step interaction, and modelling it as one
+        -- tap is why searches were unreliable. Typing does not run the query;
+        -- the keyboard's search key does. The per-source counts then populate,
+        -- and only tapping a source expands ITS rows -- the chips are
+        -- single-select, so tapping one is a state change, not a toggle.
+        -- Confirmed live: with "Agar" typed and submitted the screen showed
+        -- "Open Food Facts 98" and "Swiss ... 1" and NO rows until a chip was
+        -- tapped.
+        enter_text (L_query (fid));
+        tap (cv_search_submit);
+        wait_for (el_source_counts);
+        tap (L_source (src));
+        wait_for (el_search_results);
+        SEARCH_FOOD (fid, src);
+        alt
+            -- The energy value is rendered on the SEARCH RESULT ROW, not on the
+            -- add-entry screen (confirmed live: that screen carries only date,
+            -- meal, quantity and unit -- no kcal, not below the fold and not
+            -- under "Show more"). So FOOD_INFO must be observed BEFORE opening
+            -- the food, and el_measure_screen is what says the add-entry screen
+            -- has come up.
+            wait_for (el_calories);
+            observe (el_calories);
+            FOOD_INFO (fid, ?kcal);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        []
+            DB_CORRUPT;
+            wait_for (el_corrupt_error);
+            observe (el_corrupt_error);
+            DB_CORRUPT_DETECTED;
+            screen := SCR_FOOD_SEARCH
+        end alt
+
+      []
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        CACHE_STALE;
+        src := LOCAL;
+        fid := defaultF;
+        enter_text (L_query (fid));
+        tap (cv_search_submit);
+        wait_for (el_source_counts);
+        tap (L_source (src));
+        wait_for (el_search_results);
+        SEARCH_FOOD (fid, src);
+        wait_for (el_calories);
+        observe (el_calories);
+        FOOD_INFO (fid, ?kcal);
+        tap (L_food (fid));
+        wait_for (el_measure_screen);
+        screen := SCR_ADD_ENTRY
+
+      []
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        src := EXTERNAL;
+        fid := defaultF;
+        enter_text (L_query (fid));
+        tap (cv_search_submit);
+        wait_for (el_source_counts);
+        tap (L_source (src));
+        -- Added 2026-08-18: this line was present in the LOCAL branch and absent
+        -- here, and that asymmetry produced every FAIL in the 102-variant sweep
+        -- (13 of them, all identical). Without it the branch taps the source chip,
+        -- declares the search done, and waits for el_calories on a screen reading
+        -- "No food found" -- and because el_calories also appears in an `observe`
+        -- block it is an ORACLE selector, so its timeout is reported as a
+        -- conformance FAIL. The app was behaving correctly: Corn germ oil is a
+        -- Swiss Food Composition Database product and genuinely is not in Open
+        -- Food Facts, which honestly displayed a count of 0.
+        --
+        -- With the precondition restored the branch stops where it should. It is
+        -- a wait_for-only selector, so the runtime classifies the stop as the
+        -- tester failing to get where it was going: INCONCLUSIVE with a named
+        -- reason, reached by the general mechanism rather than a source-specific
+        -- exception. That is what the retired `external_dependencies` guard was
+        -- for, and the note retiring it on 2026-08-13 assumed this precondition
+        -- was already here.
+        wait_for (el_search_results);
+        disrupt
+            SEARCH_FOOD (fid, src);
+            wait_for (el_calories);
+            observe (el_calories);
+            FOOD_INFO (fid, ?kcal);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        by
+            EXTAPI_FAIL;
+            wait_for (el_extapi_warning);
+            observe (el_extapi_warning);
+            EXTAPI_WARNING;
+            screen := SCR_FOOD_SEARCH
+        end disrupt
+
+      []
+        -- 2.  ADD_ENTRY + CONFIRM_TOTAL
+        -- Ordering rule again: the gate comes first because EVERY concrete step
+        -- below depends on its parameters -- L_meal(meal) picks which meal to
+        -- open, L_query(fid) types a different string per food. Deciding after
+        -- the fact is what forced `fid := defaultF' here and made a second food
+        -- unreachable for any test purpose.
+        meal := BREAKFAST;
+        fid  := defaultF;
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH;
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        tap (cv_save);
+        ADD_ENTRY (meal, fid, VALID);
+        tap (L_back);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?st, ?any DailyTotal, fid);
+        -- the row exists only if the write actually committed
+        if st == COMMITTED then
+            case fid in
+                food_peanut -> has_peanut := true
+              | food_butter  -> has_butter  := true
+              | food_oil   -> has_oil   := true
+            end case
+        end if
+
+      []
+        meal := BREAKFAST;
+        fid  := defaultF;
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH;
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        tap (cv_save);
+        ADD_ENTRY (meal, fid, VALID);
+        UE1_KILL;                       -- app killed mid-write (injected via adb am kill)
+        navigate (rt_diary);            -- relaunch to Home
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?st, ?any DailyTotal, fid);
+        -- the row exists only if the write actually committed
+        if st == COMMITTED then
+            case fid in
+                food_peanut -> has_peanut := true
+              | food_butter  -> has_butter  := true
+              | food_oil   -> has_oil   := true
+            end case
+        end if
+
+      []
+        meal := BREAKFAST;
+        fid  := defaultF;
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH;
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        -- FoodYou refuses an invalid amount by WITHHOLDING the commit control,
+        -- not by reporting an error. Confirmed live 2026-08-11 on the add-entry
+        -- form with the keyboard down: content-desc "Save" is ABSENT for "", "0"
+        -- and "abc", and returns as soon as a valid amount ("100") is typed; no
+        -- error or helper text appears in any of those states.
+        --
+        -- So there is no tap(cv_save) to model here -- a tester cannot perform an
+        -- action the UI does not offer -- and no el_input_error to observe. The
+        -- refusal is checked where it actually matters: the daily total below
+        -- must be UNCHANGED. That is a stronger oracle than the presence of a
+        -- message, because it verifies nothing was written rather than that
+        -- something was said.
+        enter_text (cv_qty_invalid);        -- type an invalid amount into the quantity field
+        ADD_ENTRY (meal, fid, INVALID);     -- attempted; the app offers no way to commit it
+        wait_for (el_add_entry_form);       -- still on the form: the write never happened
+        -- Nothing was saved, so back lands on the SEARCH screen (as branch 1
+        -- models), not Home -- two backs are needed.
+        tap (L_back);
+        wait_for (el_search_input);
+        screen := SCR_FOOD_SEARCH;
+        tap (L_back);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?st, ?any DailyTotal, fid);
+        -- the row exists only if the write actually committed
+        if st == COMMITTED then
+            case fid in
+                food_peanut -> has_peanut := true
+              | food_butter  -> has_butter  := true
+              | food_oil   -> has_oil   := true
+            end case
+        end if
+
+      []
+        meal := BREAKFAST;
+        fid  := defaultF;
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH;
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        tap (cv_save);
+        ADD_ENTRY (meal, fid, VALID);
+        DISRUPTION_DB;                  -- persist transaction rolls back (read-only DB)
+        tap (L_back);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?st, ?any DailyTotal, fid);
+        -- the row exists only if the write actually committed
+        if st == COMMITTED then
+            case fid in
+                food_peanut -> has_peanut := true
+              | food_butter  -> has_butter  := true
+              | food_oil   -> has_oil   := true
+            end case
+        end if
+
+      []
+        meal := BREAKFAST;
+        fid  := defaultF;
+        if screen == SCR_HOME then
+            tap (L_meal (meal));
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH;
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            enter_text (L_query (fid));
+            tap (cv_search_submit);
+            wait_for (el_source_counts);
+            tap (L_source (LOCAL));
+            wait_for (el_search_results);
+            tap (L_food (fid));
+            wait_for (el_measure_screen);
+            screen := SCR_ADD_ENTRY
+        end if;
+
+        tap (cv_save);
+        ADD_ENTRY (meal, fid, VALID);
+        STORAGE_FULL;                   -- write fails (ENOSPC), rolls back
+        tap (L_back);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?st, ?any DailyTotal, fid);
+        -- the row exists only if the write actually committed
+        if st == COMMITTED then
+            case fid in
+                food_peanut -> has_peanut := true
+              | food_butter  -> has_butter  := true
+              | food_oil   -> has_oil   := true
+            end case
+        end if
+
+      []
+        -- VIEW_DIARY + DIARY_INFO
+        -- Choose a row that ACTUALLY EXISTS. This must come first in the branch:
+        -- an unlogged entry yields "stop", which has no transitions, so when
+        -- nothing is logged the branch offers no initial action and is simply
+        -- never taken. Guarding after the tap (L_back) below would instead let
+        -- the model commit to the branch and then deadlock.
+        alt
+            if has_peanut then eid := entry_0 else stop end if
+        []  if has_butter  then eid := entry_1 else stop end if
+        []  if has_oil   then eid := entry_2 else stop end if
+        end alt;
+
+        -- Back from an UNSAVED add-entry screen lands on the SEARCH screen, not
+        -- Home -- the same transition branch 1 already models. The single back
+        -- used at the end of the ADD_ENTRY branch works only because committing
+        -- the entry pops to Home by itself. Confirmed live 2026-08-11: the walk
+        -- reached here via FOOD_INFO -> tap(L_food) with nothing saved, and
+        -- wait_for(el_home) timed out on the search screen; one further back
+        -- showed Home ("Food You", "620 / 2000 kcal"). Two backs are needed.
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            tap (L_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+
+        tap (L_entry (eid));
+        wait_for (el_diary_entry_detail);
+        screen := SCR_VIEW_ENTRY_SHEET;
+        -- a storage-media read error (STORAGE_MEDIA) must surface an honest error,
+        -- not a garbage food or a crash (strict oracle).
+        disrupt
+            VIEW_DIARY (eid);
+            observe (el_entry_food);
+            DIARY_INFO (eid, ?fid)
+        by
+            STORAGE_MEDIA;
+            wait_for (el_storage_error);
+            observe (el_storage_error);
+            STORAGE_ERROR_SHOWN
+        end disrupt;
+        tap (L_back);
+        wait_for (el_home);
+        screen := SCR_HOME
+
+      []
+        -- 4.  REMOVE_ENTRY + CONFIRM_TOTAL
+        -- Same guard as the VIEW_DIARY branch: you cannot delete a row that was
+        -- never logged.
+        alt
+            if has_peanut then eid := entry_0 else stop end if
+        []  if has_butter  then eid := entry_1 else stop end if
+        []  if has_oil   then eid := entry_2 else stop end if
+        end alt;
+
+        -- Back from an UNSAVED add-entry screen lands on the SEARCH screen, not
+        -- Home -- the same transition branch 1 already models. The single back
+        -- used at the end of the ADD_ENTRY branch works only because committing
+        -- the entry pops to Home by itself. Confirmed live 2026-08-11: the walk
+        -- reached here via FOOD_INFO -> tap(L_food) with nothing saved, and
+        -- wait_for(el_home) timed out on the search screen; one further back
+        -- showed Home ("Food You", "620 / 2000 kcal"). Two backs are needed.
+        if screen == SCR_ADD_ENTRY then
+            tap (L_back);
+            wait_for (el_search_input);
+            screen := SCR_FOOD_SEARCH
+        end if;
+
+        if screen == SCR_FOOD_SEARCH then
+            tap (L_back);
+            wait_for (el_home);
+            screen := SCR_HOME
+        end if;
+
+        tap (L_entry (eid));
+        wait_for (el_diary_entry_detail);
+        screen := SCR_VIEW_ENTRY_SHEET;
+        tap (cv_delete);
+        wait_for (el_delete_confirm);
+        tap (cv_confirm_delete);
+        REMOVE_ENTRY (eid);
+        wait_for (el_daily_total);
+        screen := SCR_HOME;
+        observe (el_daily_total);
+        CONFIRM_TOTAL (?st, ?any DailyTotal, food_of (eid));
+        -- the row is gone only if the removal actually committed
+        if st == COMMITTED then
+            case eid in
+                entry_0 -> has_peanut := false
+              | entry_1 -> has_butter  := false
+              | entry_2 -> has_oil   := false
+            end case
+        end if
+      end alt
+    end loop
+end var
+end process
+
+
+process SI [
+    navigate        : Ch_Route,
+    tap             : Ch_Value,
+    enter_text      : Ch_Value,
+    wait_for        : Ch_Element,
+    observe         : Ch_Element,
+    SEARCH_FOOD     : SearchChannel,
+    FOOD_INFO       : FoodInfoChannel,
+    ADD_ENTRY       : AddEntryChannel,
+    CONFIRM_TOTAL   : TotalChannel,
+    VIEW_DIARY      : ViewDiaryChannel,
+    DIARY_INFO      : DiaryInfoChannel,
+    REMOVE_ENTRY    : RemoveEntryChannel,
+    EXTAPI_FAIL     : none,
+    EXTAPI_WARNING  : none,
+    UE1_KILL        : none,
+    DISRUPTION_DB   : none,
+    DB_CORRUPT      : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL    : none,
+    STORAGE_MEDIA   : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE     : none,
+    NETWORK_DEGRADED : none
+] is
+    par EXTAPI_FAIL, UE1_KILL, DISRUPTION_DB, DB_CORRUPT, STORAGE_FULL, STORAGE_MEDIA,
+        CACHE_STALE in
+        SI_CORE [navigate, tap, enter_text, wait_for, observe,
+                 SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+                 VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY, EXTAPI_FAIL, EXTAPI_WARNING,
+                 UE1_KILL, DISRUPTION_DB, DB_CORRUPT, DB_CORRUPT_DETECTED, STORAGE_FULL,
+                 STORAGE_MEDIA, STORAGE_ERROR_SHOWN, CACHE_STALE]
+        ||
+        par NETWORK_DEGRADED in
+            DISRUPTOR [EXTAPI_FAIL, NETWORK_DEGRADED, UE1_KILL, DISRUPTION_DB, DB_CORRUPT,
+                       CACHE_STALE]
+            ||
+            INFRA_DISRUPTOR [NETWORK_DEGRADED, STORAGE_FULL, STORAGE_MEDIA]
+        end par
+    end par
+end process
+
+end module

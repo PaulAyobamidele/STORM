@@ -1,0 +1,128 @@
+# disruption_mapping.yml -- how each Spliit fault is injected and undone.
+# Web schema (framework/concretization/disruptor.py): named mechanisms with an
+# argv command, and per-fault inject / restore payloads with probes.
+#
+#   faults: keys are EXACTLY the fault gate names of specification_spliit.lnt
+#   timing: gate = when the walk reaches the fault's label; pre = before the
+#           walk; none = the System Interface realises it with its own steps
+#
+# The stack: `docker compose up -d` in EVALUATION/spliit/sut/spliit brings up
+# spliit-app-1 (:3000) and spliit-db-1 (Postgres 17, db "postgres", user
+# postgres). The walk is driven through the fault proxy on :3002
+# (EVALUATION/spliit/sut/fault_middleware.py -> :3000).
+
+mechanisms:
+  postgres:
+    command: ["docker", "exec", "-i", "spliit-db-1", "psql", "-U", "postgres", "-d", "postgres", "-t", "-A", "-v", "ON_ERROR_STOP=1", "-c"]
+    timeout: 30
+  shell:
+    command: ["bash", "-lc"]
+    timeout: 60
+
+faults:
+
+  UE_KILL:                       # the user leaves the page right after submitting
+    timing: none                 # realised by the SI: click Create, navigate away, come back
+    mechanism: none
+
+  APP_CACHE_STALE:               # the Stats cache is warm when the total is read
+    timing: none                 # realised by the SI: visit Stats before the write
+    mechanism: none
+
+  APP_UNAVAILABLE:               # the request never reaches the server
+    # the proxy returns 503 on every /api/trpc/* while any fault is active
+    timing: gate
+    mechanism: http
+    endpoint: /admin/fault/activate
+    params: { fault_type: app_unavailable }
+    restore_endpoint: /admin/fault/deactivate
+    restore_params: { fault_type: app_unavailable }
+    # the proxy's own status endpoint, asked through a shell: an HTTP fault
+    # has no command mechanism to probe with, so the probe names its own
+    verify_injected: { mechanism: shell, payload: "curl -s http://localhost:3002/admin/fault/status | grep -c app_unavailable", equals: "1" }
+    verify_restored: { mechanism: shell, payload: "curl -s http://localhost:3002/admin/fault/status | grep -c app_unavailable || true", equals: "0" }
+
+  APP_EXTAPI_FAIL:               # api.frankfurter.app unreachable from the browser
+    # The rate is fetched by the BROWSER, not the server, so the proxy cannot
+    # block it. Resolving the host to 127.0.0.1 does; that needs sudo on this
+    # machine, so run it as a pre-step by hand or grant passwordless sudo for
+    # tee. CONFIRM LIVE before relying on the purpose.
+    # The harness cannot answer a sudo prompt, so the line is put in and
+    # taken out BY HAND around the run, and the harness only checks it:
+    #   before: sudo sh -c "echo '127.0.0.1 api.frankfurter.app' >> /etc/hosts"
+    #   after:  sudo sed -i '' '/api.frankfurter.app/d' /etc/hosts
+    # The line only affects the rate lookup, which no other case triggers,
+    # so it may stay in place for the rest of a batch. Its inject succeeds
+    # only if the line is already there (grep), and fails loudly otherwise.
+    timing: gate
+    mechanism: shell
+    inject:  "grep -q 'api.frankfurter.app' /etc/hosts"
+    restore: "true"
+    verify_injected: { payload: "grep -c 'api.frankfurter.app' /etc/hosts", equals: "1" }
+
+  DB_ABORT:                      # the insert is aborted inside Postgres
+    # A BEFORE INSERT trigger on "Expense". The activity row is written first,
+    # outside any transaction (api.ts:53-67), so it survives the abort.
+    timing: gate
+    mechanism: postgres
+    inject: >-
+      CREATE OR REPLACE FUNCTION fault_abort_write() RETURNS trigger AS $$
+      BEGIN RAISE EXCEPTION 'injected transaction abort'; END $$ LANGUAGE plpgsql;
+      DROP TRIGGER IF EXISTS fault_abort_write ON "Expense";
+      CREATE TRIGGER fault_abort_write BEFORE INSERT ON "Expense" FOR EACH ROW EXECUTE FUNCTION fault_abort_write();
+    restore: >-
+      DROP TRIGGER IF EXISTS fault_abort_write ON "Expense";
+      DROP FUNCTION IF EXISTS fault_abort_write();
+    verify_injected: { payload: "SELECT count(*) FROM pg_trigger WHERE tgname = 'fault_abort_write'", equals: "1" }
+    verify_restored: { payload: "SELECT count(*) FROM pg_trigger WHERE tgname = 'fault_abort_write'", equals: "0" }
+
+  DB_CORRUPT:                    # a row's split rows are deleted underneath it
+    # Every expense of the walk's own group (the newest group) loses its split
+    # rows, so whichever row the case opens next IS corrupt. Naming one title
+    # was wrong: a case may delete that row first and open another, and the
+    # old probe ("no split rows for Dinner C") then passed with nothing
+    # corrupted. The probe now requires rows to exist AND to have no splits.
+    # The group is fresh per run, so nothing has to be restored afterwards.
+    timing: gate
+    mechanism: postgres
+    inject:  "DELETE FROM \"ExpensePaidFor\" WHERE \"expenseId\" IN (SELECT e.id FROM \"Expense\" e WHERE e.\"groupId\" = (SELECT id FROM \"Group\" ORDER BY \"createdAt\" DESC LIMIT 1))"
+    restore: ""
+    verify_injected: { payload: "SELECT CASE WHEN count(e.id) > 0 AND count(pf.\"expenseId\") = 0 THEN 1 ELSE 0 END FROM \"Expense\" e LEFT JOIN \"ExpensePaidFor\" pf ON pf.\"expenseId\" = e.id WHERE e.\"groupId\" = (SELECT id FROM \"Group\" ORDER BY \"createdAt\" DESC LIMIT 1)", equals: "1" }
+
+  INFRA_DB_DOWN:                 # the database container is paused during the write
+    # Paused right before the Create click; unpaused in the background after
+    # the request has had time to fail, so the read-back can still run.
+    timing: gate
+    mechanism: shell
+    # The pause runs in the FOREGROUND and only the delayed unpause is put in
+    # the background, inside its own subshell. Written as `pause && (...) &`
+    # the whole AND-list went to the background, the probe ran before the
+    # pause had happened, and the fault was reported "not confirmed" (first
+    # campaign: FAIL recorded with the database never paused).
+    inject:  "docker pause spliit-db-1 && ( (sleep 25; docker unpause spliit-db-1) >/dev/null 2>&1 & )"
+    restore: "docker unpause spliit-db-1 >/dev/null 2>&1 || true"
+    verify_injected: { payload: "docker inspect -f '{{.State.Paused}}' spliit-db-1", equals: "true" }
+    verify_restored: { payload: "docker inspect -f '{{.State.Paused}}' spliit-db-1", equals: "false" }
+
+  # parameter-borne disruptions: no injection, the SI types the value
+  INPUT_INVALID:
+    timing: none
+    mechanism: none
+  INPUT_OVERLIMIT:
+    timing: none
+    mechanism: none
+  WEEKLY:
+    timing: none
+    mechanism: none
+
+# --- expectations, from the behaviour note, stated before any run ---------
+# UE_KILL          unknown: depends on whether the request completes
+# APP_UNAVAILABLE  FAIL expected: no report on a failed save (§8.1)
+# APP_CACHE_STALE  FAIL expected: Stats served from a 30 s cache (§8.2)
+# APP_EXTAPI_FAIL  PASS expected: the form has a rate-error message (§8.6)
+# DB_ABORT         FAIL expected: no report, and the log names the write (§4)
+# DB_CORRUPT       FAIL expected: no warning on a split-less row
+# INFRA_DB_DOWN    FAIL expected: no report on a failed save
+# INPUT_INVALID    PASS expected: inline zod message (confirmed live)
+# INPUT_OVERLIMIT  FAIL expected: silent server rejection (confirmed live)
+# WEEKLY           FAIL expected: the copy has no log entry (confirmed live)

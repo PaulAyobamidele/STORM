@@ -1,0 +1,6 @@
+# moodle tc variants -- purpose: app_partial_submission -- converted 2026-10-06 from variant_results_app_partial_submission.log (sweep 2026-10-02 03:03-06:20, EVALUATION/moodle/sweep_20261002.log); rev not recorded, framework/ dirty; one row per case = its LAST recorded row (the one its per-case log describes)
+VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
+1	31	39	24	FAIL	injected=APP_PARTIAL_SUBMISSION (timing: pre); value mismatch on the pre-fault save: fault pre-injected before the save the case expects to succeed; SUBMISSION_STATUS mismatch — SubmissionStatus: AUT expects SUBMITTED_FG, observed 'no submissions have been made yet' classifies as NO_SUBMISSION
+2	33	42	23	FAIL	injected=APP_PARTIAL_SUBMISSION (timing: pre); value mismatch on the pre-fault save: fault pre-injected before the save the case expects to succeed; SUBMISSION_STATUS mismatch — SubmissionStatus: AUT expects SUBMITTED_FG, observed 'no submissions have been made yet' classifies as NO_SUBMISSION
+3	24	28	23	PASS	injected=APP_PARTIAL_SUBMISSION (timing: pre); reached :PASS:
+4	24	28	23	PASS	injected=APP_PARTIAL_SUBMISSION (timing: pre); reached :PASS:

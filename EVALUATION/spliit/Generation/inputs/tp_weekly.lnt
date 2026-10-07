@@ -1,0 +1,53 @@
+module tp_weekly (spliit_types, spliit_fixture) is
+
+(* TARGET   WEEKLY: the recurring expense, dated eight days back.
+   Shaped like FoodYou's purposes: the target sequence, and ONLY the other
+   faults refused. Every other thing the user may do on the way (another
+   write, opening or deleting a row) is left open, and TESTOR turns those
+   choices into separate test cases.
+   Expected FAIL: the copy has no log entry (confirmed live: 3 rows, 2 entries). *)
+
+process MAIN [
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    VIEW    : ViewChannel,
+    DETAIL  : DetailChannel,
+    REMOVE  : ViewChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    RATE_ERROR_SHOWN    : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    APP_UNAVAILABLE     : none,
+    APP_CACHE_STALE     : none,
+    APP_EXTAPI_FAIL     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    INFRA_DB_DOWN       : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : ExpenseId in
+        IDF := recurringExpense;
+        disrupt
+            ADD     (?any Payer, IDF, VALID, WEEKLY);
+            CONFIRM (COMMITTED, ?any SpendBand, LOGGED, IDF);
+            loop TP_ACCEPT end loop
+        by
+            -- any OTHER fault: the observation would be evidence about that
+            -- fault, not about this purpose's target
+            alt
+                UE_KILL
+            []  APP_UNAVAILABLE
+            []  APP_CACHE_STALE
+            []  APP_EXTAPI_FAIL
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_DB_DOWN
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

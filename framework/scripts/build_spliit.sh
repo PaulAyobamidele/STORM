@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Full TGV pipeline for Spliit:
-#   model/*.lnt + test_purposes/tp_*.lnt --> generated/composed_spliit.bcg
+#   model/*.lnt + Test_Purposes/tp_*.lnt --> generated/composed_spliit.bcg
 #   --> generated/tp/tp_*.bcg (ACCEPT/REFUSE renamed)
-#   --> generated/tc/tc_*.bcg + tc_*.aut
+#   --> Test_Cases/tc_*.bcg + tc_*.aut
 #
 # The behaviour model is the composition SPEC || SI built from
 # compose_spliit.lnt, not the SPEC alone.
@@ -20,9 +20,9 @@ export PATH="$CADP_COM:$PATH"
 export CADP="${CADP:-${CADP_COM%/com}}"
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-SYS="$ROOT/systems/spliit"
+SYS="$ROOT/EVALUATION/spliit"
 MODEL="$SYS/model"
-TP_SRC="$SYS/test_purposes"
+TP_SRC="$SYS/Test_Purposes"
 GEN="$SYS/generated"
 BUILD="$GEN/build"
 IO="$MODEL/spliit.io"

@@ -1,0 +1,22 @@
+module mastodon_fixture (mastodon_types) is
+
+(* Test selection only. Imported by the System Interface and the purposes,
+   never by the specification. Edit here to retarget the whole sweep. *)
+
+(* The post every purpose writes. Its text mentions @alice (who does not
+   follow bob) and carries a URL, so the antispam fault and the link-preview
+   fault strike the same write as the nominal case. *)
+function defaultItem : ItemId is
+    return post_c
+end function
+
+(* Must be the record of defaultItem: item_of (rec_c) = post_c. *)
+function defaultRecord : RecordId is
+    return rec_c
+end function
+
+function defaultVisibility : Visibility is
+    return PUBLIC
+end function
+
+end module

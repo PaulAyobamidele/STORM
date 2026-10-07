@@ -1,0 +1,62 @@
+module tp_input_invalid (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    parameter (Validity = INVALID: the empty medicine name).
+   TARGET   the app owes a refusal of an empty name (O9).
+   ACCEPT   the refusal is shown.
+   REFUSE   any fault; a valid create; any other input.
+   Owed     REJECT_SHOWN.
+   Expected FAIL: the empty name is accepted (§4.8, confirmed live §15). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            ADD_MEDICINE (INVALID);
+            REJECT_SHOWN;
+            loop TP_ACCEPT end loop
+        by
+            alt
+                UE_KILL
+            []  APP_WRITE_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  DB_EVENT_LOSS
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (VALID)
+            []  NO_SKIP (?any MedicineId)
+            []  ACT (?any MedicineId, ?any DoseAction)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            []  VIEW (?any MedicineId)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

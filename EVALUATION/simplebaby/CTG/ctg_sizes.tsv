@@ -1,0 +1,17 @@
+simplebaby_app_cache_stale.ctg	58 states, 89 transitions 
+simplebaby_app_key_lost.ctg	40 states, 62 transitions 
+simplebaby_app_unavailable.ctg	33 states, 53 transitions 
+simplebaby_db_abort.ctg	33 states, 53 transitions 
+simplebaby_db_corrupt.ctg	43 states, 67 transitions 
+simplebaby_db_corrupt_local.ctg	38 states, 57 transitions 
+simplebaby_db_data_lost.ctg	43 states, 67 transitions 
+simplebaby_infra_db_down.ctg	33 states, 53 transitions 
+simplebaby_infra_doze.ctg	97 states, 154 transitions 
+simplebaby_infra_storage_media.ctg	39 states, 59 transitions 
+simplebaby_input_invalid.ctg	31 states, 49 transitions 
+simplebaby_input_overnight.ctg	85 states, 135 transitions 
+simplebaby_nominal_guest.ctg	89 states, 139 transitions 
+simplebaby_nominal_signed.ctg	94 states, 149 transitions 
+simplebaby_ue_kill.ctg	29 states, 49 transitions 
+simplebaby_ue_offline.ctg	33 states, 53 transitions 
+simplebaby_ue_storage_full.ctg	28 states, 43 transitions 

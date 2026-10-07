@@ -1,0 +1,74 @@
+module tp_db_event_loss (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    two-phase: write, lose the record, re-read.
+   TARGET   DB_EVENT_LOSS: the day's record is deleted after the write.
+   PHASE 1  mark the day's dose Taken.
+   PHASE 2  the record is lost; the day is re-read. ACCEPT when the stock
+            read back is what the records now imply (unmoved) and the dose
+            is due again (O5).
+   REFUSE   any other fault; any other input; the target firing before the
+            write.
+   Owed     CONFIRM (COMMITTED, ?band, PENDING, IDF) with the band back at
+            its starting rung.
+   Expected FAIL: the stock stays decremented while the day shows no dose
+            (§8.4; the weakest obligation, stated as such in the spec). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            disrupt
+                ACT     (IDF, TAKE);
+                CONFIRM (COMMITTED, ?any StockBand, TAKEN, IDF)
+            by
+                DB_EVENT_LOSS;
+                loop TP_REFUSE end loop
+            end disrupt;
+            DB_EVENT_LOSS;
+            VIEW    (IDF);
+            CONFIRM (COMMITTED, ?any StockBand, PENDING, IDF);
+            loop TP_ACCEPT end loop
+        by
+            alt
+                UE_KILL
+            []  APP_WRITE_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (?any Validity)
+            []  NO_SKIP (?any MedicineId)
+            []  ACT (?any MedicineId, SKIP)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

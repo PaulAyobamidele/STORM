@@ -1,0 +1,434 @@
+
+module moodle_types is
+
+(* ===========================================================================
+   Moodle — abstract and concrete domains.
+
+   Rebuilt 2026-08-24 around the HYBRID EIGHT disruptions. The previous set was
+   eight variants of "a write fails", which is Moodle's STRONGEST area:
+   quiz_attempt::process_finish wraps its writes in start_delegated_transaction
+   and rolls back on exception, so those faults produce a clean error page and
+   a PASS. A suite aimed there cannot discriminate.
+
+   The new set aims at seams verified to be weak by reading the SUT:
+     * mod/assign/locallib.php save_submission() has NO delegated transaction —
+       the only ones in that file wrap get_user_submission/get_group_submission,
+       which create the submission ROW, not its CONTENT. So the status row and
+       the onlinetext row are written non-atomically.
+     * process_save_grade() has no submission-changed check. Submission EDITING
+       has one ($string['submissionmodified']); grading does not.
+     * grade_item->needsupdate defaults to 1 and recompute is deferred via
+       grade_regrade_final_grades_if_required(), so a course total can be read
+       stale.
+     * \mod_quiz\task\update_overdue_attempts is a scheduled_task: Moodle
+       depends on cron for CORRECTNESS here, not merely timeliness.
+
+   APP1_WRITE_FAIL is retained deliberately as an EXPECTED-PASS CONTROL. A
+   sweep in which everything fails is exactly as suspect as one in which
+   nothing does; a control the SUT passes is what makes the failures credible.
+   =========================================================================== *)
+
+(* ONE of each, because the seeded fixture has exactly one of each: course
+   id 2 (MOD), quiz cmid 1, assign cmid 2. Modelling three courses and four
+   assignments was not conservatism, it was unfaithfulness — it multiplied the
+   composed state space to 6.9M without expressing a single behaviour the SUT
+   can exhibit. Widen these only when the fixture actually widens. *)
+type CourseId is
+    crs_0
+with ==
+end type
+
+type QuizId is
+    qz_0
+with ==
+end type
+
+(* ONE attempt. None of the eight faults needs a second: INFRA_CRON_DEAD is
+   about a single attempt never leaving IN_PROGRESS, not about concurrency
+   between attempts. A second value doubled the composed state space and bought
+   no expressible behaviour. Widen if a purpose ever needs a re-attempt. *)
+type AttemptId is
+    att_0
+with ==
+end type
+
+type AssignId is
+    asn_0
+with ==
+end type
+
+(* An ENUMERATION, not Grade(val : Nat).
+   Nat is unbounded, and output gates receive `?g' freely, so CADP enumerated
+   naturals: the SI alone reached 1617 labels and the composition 1.57M states.
+   Two abstract values are all the properties need — a full mark, and the zero
+   a stale or unrecomputed total shows. That is what an abstract domain is for. *)
+type Grade is
+    GRADE_FULL,
+    GRADE_ZERO
+with ==
+end type
+
+(* The lifecycle of a quiz attempt AS THE STUDENT CAN SEE IT.
+
+   ABANDONED is new and is the whole point of INFRA_CRON_DEAD: when a quiz has
+   a time limit and overduehandling=autosubmit, an attempt left open past its
+   deadline is closed by \mod_quiz\task\update_overdue_attempts. If cron never
+   runs, it stays IN_PROGRESS forever and the student's work is never graded.
+   Without a terminal value to require, that fault has nothing to violate. *)
+(* Exactly the three states the quiz page actually RENDERS, one abstract value
+   per distinct string. GRADED and FAILED were removed:
+
+     GRADED  rendered the same "Finished" as SUBMITTED, so the oracle could not
+             tell them apart — an ambiguous mapping is an unusable one. The
+             grade itself is observed through GRADE_PERSISTED, not here.
+     FAILED  had NO rendering at all. Nothing in Moodle displays it, so any
+             oracle requiring it could never match: the same vacuous-oracle
+             defect as the old unobservable `ver' parameter. *)
+type AttemptStatus is
+    IN_PROGRESS,     (* "In progress"     *)
+    SUBMITTED,       (* "Finished"        *)
+    ABANDONED        (* "Never submitted" *)
+with ==
+end type
+
+(* Assignment submission status, DISTINCT from AttemptStatus.
+
+   Reusing one type for both conflated two different lifecycles and hid the
+   fault APP_PARTIAL_SUBMISSION is about.
+
+   DRAFT WAS REMOVED, with the fixture change that made it unrenderable.
+   The assignment now sets submissiondrafts=0, so a single save writes the
+   status AND the content -- which is the non-atomic operation
+   APP_PARTIAL_SUBMISSION is about. Under submissiondrafts=1 the two were
+   separate user actions, the modelled operation did not exist in the SUT, and
+   the property was unreachable by any concrete path.
+   Measured rendering, submissiondrafts=0:
+     NO_SUBMISSION  "No submissions have been made yet"
+     SUBMITTED_FG   "Submitted for grading"
+   There is no third state to observe: with drafts off Moodle never renders
+   "Draft (not submitted)", so keeping DRAFT would put a value in the domain
+   that no page can produce -- the vacuous-oracle defect this model has been
+   cleaned of twice already. *)
+type SubmissionStatus is
+    NO_SUBMISSION,
+    SUBMITTED_FG
+with ==
+end type
+
+(* WHO is currently driving the browser.
+
+   The specification has TWO actors -- STUDENT and TEACHER -- and OPEN_GRADING
+   / GRADE_SUBMISSION are the teacher's. An SI with one implicit session cannot
+   drive them at all: as student1, /mod/assign/view.php?action=grade hits
+   require_login() and returns a Notice page, so the strongest property in the
+   suite (APP_GRADE_STALE_SUB) would have timed out on wait_for and been
+   recorded INCONCLUSIVE -- a tester defect wearing a verdict.
+
+   Authentication belongs in the SI because the SI IS the function
+   I : D_abs -> D_sys: logging in is how an abstract action is EXECUTED against
+   this system. It is a system action in Act_sys, and the rule "each abstract
+   input is preceded by an input from Act_sys" is exactly what a login sequence
+   satisfies. Doing it out of band would also make UE2_SESSION_EXPIRE
+   inexpressible -- the fault kills the session, and what must follow (the
+   login page, the timeout message, re-authentication) would be invisible to
+   the model.
+
+   NONE is the initial state and is also where SESSION_ERROR_SHOWN returns us:
+   that is precisely what the session-expiry fault does. *)
+type Actor is
+    NONE,
+    AS_STUDENT,
+    AS_TEACHER
+with ==
+end type
+
+(* Which revision of the submitted text is stored/displayed.
+
+   PLACEHOLDER is the first draft, FINAL the student's update. The stale-read
+   properties turn entirely on this: APP_PARTIAL_SUBMISSION asks whether the
+   STATUS can advance while the CONTENT stays PLACEHOLDER, and
+   APP_GRADE_STALE_SUB asks whether a grade can be confirmed against a version
+   the teacher never saw.
+
+   Note this is now OBSERVABLE, which it was not before. The old model carried
+   `ver' on CONFIRMED_GRADE with no concrete counterpart — the tester read a
+   grade cell containing "100.00" and nothing that distinguished the versions —
+   so the oracle either skipped the check (a vacuous pass) or could not match.
+   It is now read from the submission TEXT, which the SUT genuinely renders. *)
+type SubmissionVersion is
+    PLACEHOLDER,
+    FINAL
+with ==
+end type
+
+
+(* ---- Abstract gate channels ---------------------------------------------
+   INPUT gates carry values the tester supplies; OUTPUT gates carry values the
+   SUT supplies. The split is declared for TESTOR in testor/moodle.io. *)
+
+channel EnrolChannel is
+    (crs : CourseId)
+end channel
+
+channel ViewQuizChannel is
+    (crs : CourseId, qz : QuizId)
+end channel
+
+channel AttemptChannel is
+    (crs : CourseId, qz : QuizId, att : AttemptId)
+end channel
+
+channel SaveChannel is
+    (att : AttemptId)
+end channel
+
+channel SubmitChannel is
+    (att : AttemptId)
+end channel
+
+channel GradeChannel is
+    (att : AttemptId, g : Grade)
+end channel
+
+(* OUTPUT. The attempt lifecycle state the quiz page shows. Oracle for
+   INFRA_CRON_DEAD and DB_ATTEMPT_STEP_LOSS. *)
+channel AttemptStateChannel is
+    (att : AttemptId, st : AttemptStatus)
+end channel
+
+channel ViewAssignChannel is
+    (crs : CourseId, asn : AssignId)
+end channel
+
+(* Student submit / update actions. *)
+channel AssignChannel is
+    (crs : CourseId, asn : AssignId, ver : SubmissionVersion)
+end channel
+
+channel UpdateChannel is
+    (crs : CourseId, asn : AssignId, ver : SubmissionVersion)
+end channel
+
+(* OUTPUT, SPLIT INTO TWO GATES ON PURPOSE.
+   The concretizer performs ONE `observe' per gate and can capture ONE
+   parameter, so a gate carrying two freely-observed values is unsupported:
+   the second `observe' is silently dropped by si_lnt_parser (it guards on
+   `observe is None'), leaving that parameter with no observation at all. A
+   single SUBMISSION_STATE(asn, ?st, ?ver) therefore made `ver' -- the whole
+   stale-read property -- vacuous, in exactly the way the old unobservable
+   `ver' on CONFIRMED_GRADE was.
+
+   Split, each gate has one free parameter and one observation, and the
+   counter-example becomes a TRACE property: the specification must never
+   offer SUBMISSION_STATUS(SUBMITTED_FG) followed by SUBMISSION_TEXT(PLACEHOLDER)
+   with no intervening status. That is checkable by model checking, which the
+   conjunction inside one label was not. *)
+channel SubmissionStatusChannel is
+    (asn : AssignId, st : SubmissionStatus)
+end channel
+
+channel SubmissionTextChannel is
+    (asn : AssignId, ver : SubmissionVersion)
+end channel
+
+(* Teacher opens the grading form (INPUT). *)
+channel OpenGradingChannel is
+    (crs : CourseId, asn : AssignId)
+end channel
+
+(* OUTPUT. Which version the grading form displays to the teacher. Oracle for
+   APP_GRADE_STALE_SUB: this is what the teacher actually judged. *)
+channel GradingShowsChannel is
+    (asn : AssignId, ver : SubmissionVersion)
+end channel
+
+(* Teacher awards a grade (INPUT). Carries the grade, not the version: the
+   teacher chooses the mark, the SYSTEM decides which version it lands on. *)
+channel GradeActionChannel is
+    (crs : CourseId, asn : AssignId, g : Grade)
+end channel
+
+(* OUTPUT. The confirmed grade AND the version it was awarded against. *)
+channel ConfirmedGradeChannel is
+    (asn : AssignId, g : Grade, ver : SubmissionVersion)
+end channel
+
+(* Student opens the course total (INPUT) / the total shown (OUTPUT).
+   Oracle for APP_LAZY_REGRADE. *)
+channel ViewTotalChannel is
+    (crs : CourseId)
+end channel
+
+channel CourseTotalChannel is
+    (crs : CourseId, g : Grade)
+end channel
+
+(* Internal APP <-> DATABASE handshake. Hidden in compose_moodle.lnt: a
+   browser cannot see these, so leaving them visible would let TESTOR build
+   purposes around events the tester can neither stimulate nor observe. *)
+channel WriteAttemptChannel is
+    (crs : CourseId, qz : QuizId, att : AttemptId)
+end channel
+
+channel StatusChannel is
+    (att : AttemptId, s : AttemptStatus)
+end channel
+
+channel WriteSubmissionChannel is
+    (asn : AssignId, ver : SubmissionVersion)
+end channel
+
+(* Deliberately SPLIT into the status write and the content write, because
+   Moodle performs them as two unprotected writes. Modelling them as one gate
+   would make APP_PARTIAL_SUBMISSION inexpressible. *)
+channel StatusWriteChannel is
+    (asn : AssignId, st : SubmissionStatus)
+end channel
+
+channel ContentWriteChannel is
+    (asn : AssignId, ver : SubmissionVersion)
+end channel
+
+
+(* ================================================================
+   CONCRETE DOMAIN  D_sys  (for the System Interface)
+   ----------------------------------------------------------------
+   Formal types for the HTML/HTTP interaction layer. The interpretation
+   I(L) mapping these enums to runtime URLs/XPaths/strings lives in
+   EVALUATION/moodle/properties/concrete_domain.yml and is consumed by the
+   HTMLExecutor via framework/concretization/si_lnt_parser.py.
+
+   Moodle is server-rendered and fully URL-addressable, so the SI uses
+   direct navigation rather than a screen state machine.
+   ================================================================ *)
+
+type Route is
+    rt_dashboard,
+    rt_course,
+    rt_enrol,
+    rt_quiz_view,
+    rt_quiz_attempt,
+    rt_quiz_summary,
+    rt_quiz_review,
+    rt_assign_view,
+    rt_assign_edit,
+    rt_assign_grader,
+    rt_course_total,
+    -- Authentication. rt_logout is /login/logout.php WITHOUT a sesskey, which
+    -- Moodle answers with a confirmation page carrying a Continue button --
+    -- verified live. The sesskey-bearing URL cannot be used because the key is
+    -- per-session and the SI has no way to carry a runtime value into a route.
+    rt_login,
+    rt_logout
+with ==
+end type
+
+type Selector is
+    -- Enrolment / course
+    sel_enrol_btn,
+    sel_course_heading,
+    -- Quiz attempt flow
+    sel_attempt_quiz_btn,
+    sel_start_attempt_confirm,
+    sel_quiz_question,
+    sel_quiz_answer_input,
+    sel_finish_attempt_link,
+    sel_submit_all_btn,
+    -- Union selectors for PROCESS_ATTEMPT's DB_ATTEMPT_STEP_LOSS handling --
+    -- see system_interface_moodle.lnt and concrete_domain.yml for why these
+    -- are unions rather than a LOTOS `alt' between two plain selectors.
+    sel_finish_attempt_anchor,
+    sel_finish_attempt_click_target,
+    sel_submit_confirm_btn,
+    sel_quiz_grade_value,
+    -- The attempt-state cell on the quiz view page ("In progress",
+    -- "Finished", "Never submitted"). Oracle for INFRA_CRON_DEAD.
+    sel_attempt_state_cell,
+    -- Assignment submission flow
+    sel_add_submission_btn,
+    sel_edit_submission_btn,
+    sel_online_text_editor,
+    sel_save_changes_btn,
+    sel_submit_for_grading_btn,
+    sel_submission_status,
+    -- The STORED submission text as rendered back to the student. This is what
+    -- makes SubmissionVersion observable at all.
+    sel_submission_text,
+    -- Teacher grading
+    sel_grade_input,
+    sel_grade_save_btn,
+    -- The submission text as shown INSIDE the grading form — what the teacher
+    -- actually judged. Oracle for APP_GRADE_STALE_SUB.
+    sel_grading_submission_text,
+    sel_stale_warning,
+    -- Grade outputs
+    sel_assign_grade_cell,
+    sel_course_total_cell,
+    -- Surfaced errors
+    sel_connection_error,
+    sel_session_error,
+    sel_write_error,
+    -- Authentication controls. All verified live on /login/index.php.
+    sel_username,
+    sel_password,
+    sel_login_btn,
+    sel_logout_confirm,
+    -- The user menu only renders when a session exists, so waiting on it is
+    -- what confirms the login actually took.
+    sel_user_menu
+with ==
+end type
+
+type ConcreteValue is
+    cv_quiz_answer,
+    cv_assign_text,       -- the PLACEHOLDER revision
+    cv_assign_update,     -- the FINAL revision
+    cv_grade_100,
+    cv_grade_0,
+    -- Credentials, seeded by seed_moodle.php.
+    cv_student_user, cv_student_pass,
+    cv_teacher_user, cv_teacher_pass
+with ==
+end type
+
+(* ---- Translation function L : D_abs -> D_sys ---- *)
+function L_grade (g : Grade) : ConcreteValue is
+    case g in
+        GRADE_FULL -> return cv_grade_100
+      | GRADE_ZERO -> return cv_grade_0
+    end case
+end function
+
+(* Which concrete text belongs to which abstract revision. This is the pair the
+   oracle compares against what the SUT renders, and it is why
+   SubmissionVersion is now checkable rather than provenance-only. *)
+function L_version (ver : SubmissionVersion) : ConcreteValue is
+    case ver in
+        PLACEHOLDER -> return cv_assign_text
+      | FINAL       -> return cv_assign_update
+    end case
+end function
+
+(* Which credentials belong to which actor. *)
+function L_user (a : Actor) : ConcreteValue is
+    case a in
+        AS_TEACHER -> return cv_teacher_user
+      | any        -> return cv_student_user
+    end case
+end function
+
+function L_pass (a : Actor) : ConcreteValue is
+    case a in
+        AS_TEACHER -> return cv_teacher_pass
+      | any        -> return cv_student_pass
+    end case
+end function
+
+(* ---- Concrete channel types ---- *)
+channel Ch_Navigate is (r : Route)                         end channel
+channel Ch_TypeInto is (sel : Selector, val : ConcreteValue) end channel
+channel Ch_Click    is (sel : Selector)                    end channel
+channel Ch_WaitFor  is (sel : Selector)                    end channel
+channel Ch_Observe  is (sel : Selector)                    end channel
+
+end module

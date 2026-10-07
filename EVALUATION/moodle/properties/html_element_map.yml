@@ -1,0 +1,206 @@
+# html_element_map.yml  —  Moodle case study
+# ---------------------------------------------------------------------------
+# Per-abstract-gate concrete interaction spec, consumed directly by the
+# HTMLExecutor (Selenium) — the hand-authored counterpart to what the LNT
+# System Interface parser would emit (cf. EVALUATION/spliit/properties/...).
+#
+# Resolved against the live instance (localhost:8080): course id 2,
+# quiz cmid 2 (Model_Quiz / multichoice "Capital of England" -> London),
+# assign cmid 3 (Model_Assignment). Runtime ids appear as {{...}}:
+#   {{CRS_0}}=2  {{QUIZ_CMID}}=2  {{ASSIGN_CMID}}=3  {{ATTEMPT_ID}}=captured.
+#
+# Field contract (see framework/concretization/executors.py):
+#   url        : navigate target (base_url is prepended)
+#   wait_for   : {selector, by}            element awaited after navigation
+#   param_types: {param_N: AbstractType}   binds gate params -> type_description
+#   actions    : [{action, selector, by, param?, gate}]
+#                action in {navigate, clear_and_type, click}
+#   observe    : {selector, by, attribute} attribute in {text, url_attempt_id, ...}
+# ---------------------------------------------------------------------------
+
+base_url: "http://localhost:8080"
+
+gates:
+
+  # ─── TESTER INPUTS ────────────────────────────────────────────────────────
+
+  ENROL:
+    url: "/enrol/index.php?id={{CRS_0}}"
+    wait_for:
+      selector: "//form[contains(@action,'enrol')]//button[@type='submit'] | //input[@id='id_submitbutton']"
+      by: xpath
+    param_types:
+      param_0: CourseId
+    actions:
+      - action: click
+        selector: "//form[contains(@action,'enrol')]//button[@type='submit'] | //input[@id='id_submitbutton']"
+        by: xpath
+        gate: ENROL
+    observe:
+      selector: "//div[@id='page-header']//h1 | //header//h1"
+      by: xpath
+      attribute: text
+
+  VIEW_QUIZ:
+    url: "/mod/quiz/view.php?id={{QUIZ_CMID}}"
+    wait_for:
+      selector: "//button[contains(normalize-space(.),'Attempt quiz')] | //button[contains(normalize-space(.),'Re-attempt quiz')]"
+      by: xpath
+    param_types:
+      param_0: CourseId
+      param_1: QuizId
+    observe:
+      selector: "//div[@role='main']//h1 | //div[@id='page-header']//h1"
+      by: xpath
+      attribute: text
+
+  START_ATTEMPT:
+    url: "/mod/quiz/view.php?id={{QUIZ_CMID}}"
+    wait_for:
+      selector: "//button[contains(normalize-space(.),'Attempt quiz')] | //button[contains(normalize-space(.),'Re-attempt quiz')]"
+      by: xpath
+    param_types:
+      param_0: CourseId
+      param_1: QuizId
+      param_2: AttemptId
+    actions:
+      - action: click
+        selector: "//button[contains(normalize-space(.),'Attempt quiz')] | //button[contains(normalize-space(.),'Re-attempt quiz')]"
+        by: xpath
+        gate: START_ATTEMPT
+      # Confirmation modal only appears for timed quizzes; harmless no-op otherwise.
+      - action: click
+        selector: "//button[contains(normalize-space(.),'Start attempt')]"
+        by: xpath
+        gate: START_ATTEMPT
+    # Capture the freshly minted attempt id from attempt.php?attempt=NN&cmid=..
+    observe:
+      selector: "//div[contains(@class,'que')]"
+      by: xpath
+      attribute: url_attempt_id
+
+  SAVE_ATTEMPT:
+    url: "/mod/quiz/attempt.php?attempt={{ATTEMPT_ID}}&cmid={{QUIZ_CMID}}"
+    wait_for:
+      selector: "//div[contains(@class,'que')]"
+      by: xpath
+    param_types:
+      param_0: AttemptId
+    actions:
+      # Answer the multichoice question (select 'London').
+      - action: click
+        selector: "//div[contains(@class,'answer')]//label[contains(normalize-space(.),'London')]/preceding-sibling::input[@type='radio'] | //div[contains(@class,'answer')]//input[@type='radio'][1]"
+        by: xpath
+        gate: SAVE_ATTEMPT
+      # 'Finish attempt ...' -> navigates to the summary page.
+      - action: click
+        selector: "//input[@id='mod_quiz-next-nav'] | //a[contains(normalize-space(.),'Finish attempt')]"
+        by: xpath
+        gate: SAVE_ATTEMPT
+    observe:
+      selector: "//button[contains(normalize-space(.),'Submit all and finish')]"
+      by: xpath
+      attribute: text
+
+  PROCESS_ATTEMPT:
+    url: "/mod/quiz/summary.php?attempt={{ATTEMPT_ID}}&cmid={{QUIZ_CMID}}"
+    wait_for:
+      selector: "//button[contains(normalize-space(.),'Submit all and finish')]"
+      by: xpath
+    param_types:
+      param_0: AttemptId
+    actions:
+      - action: click
+        selector: "//button[contains(normalize-space(.),'Submit all and finish')]"
+        by: xpath
+        gate: PROCESS_ATTEMPT
+      # Confirm in the modal dialog.
+      - action: click
+        selector: "//div[contains(@class,'modal')]//button[@data-action='save'] | //div[contains(@class,'confirmation-dialogue')]//input[@type='submit']"
+        by: xpath
+        gate: PROCESS_ATTEMPT
+    observe:
+      selector: "//table[contains(@class,'generaltable')]//td[contains(normalize-space(.),'out of')]"
+      by: xpath
+      attribute: text
+
+  VIEW_ASSIGN:
+    url: "/mod/assign/view.php?id={{ASSIGN_CMID}}"
+    wait_for:
+      selector: "//button[contains(normalize-space(.),'Add submission')] | //a[contains(normalize-space(.),'Add submission')] | //table[contains(@class,'submissionstatustable')]"
+      by: xpath
+    param_types:
+      param_0: CourseId
+      param_1: AssignId
+    observe:
+      selector: "//div[@role='main']//h1 | //div[@id='page-header']//h1"
+      by: xpath
+      attribute: text
+
+  SUBMIT_DRAFT:
+    url: "/mod/assign/view.php?id={{ASSIGN_CMID}}&action=editsubmission"
+    wait_for:
+      selector: "//div[contains(@class,'editor_atto_content')] | //div[@contenteditable='true'] | //textarea[contains(@id,'_editor')]"
+      by: xpath
+    param_types:
+      param_0: CourseId
+      param_1: AssignId
+      param_2: SubmissionVersion
+    actions:
+      - action: clear_and_type
+        selector: "//div[contains(@class,'editor_atto_content')] | //div[@contenteditable='true'] | //textarea[contains(@id,'_editor')]"
+        by: xpath
+        param: "Initial submission (draft)"
+        gate: SUBMIT_DRAFT
+      - action: click
+        selector: "//input[@id='id_submitbutton'] | //button[@id='id_submitbutton']"
+        by: xpath
+        gate: SUBMIT_DRAFT
+    observe:
+      selector: "//table[contains(@class,'submissionstatustable')] | //td[contains(@class,'submissionstatus')]"
+      by: xpath
+      attribute: text
+
+  UPDATE_SUBMISSION:
+    url: "/mod/assign/view.php?id={{ASSIGN_CMID}}&action=editsubmission"
+    wait_for:
+      selector: "//div[contains(@class,'editor_atto_content')] | //div[@contenteditable='true'] | //textarea[contains(@id,'_editor')]"
+      by: xpath
+    param_types:
+      param_0: CourseId
+      param_1: AssignId
+      param_2: SubmissionVersion
+    actions:
+      - action: clear_and_type
+        selector: "//div[contains(@class,'editor_atto_content')] | //div[@contenteditable='true'] | //textarea[contains(@id,'_editor')]"
+        by: xpath
+        param: "Updated submission (final)"
+        gate: UPDATE_SUBMISSION
+      - action: click
+        selector: "//input[@id='id_submitbutton'] | //button[@id='id_submitbutton']"
+        by: xpath
+        gate: UPDATE_SUBMISSION
+    observe:
+      selector: "//table[contains(@class,'submissionstatustable')] | //td[contains(@class,'submissionstatus')]"
+      by: xpath
+      attribute: text
+
+  # ─── SYSTEM OUTPUTS ───────────────────────────────────────────────────────
+
+  GRADE_PERSISTED:
+    # Quiz grade as persisted/displayed on the review page.
+    url: "/mod/quiz/review.php?attempt={{ATTEMPT_ID}}&cmid={{QUIZ_CMID}}"
+    observe:
+      selector: "//table[contains(@class,'generaltable')]//td[contains(normalize-space(.),'out of')] | //div[contains(@class,'quizreviewsummary')]//td[contains(@class,'cell')][last()]"
+      by: xpath
+      attribute: text
+
+  CONFIRMED_GRADE:
+    # Assignment grade as seen by the student in the user grade report.
+    # This is the gate the stale-read vulnerability is observed at: the teacher
+    # may have graded the PLACEHOLDER (draft) version, not FINAL.
+    url: "/grade/report/user/index.php?id={{CRS_0}}"
+    observe:
+      selector: "//tr[.//a[contains(@href,'/mod/assign/')]]//td[contains(@class,'column-grade')]"
+      by: xpath
+      attribute: text

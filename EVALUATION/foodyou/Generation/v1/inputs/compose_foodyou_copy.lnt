@@ -1,0 +1,52 @@
+-- lnt.open -main COMPOSED compose_foodyou_copy.lnt generator compose_foodyou_copy.bcg
+
+module compose_foodyou_copy (foodyou_types, specification_foodyou_copy, system_interface_foodyou_copy)
+is
+
+process COMPOSED [
+    navigate      : Ch_Route,
+    tap           : Ch_Value,
+    enter_text    : Ch_Value,
+    wait_for      : Ch_Element,
+    observe       : Ch_Element,
+    SEARCH_FOOD   : SearchChannel,
+    FOOD_INFO     : FoodInfoChannel,
+    ADD_ENTRY     : AddEntryChannel,
+    CONFIRM_TOTAL : TotalChannel,
+    VIEW_DIARY    : ViewDiaryChannel,
+    DIARY_INFO    : DiaryInfoChannel,
+    REMOVE_ENTRY  : RemoveEntryChannel,
+    EXTAPI_FAIL   : none,
+    EXTAPI_WARNING : none,
+    UE1_KILL      : none,
+    DISRUPTION_DB : none,
+    DB_CORRUPT    : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL  : none,
+    STORAGE_MEDIA : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE   : none,
+    NETWORK_DEGRADED : none
+] is
+    par SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+        VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY,
+        EXTAPI_FAIL, EXTAPI_WARNING, UE1_KILL, DISRUPTION_DB,
+        DB_CORRUPT, DB_CORRUPT_DETECTED, STORAGE_FULL,
+        STORAGE_MEDIA, STORAGE_ERROR_SHOWN, CACHE_STALE, NETWORK_DEGRADED in
+
+        SPEC [SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+              VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY,
+              EXTAPI_FAIL, EXTAPI_WARNING, UE1_KILL, DISRUPTION_DB,
+              DB_CORRUPT, DB_CORRUPT_DETECTED, STORAGE_FULL,
+              STORAGE_MEDIA, STORAGE_ERROR_SHOWN, CACHE_STALE, NETWORK_DEGRADED]
+    ||
+        SI [navigate, tap, enter_text, wait_for, observe,
+            SEARCH_FOOD, FOOD_INFO, ADD_ENTRY, CONFIRM_TOTAL,
+            VIEW_DIARY, DIARY_INFO, REMOVE_ENTRY,
+            EXTAPI_FAIL, EXTAPI_WARNING, UE1_KILL, DISRUPTION_DB,
+            DB_CORRUPT, DB_CORRUPT_DETECTED, STORAGE_FULL,
+            STORAGE_MEDIA, STORAGE_ERROR_SHOWN, CACHE_STALE, NETWORK_DEGRADED]
+    end par
+end process
+
+end module

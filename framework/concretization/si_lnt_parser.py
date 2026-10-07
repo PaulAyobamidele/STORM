@@ -36,7 +36,7 @@ before the gate's own actions.
 
 The interpretation I(L): enum -> string is loaded from concrete_domain.yml
 which must live alongside the LNT file or at
-systems/<sut>/properties/concrete_domain.yml.
+EVALUATION/<sut>/properties/concrete_domain.yml.
 """
 # `from` chooses a module to read from, `__future__` enables newer Python behavior early, and `import annotations` lets type hints be stored lazily so this file can use modern type syntax.
 from __future__ import annotations

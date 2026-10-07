@@ -1,0 +1,65 @@
+module tp_cannot_skip (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    parameter-borne, two-step (the switch, then a skip).
+   TARGET   a medicine that cannot be skipped is skipped from the overview.
+   ACCEPT   the skip is refused: the row stays pending, the stock unmoved (O8).
+   REFUSE   any fault; a take; any other input.
+   Owed     CONFIRM (REJECTED, ?band, PENDING, IDF). A compliant app withholds
+            the Skipped button, which makes the tap impossible
+            (UNEXECUTABLE), and the results say so.
+   Expected FAIL: the popup still offers Skipped and records SKIPPED
+            (§9, confirmed live §15). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            NO_SKIP (IDF);
+            ACT     (IDF, SKIP);
+            CONFIRM (REJECTED, ?any StockBand, PENDING, IDF);
+            loop TP_ACCEPT end loop
+        by
+            alt
+                UE_KILL
+            []  APP_WRITE_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  DB_EVENT_LOSS
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (?any Validity)
+            []  ACT (?any MedicineId, TAKE)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            []  VIEW (?any MedicineId)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

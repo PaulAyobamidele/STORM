@@ -1,0 +1,189 @@
+module medtimer_types is
+
+(* MedTimer: one medicine with a stock, one daily reminder for it, and the
+   day's dose that the user marks taken or skipped from the overview. The
+   stock is a saturating band in units of one dose. Every value the tester
+   types or reads is an opaque token here and a string in properties/.
+   Ground truth: notes/observed_behaviour.md. *)
+
+(* ---- abstract domain ---------------------------------------------------- *)
+
+(* The medicine the prelude creates. MedTimer ships no catalogue: the tester
+   makes the medicine, and everything the model says is said of that one. The
+   identifier is kept on every channel as provenance for the trace. *)
+type MedicineId is
+    med_a
+with ==
+end type
+
+(* What the user does with the day's dose. *)
+type DoseAction is
+    TAKE, SKIP
+with ==
+end type
+
+(* Parameter-borne disruption on the create-medicine journey: INVALID is the
+   empty name (observed_behaviour.md §4.8). *)
+type Validity is
+    VALID, INVALID
+with ==
+end type
+
+(* Fate of a write, read back from the overview row and the medicine list. *)
+type WriteStatus is
+    COMMITTED, ROLLED_BACK, REJECTED
+with ==
+end type
+
+(* The dose row's state on the overview. PENDING = scheduled, not acted on
+   ("Please wait…"); ABSENT = no row for the day. "Reminded" (RAISED) needs the
+   alarm path, which is not modelled (§7). *)
+type DoseState is
+    PENDING, TAKEN, SKIPPED, ABSENT
+with ==
+end type
+
+(* The stock in units of one dose, saturating at S4 = four or more. The
+   fixture starts with exactly three units (medtimer_fixture.lnt), one rung
+   BELOW the saturating one on purpose: a refund the records do not justify
+   (three to four units) must classify differently from three, or the oracle
+   could not see it. down (S3) = S2 and up (S3) = S4 are both exact. *)
+type StockBand is
+    S0, S1, S2, S3, S4
+with ==
+end type
+
+function down (b : StockBand) : StockBand is
+    case b in
+        S4 -> return S3
+      | S3 -> return S2
+      | S2 -> return S1
+      | S1 -> return S0
+      | S0 -> return S0
+    end case
+end function
+
+function up (b : StockBand) : StockBand is
+    case b in
+        S0 -> return S1
+      | S1 -> return S2
+      | S2 -> return S3
+      | S3 -> return S4
+      | S4 -> return S4
+    end case
+end function
+
+(* ---- observable channels (USER <-> APP <-> DATABASE) -------------------- *)
+
+(* CREATE a medicine: valid or invalid name. *)
+channel AddMedChannel is
+    (vld : Validity)
+end channel
+
+(* NO_SKIP, DELETE, VIEW: the medicine concerned. *)
+channel MedChannel is
+    (id : MedicineId)
+end channel
+
+(* ACT (mark the day's dose), EDIT (correct the record). *)
+channel ActChannel is
+    (id : MedicineId, act : DoseAction)
+end channel
+
+(* What is read back: the fate of the write, the stock band from the medicine
+   list, the dose row's state from the overview. `id` is provenance. *)
+channel ConfirmChannel is
+    (status : WriteStatus, stock : StockBand, state : DoseState, id : MedicineId)
+end channel
+
+(* ---- concrete domain D_sys and L : D_abs -> D_sys (used by the SI) --------
+   Android app driven through Appium / UiAutomator2: navigate (Route),
+   tap (ConcreteValue), type_into (Selector, ConcreteValue), wait_for /
+   observe (Element). Every name is interpreted in properties/concrete_domain.yml;
+   every selector there was read off the live hierarchy dumps in notes/ui/
+   (2026-09-29, observed_behaviour.md §15). *)
+
+(* One entry point: the launcher activity; `navigate` relaunches the app. *)
+type Route is
+    rt_home
+with ==
+end type
+
+(* Targets of type_into: the text fields. The executor's enter_text types into
+   the FIRST field on screen, which in the reminder dialog is the dose, so the
+   time is set through an element-targeted type_into. *)
+type Selector is
+    sel_name_field,       (* the add-medicine dialog's field *)
+    sel_amount_field,     (* the stock "Amount" dialog's field *)
+    sel_unit_field,       (* the stock "Unit" dialog's field *)
+    sel_dose_field,       (* the reminder dialog's dose *)
+    sel_time_field        (* the reminder dialog's time *)
+with ==
+end type
+
+(* wait_for targets are PRECONDITIONS (absence = UNEXECUTABLE); observe
+   targets are ORACLES (absence = FAIL). *)
+type Element is
+    el_overview,          (* anchor of SCR_HOME: the "Log additional dose" button *)
+    el_medicines,         (* anchor of SCR_MEDICINES: the "Add medicine" button *)
+    el_add_dialog,        (* the add-medicine dialog's name field *)
+    el_edit_medicine,     (* the edit-medicine screen's name field *)
+    el_stock_settings,    (* the stock settings screen's title *)
+    el_stock_set,         (* the Amount summary reads "3 pills" *)
+    el_reminder_dialog,   (* the new-reminder dialog's Create button *)
+    el_reminder_card,     (* the reminder's card on the edit screen *)
+    el_med_settings,      (* the medicine settings screen: the cannot-be-skipped row *)
+    el_no_skip_on,        (* a checked switch on that screen (only that row's can be) *)
+    el_dose_row,          (* the fixture medicine's row on the overview *)
+    el_state_button,      (* its state button: ORACLE for DoseState (content description) *)
+    el_med_card,          (* the fixture medicine's card: ORACLE for StockBand ("N pills left") *)
+    el_medicine_shown,    (* the second medicine's name on its edit screen (ORACLE at MEDICINE_SHOWN) *)
+    el_edit_sheet,        (* the edit-event sheet's Taken / Skipped toggle *)
+    el_delete_dialog,     (* "Are you sure to delete the reminder event?" *)
+    el_name_error,        (* ORACLE owed after an invalid name (none in the app today) *)
+    el_write_error,       (* ORACLE owed after a failed write (none today) *)
+    el_corrupt_error,     (* ORACLE owed after DB_CORRUPT (none today) *)
+    el_storage_error      (* ORACLE owed after INFRA_STORAGE_MEDIA (none today) *)
+with ==
+end type
+
+(* tap targets and the strings typed. *)
+type ConcreteValue is
+    cv_tab_overview, cv_tab_medicines,        (* bottom navigation *)
+    cv_add_medicine,                          (* the FAB on the medicine list *)
+    cv_name_fixture,                          (* "Vitamin C" *)
+    cv_name_valid,                            (* "Vitamin D": a second, valid name *)
+    cv_name_invalid,                          (* "" *)
+    cv_ok, cv_cancel, cv_back,                (* dialog buttons; BACK is a key event *)
+    cv_stock_settings,                        (* the stock sub-screen button *)
+    cv_stock_amount, cv_stock_value,          (* the Amount row; "3" *)
+    cv_stock_unit, cv_unit_value,             (* the Unit row; "pills" *)
+    cv_add_reminder,                          (* the FAB on the edit screen *)
+    cv_type_time_based,                       (* the reminder type card *)
+    cv_dose_field, cv_dose,                   (* the dose field; "1" *)
+    cv_time_field, cv_reminder_time,          (* the time field; "11:59 PM" *)
+    cv_create_reminder,
+    cv_med_card,                              (* the fixture medicine's card (opens edit) *)
+    cv_med_settings,                          (* the settings sub-screen button *)
+    cv_cannot_skip,                           (* the "Medicine cannot be skipped" row *)
+    cv_state_button,                          (* the dose row's state button *)
+    cv_taken, cv_skipped,                     (* popup buttons *)
+    cv_delete, cv_confirm_delete,             (* popup Delete; the dialog's Yes *)
+    cv_dose_row,                              (* the row text (opens the edit sheet) *)
+    cv_toggle_taken                           (* the edit sheet's Taken toggle *)
+with ==
+end type
+
+function L_action (a : DoseAction) : ConcreteValue is
+    case a in
+        TAKE -> return cv_taken
+      | SKIP -> return cv_skipped
+    end case
+end function
+
+channel Ch_Route   is (r : Route)                        end channel  (* navigate  *)
+channel Ch_Value   is (v : ConcreteValue)                end channel  (* tap       *)
+channel Ch_TypeIn  is (s : Selector, v : ConcreteValue)  end channel  (* type_into *)
+channel Ch_Element is (e : Element)                      end channel  (* wait_for / observe *)
+
+end module

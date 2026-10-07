@@ -1,0 +1,11 @@
+spliit_app_cache_stale.ctg	1365 states, 2404 transitions 
+spliit_app_extapi_fail.ctg	1427 states, 2497 transitions 
+spliit_app_unavailable.ctg	622 states, 1061 transitions 
+spliit_db_abort.ctg	622 states, 1061 transitions 
+spliit_db_corrupt.ctg	1680 states, 2910 transitions 
+spliit_infra_db_down.ctg	622 states, 1061 transitions 
+spliit_input_invalid.ctg	1106 states, 1925 transitions 
+spliit_input_overlimit.ctg	1106 states, 1925 transitions 
+spliit_nominal.ctg	2140 states, 3724 transitions 
+spliit_ue_kill.ctg	614 states, 1069 transitions 
+spliit_weekly.ctg	1231 states, 2168 transitions 

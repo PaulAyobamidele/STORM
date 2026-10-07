@@ -40,7 +40,7 @@ Mapping schema (legacy 'disruptions:' with 'endpoint:' is still accepted):
       postgres:
         command: ["docker", "compose", "exec", "-T", "db",
                   "psql", "-U", "moodle", "-d", "moodle", "-tAc"]
-        cwd: systems/<sut>/sut/<compose-dir>
+        cwd: EVALUATION/<sut>/sut/<compose-dir>
         env: {KEY: value}
       shell:
         command: ["bash", "-lc"]

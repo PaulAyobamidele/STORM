@@ -1,0 +1,67 @@
+module tp_app1_write_fail (moodle_types) is
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        VIEW_QUIZ (?any CourseId, ?any QuizId);
+        START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId);
+        PROCESS_ATTEMPT (?any AttemptId);
+        APP1_WRITE_FAIL;
+        WRITE_ERROR_SHOWN;
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  DB_ATTEMPT_STEP_LOSS
+            []  INFRA_CRON_DEAD
+            []  UE1_LOSE_CONN
+            []  UE2_SESSION_EXPIRE
+            []  ENROL (?any CourseId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+            []  STALE_WARNING_SHOWN
+            []  SESSION_ERROR_SHOWN
+            []  CONN_ERROR_SHOWN
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

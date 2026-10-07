@@ -1,0 +1,102 @@
+module tp_ue1_lose_conn_midattempt (moodle_types) is
+
+(* CLIENT CONNECTIVITY LOST, MID-ATTEMPT. Sibling of tp_ue1_lose_conn.lnt,
+   which tests the connection dropping the INSTANT an attempt starts, before
+   the student does anything. That's a real scenario, but a narrower one than
+   the dependability property actually cares about: whether Moodle preserves
+   an in-progress answer when connectivity drops WHILE the student is working,
+   not just whether it notices a drop with nothing yet at stake.
+
+   This purpose requires SAVE_ATTEMPT (selecting an answer, which is what
+   triggers Moodle's autosave call per the SI's own comment on that arm)
+   to happen BEFORE UE1_LOSE_CONN. The question this asks Moodle: does the
+   already-answered state survive, and does the SAME connection-error
+   surfacing still fire, once there is actual unsaved work in flight -- not
+   just an idle, freshly-loaded question page.
+
+   STRUCTURE: `disrupt <accept sequence> by <refused faults> end disrupt',
+   identical in kind to tp_ue1_lose_conn.lnt -- see that file for the general
+   rationale (disrupt vs flat alt, refuse-anywhere semantics, why both
+   verdicts loop as sinks).
+
+   WHY THE SAME LONG REFUSE LIST, MINUS SAVE_ATTEMPT: every gate this file
+   declares but does not mention in the accept sequence is a TGV don't-care
+   gate -- free to fire whenever the spec offers it, without advancing or
+   blocking the purpose. That is exactly what let tp_ue1_lose_conn.lnt's
+   canonical finish an entire quiz normally before ever touching
+   UE1_LOSE_CONN, confirmed live. The fix there was making every one of those
+   gates an explicit refuse trigger instead of a silent escape route. Here,
+   SAVE_ATTEMPT moves OUT of that list and into the accept sequence itself,
+   since it is now a required step rather than a competing one; everything
+   else that let the walk escape past the fault before stays refused, so the
+   walker still cannot finish the quiz, wander into grading, or enrol its way
+   past the point where the fault is supposed to fire. VIEW_QUIZ remains the
+   one gate deliberately left out of both lists -- the required first step of
+   the same disrupted sequence in the spec, not a competing branch. *)
+
+process MAIN [
+    ENROL             : EnrolChannel,
+    VIEW_QUIZ         : ViewQuizChannel,
+    START_ATTEMPT     : AttemptChannel,
+    SAVE_ATTEMPT      : SaveChannel,
+    PROCESS_ATTEMPT   : SubmitChannel,
+    GRADE_PERSISTED   : GradeChannel,
+    ATTEMPT_STATE     : AttemptStateChannel,
+    VIEW_ASSIGN       : ViewAssignChannel,
+    SAVE_SUBMISSION      : AssignChannel,
+    UPDATE_SUBMISSION : UpdateChannel,
+    SUBMISSION_STATUS : SubmissionStatusChannel,
+    SUBMISSION_TEXT   : SubmissionTextChannel,
+    OPEN_GRADING      : OpenGradingChannel,
+    GRADING_SHOWS     : GradingShowsChannel,
+    GRADE_SUBMISSION  : GradeActionChannel,
+    CONFIRMED_GRADE   : ConfirmedGradeChannel,
+    VIEW_COURSE_TOTAL : ViewTotalChannel,
+    COURSE_TOTAL      : CourseTotalChannel,
+    APP1_WRITE_FAIL, APP_PARTIAL_SUBMISSION, APP_GRADE_STALE_SUB,
+    APP_LAZY_REGRADE, DB_ATTEMPT_STEP_LOSS, INFRA_CRON_DEAD,
+    UE1_LOSE_CONN, UE2_SESSION_EXPIRE,
+    WRITE_ERROR_SHOWN, STALE_WARNING_SHOWN,
+    SESSION_ERROR_SHOWN, CONN_ERROR_SHOWN : none,
+    TP_ACCEPT, TP_REFUSE : none
+] is
+    disrupt
+        START_ATTEMPT (?any CourseId, ?any QuizId, ?any AttemptId);
+        SAVE_ATTEMPT (?any AttemptId);
+        UE1_LOSE_CONN;
+        CONN_ERROR_SHOWN;
+        loop TP_ACCEPT end loop
+    by
+        alt
+            APP1_WRITE_FAIL
+            []  APP_PARTIAL_SUBMISSION
+            []  APP_GRADE_STALE_SUB
+            []  APP_LAZY_REGRADE
+            []  DB_ATTEMPT_STEP_LOSS
+            []  INFRA_CRON_DEAD
+            []  UE2_SESSION_EXPIRE
+            (* Same closed-off escape routes as tp_ue1_lose_conn.lnt, minus
+               SAVE_ATTEMPT (now required above, not competing). Every gate
+               below carries real parameters -- only the 7 faults above are
+               none-typed. *)
+            []  PROCESS_ATTEMPT (?any AttemptId)
+            []  GRADE_PERSISTED (?any AttemptId, ?any Grade)
+            []  ATTEMPT_STATE (?any AttemptId, ?any AttemptStatus)
+            []  VIEW_ASSIGN (?any CourseId, ?any AssignId)
+            []  SAVE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  UPDATE_SUBMISSION (?any CourseId, ?any AssignId, ?any SubmissionVersion)
+            []  SUBMISSION_STATUS (?any AssignId, ?any SubmissionStatus)
+            []  SUBMISSION_TEXT (?any AssignId, ?any SubmissionVersion)
+            []  OPEN_GRADING (?any CourseId, ?any AssignId)
+            []  GRADING_SHOWS (?any AssignId, ?any SubmissionVersion)
+            []  GRADE_SUBMISSION (?any CourseId, ?any AssignId, ?any Grade)
+            []  CONFIRMED_GRADE (?any AssignId, ?any Grade, ?any SubmissionVersion)
+            []  ENROL (?any CourseId)
+            []  VIEW_COURSE_TOTAL (?any CourseId)
+            []  COURSE_TOTAL (?any CourseId, ?any Grade)
+        end alt;
+        loop TP_REFUSE end loop
+    end disrupt
+end process
+
+end module

@@ -2,7 +2,7 @@
 """check_alphabet.py -- verify that one case study's artefacts agree on the
 alphabet, before a CADP cycle is spent on them.
 
-    python framework/scripts/check_alphabet.py systems/<sut>
+    python framework/scripts/check_alphabet.py EVALUATION/<sut>
 
 A fault name must be identical in six places (specification, System
 Interface, composition, every test purpose, the .io, disruption_mapping.yml);
@@ -16,7 +16,7 @@ SUT-agnostic: everything is read from the system directory. The SUT name is
 the directory's basename; file names follow the template layout
 (model/specification_<sut>.lnt, model/system_interface_<sut>.lnt,
 model/compose_<sut>.lnt, model/<sut>_types.lnt, model/<sut>_fixture.lnt,
-test_purposes/tp_*.lnt, testor/<sut>.io, properties/*.yml).
+Test_Purposes/tp_*.lnt, testor/<sut>.io, properties/*.yml).
 
 Exit 1 on any FAIL. WARN lines are advisory.
 """
@@ -120,7 +120,7 @@ def main(sysdir, ov=None):
     p_cd = os.path.join(props, "concrete_domain.yml")
     p_td = os.path.join(props, "type_description.yml")
     p_dm = os.path.join(props, "disruption_mapping.yml")
-    tps = sorted(glob.glob(os.path.join(ov.get("tp_dir") or os.path.join(sysdir, "test_purposes"), "tp_*.lnt")))
+    tps = sorted(glob.glob(os.path.join(ov.get("tp_dir") or os.path.join(sysdir, "Test_Purposes"), "tp_*.lnt")))
 
     print(f"== {sut}: alphabet consistency")
     for p in (p_spec, p_si, p_comp, p_types, p_io, p_cd, p_td, p_dm):
@@ -200,7 +200,7 @@ def main(sysdir, ov=None):
 
     # ---- 4. test purposes ---------------------------------------------------
     if not tps:
-        fail("no test_purposes/tp_*.lnt")
+        fail("no Test_Purposes/tp_*.lnt")
     for tp in tps:
         name = os.path.basename(tp)[3:-4]
         text = strip_comments(read(tp))
@@ -405,7 +405,7 @@ def finish():
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("sysdir", help="systems/<sut>")
+    ap.add_argument("sysdir", help="EVALUATION/<sut>")
     for k in ("spec", "si", "compose", "types", "fixture", "io", "tp_dir", "properties"):
         ap.add_argument("--" + k.replace("_", "-"), dest=k, default=None,
                         help=f"override the default location of the {k} artefact")

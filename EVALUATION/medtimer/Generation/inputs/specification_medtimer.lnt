@@ -1,0 +1,474 @@
+module specification_medtimer (medtimer_types)
+with ==, !=
+is
+
+(* Behavioural model of MedTimer's dose journeys, campaign two. Ground truth
+   and forecasts: notes/observed_behaviour.md. Two medicines (A: 3 pills, doses
+   d_a1..d_a3; B: 2 pills, dose d_b), one pill per dose, four doses tonight.
+
+   Journeys: create a medicine (ADD_MEDICINE, then MEDICINE_SHOWN or
+   REJECT_SHOWN); forbid skipping a medicine (NO_SKIP); mark a scheduled dose
+   (ACT); delete a dose's record (DELETE); correct it (EDIT); re-read a dose
+   after a relaunch (VIEW). Every write and every re-read ends in CONFIRM:
+   the write's fate, the stock of the dose's medicine, the dose row's state.
+
+   Obligations (honest and strict; the verdict is what the app earns):
+     O1  a dose marked Taken is recorded Taken and its medicine loses one unit
+     O2  a dose marked Skipped is recorded Skipped and no stock moves
+     O3  what is shown after a write is the committed state, also when the
+         medicine list was read just before it                 (APP_CACHE_STALE)
+     O4  a failed write is reported and nothing moved          WRITE_ERROR_SHOWN
+     O5  the stock follows the records: a deleted Taken gives its unit back,
+         a deleted Skipped gives nothing, a correction moves the stock with
+         it, a lost record leaves the stock the remaining records imply
+     O6  a corrupt record (status or stock) is flagged         DB_CORRUPT_DETECTED
+     O7  an unreadable store is reported                       INFRA_STORAGE_ERROR
+     O8  a medicine that cannot be skipped is not skipped      CONFIRM (REJECTED, ...)
+     O9  an invalid name is refused                            REJECT_SHOWN
+   Faults, each with a device-proven injection (notes/DISRUPTION_COVERAGE.md):
+     UE_KILL, APP_WRITE_FAIL, DB_ABORT, INFRA_STORAGE_FULL   write path
+     APP_CACHE_STALE                                          before a write
+     DB_CORRUPT, DB_CORRUPT_STOCK, INFRA_STORAGE_MEDIA        during a re-read
+     DB_EVENT_LOSS                                            after a write
+   DB_ABORT targets the record INSERT, which only marking a scheduled dose
+   performs; it is therefore a sibling under ACT only. *)
+
+
+process USER [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none
+] is
+    var
+        vld : Validity, m : MedicineId, d : DoseId, act : DoseAction,
+        status : WriteStatus, stock : StockBand, state : DoseState
+    in
+        vld := VALID; m := med_a; d := d_a1; act := TAKE;
+        status := COMMITTED; stock := S3; state := PENDING;
+        loop
+            alt
+                -- O9
+                vld := any Validity;
+                ADD_MEDICINE (vld);
+                if vld == VALID then MEDICINE_SHOWN else REJECT_SHOWN end if
+            []
+                m := any MedicineId;
+                NO_SKIP (m)
+            []
+                -- a write, then its read-back or, if it failed, the report (O4)
+                d := any DoseId;
+                alt
+                    act := any DoseAction;
+                    ACT (d, act)
+                []
+                    DELETE (d)
+                []
+                    act := any DoseAction;
+                    EDIT (d, act)
+                end alt;
+                alt
+                    CONFIRM (?status, ?stock, ?state, d)
+                []
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, ?state, d)
+                end alt
+            []
+                -- O6, O7: a re-read shows the committed state, or says why not
+                d := any DoseId;
+                disrupt
+                    VIEW (d);
+                    CONFIRM (COMMITTED, ?stock, ?state, d)
+                by
+                    alt
+                        DB_CORRUPT_DETECTED
+                    []  INFRA_STORAGE_ERROR
+                    end alt
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+process APP [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_STOCK    : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    var
+        vld : Validity, m : MedicineId, d : DoseId,
+        status : WriteStatus, stock : StockBand, state : DoseState
+    in
+        vld := VALID; m := med_a; d := d_a1;
+        status := COMMITTED; stock := S3; state := PENDING;
+        loop
+            alt
+                ADD_MEDICINE (?vld);
+                if vld == VALID then MEDICINE_SHOWN else REJECT_SHOWN end if
+            []
+                NO_SKIP (?m)
+            []
+                -- WRITE-PATH: a failed write owes a report (O4); the kill owes
+                -- none, its outcome is read back on relaunch
+                alt
+                    ACT (?d, ?any DoseAction)
+                []  DELETE (?d)
+                []  EDIT (?d, ?any DoseAction)
+                end alt;
+                alt
+                    CONFIRM (?status, ?stock, ?state, d)
+                []
+                    APP_WRITE_FAIL;
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, ?state, d)
+                []
+                    DB_ABORT;
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, ?state, d)
+                []
+                    INFRA_STORAGE_FULL;
+                    WRITE_ERROR_SHOWN;
+                    CONFIRM (ROLLED_BACK, ?stock, ?state, d)
+                end alt
+            []
+                -- PRE-ARMED (O3): the list was read just before the write
+                APP_CACHE_STALE;
+                alt
+                    ACT (?d, ?any DoseAction)
+                []  DELETE (?d)
+                []  EDIT (?d, ?any DoseAction)
+                end alt;
+                CONFIRM (?status, ?stock, ?state, d)
+            []
+                -- INTERRUPT (O6, O7)
+                disrupt
+                    VIEW (?d);
+                    CONFIRM (COMMITTED, ?stock, ?state, d)
+                by
+                    alt
+                        DB_CORRUPT;
+                        DB_CORRUPT_DETECTED
+                    []
+                        DB_CORRUPT_STOCK;
+                        DB_CORRUPT_DETECTED
+                    []
+                        INFRA_STORAGE_MEDIA;
+                        INFRA_STORAGE_ERROR
+                    end alt
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+function skippable (m : MedicineId, ska, skb : Bool) : Bool is
+    case m in
+        med_a -> return ska
+      | med_b -> return skb
+    end case
+end function
+
+
+process DATABASE [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_STOCK    : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    var
+        vld : Validity, m : MedicineId, d : DoseId, act : DoseAction,
+        dy : Day, sa, sb : StockBand, ska, skb : Bool,
+        last : DoseId, old : DoseState, nw : DoseState
+    in
+        vld := VALID; m := med_a; d := d_a1; act := TAKE;
+        dy := day (PENDING, PENDING, PENDING, PENDING);   -- four doses scheduled tonight
+        sa := S3; sb := S2;                                -- the fixture's stock
+        ska := true; skb := true;
+        last := d_a1; old := PENDING; nw := PENDING;
+        loop
+            alt
+                ADD_MEDICINE (?vld);
+                if vld == VALID then MEDICINE_SHOWN end if
+            []
+                NO_SKIP (?m);
+                if m == med_a then ska := false else skb := false end if
+            []
+                -- mark a scheduled dose (O1, O2, O8) with the write path's siblings
+                ACT (?d, ?act) where get_state (dy, d) == PENDING;
+                if (act == SKIP) and not (skippable (med_of (d), ska, skb)) then
+                    CONFIRM (REJECTED, stock_of (med_of (d), sa, sb), PENDING, d)
+                else
+                    old := PENDING;
+                    nw := res (act);
+                    alt
+                        -- commit
+                        sa := move (med_a, d, old, nw, sa);
+                        sb := move (med_b, d, old, nw, sb);
+                        dy := put_state (dy, d, nw);
+                        last := d;
+                        CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                    []
+                        APP_WRITE_FAIL;
+                        CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                    []
+                        DB_ABORT;
+                        CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                    []
+                        INFRA_STORAGE_FULL;
+                        CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                    []
+                        -- killed mid-write: whole or nothing, never half
+                        UE_KILL;
+                        alt
+                            sa := move (med_a, d, old, nw, sa);
+                            sb := move (med_b, d, old, nw, sb);
+                            dy := put_state (dy, d, nw);
+                            last := d;
+                            CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                        []
+                            CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                        end alt
+                    end alt
+                end if
+            []
+                -- delete a record (O5): a Taken gives its unit back
+                DELETE (?d) where (get_state (dy, d) == TAKEN) or (get_state (dy, d) == SKIPPED);
+                old := get_state (dy, d);
+                nw := ABSENT;
+                alt
+                    -- commit
+                    sa := move (med_a, d, old, nw, sa);
+                    sb := move (med_b, d, old, nw, sb);
+                    dy := put_state (dy, d, nw);
+                    last := d;
+                    CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                []
+                    APP_WRITE_FAIL;
+                    CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                []
+                    INFRA_STORAGE_FULL;
+                    CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                []
+                    -- killed mid-write: whole or nothing, never half
+                    UE_KILL;
+                    alt
+                        sa := move (med_a, d, old, nw, sa);
+                        sb := move (med_b, d, old, nw, sb);
+                        dy := put_state (dy, d, nw);
+                        last := d;
+                        CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                    []
+                        CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                    end alt
+                end alt
+            []
+                -- correct a record (O5): the stock moves with the correction
+                EDIT (?d, ?act) where (get_state (dy, d) == TAKEN) or (get_state (dy, d) == SKIPPED);
+                old := get_state (dy, d);
+                nw := res (act);
+                alt
+                    -- commit
+                    sa := move (med_a, d, old, nw, sa);
+                    sb := move (med_b, d, old, nw, sb);
+                    dy := put_state (dy, d, nw);
+                    last := d;
+                    CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                []
+                    APP_WRITE_FAIL;
+                    CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                []
+                    INFRA_STORAGE_FULL;
+                    CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                []
+                    -- killed mid-write: whole or nothing, never half
+                    UE_KILL;
+                    alt
+                        sa := move (med_a, d, old, nw, sa);
+                        sb := move (med_b, d, old, nw, sb);
+                        dy := put_state (dy, d, nw);
+                        last := d;
+                        CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                    []
+                        CONFIRM (ROLLED_BACK, stock_of (med_of (d), sa, sb), old, d)
+                    end alt
+                end alt
+            []
+                -- the list was read before the write; the store answers with
+                -- the committed state all the same (O3). Offered only while a
+                -- write can still follow.
+                if not (writable (dy)) then stop end if;
+                APP_CACHE_STALE;
+                alt
+                    ACT (?d, ?act) where get_state (dy, d) == PENDING;
+                    if (act == SKIP) and not (skippable (med_of (d), ska, skb)) then
+                        CONFIRM (REJECTED, stock_of (med_of (d), sa, sb), PENDING, d)
+                    else
+                        old := PENDING;
+                        nw := res (act);
+                        sa := move (med_a, d, old, nw, sa);
+                        sb := move (med_b, d, old, nw, sb);
+                        dy := put_state (dy, d, nw);
+                        last := d;
+                        CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                    end if
+                []
+                    DELETE (?d) where (get_state (dy, d) == TAKEN) or (get_state (dy, d) == SKIPPED);
+                    old := get_state (dy, d);
+                    nw := ABSENT;
+                    sa := move (med_a, d, old, nw, sa);
+                    sb := move (med_b, d, old, nw, sb);
+                    dy := put_state (dy, d, nw);
+                    last := d;
+                    CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                []
+                    EDIT (?d, ?act) where (get_state (dy, d) == TAKEN) or (get_state (dy, d) == SKIPPED);
+                    old := get_state (dy, d);
+                    nw := res (act);
+                    sa := move (med_a, d, old, nw, sa);
+                    sb := move (med_b, d, old, nw, sb);
+                    dy := put_state (dy, d, nw);
+                    last := d;
+                    CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), nw, d)
+                end alt
+            []
+                -- the last written record is lost underneath the app (O5): the
+                -- stock is what the remaining records imply, the dose is due again
+                if (get_state (dy, last) == TAKEN) or (get_state (dy, last) == SKIPPED) then
+                    DB_EVENT_LOSS;
+                    old := get_state (dy, last);
+                    sa := move (med_a, last, old, PENDING, sa);
+                    sb := move (med_b, last, old, PENDING, sb);
+                    dy := put_state (dy, last, PENDING)
+                else
+                    stop
+                end if
+            []
+                -- a re-read, abandoned in lock-step with APP by corruption or
+                -- an unreadable store
+                disrupt
+                    VIEW (?d);
+                    CONFIRM (COMMITTED, stock_of (med_of (d), sa, sb), get_state (dy, d), d)
+                by
+                    alt
+                        DB_CORRUPT
+                    []  DB_CORRUPT_STOCK
+                    []  INFRA_STORAGE_MEDIA
+                    end alt
+                end disrupt
+            end alt
+        end loop
+    end var
+end process
+
+
+(* Every fault always offerable; no `i` branch. *)
+process DISRUPTOR [
+    UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_STOCK,
+    DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA : none
+] is
+    loop
+        alt
+            UE_KILL
+        []  APP_WRITE_FAIL
+        []  APP_CACHE_STALE
+        []  DB_ABORT
+        []  DB_CORRUPT
+        []  DB_CORRUPT_STOCK
+        []  DB_EVENT_LOSS
+        []  INFRA_STORAGE_FULL
+        []  INFRA_STORAGE_MEDIA
+        end alt
+    end loop
+end process
+
+
+(* Flat three-way rendezvous, nothing hidden: this gate list is the alphabet. *)
+process SPEC [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : DoseChannel,
+    EDIT    : ActChannel,
+    VIEW    : DoseChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_STOCK    : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none
+] is
+    par UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_STOCK,
+        DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+        par ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+            WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR in
+            USER [ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+                  WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR]
+        ||
+            par ADD_MEDICINE, MEDICINE_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+                APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_STOCK,
+                INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA in
+                APP [ADD_MEDICINE, MEDICINE_SHOWN, REJECT_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+                     WRITE_ERROR_SHOWN, DB_CORRUPT_DETECTED, INFRA_STORAGE_ERROR,
+                     APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_STOCK,
+                     INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+            ||
+                DATABASE [ADD_MEDICINE, MEDICINE_SHOWN, NO_SKIP, ACT, DELETE, EDIT, VIEW, CONFIRM,
+                          UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT,
+                          DB_CORRUPT_STOCK, DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+            end par
+        end par
+    ||
+        DISRUPTOR [UE_KILL, APP_WRITE_FAIL, APP_CACHE_STALE, DB_ABORT, DB_CORRUPT, DB_CORRUPT_STOCK,
+                   DB_EVENT_LOSS, INFRA_STORAGE_FULL, INFRA_STORAGE_MEDIA]
+    end par
+end process
+
+end module

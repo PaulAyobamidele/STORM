@@ -1,0 +1,267 @@
+using testor:      /home/paulad/cadp/bin.x64/testor.a
+using extract_all: /home/paulad/cadp/com/extract_all
+limiting virtual memory to 210844896 kbytes
+======================================================================
+==> app_grade_stale_sub
+  1. tp -> BCG
+moodle_types.lnt:269: warning: channel WriteAttemptChannel never employed
+moodle_types.lnt:273: warning: channel StatusChannel never employed
+moodle_types.lnt:277: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:284: warning: channel StatusWriteChannel never employed
+moodle_types.lnt:288: warning: channel ContentWriteChannel never employed
+moodle_types.lnt:428: warning: channel Ch_Navigate never employed
+moodle_types.lnt:429: warning: channel Ch_TypeInto never employed
+moodle_types.lnt:430: warning: channel Ch_Click never employed
+moodle_types.lnt:431: warning: channel Ch_WaitFor never employed
+moodle_types.lnt:432: warning: channel Ch_Observe never employed
+moodle_types.lnt:395: warning: function L_grade never called
+moodle_types.lnt:405: warning: function L_version never called
+moodle_types.lnt:413: warning: function L_user never called
+moodle_types.lnt:420: warning: function L_pass never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:115: warning: "with" function == of type SubmissionStatus never called
+moodle_types.lnt:142: warning: "with" function == of type Actor never called
+moodle_types.lnt:161: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:323: warning: "with" function == of type Route never called
+moodle_types.lnt:379: warning: "with" function == of type Selector never called
+moodle_types.lnt:391: warning: "with" function == of type ConcreteValue never called
+cadp_indent: cannot find ``indent''
+             file ``tp_app_grade_stale_sub.h'' will not be formatted
+  2. COMPOSED x tp -all -> complete test graph
+
+lnt.open: checking ``compose_moodle.lnt''
+moodle_types.lnt:277: warning: channel WriteSubmissionChannel never employed
+moodle_types.lnt:395: warning: function L_grade never called
+moodle_types.lnt:405: warning: function L_version never called
+moodle_types.lnt:38: warning: "with" function == of type CourseId never called
+moodle_types.lnt:43: warning: "with" function == of type QuizId never called
+moodle_types.lnt:52: warning: "with" function == of type AttemptId never called
+moodle_types.lnt:57: warning: "with" function == of type AssignId never called
+moodle_types.lnt:68: warning: "with" function == of type Grade never called
+moodle_types.lnt:91: warning: "with" function == of type AttemptStatus never called
+moodle_types.lnt:161: warning: "with" function == of type SubmissionVersion never called
+moodle_types.lnt:323: warning: "with" function == of type Route never called
+moodle_types.lnt:379: warning: "with" function == of type Selector never called
+moodle_types.lnt:391: warning: "with" function == of type ConcreteValue never called
+specification_moodle.lnt:123: warning: useless assignment to g
+specification_moodle.lnt:125: warning: useless assignment to st
+specification_moodle.lnt:164: warning: useless assignment to st
+specification_moodle.lnt:176: warning: useless assignment to ver
+specification_moodle.lnt:175: warning: useless assignment to sst
+specification_moodle.lnt:173: warning: useless assignment to ver
+specification_moodle.lnt:172: warning: useless assignment to sst
+specification_moodle.lnt:198: warning: useless assignment to sst
+specification_moodle.lnt:200: warning: useless assignment to ver
+specification_moodle.lnt:202: warning: useless assignment to ver
+specification_moodle.lnt:202: warning: useless assignment to g
+specification_moodle.lnt:222: warning: useless assignment to g
+specification_moodle.lnt:90: warning: useless assignment to ver
+specification_moodle.lnt:89: warning: useless assignment to sst
+specification_moodle.lnt:88: warning: useless assignment to st
+specification_moodle.lnt:87: warning: useless assignment to g
+specification_moodle.lnt:286: warning: useless assignment to ver
+specification_moodle.lnt:257: warning: useless assignment to ver
+specification_moodle.lnt:358: warning: useless assignment to s
+specification_moodle.lnt:379: warning: useless assignment to s
+specification_moodle.lnt:345: warning: useless assignment to shown
+specification_moodle.lnt:343: warning: useless assignment to s
+specification_moodle.lnt:341: warning: useless assignment to asn
+specification_moodle.lnt:570: warning: useless assignment to qz
+specification_moodle.lnt:570: warning: useless assignment to crs
+specification_moodle.lnt:593: warning: useless assignment to sst
+specification_moodle.lnt:593: warning: useless assignment to asn
+specification_moodle.lnt:596: warning: useless assignment to ver
+specification_moodle.lnt:596: warning: useless assignment to asn
+specification_moodle.lnt:563: warning: useless assignment to sst
+specification_moodle.lnt:562: warning: useless assignment to ver
+specification_moodle.lnt:561: warning: useless assignment to asn
+specification_moodle.lnt:559: warning: useless assignment to qz
+specification_moodle.lnt:558: warning: useless assignment to crs
+system_interface_moodle.lnt:378: warning: useless assignment to st
+system_interface_moodle.lnt:571: warning: useless assignment to sst
+system_interface_moodle.lnt:610: warning: useless assignment to ver
+system_interface_moodle.lnt:726: warning: useless assignment to ver
+system_interface_moodle.lnt:847: warning: useless assignment to ver
+system_interface_moodle.lnt:103: warning: useless assignment to ver
+system_interface_moodle.lnt:102: warning: useless assignment to sst
+system_interface_moodle.lnt:101: warning: useless assignment to st
+
+lnt.open: translating ``moodle_types.lnt'' to ``/tmp/paulad_lnt.open_LzZcI7/MOODLE_TYPES.lib'' ...
+
+lnt.open: translating ``specification_moodle.lnt'' to ``/tmp/paulad_lnt.open_LzZcI7/SPECIFICATION_MOODLE.lib'' ...
+
+lnt.open: translating ``system_interface_moodle.lnt'' to ``/tmp/paulad_lnt.open_LzZcI7/SYSTEM_INTERFACE_MOODLE.lib'' ...
+
+lnt.open: translating ``compose_moodle.lnt'' to ``/tmp/paulad_lnt.open_LzZcI7/compose_moodle.lotos'' ...
+
+lnt.open: calling lotos.open for ``compose_moodle.lotos'' ...
+lotos.open: calling ``caesar.adt -debug -silent compose_moodle''
+cadp_indent: cannot find ``indent''
+             file ``compose_moodle.h'' will not be formatted
+lotos.open: calling ``caesar -main 'COMPOSED' -silent -open compose_moodle''
+lotos.open: running ``testor -io moodle.io -all tp_app_grade_stale_sub.bcg moodle_app_grade_stale_sub.ctg.bcg'' for ``compose_moodle.lotos''
+     ctg: 161 states, 382 transitions
+  3. extract_all -> controllable test cases
+extract_all: 113 choices found
+extract_all: extracting test case #1
+extract_all: checking test case #1
+extract_all: extracting test case #2
+extract_all: checking test case #2
+extract_all: extracting test case #3
+extract_all: checking test case #3
+extract_all: extracting test case #4
+extract_all: checking test case #4
+extract_all: extracting test case #5
+extract_all: checking test case #5
+extract_all: extracting test case #6
+extract_all: checking test case #6
+extract_all: test case TC.moodle_app_grade_stale_sub.6 with unreachable states
+extract_all: extracting test case #7
+extract_all: checking test case #7
+extract_all: test case TC.moodle_app_grade_stale_sub.7 with unreachable states
+extract_all: extracting test case #8
+extract_all: checking test case #8
+extract_all: test case TC.moodle_app_grade_stale_sub.8 with unreachable states
+extract_all: extracting test case #9
+extract_all: checking test case #9
+extract_all: test case TC.moodle_app_grade_stale_sub.9 with unreachable states
+extract_all: extracting test case #10
+extract_all: checking test case #10
+extract_all: test case TC.moodle_app_grade_stale_sub.10 with unreachable states
+extract_all: extracting test case #11
+extract_all: checking test case #11
+extract_all: test case TC.moodle_app_grade_stale_sub.11 with unreachable states
+extract_all: extracting test case #12
+extract_all: checking test case #12
+extract_all: test case TC.moodle_app_grade_stale_sub.12 with unreachable states
+extract_all: extracting test case #13
+extract_all: checking test case #13
+extract_all: test case TC.moodle_app_grade_stale_sub.13 with unreachable states
+extract_all: extracting test case #14
+extract_all: checking test case #14
+extract_all: test case TC.moodle_app_grade_stale_sub.14 with unreachable states
+extract_all: extracting test case #15
+extract_all: checking test case #15
+extract_all: test case TC.moodle_app_grade_stale_sub.15 with unreachable states
+extract_all: extracting test case #16
+extract_all: checking test case #16
+extract_all: test case TC.moodle_app_grade_stale_sub.16 with unreachable states
+extract_all: extracting test case #17
+extract_all: checking test case #17
+extract_all: test case TC.moodle_app_grade_stale_sub.17 with unreachable states
+extract_all: extracting test case #18
+extract_all: checking test case #18
+extract_all: test case TC.moodle_app_grade_stale_sub.18 with unreachable states
+extract_all: extracting test case #19
+extract_all: checking test case #19
+extract_all: test case TC.moodle_app_grade_stale_sub.19 with unreachable states
+extract_all: extracting test case #20
+extract_all: checking test case #20
+extract_all: test case TC.moodle_app_grade_stale_sub.20 with unreachable states
+extract_all: test case TC.moodle_app_grade_stale_sub.20 not controllable
+extract_all: extracting test case #21
+extract_all: checking test case #21
+extract_all: test case TC.moodle_app_grade_stale_sub.21 with unreachable states
+extract_all: test case TC.moodle_app_grade_stale_sub.21 not controllable
+extract_all: extracting test case #22
+extract_all: checking test case #22
+extract_all: test case TC.moodle_app_grade_stale_sub.22 with unreachable states
+extract_all: extracting test case #23
+extract_all: checking test case #23
+extract_all: test case TC.moodle_app_grade_stale_sub.23 with unreachable states
+extract_all: extracting test case #24
+extract_all: checking test case #24
+extract_all: test case TC.moodle_app_grade_stale_sub.24 with unreachable states
+extract_all: extracting test case #25
+extract_all: checking test case #25
+extract_all: test case TC.moodle_app_grade_stale_sub.25 with unreachable states
+extract_all: extracting test case #26
+extract_all: checking test case #26
+extract_all: test case TC.moodle_app_grade_stale_sub.26 with unreachable states
+extract_all: extracting test case #27
+extract_all: checking test case #27
+extract_all: test case TC.moodle_app_grade_stale_sub.27 with unreachable states
+extract_all: extracting test case #28
+extract_all: checking test case #28
+extract_all: test case TC.moodle_app_grade_stale_sub.28 with unreachable states
+extract_all: extracting test case #29
+extract_all: checking test case #29
+extract_all: test case TC.moodle_app_grade_stale_sub.29 with unreachable states
+extract_all: extracting test case #30
+extract_all: checking test case #30
+extract_all: test case TC.moodle_app_grade_stale_sub.30 with unreachable states
+extract_all: extracting test case #31
+extract_all: checking test case #31
+extract_all: test case TC.moodle_app_grade_stale_sub.31 with unreachable states
+extract_all: extracting test case #32
+extract_all: checking test case #32
+extract_all: test case TC.moodle_app_grade_stale_sub.32 with unreachable states
+extract_all: extracting test case #33
+extract_all: checking test case #33
+extract_all: test case TC.moodle_app_grade_stale_sub.33 with unreachable states
+extract_all: extracting test case #34
+extract_all: checking test case #34
+extract_all: test case TC.moodle_app_grade_stale_sub.34 with unreachable states
+extract_all: extracting test case #35
+extract_all: checking test case #35
+extract_all: test case TC.moodle_app_grade_stale_sub.35 with unreachable states
+extract_all: extracting test case #36
+extract_all: checking test case #36
+extract_all: test case TC.moodle_app_grade_stale_sub.36 with unreachable states
+extract_all: 36 test cases extracted
+  4. BCG -> AUT
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.1.aut (86 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.2.aut (86 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.3.aut (86 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.4.aut (86 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.5.aut (86 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.6.aut (103 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.7.aut (120 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.8.aut (114 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.9.aut (113 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.10.aut (112 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.11.aut (96 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.12.aut (111 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.13.aut (94 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.14.aut (110 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.15.aut (93 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.16.aut (109 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.17.aut (92 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.18.aut (92 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.19.aut (108 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.20.aut (109 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.21.aut (108 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.22.aut (105 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.23.aut (121 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.24.aut (125 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.25.aut (104 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.26.aut (92 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.27.aut (103 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.28.aut (102 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.29.aut (116 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.30.aut (116 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.31.aut (101 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.32.aut (116 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.33.aut (101 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.34.aut (116 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.35.aut (101 transitions)
+     variants/app_grade_stale_sub/tc_app_grade_stale_sub.36.aut (101 transitions)
+     extraction: 273s -> 36 test case(s)
+     canonical: tc_app_grade_stale_sub.aut (= variant 1)
+======================================================================
+test cases per purpose:
+  app_grade_stale_sub: 36 test case(s)
+
+canonical AUTs (walked by run.py): tc_app1_write_fail.aut tc_app_grade_stale_sub.aut tc_app_lazy_regrade.aut tc_app_partial_submission.aut tc_db_attempt_step_loss.aut tc_happy.aut tc_happy_quiz.aut tc_infra_cron_dead.aut tc_ue1_lose_conn.aut tc_ue1_lose_conn_midattempt.aut tc_ue2_session_expire.aut 
+alternatives:                      variants/<purpose>/tc_<purpose>.N.aut
+
+bring back tc_*.aut and variants/ to the mac repo under
+EVALUATION/moodle/Test_Cases/
+ALSO bring back extraction_stats.tsv (in THIS directory, not ../) to
+EVALUATION/moodle/extraction_stats.tsv -- eval_tables.py's GEN t column
+reads it from there, same as FoodYou's.

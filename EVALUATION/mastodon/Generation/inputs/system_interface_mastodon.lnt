@@ -1,0 +1,539 @@
+-- system_interface_mastodon.lnt -- I : D_abs -> D_sys for Mastodon (web, Selenium).
+--
+-- Selectors come from the live DOM dumps in notes/dom/ (2026-09-29). The
+-- prelude logs in as the fixture user; the seed leaves that user with no
+-- posts, so each case starts from a count of 0 and no id is ever captured:
+-- every post the walk touches is found by its own text.
+--
+-- Parser contract (framework/concretization/si_lnt_parser.py): line comments
+-- only; concrete steps first, gate last; `screen` is the state variable,
+-- values SCR_*, initial SCR_HOME; guards are exactly `if screen == SCR_X then`.
+--
+-- Every read-back is FRESH (a navigation reloads the page), except the PEEK
+-- branches, which read the home column the browser already holds: that is
+-- the stale-view purpose's measurement and nothing else's.
+--
+-- A fault that shares its click with the commit arm is placed BEFORE that
+-- click. UE_KILL is realised here (Post, then leave at once).
+
+module system_interface_mastodon (mastodon_types, mastodon_fixture)
+with ==
+is
+
+type Screen is
+    -- SCR_HOME is the browser before login: no app screen, no anchor.
+    SCR_HOME,
+    SCR_TIMELINE,   -- /home, loaded
+    SCR_PROFILE     -- /@bob, loaded (only ever crossed inside a read-back)
+end type
+
+process SI [
+    navigate  : Ch_Route,
+    click     : Ch_Selector,
+    type_into : Ch_TypeIn,
+    wait_for  : Ch_Element,
+    observe   : Ch_Element,
+    ADD     : AddChannel,
+    CONFIRM : ConfirmChannel,
+    EDIT    : RecordChannel,
+    REMOVE  : RecordChannel,
+    CHECK   : RecordChannel,
+    PEEK    : RecordChannel,
+    SHOW    : ShowChannel,
+    WRITE_ERROR_SHOWN   : none,
+    REJECT_SHOWN        : none,
+    DB_CORRUPT_DETECTED : none,
+    UE_KILL             : none,
+    UE_SESSION_EXPIRED  : none,
+    APP_WRITE_FAIL      : none,
+    APP_UNAVAILABLE     : none,
+    APP_EXTAPI_FAIL     : none,
+    APP_CACHE_STALE     : none,
+    APP_LAZY_PROCESSING : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_DB_DOWN       : none,
+    INFRA_SIDEKIQ_DEAD  : none,
+    INFRA_STORAGE_FULL  : none
+] is
+var
+    screen : Screen,
+    id     : ItemId,
+    rid    : RecordId,
+    st     : WriteStatus,
+    -- which posts exist: set only when a write COMMITS, cleared on a
+    -- committed removal or a loss
+    has_a, has_b, has_c : Bool
+in
+    id     := post_a;
+    rid    := rec_a;
+    st     := COMMITTED;
+    has_a  := false;
+    has_b  := false;
+    has_c  := false;
+    screen := SCR_HOME;
+
+    -- prelude: log in as the fixture user, landing on the home timeline
+    navigate (rt_login);
+    wait_for (el_login_form);
+    type_into (sel_email, cv_email);
+    type_into (sel_password, cv_password);
+    click (sel_login_submit);
+    wait_for (el_home_loaded);
+    screen := SCR_TIMELINE;
+
+    loop
+      alt
+        -- =================================================================
+        -- 1. POST, public, valid. Six write-path faults are arms after ADD,
+        --    each before the Post click; UE_KILL clicks and leaves.
+        -- =================================================================
+        -- the next post not written yet, in H's order A, B, C: rows stay distinct
+        if not (has_a) then id := post_a
+        elsif not (has_b) then id := post_b
+        elsif not (has_c) then id := post_c
+        else stop
+        end if;
+        type_into (sel_compose_text, L_text (id));
+        ADD (id, PUBLIC, VALID);
+        alt
+            -- commit: the toast is the precondition for the read-back
+            click (sel_post_button);
+            wait_for (el_published)
+        []
+            -- the user leaves right after pressing Post, then comes back
+            UE_KILL;
+            click (sel_post_button);
+            navigate (rt_home);
+            wait_for (el_home_loaded)
+        []
+            -- session and token revoked: the form must say so; log in again
+            UE_SESSION_EXPIRED;
+            click (sel_post_button);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            navigate (rt_login);
+            wait_for (el_login_form);
+            type_into (sel_email, cv_email);
+            type_into (sel_password, cv_password);
+            click (sel_login_submit);
+            wait_for (el_home_loaded)
+        []
+            -- antispam drops the post: the form must not claim success
+            APP_WRITE_FAIL;
+            click (sel_post_button);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            APP_UNAVAILABLE;
+            click (sel_post_button);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            DB_ABORT;
+            click (sel_post_button);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            INFRA_DB_DOWN;
+            click (sel_post_button);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            INFRA_STORAGE_FULL;
+            click (sel_post_button);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        end alt;
+        -- fresh read-back: profile count and list, then home
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id);
+        if st == COMMITTED then
+            case id in
+                post_a -> has_a := true
+              | post_b -> has_b := true
+              | post_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 3. POST, blank: the client alert is the rejection report.
+        -- =================================================================
+        -- the next post not written yet, in H's order A, B, C: rows stay distinct
+        if not (has_a) then id := post_a
+        elsif not (has_b) then id := post_b
+        elsif not (has_c) then id := post_c
+        else stop
+        end if;
+        type_into (sel_compose_text, cv_text_blank);
+        ADD (id, PUBLIC, INVALID);
+        click (sel_post_button);
+        wait_for (el_reject_message);
+        observe (el_reject_message);
+        REJECT_SHOWN;
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (REJECTED, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+
+      []
+        -- =================================================================
+        -- 4. POST, 501 characters: the withheld Post button is the report.
+        --    The form is cleared before leaving.
+        -- =================================================================
+        -- the next post not written yet, in H's order A, B, C: rows stay distinct
+        if not (has_a) then id := post_a
+        elsif not (has_b) then id := post_b
+        elsif not (has_c) then id := post_c
+        else stop
+        end if;
+        type_into (sel_compose_text, cv_text_overlimit);
+        ADD (id, PUBLIC, OVERLIMIT);
+        wait_for (el_post_disabled);
+        observe (el_post_disabled);
+        REJECT_SHOWN;
+        type_into (sel_compose_text, cv_text_blank);
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (REJECTED, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+
+      []
+        -- =================================================================
+        -- 5. POST with the link-preview fetch cut off beforehand (pre-armed).
+        -- =================================================================
+        -- the next post not written yet, in H's order A, B, C: rows stay distinct
+        if not (has_a) then id := post_a
+        elsif not (has_b) then id := post_b
+        elsif not (has_c) then id := post_c
+        else stop
+        end if;
+        APP_EXTAPI_FAIL;
+        type_into (sel_compose_text, L_text (id));
+        ADD (id, PUBLIC, VALID);
+        click (sel_post_button);
+        wait_for (el_published);
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id);
+        if st == COMMITTED then
+            case id in
+                post_a -> has_a := true
+              | post_b -> has_b := true
+              | post_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 6. POST with Sidekiq paused beforehand (pre-armed).
+        -- =================================================================
+        -- the next post not written yet, in H's order A, B, C: rows stay distinct
+        if not (has_a) then id := post_a
+        elsif not (has_b) then id := post_b
+        elsif not (has_c) then id := post_c
+        else stop
+        end if;
+        INFRA_SIDEKIQ_DEAD;
+        type_into (sel_compose_text, L_text (id));
+        ADD (id, PUBLIC, VALID);
+        click (sel_post_button);
+        wait_for (el_published);
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id);
+        if st == COMMITTED then
+            case id in
+                post_a -> has_a := true
+              | post_b -> has_b := true
+              | post_c -> has_c := true
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 8. PEEK: read the column the browser holds, no reload.
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        -- an input first: a branch opening on an output would make the
+        -- resting state non-quiescent
+        click (sel_column_home);
+        wait_for (el_home_loaded);
+        PEEK (rid);
+        observe (el_home_column);
+        SHOW (rid, ?any Value)
+
+      []
+        -- =================================================================
+        -- 9. PEEK after the stored text changed underneath (the stale view).
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        APP_CACHE_STALE;
+        -- an input first: a branch opening on an output would make the
+        -- resting state non-quiescent
+        click (sel_column_home);
+        wait_for (el_home_loaded);
+        PEEK (rid);
+        observe (el_home_column);
+        SHOW (rid, ?any Value)
+
+      []
+        -- =================================================================
+        -- 10. CHECK a post that exists, afresh; if its text was blanked
+        --     underneath it, the fresh home must flag it.
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        id := item_of (rid);
+        -- an input first: a branch opening on an output would make the
+        -- resting state non-quiescent
+        click (sel_column_home);
+        wait_for (el_home_loaded);
+        CHECK (rid);
+        alt
+            navigate (rt_profile);
+            wait_for (el_profile_loaded);
+            observe (el_post_count);
+            observe (el_profile_posts);
+            navigate (rt_home);
+            wait_for (el_home_loaded);
+            observe (el_home_column);
+            screen := SCR_TIMELINE;
+            CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+        []
+            DB_CORRUPT;
+            navigate (rt_home);
+            wait_for (el_home_loaded);
+            observe (el_corrupt_notice);
+            screen := SCR_TIMELINE;
+            DB_CORRUPT_DETECTED
+        end alt
+
+      []
+        -- =================================================================
+        -- 11. The committed row is deleted by SQL, then CHECK afresh.
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        id := item_of (rid);
+        DB_EVENT_LOSS;
+        case rid in
+            rec_a -> has_a := false
+          | rec_b -> has_b := false
+          | rec_c -> has_c := false
+        end case;
+        -- an input first: a branch opening on an output would make the
+        -- resting state non-quiescent
+        click (sel_column_home);
+        wait_for (el_home_loaded);
+        CHECK (rid);
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id)
+
+      []
+        -- =================================================================
+        -- 12. DELETE a post that exists, then read back.
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        id := item_of (rid);
+        click (L_menu (rid));
+        click (sel_menu_delete);
+        wait_for (el_delete_modal);
+        -- the delete-path faults strike as the delete is confirmed, BEFORE the
+        -- click they share with the commit arm
+        alt
+            click (sel_confirm_delete);
+            REMOVE (rid)
+        []
+            UE_SESSION_EXPIRED;
+            click (sel_confirm_delete);
+            REMOVE (rid);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN;
+            navigate (rt_login);
+            wait_for (el_login_form);
+            type_into (sel_email, cv_email);
+            type_into (sel_password, cv_password);
+            click (sel_login_submit);
+            wait_for (el_home_loaded)
+        []
+            APP_UNAVAILABLE;
+            click (sel_confirm_delete);
+            REMOVE (rid);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            DB_ABORT;
+            click (sel_confirm_delete);
+            REMOVE (rid);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            INFRA_DB_DOWN;
+            click (sel_confirm_delete);
+            REMOVE (rid);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        []
+            INFRA_STORAGE_FULL;
+            click (sel_confirm_delete);
+            REMOVE (rid);
+            wait_for (el_write_error);
+            observe (el_write_error);
+            WRITE_ERROR_SHOWN
+        end alt;
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id);
+        if st == COMMITTED then
+            case rid in
+                rec_a -> has_a := false
+              | rec_b -> has_b := false
+              | rec_c -> has_c := false
+            end case
+        end if
+
+      []
+        -- =================================================================
+        -- 13. DELETE with Sidekiq quiet beforehand (pre-armed): the
+        --     background half of the delete does not run.
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        id := item_of (rid);
+        APP_LAZY_PROCESSING;
+        click (L_menu (rid));
+        click (sel_menu_delete);
+        wait_for (el_delete_modal);
+        click (sel_confirm_delete);
+        REMOVE (rid);
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id);
+        if st == COMMITTED then
+            case rid in
+                rec_a -> has_a := false
+              | rec_b -> has_b := false
+              | rec_c -> has_c := false
+            end case
+        end if
+      []
+        -- =================================================================
+        -- 14. DELETE with Sidekiq paused beforehand (pre-armed): no worker
+        --     runs the delete's background half.
+        -- =================================================================
+        alt
+            if has_a then rid := rec_a else stop end if
+        []  if has_b then rid := rec_b else stop end if
+        []  if has_c then rid := rec_c else stop end if
+        end alt;
+        id := item_of (rid);
+        INFRA_SIDEKIQ_DEAD;
+        click (L_menu (rid));
+        click (sel_menu_delete);
+        wait_for (el_delete_modal);
+        click (sel_confirm_delete);
+        REMOVE (rid);
+        navigate (rt_profile);
+        wait_for (el_profile_loaded);
+        observe (el_post_count);
+        observe (el_profile_posts);
+        navigate (rt_home);
+        wait_for (el_home_loaded);
+        observe (el_home_column);
+        screen := SCR_TIMELINE;
+        CONFIRM (?st, ?any CountBand, ?any HomeState, ?any ProfileState, id);
+        if st == COMMITTED then
+            case rid in
+                rec_a -> has_a := false
+              | rec_b -> has_b := false
+              | rec_c -> has_c := false
+            end case
+        end if
+      end alt
+    end loop
+end var
+end process
+
+end module

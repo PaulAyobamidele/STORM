@@ -1,0 +1,71 @@
+module tp_app_write_fail (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    write-path (nested disrupt).
+   TARGET   APP_WRITE_FAIL: the record update fails after the stock moved (§4.1).
+   ACCEPT   the fault fires after the dose is marked and the app reports the
+            failure, then reads back a stock unmoved and a row still pending.
+   REFUSE   the write commits without the fault; any other fault; any other
+            input.
+   Owed     WRITE_ERROR_SHOWN then CONFIRM (ROLLED_BACK, ?band, PENDING, IDF).
+   Expected FAIL: the app reports nothing and crashes (§5); with APP_WRITE_FAIL
+            the stock has already moved (§4.1) where the fault is the update. *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            ACT (IDF, TAKE);
+            disrupt
+                CONFIRM (COMMITTED, ?any StockBand, TAKEN, IDF);
+                loop TP_REFUSE end loop
+            by
+                APP_WRITE_FAIL;
+                WRITE_ERROR_SHOWN;
+                CONFIRM (ROLLED_BACK, ?any StockBand, PENDING, IDF);
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            alt
+                UE_KILL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  DB_EVENT_LOSS
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (?any Validity)
+            []  NO_SKIP (?any MedicineId)
+            []  ACT (?any MedicineId, SKIP)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            []  VIEW (?any MedicineId)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module

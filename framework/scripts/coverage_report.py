@@ -15,9 +15,9 @@ coverage figure rather than discovered afterwards as a pile of INCONCLUSIVEs.
 
 Usage:
     PYTHONPATH=framework python framework/scripts/coverage_report.py \
-        --system-interface systems/<sut>/model/<si>.lnt \
-        --concrete-domain  systems/<sut>/properties/concrete_domain.yml \
-        systems/<sut>/generated/tc/variants/*.aut
+        --system-interface EVALUATION/<sut>/model/<si>.lnt \
+        --concrete-domain  EVALUATION/<sut>/properties/concrete_domain.yml \
+        EVALUATION/<sut>/Test_Cases/variants/*.aut
 """
 from __future__ import annotations
 

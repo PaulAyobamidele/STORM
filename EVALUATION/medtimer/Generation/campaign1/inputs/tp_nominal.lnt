@@ -1,0 +1,65 @@
+module tp_nominal (medtimer_types, medtimer_fixture) is
+
+(* SHAPE    nominal.
+   TARGET   no fault: the day's dose is marked Taken from the overview.
+   ACCEPT   the record reads Taken and the stock moved by one unit (O1).
+   REFUSE   any fault; any other input (a skip, a create, the switch, a
+            delete, an edit, a re-read).
+   Owed     CONFIRM (COMMITTED, ?band, TAKEN, IDF); the band is checked by
+            the concretization oracle against the medicine card.
+   Expected PASS (observed_behaviour.md §13). *)
+
+process MAIN [
+    ADD_MEDICINE : AddMedChannel,
+    MEDICINE_SHOWN      : none,
+    REJECT_SHOWN        : none,
+    NO_SKIP : MedChannel,
+    ACT     : ActChannel,
+    DELETE  : MedChannel,
+    EDIT    : ActChannel,
+    VIEW    : MedChannel,
+    CONFIRM : ConfirmChannel,
+    WRITE_ERROR_SHOWN   : none,
+    DB_CORRUPT_DETECTED : none,
+    INFRA_STORAGE_ERROR : none,
+    UE_KILL             : none,
+    APP_WRITE_FAIL      : none,
+    APP_CACHE_STALE     : none,
+    DB_ABORT            : none,
+    DB_CORRUPT          : none,
+    DB_EVENT_LOSS       : none,
+    INFRA_STORAGE_FULL  : none,
+    INFRA_STORAGE_MEDIA : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+    var IDF : MedicineId in
+        IDF := defaultMedicine;
+        disrupt
+            ACT     (IDF, TAKE);
+            CONFIRM (COMMITTED, ?any StockBand, TAKEN, IDF);
+            loop TP_ACCEPT end loop
+        by
+            -- negative closure: every fault AND every off-target input
+            alt
+                UE_KILL
+            []  APP_WRITE_FAIL
+            []  APP_CACHE_STALE
+            []  DB_ABORT
+            []  DB_CORRUPT
+            []  DB_EVENT_LOSS
+            []  INFRA_STORAGE_FULL
+            []  INFRA_STORAGE_MEDIA
+            []  ADD_MEDICINE (?any Validity)
+            []  NO_SKIP (?any MedicineId)
+            []  ACT (?any MedicineId, SKIP)
+            []  DELETE (?any MedicineId)
+            []  EDIT (?any MedicineId, ?any DoseAction)
+            []  VIEW (?any MedicineId)
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+end process
+
+end module
