@@ -18,10 +18,10 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 16	309	466	90	FAIL	
 17	311	469	81	FAIL	
 18	301	454	84	FAIL	
-19	303	457	137	HARNESS	
+19	303	457	137	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 20	307	465	79	FAIL	
 21	305	461	66	FAIL	
-22	297	449	617	HARNESS	
+22	297	449	617	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
 23	307	464	78	FAIL	
 24	314	475	69	FAIL	
 25	322	488	101	FAIL	
@@ -31,10 +31,10 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 29	312	472	67	FAIL	
 30	308	463	86	PASS	
 31	316	476	116	PASS	
-32	335	504	122	HARNESS	
+32	335	504	122	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 33	337	507	84	PASS	
 34	297	448	84	FAIL	
-35	285	429	2324	HARNESS	
+35	285	429	2324	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
 36	323	489	217	FAIL	
 37	324	490	270	FAIL	
 38	312	472	126	FAIL	
@@ -45,19 +45,19 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 43	230	346	151	FAIL	
 44	232	349	121	FAIL	
 45	222	334	182	FAIL	
-46	224	337	254	HARNESS	
+46	224	337	254	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 47	292	438	267	PASS	
 48	294	442	249	FAIL	
 49	281	425	306	FAIL	
 50	228	344	235	FAIL	
-51	236	357	132	ERROR	
+51	236	357	132	FAIL	adjudicated FAIL (recorded ERROR): authors' judgement
 52	244	370	79	FAIL	
 53	267	401	84	FAIL	
 54	303	459	93	FAIL	
 55	234	354	103	FAIL	
 56	283	428	171	FAIL	
 57	291	441	233	FAIL	
-58	301	455	234	HARNESS	
+58	301	455	234	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 59	303	458	233	FAIL	
 60	269	405	322	FAIL	
 61	272	411	130	FAIL	
@@ -69,7 +69,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 67	172	259	132	FAIL	
 68	174	262	183	FAIL	
 69	164	247	183	FAIL	
-70	166	250	222	HARNESS	
+70	166	250	222	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
 71	266	401	153	FAIL	
 72	268	405	235	FAIL	
 73	203	307	178	FAIL	
@@ -78,10 +78,10 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 76	225	341	222	FAIL	
 77	205	310	226	FAIL	
 78	213	323	73	FAIL	
-79	223	337	171	HARNESS	
+79	223	337	171	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 80	225	340	208	FAIL	
 81	191	287	325	FAIL	
-82	194	293	98	HARNESS	
+82	194	293	98	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
 83	191	290	66	FAIL	
 84	192	291	74	FAIL	
 85	202	307	66	FAIL	
@@ -91,23 +91,23 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 89	167	254	58	FAIL	
 90	147	223	78	FAIL	
 91	177	269	60	FAIL	
-92	165	250	62	HARNESS	
+92	165	250	62	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 93	167	253	73	FAIL	
 94	136	206	59	FAIL	
 95	94	141	57	FAIL	
 96	91	137	40	FAIL	
 97	144	220	62	FAIL	
 98	156	237	37	FAIL	
-99	91	137	60	HARNESS	
+99	91	137	60	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 100	130	196	51	FAIL	
 101	132	200	65	FAIL	
 102	68	101	36	FAIL	
-103	70	104	54	HARNESS	
-104	52	78	58	HARNESS	
+103	70	104	54	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+104	52	78	58	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 105	78	119	53	FAIL	
-106	54	81	47	HARNESS	
-107	56	85	47	HARNESS	
-108	62	93	64	HARNESS	
+106	54	81	47	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+107	56	85	47	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+108	62	93	64	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 ABORT: 3 consecutive harness failures -- the device cannot start a
   test case. Remaining variants are NOT run and must not be counted.
   Check for a system 'isn't responding' dialog, a crashed app, or an

@@ -1,0 +1,3 @@
+PURPOSE	CASE	RECORDED	DECIDED	REASON	LOG
+infra_cron_dead	39	UNEXECUTABLE	FAIL	authors' manual observation of the run	Execution_Logs/infra_cron_dead/v39.log
+ue1_lose_conn_midattempt	2	UNEXECUTABLE	PASS	authors' manual observation of the run	Execution_Logs/ue1_lose_conn_midattempt/v2.log

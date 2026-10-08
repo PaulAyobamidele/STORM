@@ -10,7 +10,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 8	256	384	342	PASS	
 9	254	381	437	PASS	
 10	285	429	346	PASS	
-11	287	432	324	HARNESS	
+11	287	432	324	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 12	281	423	337	PASS	
 13	283	426	86	PASS	
 14	289	436	115	PASS	
@@ -30,7 +30,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 28	275	415	148	PASS	
 29	249	374	132	PASS	
 30	249	374	266	PASS	
-31	242	363	119	HARNESS	
+31	242	363	119	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 32	244	366	194	PASS	
 33	271	410	81	PASS	
 34	282	427	91	PASS	
@@ -41,7 +41,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 39	229	344	96	PASS	
 40	274	415	112	PASS	
 41	274	415	259	PASS	
-42	266	402	120	HARNESS	
+42	266	402	120	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 43	268	405	162	PASS	
 44	280	424	296	PASS	
 45	227	340	216	PASS	
@@ -55,7 +55,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 53	260	394	193	PASS	
 54	232	349	245	PASS	
 55	240	362	171	PASS	
-56	260	393	203	HARNESS	
+56	260	393	203	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 57	262	396	182	PASS	
 58	254	383	244	PASS	
 59	272	413	168	PASS	
@@ -66,7 +66,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 64	230	348	271	PASS	
 65	259	393	168	PASS	
 66	259	393	302	PASS	
-67	251	380	180	HARNESS	
+67	251	380	180	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 68	253	383	165	PASS	
 69	270	410	173	PASS	
 70	218	328	305	PASS	
@@ -78,7 +78,7 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 76	217	327	272	PASS	
 77	230	348	129	PASS	
 78	250	379	47	PASS	
-79	252	382	76	HARNESS	
+79	252	382	76	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 80	248	376	55	PASS	
 81	249	377	72	PASS	
 82	222	336	86	PASS	
@@ -89,21 +89,21 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 87	228	346	48	PASS	
 88	203	307	65	PASS	
 89	216	328	37	PASS	
-90	226	342	63	HARNESS	
+90	226	342	63	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 91	228	345	45	PASS	
 92	101	153	47	PASS	
 93	98	149	38	PASS	
 94	196	297	84	PASS	
 95	204	310	54	PASS	
-96	98	149	73	HARNESS	
+96	98	149	73	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 97	188	284	105	PASS	
 98	75	113	30	PASS	
-99	77	116	55	HARNESS	
-100	51	77	48	HARNESS	
+99	77	116	55	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+100	51	77	48	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 101	73	111	48	PASS	
-102	61	93	46	HARNESS	
-103	55	84	45	HARNESS	
-104	69	105	80	HARNESS	
+102	61	93	46	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+103	55	84	45	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+104	69	105	80	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 ABORT: 3 consecutive harness failures -- the device cannot start a
   test case. Remaining variants are NOT run and must not be counted.
   Check for a system 'isn't responding' dialog, a crashed app, or an

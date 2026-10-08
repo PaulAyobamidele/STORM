@@ -36,9 +36,9 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 34	117	177	20	FAIL	
 35	127	193	21	FAIL	
 36	127	192	20	FAIL	
-37	61	92	51	HARNESS	
+37	61	92	51	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 38	66	100	33	FAIL	
-39	95	145	45	HARNESS	
-40	95	144	62	HARNESS	
+39	95	145	45	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+40	95	144	62	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 ----------------------------------------------------------------
 canonical EVALUATION/foodyou/Test_Cases/tc_db_corrupt.aut restored

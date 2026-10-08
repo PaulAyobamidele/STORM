@@ -1,0 +1,88 @@
+PURPOSE	CASE	RECORDED	DECIDED	REASON	LOG
+cache_stale	4	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/cache_stale/v4.log
+cache_stale	6	HARNESS	FAIL	authors' judgement	Execution_Logs/cache_stale/v6.log
+cache_stale	7	HARNESS	FAIL	authors' judgement	Execution_Logs/cache_stale/v7.log
+cache_stale	14	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/cache_stale/v14.log
+cache_stale	17	HARNESS	FAIL	authors' judgement	Execution_Logs/cache_stale/v17.log
+cache_stale	44	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/cache_stale/v44.log
+cache_stale	45	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/cache_stale/v45.log
+cache_stale	47	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/cache_stale/v47.log
+db_corrupt	37	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/db_corrupt/v37.log
+db_corrupt	39	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/db_corrupt/v39.log
+db_corrupt	40	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/db_corrupt/v40.log
+disruption_db	19	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v19.log
+disruption_db	22	HARNESS	FAIL	authors' judgement	Execution_Logs/disruption_db/v22.log
+disruption_db	32	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v32.log
+disruption_db	35	HARNESS	FAIL	authors' judgement	Execution_Logs/disruption_db/v35.log
+disruption_db	46	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v46.log
+disruption_db	47	HARNESS	FAIL	authors' judgement	Execution_Logs/disruption_db/v47.log
+disruption_db	58	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v58.log
+disruption_db	70	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v70.log
+disruption_db	79	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v79.log
+disruption_db	92	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v92.log
+disruption_db	97	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v97.log
+disruption_db	99	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v99.log
+disruption_db	103	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v103.log
+disruption_db	104	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v104.log
+disruption_db	106	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v106.log
+disruption_db	107	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/disruption_db/v107.log
+extapi_fail	1	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/extapi_fail/v1.log
+happy	11	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v11.log
+happy	31	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v31.log
+happy	42	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v42.log
+happy	56	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v56.log
+happy	67	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v67.log
+happy	79	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v79.log
+happy	90	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v90.log
+happy	96	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v96.log
+happy	99	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v99.log
+happy	100	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v100.log
+happy	102	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v102.log
+happy	103	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v103.log
+happy	104	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/happy/v104.log
+input_invalid	5	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v5.log
+input_invalid	11	HARNESS	FAIL	authors' judgement	Execution_Logs/input_invalid/v11.log
+input_invalid	18	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v18.log
+input_invalid	23	HARNESS	FAIL	authors' judgement	Execution_Logs/input_invalid/v23.log
+input_invalid	28	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v28.log
+input_invalid	34	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v34.log
+input_invalid	39	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v39.log
+input_invalid	48	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v48.log
+input_invalid	56	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v56.log
+input_invalid	71	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v71.log
+input_invalid	81	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v81.log
+input_invalid	83	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v83.log
+input_invalid	85	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v85.log
+input_invalid	86	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/input_invalid/v86.log
+storage_full	19	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v19.log
+storage_full	22	HARNESS	FAIL	authors' judgement	Execution_Logs/storage_full/v22.log
+storage_full	32	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v32.log
+storage_full	35	HARNESS	FAIL	authors' judgement	Execution_Logs/storage_full/v35.log
+storage_full	46	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v46.log
+storage_full	58	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v58.log
+storage_full	70	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v70.log
+storage_full	79	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v79.log
+storage_full	92	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v92.log
+storage_full	99	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v99.log
+storage_full	103	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v103.log
+storage_full	104	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v104.log
+storage_full	106	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v106.log
+storage_full	107	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v107.log
+storage_full	109	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/storage_full/v109.log
+ue1_kill	19	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v19.log
+ue1_kill	22	HARNESS	FAIL	authors' judgement	Execution_Logs/ue1_kill/v22.log
+ue1_kill	32	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v32.log
+ue1_kill	35	HARNESS	FAIL	authors' judgement	Execution_Logs/ue1_kill/v35.log
+ue1_kill	46	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v46.log
+ue1_kill	51	ERROR	FAIL	authors' judgement	Execution_Logs/ue1_kill/v51.log
+ue1_kill	58	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v58.log
+ue1_kill	70	HARNESS	FAIL	authors' judgement	Execution_Logs/ue1_kill/v70.log
+ue1_kill	79	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v79.log
+ue1_kill	82	HARNESS	FAIL	authors' judgement	Execution_Logs/ue1_kill/v82.log
+ue1_kill	92	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v92.log
+ue1_kill	99	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v99.log
+ue1_kill	103	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v103.log
+ue1_kill	104	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v104.log
+ue1_kill	106	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v106.log
+ue1_kill	107	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v107.log
+ue1_kill	108	HARNESS	FAIL	Open Food Facts search returned no result	Execution_Logs/ue1_kill/v108.log

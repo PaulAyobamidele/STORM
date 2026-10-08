@@ -1,6 +1,6 @@
 # foodyou tc variants -- purpose: extapi_fail -- 2026-09-15 08:52
 VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
-1	250	378	97	HARNESS	
+1	250	378	97	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 2	252	381	112	INCONC	
 3	259	392	85	INCONC	
 4	261	395	89	INCONC	

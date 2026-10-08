@@ -3,20 +3,20 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 1	260	397	275	PASS	
 2	262	400	276	PASS	
 3	259	395	377	PASS	
-4	259	395	316	HARNESS	
+4	259	395	316	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 5	256	392	330	PASS	
-6	249	379	1173	HARNESS	
-7	251	382	1047	HARNESS	
+6	249	379	1173	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
+7	251	382	1047	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
 8	247	377	77	PASS	
 9	248	378	86	PASS	
 10	256	391	85	PASS	
 11	243	371	77	PASS	
 12	227	346	78	PASS	
 13	248	379	71	PASS	
-14	194	295	121	HARNESS	
+14	194	295	121	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 15	196	298	84	PASS	
 16	228	348	73	PASS	
-17	240	365	933	HARNESS	
+17	240	365	933	FAIL	adjudicated FAIL (recorded HARNESS): authors' judgement
 18	248	378	84	PASS	
 19	193	295	75	PASS	
 20	218	332	79	PASS	
@@ -43,10 +43,10 @@ VARIANT	STATES	TRANSITIONS	TIME_S	VERDICT	NOTE
 41	105	160	37	PASS	
 42	107	164	40	PASS	
 43	107	163	45	PASS	
-44	60	91	45	HARNESS	
-45	62	94	47	HARNESS	
+44	60	91	45	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
+45	62	94	47	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 46	63	96	31	PASS	
-47	59	91	45	HARNESS	
+47	59	91	45	FAIL	adjudicated FAIL (recorded HARNESS): Open Food Facts search returned no result
 48	59	90	31	PASS	
 ----------------------------------------------------------------
 canonical EVALUATION/foodyou/Test_Cases/tc_cache_stale.aut restored
