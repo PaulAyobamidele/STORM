@@ -1,0 +1,51 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from EVALUATION/mastodon/runs/campaign_2026-09-30b/snapshot/mastodon/model/system_interface_mastodon.lnt
+INFO  LNT SI invariants OK for EVALUATION/mastodon/runs/campaign_2026-09-30b/run/tc_infra_sidekiq_dead.aut
+WARNING  browser: accepting untrusted TLS certificates (concrete_domain.browser.accept_insecure_certs)
+INFO  HTMLExecutor initialized with base URL: https://mastodon.localhost
+WARNING  reset_sut() failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1129)>
+INFO    @env:MASTODON_PW -> (value from the environment, not logged)
+INFO    @env:MASTODON_PW -> (value from the environment, not logged)
+INFO  Disruption activated and confirmed: INFRA_SIDEKIQ_DEAD
+INFO    INFRA_SIDEKIQ_DEAD injected and confirmed
+INFO    checkpoint ADD — advance (concrete steps done)
+ERROR  CONFIRM mismatch — HomeState: AUT expects IN_HOME, observed 'alice\n@alice\n1d\nhello 2\n0' classifies as NOT_IN_HOME
+INFO  Disruption restored and confirmed cleared: INFRA_SIDEKIQ_DEAD
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : EVALUATION/mastodon/runs/campaign_2026-09-30b/run/tc_infra_sidekiq_dead.aut
+--------------------------------------------------
+
+Verdict: [91mFAIL[0m (tc_infra_sidekiq_dead.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  INFRA_SIDEKIQ_DEAD               ok
+  TYPE_INTO                        ok
+  ADD                              ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'posts\n1'}
+  OBSERVE                          ok  captured={'observe': 'bob\n@bob\nnow\n@alice ioco note a \nhttps://\nexample.com\n0\n0\n0'}
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'alice\n@alice\n1d\nhello 2\n0'}
+  CONFIRM                          FAIL  -- HomeState 'alice\n@alice\n1d\nhello 2\n0' classifies as NOT_IN_HOME, expected IN_HOME
+
+Captured values (g_dict):
+  _last_observed: alice
+@alice
+1d
+hello 2
+0

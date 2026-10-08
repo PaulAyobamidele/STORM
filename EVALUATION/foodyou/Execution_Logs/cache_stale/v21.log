@@ -1,0 +1,1200 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+DEBUG  Loaded concrete_domain.yml from EVALUATION/foodyou/properties/concrete_domain.yml
+DEBUG  var_defaults: {'fid': 'Peanut butter', 'kcal': 'kcal_peanut', 'meal': 'Breakfast', 'eid': 'entry_0', 'src': 'LOCAL', 'st': 'COMMITTED', 'screen': 'SCR_HOME', 'has_peanut': 'false', 'has_butter': 'false', 'has_oil': 'false'}
+DEBUG  CONFIRM_TOTAL: ambiguous destination ['SCR_FOOD_SEARCH', 'SCR_HOME'] (flattened alt) — no destination_screen emitted
+INFO  LNT SI parsed: 17 gates from EVALUATION/foodyou/model/system_interface_foodyou_copy.lnt
+INFO  LNT SI invariants OK for EVALUATION/foodyou/Test_Cases/tc_cache_stale.aut
+DEBUG  POST http://127.0.0.1:4723/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'appium:automationName': 'UiAutomator2', 'platformName': 'Android', 'appium:newCommandTimeout': 300, 'appium:noReset': True, 'appium:uiautomator2ServerLaunchTimeout': 120000, 'appium:uiautomator2ServerInstallTimeout': 120000, 'appium:appPackage': 'com.maksimowiczm.foodyou', 'appium:appActivity': '.app.infrastructure.android.MainActivity', 'appium:deviceName': 'emulator-5554'}}}
+DEBUG  Starting new HTTP connection (1): 127.0.0.1:4723
+DEBUG  http://127.0.0.1:4723 "POST /session HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":{"capabilities":{"platformName":"Android","automationName":"UiAutomator2","newCommandTimeout":300,"noReset":true,"uiautomator2ServerLaunchTimeout":120000,"uiautomator2ServerInstallTimeout":120000,"appPackage":"com.maksimowiczm.foodyou","appActivity":".app.infrastructure.android.MainActivity","deviceName":"emulator-5554","platform":"LINUX","webStorageEnabled":false,"takesScreenshot":true,"javascriptEnabled":true,"databaseEnabled":false,"networkConnectionEnabled":true,"locationContextEnabled":false,"warnings":{},"desired":{"platformName":"Android","automationName":"UiAutomator2","newCommandTimeout":300,"noReset":true,"uiautomator2ServerLaunchTimeout":120000,"uiautomator2ServerInstallTimeout":120000,"appPackage":"com.maksimowiczm.foodyou","appActivity":".app.infrastructure.android.MainActivity","deviceName":"emulator-5554"},"deviceUDID":"emulator-5554","pixelRatio":"2.625","statBarHeight":128,"viewportRect":{"left":0,"top":128,"width":1080,"height":2272},"deviceApiLevel":34,"platformVersion":"14","deviceManufacturer":"Google","deviceModel":"sdk_gphone64_arm64","deviceScreenSize":"1080x2400","deviceScreenDensity":420},"sessionId":"7b6b8c64-f6b9-4056-837a-fb53bcb24214"}} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1193', 'ETag': 'W/"4a9-2P13YMMIZT4BcS5woasU6Sgl3gY"', 'Date': 'Sat, 12 Sep 2026 02:42:38 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+INFO  AndroidExecutor connected to http://127.0.0.1:4723 (app=com.maksimowiczm.foodyou)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: terminateApp', 'args': [{'appId': 'com.maksimowiczm.foodyou', 'bundleId': 'com.maksimowiczm.foodyou'}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:42:38 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: activateApp', 'args': [{'appId': 'com.maksimowiczm.foodyou', 'bundleId': 'com.maksimowiczm.foodyou'}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:38 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+INFO  Relaunched com.maksimowiczm.foodyou for clean test isolation
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Agree & Continue")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:43 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("Agree & Continue")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Agree & Continue")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("Agree & Continue")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'accessibility id', 'value': 'Agree & Continue'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'accessibility id', 'value': "What's new"}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'accessibility id', 'value': "What's new"}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'accessibility id', 'value': "What's new"}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'accessibility id', 'value': "What's new"}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("What\'s new")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'accessibility id', 'value': "What's new"}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Food You")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-00a800000007","ELEMENT":"00000000-0000-497f-0000-00a800000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-gJ+bgQVOvl7vU7DMwrAfASq6ICo"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+INFO    SCR_HOME ready (anchor present)
+INFO  Android fault injector ready (device=emulator-5554, pkg=com.maksimowiczm.foodyou)
+
+STORM Concretization — Graph Walker
+Platform : android
+Fault    : none
+AUT      : EVALUATION/foodyou/Test_Cases/tc_cache_stale.aut
+--------------------------------------------------
+DEBUG  AUT parsed: 335 transitions, initial=0
+INFO  tc target fault: CACHE_STALE
+INFO  pre-injecting target CACHE_STALE before the walk
+INFO    CACHE_STALE injected (sqlite)
+ERROR  Disruption activation failed: CACHE_STALE: mechanism 'sqlite' is not declared under `mechanisms:`
+ERROR    CACHE_STALE: PRE-injection failed — this run's verdict is not attributable
+DEBUG    step budget 1340 (335 transitions x4, floor 500)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Add").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-017100000007","ELEMENT":"00000000-0000-497f-0000-017100000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-xZ4M2qxsaC+ohwVZaYMlbFhfeaY"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-017100000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-017100000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().description("Add").instance(0)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-7735-95ff00000007","ELEMENT":"00000000-0000-497f-7735-95ff00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-yoKgQh9dBvmSF7a31Jd9EOzTGRk"', 'Date': 'Sat, 12 Sep 2026 02:42:48 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-01ff00000007","ELEMENT":"00000000-0000-497f-0000-01ff00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-JxmuPHRg2lFpacOMEKZeyGPe0FE"', 'Date': 'Sat, 12 Sep 2026 02:42:48 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-01ff00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-01ff00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:48 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4980-0000-02ec0000000e","ELEMENT":"00000000-0000-4980-0000-02ec0000000e"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-8q04mWsoZsmKcCfWMw9h5wofiIM"', 'Date': 'Sat, 12 Sep 2026 02:42:50 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4980-0000-02ec0000000e/clear {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4980-0000-02ec0000000e/clear HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:51 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4980-0000-02ec0000000e/value {'text': 'Corn germ oil', 'value': ['C', 'o', 'r', 'n', ' ', 'g', 'e', 'r', 'm', ' ', 'o', 'i', 'l']}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4980-0000-02ec0000000e/value HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:51 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:51 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: isKeyboardShown', 'args': []}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:42:51 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: hideKeyboard', 'args': [{}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":false} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '15', 'ETag': 'W/"f-wDOCiKvTD3LNZdrYODNEjzRfePo"', 'Date': 'Sat, 12 Sep 2026 02:42:51 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Entered text 'Corn germ oil' and submitted
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:52 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Pressed KEYCODE_ENTER (66)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-02e100000007","ELEMENT":"00000000-0000-497f-0000-02e100000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-A6oOQ1FrEgtoeOSXNK7rpWuE9I4"', 'Date': 'Sat, 12 Sep 2026 02:42:53 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-02e100000007","ELEMENT":"00000000-0000-497f-0000-02e100000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-A6oOQ1FrEgtoeOSXNK7rpWuE9I4"', 'Date': 'Sat, 12 Sep 2026 02:42:53 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-02e100000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-02e100000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:53 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Swiss Food Composition Database")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn...'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-04fc00000007","ELEMENT":"00000000-0000-497f-0000-04fc00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-itAZLSiw3o3pStQ/DsnyczALAEc"', 'Date': 'Sat, 12 Sep 2026 02:42:54 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-04fc00000007","ELEMENT":"00000000-0000-497f-0000-04fc00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-itAZLSiw3o3pStQ/DsnyczALAEc"', 'Date': 'Sat, 12 Sep 2026 02:42:54 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-04fc00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-04fc00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:55 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-052300000007","ELEMENT":"00000000-0000-497f-0000-052300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-yJrGatGUq8nqeZxE4p+X3nvTWjQ"', 'Date': 'Sat, 12 Sep 2026 02:42:55 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-052300000007","ELEMENT":"00000000-0000-497f-0000-052300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-yJrGatGUq8nqeZxE4p+X3nvTWjQ"', 'Date': 'Sat, 12 Sep 2026 02:42:55 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-052300000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-052300000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:55 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionContains("Save")
+INFO    checkpoint ADD_ENTRY — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:56 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-065b00000007","ELEMENT":"00000000-0000-497f-0000-065b00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-NDoDtBzNf2YegzUV2l7HB9c42pg"', 'Date': 'Sat, 12 Sep 2026 02:42:56 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-065b00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-065b00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:56 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionMatches("Go back|Close sheet")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-071800000007","ELEMENT":"00000000-0000-497f-0000-071800000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-ZEH4UfOoLs8W4Aa1Y0Mjkummkfs"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-071800000007","ELEMENT":"00000000-0000-497f-0000-071800000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-ZEH4UfOoLs8W4Aa1Y0Mjkummkfs"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-071800000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-071800000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"999 / 2000 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '27', 'ETag': 'W/"1b-AhKjC3n4wYkpIEwN8wAUUiFxBN8"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+ / \d+ kcal") -> '999 / 2000 kcal'
+INFO    total exact: 999 kcal == sum of entries logged
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-072500000007","ELEMENT":"00000000-0000-497f-0000-072500000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-C7c+KJsNpoEKlvdMr/HxJwCHXbM"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-072500000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-072500000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 100 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-wCbuu6v8Yau0yyQqv+qej04pYGk"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(0) -> '0 / 100 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(1)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-072900000007","ELEMENT":"00000000-0000-497f-0000-072900000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-3wlvszYbV5D7IAJbDbnFw4wPFW0"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-072900000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-072900000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 100 / 67 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '23', 'ETag': 'W/"17-y7c93B93X3QxNGxaYceO1yelxgo"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(1) -> '100 / 67 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(2)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-072d00000007","ELEMENT":"00000000-0000-497f-0000-072d00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-uPeD2duqt30/LZiFaD7aAGpCg58"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-072d00000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-072d00000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 250 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-p5NUE4Klcg8C6TmVG2BlJtFTpOY"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(2) -> '0 / 250 g'
+INFO    macros consistent: 0P 100F 0C implies ~900 kcal, screen shows 999
+INFO    CONFIRM_TOTAL oracle OK: '999 / 2000 kcal' -> LOW
+INFO    checkpoint CONFIRM_TOTAL — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Add").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-075c00000007","ELEMENT":"00000000-0000-497f-0000-075c00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-VL08ypuLynLOcW4BkjOoyVoKL2o"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-075c00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-075c00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:57 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().description("Add").instance(0)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-7735-9bea00000007","ELEMENT":"00000000-0000-497f-7735-9bea00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-FGb81nVsTJV0mAqY9HDO5JXvwGY"', 'Date': 'Sat, 12 Sep 2026 02:42:58 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-07ea00000007","ELEMENT":"00000000-0000-497f-0000-07ea00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-RW4hfV4ZgFuGwgyiMLM6WZWj0Xc"', 'Date': 'Sat, 12 Sep 2026 02:42:58 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-07ea00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-07ea00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:42:58 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4981-0000-08e500000015","ELEMENT":"00000000-0000-4981-0000-08e500000015"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-zb+JADpRRWbFI7s/jFhk5Y3c66Y"', 'Date': 'Sat, 12 Sep 2026 02:43:00 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4981-0000-08e500000015/clear {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4981-0000-08e500000015/clear HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:00 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4981-0000-08e500000015/value {'text': 'Corn germ oil', 'value': ['C', 'o', 'r', 'n', ' ', 'g', 'e', 'r', 'm', ' ', 'o', 'i', 'l']}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4981-0000-08e500000015/value HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:00 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:00 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: isKeyboardShown', 'args': []}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:01 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: hideKeyboard', 'args': [{}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:01 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Entered text 'Corn germ oil' and submitted
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Pressed KEYCODE_ENTER (66)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-08cc00000007","ELEMENT":"00000000-0000-497f-0000-08cc00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-bHhqEG57lL3Bn01vlcSoowtRaNA"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-08cc00000007","ELEMENT":"00000000-0000-497f-0000-08cc00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-bHhqEG57lL3Bn01vlcSoowtRaNA"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-08cc00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-08cc00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Swiss Food Composition Database")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn...'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-09b300000007","ELEMENT":"00000000-0000-497f-0000-09b300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-OQLQwTKxRoY6mRsSkIu/+Bzk6rw"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-09b300000007","ELEMENT":"00000000-0000-497f-0000-09b300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-OQLQwTKxRoY6mRsSkIu/+Bzk6rw"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-09b300000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-09b300000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:02 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:03 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-09da00000007","ELEMENT":"00000000-0000-497f-0000-09da00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-2XM1oYahqD6VSYjQ+N68dJ2wNjg"', 'Date': 'Sat, 12 Sep 2026 02:43:03 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-09da00000007","ELEMENT":"00000000-0000-497f-0000-09da00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-2XM1oYahqD6VSYjQ+N68dJ2wNjg"', 'Date': 'Sat, 12 Sep 2026 02:43:03 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-09da00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-09da00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:03 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionContains("Save")
+INFO    checkpoint ADD_ENTRY — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:04 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0b1200000007","ELEMENT":"00000000-0000-497f-0000-0b1200000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-a7jLZsaiRj6vshcb21MgJbL5XUg"', 'Date': 'Sat, 12 Sep 2026 02:43:04 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0b1200000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0b1200000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:04 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionMatches("Go back|Close sheet")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0bcf00000007","ELEMENT":"00000000-0000-497f-0000-0bcf00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-fgeZD3GpiNBwuHdhxm2kmZuCwoo"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0bcf00000007","ELEMENT":"00000000-0000-497f-0000-0bcf00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-fgeZD3GpiNBwuHdhxm2kmZuCwoo"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0bcf00000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0bcf00000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"1998 / 2000 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '28', 'ETag': 'W/"1c-j9cNgquzQaNPZoIAHgrl/A1wShw"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+ / \d+ kcal") -> '1998 / 2000 kcal'
+INFO    total exact: 1998 kcal == sum of entries logged
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0bdc00000007","ELEMENT":"00000000-0000-497f-0000-0bdc00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-6pxFj7ZHUtnieWPdaWVVVqmVCvU"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0bdc00000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0bdc00000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 100 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-wCbuu6v8Yau0yyQqv+qej04pYGk"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(0) -> '0 / 100 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(1)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0be000000007","ELEMENT":"00000000-0000-497f-0000-0be000000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-/yD9jD85iBQqtlV7DzcdRJ+WWz0"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0be000000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0be000000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 200 / 67 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '23', 'ETag': 'W/"17-TrxDcPtSilsA0foWiit4qzGQWJ4"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(1) -> '200 / 67 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(2)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0be400000007","ELEMENT":"00000000-0000-497f-0000-0be400000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-3milEf9Zp0+ELWBLJEAODcvqbmY"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0be400000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0be400000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 250 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-p5NUE4Klcg8C6TmVG2BlJtFTpOY"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(2) -> '0 / 250 g'
+INFO    macros consistent: 0P 200F 0C implies ~1800 kcal, screen shows 1998
+INFO    CONFIRM_TOTAL oracle OK: '1998 / 2000 kcal' -> MODERATE
+INFO    checkpoint CONFIRM_TOTAL — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Add").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0c1f00000007","ELEMENT":"00000000-0000-497f-0000-0c1f00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-UwTdrTOMjY+oaZZcgVMCGR3T9EM"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0c1f00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0c1f00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:05 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().description("Add").instance(0)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-7735-a0ad00000007","ELEMENT":"00000000-0000-497f-7735-a0ad00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-ItmNUth7olD9Em+XVuxVb2RdYYE"', 'Date': 'Sat, 12 Sep 2026 02:43:06 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0cad00000007","ELEMENT":"00000000-0000-497f-0000-0cad00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-M4PF/XDwV1anfsrDBiUbusMDg70"', 'Date': 'Sat, 12 Sep 2026 02:43:06 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0cad00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0cad00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:06 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4982-0000-0da60000001b","ELEMENT":"00000000-0000-4982-0000-0da60000001b"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-EidE1jt3eCcQgecjgW3JYUtxoCs"', 'Date': 'Sat, 12 Sep 2026 02:43:08 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4982-0000-0da60000001b/clear {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4982-0000-0da60000001b/clear HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:08 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4982-0000-0da60000001b/value {'text': 'Corn germ oil', 'value': ['C', 'o', 'r', 'n', ' ', 'g', 'e', 'r', 'm', ' ', 'o', 'i', 'l']}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4982-0000-0da60000001b/value HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:08 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:08 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: isKeyboardShown', 'args': []}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:09 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: hideKeyboard', 'args': [{}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:09 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Entered text 'Corn germ oil' and submitted
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Pressed KEYCODE_ENTER (66)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0d8f00000007","ELEMENT":"00000000-0000-497f-0000-0d8f00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-8vD1YjinBXpzlTLAw08LX3Ow6/Q"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0d8f00000007","ELEMENT":"00000000-0000-497f-0000-0d8f00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-8vD1YjinBXpzlTLAw08LX3Ow6/Q"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0d8f00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0d8f00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Swiss Food Composition Database")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn...'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0e7600000007","ELEMENT":"00000000-0000-497f-0000-0e7600000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-QOvcC6PCcmE63rlLE1nEMAhJTuk"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0e7600000007","ELEMENT":"00000000-0000-497f-0000-0e7600000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-QOvcC6PCcmE63rlLE1nEMAhJTuk"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0e7600000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0e7600000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:10 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0e9d00000007","ELEMENT":"00000000-0000-497f-0000-0e9d00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-sMkBll86HqiMw426r/kNxJzzGPk"', 'Date': 'Sat, 12 Sep 2026 02:43:11 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0e9d00000007","ELEMENT":"00000000-0000-497f-0000-0e9d00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-sMkBll86HqiMw426r/kNxJzzGPk"', 'Date': 'Sat, 12 Sep 2026 02:43:11 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0e9d00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0e9d00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:11 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionContains("Save")
+INFO    checkpoint ADD_ENTRY — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:11 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-0fd500000007","ELEMENT":"00000000-0000-497f-0000-0fd500000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-7TPMa5e9sx+GDFPcaezBmzAbp/A"', 'Date': 'Sat, 12 Sep 2026 02:43:12 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0fd500000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-0fd500000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:12 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionMatches("Go back|Close sheet")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:12 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-109200000007","ELEMENT":"00000000-0000-497f-0000-109200000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-36JMoGOod2Hm41d6l1o1Sg/pwBE"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-109200000007","ELEMENT":"00000000-0000-497f-0000-109200000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-36JMoGOod2Hm41d6l1o1Sg/pwBE"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-109200000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-109200000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"2997 / 2000 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '28', 'ETag': 'W/"1c-rw93XS0/ybyIjhv5HxqO7wTA2R4"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+ / \d+ kcal") -> '2997 / 2000 kcal'
+INFO    total exact: 2997 kcal == sum of entries logged
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-109f00000007","ELEMENT":"00000000-0000-497f-0000-109f00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-ewDdl4INt0wR5z6xKi34IbsCilc"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-109f00000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-109f00000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 100 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-wCbuu6v8Yau0yyQqv+qej04pYGk"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(0) -> '0 / 100 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(1)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-10a300000007","ELEMENT":"00000000-0000-497f-0000-10a300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-5grb3Ltp2pjfsl9vFOZsUmh9KZI"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-10a300000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-10a300000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 300 / 67 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '23', 'ETag': 'W/"17-WeW9baF2eHjvO+P2DAZJvYurCkY"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(1) -> '300 / 67 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(2)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-10a700000007","ELEMENT":"00000000-0000-497f-0000-10a700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-w+1xc+UPgRhcNgqn30Hf0t5yVdU"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-10a700000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-10a700000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 250 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-p5NUE4Klcg8C6TmVG2BlJtFTpOY"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(2) -> '0 / 250 g'
+INFO    macros consistent: 0P 300F 0C implies ~2700 kcal, screen shows 2997
+INFO    CONFIRM_TOTAL oracle OK: '2997 / 2000 kcal' -> HIGH
+INFO    checkpoint CONFIRM_TOTAL — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Add").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-10ee00000007","ELEMENT":"00000000-0000-497f-0000-10ee00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-OF6wptcdzBTZJPDOBo3CA7q9ru0"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-10ee00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-10ee00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().description("Add").instance(0)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:13 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-7735-a57d00000007","ELEMENT":"00000000-0000-497f-7735-a57d00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-b00zAio0CAky6Q+o1ZjhJ4kuHlo"', 'Date': 'Sat, 12 Sep 2026 02:43:14 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-117d00000007","ELEMENT":"00000000-0000-497f-0000-117d00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-PtSARexyvYP2BXYS3KMFCUyVMhc"', 'Date': 'Sat, 12 Sep 2026 02:43:14 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-117d00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-117d00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:14 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4983-0000-127600000021","ELEMENT":"00000000-0000-4983-0000-127600000021"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-2c+wRdqPYoszp5MA2xpOASHdksQ"', 'Date': 'Sat, 12 Sep 2026 02:43:15 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4983-0000-127600000021/clear {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4983-0000-127600000021/clear HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:16 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4983-0000-127600000021/value {'text': 'Corn germ oil', 'value': ['C', 'o', 'r', 'n', ' ', 'g', 'e', 'r', 'm', ' ', 'o', 'i', 'l']}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4983-0000-127600000021/value HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:16 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:16 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: isKeyboardShown', 'args': []}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:16 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: hideKeyboard', 'args': [{}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:17 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Entered text 'Corn germ oil' and submitted
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:17 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Pressed KEYCODE_ENTER (66)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-125f00000007","ELEMENT":"00000000-0000-497f-0000-125f00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-ryQL4TBakWduE5RrYVfLACkUWXg"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Open Food Facts")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-125400000007","ELEMENT":"00000000-0000-497f-0000-125400000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-GEtWHA7JeeaJJhdqyd6YHcXhizg"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-125400000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-125400000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Open Food Facts")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn...'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-126700000007","ELEMENT":"00000000-0000-497f-0000-126700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-2TQaH06I/KBreab2EU6zqM0k9as"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+INFO    checkpoint SEARCH_FOOD — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+\\s*kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-126a00000007","ELEMENT":"00000000-0000-497f-0000-126a00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-se79TPsVjZzN2SBQn5wjb44pdzU"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+\\s*kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-126a00000007","ELEMENT":"00000000-0000-497f-0000-126a00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-se79TPsVjZzN2SBQn5wjb44pdzU"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-126a00000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-126a00000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"999 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '20', 'ETag': 'W/"14-u9LdjoclTvu/If5b3FF4vAVtyRU"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+\s*kcal") -> '999 kcal'
+INFO    CACHE_STALE active: authoritative value for food_oil is now 999 kcal in the database, not the fixture's 900. Serving 900 would mean the app did not revalidate.
+INFO    FOOD_INFO oracle OK: food_oil shows '999 kcal' == authoritative 999 kcal
+INFO    checkpoint FOOD_INFO — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-126700000007","ELEMENT":"00000000-0000-497f-0000-126700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-2TQaH06I/KBreab2EU6zqM0k9as"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-126700000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-126700000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:18 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:19 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-136100000007","ELEMENT":"00000000-0000-497f-0000-136100000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-WmDK1R+ZLPQLbHfeqYwnWHBrexc"', 'Date': 'Sat, 12 Sep 2026 02:43:19 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-134c00000007","ELEMENT":"00000000-0000-497f-0000-134c00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-/7vpWKfKhafnBzGfm50eopDdaHI"', 'Date': 'Sat, 12 Sep 2026 02:43:19 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-134c00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-134c00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:19 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionMatches("Go back|Close sheet")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:20 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-7735-a8ba00000007","ELEMENT":"00000000-0000-497f-7735-a8ba00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-Ff4p1vBFy4kf3NeLorTfbv3b41Q"', 'Date': 'Sat, 12 Sep 2026 02:43:20 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-14ba00000007","ELEMENT":"00000000-0000-497f-0000-14ba00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-OnLkaBLVKdQoff2WncbR7rSMSSM"', 'Date': 'Sat, 12 Sep 2026 02:43:20 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-14ba00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-14ba00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:20 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4985-0000-151400000029","ELEMENT":"00000000-0000-4985-0000-151400000029"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-mQT5JLFJ6MExjONucg4RdOQCjjE"', 'Date': 'Sat, 12 Sep 2026 02:43:22 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4985-0000-151400000029/clear {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4985-0000-151400000029/clear HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:22 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4985-0000-151400000029/value {'text': 'Corn germ oil', 'value': ['C', 'o', 'r', 'n', ' ', 'g', 'e', 'r', 'm', ' ', 'o', 'i', 'l']}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4985-0000-151400000029/value HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:23 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:23 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: isKeyboardShown', 'args': []}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":false} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '15', 'ETag': 'W/"f-wDOCiKvTD3LNZdrYODNEjzRfePo"', 'Date': 'Sat, 12 Sep 2026 02:43:23 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Entered text 'Corn germ oil' and submitted
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:24 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Pressed KEYCODE_ENTER (66)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-14f700000007","ELEMENT":"00000000-0000-497f-0000-14f700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-KDeEdxoW/Ypp/LIlhi7VQrwcjyo"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-14f700000007","ELEMENT":"00000000-0000-497f-0000-14f700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-KDeEdxoW/Ypp/LIlhi7VQrwcjyo"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-14f700000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-14f700000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Swiss Food Composition Database")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn...'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-162700000007","ELEMENT":"00000000-0000-497f-0000-162700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-x6oUqXum3S1sWPQB4jiZ+9oUpdo"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+INFO    checkpoint SEARCH_FOOD — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+\\s*kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-162a00000007","ELEMENT":"00000000-0000-497f-0000-162a00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-oz6PqX6G0HbBBNknwZ+l9GgP6+A"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+\\s*kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-162a00000007","ELEMENT":"00000000-0000-497f-0000-162a00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-oz6PqX6G0HbBBNknwZ+l9GgP6+A"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-162a00000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-162a00000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"999 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '20', 'ETag': 'W/"14-u9LdjoclTvu/If5b3FF4vAVtyRU"', 'Date': 'Sat, 12 Sep 2026 02:43:25 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+\s*kcal") -> '999 kcal'
+INFO    CACHE_STALE active: authoritative value for food_oil is now 999 kcal in the database, not the fixture's 900. Serving 900 would mean the app did not revalidate.
+INFO    FOOD_INFO oracle OK: food_oil shows '999 kcal' == authoritative 999 kcal
+INFO    checkpoint FOOD_INFO — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-162700000007","ELEMENT":"00000000-0000-497f-0000-162700000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-x6oUqXum3S1sWPQB4jiZ+9oUpdo"', 'Date': 'Sat, 12 Sep 2026 02:43:26 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-162700000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-162700000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:26 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().className("android.widget.TextView").textContains("Corn germ oil")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:26 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-164e00000007","ELEMENT":"00000000-0000-497f-0000-164e00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-wGfumdx+mVj20w5uT0+A5kFPLY8"', 'Date': 'Sat, 12 Sep 2026 02:43:27 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionContains("Save")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-164e00000007","ELEMENT":"00000000-0000-497f-0000-164e00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-wGfumdx+mVj20w5uT0+A5kFPLY8"', 'Date': 'Sat, 12 Sep 2026 02:43:27 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-164e00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-164e00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:27 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionContains("Save")
+INFO    checkpoint ADD_ENTRY — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:28 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().descriptionMatches("Go back|Close sheet")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-178600000007","ELEMENT":"00000000-0000-497f-0000-178600000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-C3y2iNwCy+26/Y6Uhf9OVtH4azU"', 'Date': 'Sat, 12 Sep 2026 02:43:28 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-178600000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-178600000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:28 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().descriptionMatches("Go back|Close sheet")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-184300000007","ELEMENT":"00000000-0000-497f-0000-184300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+U8C8WVoZbgIXG0yF+0CgWwePlg"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-184300000007","ELEMENT":"00000000-0000-497f-0000-184300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+U8C8WVoZbgIXG0yF+0CgWwePlg"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-184300000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-184300000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"3996 / 2000 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '28', 'ETag': 'W/"1c-KSIhSbdH2M2DIv1g8gZV3zfH1Gk"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+ / \d+ kcal") -> '3996 / 2000 kcal'
+INFO    total exact: 3996 kcal == sum of entries logged
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-185000000007","ELEMENT":"00000000-0000-497f-0000-185000000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+cNU5JwZEQLaZTnh4OtHkFZ9G9k"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185000000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185000000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 100 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-wCbuu6v8Yau0yyQqv+qej04pYGk"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(0) -> '0 / 100 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(1)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-185400000007","ELEMENT":"00000000-0000-497f-0000-185400000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-i96SXYONcaTGQBtBze2jLUIy01Q"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185400000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185400000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 400 / 67 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '23', 'ETag': 'W/"17-P14sxFqTR+evJBqQjdk5Pf8jLfw"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(1) -> '400 / 67 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(2)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-185800000007","ELEMENT":"00000000-0000-497f-0000-185800000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-0PLgkMrsq9NGYAcF/zmCnLB/E4g"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185800000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185800000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 250 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-p5NUE4Klcg8C6TmVG2BlJtFTpOY"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(2) -> '0 / 250 g'
+INFO    macros consistent: 0P 400F 0C implies ~3600 kcal, screen shows 3996
+INFO    CONFIRM_TOTAL oracle OK: '3996 / 2000 kcal' -> OVER
+INFO    checkpoint CONFIRM_TOTAL — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").text("Corn germ oil")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-186900000007","ELEMENT":"00000000-0000-497f-0000-186900000007"},{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-187500000007","ELEMENT":"00000000-0000-497f-0000-187500000007"},{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-188100000007","ELEMENT":"00000000-0000-497f-0000-188100000007"},{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-188d00000007","ELEMENT":"00000000-0000-497f-0000-188d00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '523', 'ETag': 'W/"20b-e+C+c3i4cRuiqDxj+yxOvD+uhq4"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-186900000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-186900000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().className("android.widget.TextView").text("Corn germ oil")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("Delete entry")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '12', 'ETag': 'W/"c-ct3goOI+b+kRZv2R9j2fTtMXwkk"', 'Date': 'Sat, 12 Sep 2026 02:43:29 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("Delete entry")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4986-0000-19270000002f","ELEMENT":"00000000-0000-4986-0000-19270000002f"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-rpuOkAwbSdezxb+nkY3Tv+D0Suo"', 'Date': 'Sat, 12 Sep 2026 02:43:31 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("Delete entry")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4986-0000-19270000002f","ELEMENT":"00000000-0000-4986-0000-19270000002f"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-rpuOkAwbSdezxb+nkY3Tv+D0Suo"', 'Date': 'Sat, 12 Sep 2026 02:43:31 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4986-0000-19270000002f/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4986-0000-19270000002f/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:32 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().textContains("Delete entry")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textContains("deleted from your diary")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4987-0000-193600000037","ELEMENT":"00000000-0000-4987-0000-193600000037"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+Jblz5BWkYfKUlWIZ8yTkZb9WPc"', 'Date': 'Sat, 12 Sep 2026 02:43:32 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Delete")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4987-0000-193c00000037","ELEMENT":"00000000-0000-4987-0000-193c00000037"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-bT7m0jEwSTI/yulQMslJSsOMbhg"', 'Date': 'Sat, 12 Sep 2026 02:43:32 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4987-0000-193c00000037/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4987-0000-193c00000037/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:33 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Delete")
+INFO    checkpoint REMOVE_ENTRY — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-184300000007","ELEMENT":"00000000-0000-497f-0000-184300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+U8C8WVoZbgIXG0yF+0CgWwePlg"', 'Date': 'Sat, 12 Sep 2026 02:43:33 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-184300000007","ELEMENT":"00000000-0000-497f-0000-184300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+U8C8WVoZbgIXG0yF+0CgWwePlg"', 'Date': 'Sat, 12 Sep 2026 02:43:33 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-184300000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-184300000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"2997 / 2000 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '28', 'ETag': 'W/"1c-rw93XS0/ybyIjhv5HxqO7wTA2R4"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+ / \d+ kcal") -> '2997 / 2000 kcal'
+DEBUG  [SAMPLER] type_name='param_0'  abstract_value='committed'
+DEBUG  [SAMPLER] spec keys=['FoodId', 'MealType', 'Calorie', 'DailyTotal', 'DailyCalories', 'WriteStatus', 'EntryId']
+DEBUG  [SAMPLER] type_name='param_1'  abstract_value='over'
+DEBUG  [SAMPLER] spec keys=['FoodId', 'MealType', 'Calorie', 'DailyTotal', 'DailyCalories', 'WriteStatus', 'EntryId']
+DEBUG  [SAMPLER] type_name='param_2'  abstract_value='food_oil'
+DEBUG  [SAMPLER] spec keys=['FoodId', 'MealType', 'Calorie', 'DailyTotal', 'DailyCalories', 'WriteStatus', 'EntryId']
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+ / \\d+ kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-184300000007","ELEMENT":"00000000-0000-497f-0000-184300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+U8C8WVoZbgIXG0yF+0CgWwePlg"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-184300000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-184300000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"2997 / 2000 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '28', 'ETag': 'W/"1c-rw93XS0/ybyIjhv5HxqO7wTA2R4"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+ / \d+ kcal") -> '2997 / 2000 kcal'
+INFO    observation selects HIGH: '2997 / 2000 kcal' (spec also allowed OVER)
+INFO    Captured: committed = 2997 / 2000 kcal
+INFO    OUTPUT CONFIRM_TOTAL !COMMITTED !HIGH !FOOD_OIL
+INFO    total exact: 2997 kcal == sum of entries logged
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-185000000007","ELEMENT":"00000000-0000-497f-0000-185000000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-+cNU5JwZEQLaZTnh4OtHkFZ9G9k"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185000000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185000000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 100 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-wCbuu6v8Yau0yyQqv+qej04pYGk"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(0) -> '0 / 100 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(1)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-185400000007","ELEMENT":"00000000-0000-497f-0000-185400000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-i96SXYONcaTGQBtBze2jLUIy01Q"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185400000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185400000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 300 / 67 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '23', 'ETag': 'W/"17-WeW9baF2eHjvO+P2DAZJvYurCkY"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(1) -> '300 / 67 g'
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\s*\\d+ / \\d+ g").instance(2)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-185800000007","ELEMENT":"00000000-0000-497f-0000-185800000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-0PLgkMrsq9NGYAcF/zmCnLB/E4g"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185800000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-185800000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":" 0 / 250 g"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22', 'ETag': 'W/"16-p5NUE4Klcg8C6TmVG2BlJtFTpOY"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\s*\d+ / \d+ g").instance(2) -> '0 / 250 g'
+INFO    macros consistent: 0P 300F 0C implies ~2700 kcal, screen shows 2997
+INFO    CONFIRM_TOTAL oracle OK: '2997 / 2000 kcal' -> HIGH
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Add").instance(0)'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-18ab00000007","ELEMENT":"00000000-0000-497f-0000-18ab00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-XC54EKKqQib6ImE8RhTOK9ypmxU"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-18ab00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-18ab00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:34 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().description("Add").instance(0)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().description("Search")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-7735-ad7900000007","ELEMENT":"00000000-0000-497f-7735-ad7900000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-NvztBk5ZaxWsg3yBU9l7U280gs4"', 'Date': 'Sat, 12 Sep 2026 02:43:35 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-197900000007","ELEMENT":"00000000-0000-497f-0000-197900000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-WMMntpWaXwmNhpQOKaWZKqkYmZg"', 'Date': 'Sat, 12 Sep 2026 02:43:35 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-197900000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-197900000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:35 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': 'class name', 'value': 'android.widget.EditText'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-4988-0000-1a720000003f","ELEMENT":"00000000-0000-4988-0000-1a720000003f"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-DHUX+CrV9tav+te2hYJa06c9u78"', 'Date': 'Sat, 12 Sep 2026 02:43:36 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4988-0000-1a720000003f/clear {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4988-0000-1a720000003f/clear HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:37 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4988-0000-1a720000003f/value {'text': 'Corn germ oil', 'value': ['C', 'o', 'r', 'n', ' ', 'g', 'e', 'r', 'm', ' ', 'o', 'i', 'l']}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-4988-0000-1a720000003f/value HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:37 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:37 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: isKeyboardShown', 'args': []}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:37 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: hideKeyboard', 'args': [{}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":true} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-2ZHvAWebNQpyjGZTg6uyV8/spTo"', 'Date': 'Sat, 12 Sep 2026 02:43:38 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Entered text 'Corn germ oil' and submitted
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync {'script': 'mobile: pressKey', 'args': [{'keycode': 66}]}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/execute/sync HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:39 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Pressed KEYCODE_ENTER (66)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-1a5b00000007","ELEMENT":"00000000-0000-497f-0000-1a5b00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-TGjvmd/4CdKu1YSLdbZrbVLc4Js"', 'Date': 'Sat, 12 Sep 2026 02:43:40 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().text("Swiss Food Composition Database")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-1a5b00000007","ELEMENT":"00000000-0000-497f-0000-1a5b00000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-TGjvmd/4CdKu1YSLdbZrbVLc4Js"', 'Date': 'Sat, 12 Sep 2026 02:43:40 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-1a5b00000007/click {}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-1a5b00000007/click HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:40 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Tapped new UiSelector().text("Swiss Food Composition Database")
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().className("android.widget.TextView").textMatches("Peanut butter|Cooking butter|Corn...'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-1b4000000007","ELEMENT":"00000000-0000-497f-0000-1b4000000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-qZL6lZHXgIgWMORFZNR0ap7tA3I"', 'Date': 'Sat, 12 Sep 2026 02:43:43 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+INFO    checkpoint SEARCH_FOOD — advance (concrete steps done)
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+\\s*kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-1b4300000007","ELEMENT":"00000000-0000-497f-0000-1b4300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-toAV34VuKOIiKgh684WxXAc3HtY"', 'Date': 'Sat, 12 Sep 2026 02:43:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  POST http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements {'using': '-android uiautomator', 'value': 'new UiSelector().textMatches("\\d+\\s*kcal")'}
+DEBUG  http://127.0.0.1:4723 "POST /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/elements HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":[{"element-6066-11e4-a52e-4f735466cecf":"00000000-0000-497f-0000-1b4300000007","ELEMENT":"00000000-0000-497f-0000-1b4300000007"}]} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Vary': 'X-HTTP-Method-Override', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '139', 'ETag': 'W/"8b-toAV34VuKOIiKgh684WxXAc3HtY"', 'Date': 'Sat, 12 Sep 2026 02:43:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  GET http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-1b4300000007/text {}
+DEBUG  http://127.0.0.1:4723 "GET /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214/element/00000000-0000-497f-0000-1b4300000007/text HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":"999 kcal"} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '20', 'ETag': 'W/"14-u9LdjoclTvu/If5b3FF4vAVtyRU"', 'Date': 'Sat, 12 Sep 2026 02:43:44 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request
+DEBUG  Observed new UiSelector().textMatches("\d+\s*kcal") -> '999 kcal'
+INFO    CACHE_STALE active: authoritative value for food_oil is now 999 kcal in the database, not the fixture's 900. Serving 900 would mean the app did not revalidate.
+INFO    FOOD_INFO oracle OK: food_oil shows '999 kcal' == authoritative 999 kcal
+INFO    checkpoint FOOD_INFO — advance (concrete steps done)
+INFO  Verdict transition: :PASS: -> PASS
+INFO    faults restored: CACHE_STALE
+
+Verdict: [92mPASS[0m (tc_cache_stale.aut)
+
+Execution Report
+==================================================
+  TAP                              ok
+  WAIT_FOR                         ok
+  ENTER_TEXT                       ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  ADD_ENTRY                        ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '999 / 2000 kcal'}
+  CONFIRM_TOTAL                    ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  ENTER_TEXT                       ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  ADD_ENTRY                        ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '1998 / 2000 kcal'}
+  CONFIRM_TOTAL                    ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  ENTER_TEXT                       ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  ADD_ENTRY                        ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '2997 / 2000 kcal'}
+  CONFIRM_TOTAL                    ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  ENTER_TEXT                       ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  SEARCH_FOOD                      ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '999 kcal'}
+  FOOD_INFO                        ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  ENTER_TEXT                       ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  SEARCH_FOOD                      ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '999 kcal'}
+  FOOD_INFO                        ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  ADD_ENTRY                        ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '3996 / 2000 kcal'}
+  CONFIRM_TOTAL                    ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  REMOVE_ENTRY                     ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '2997 / 2000 kcal'}
+  CONFIRM_TOTAL                    ok  captured={'committed': '2997 / 2000 kcal'}
+  TAP                              ok
+  WAIT_FOR                         ok
+  CACHE_STALE                      ok
+  ENTER_TEXT                       ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  TAP                              ok
+  WAIT_FOR                         ok
+  SEARCH_FOOD                      ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '999 kcal'}
+  FOOD_INFO                        ok
+  :PASS:                           PASS
+
+Captured values (g_dict):
+  _last_observed: 999 kcal
+  committed: 2997 / 2000 kcal
+DEBUG  DELETE http://127.0.0.1:4723/session/7b6b8c64-f6b9-4056-837a-fb53bcb24214 {}
+DEBUG  http://127.0.0.1:4723 "DELETE /session/7b6b8c64-f6b9-4056-837a-fb53bcb24214 HTTP/1.1" 200 0
+DEBUG  Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'X-Powered-By': 'Express', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '14', 'ETag': 'W/"e-9/1BuKMgFObM1mWJm+YjxtXJnUM"', 'Date': 'Sat, 12 Sep 2026 02:43:47 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=600'})
+DEBUG  Finished Request

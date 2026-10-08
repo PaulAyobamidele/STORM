@@ -1,0 +1,70 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from EVALUATION/mastodon/runs/campaign_2026-09-30b/snapshot/mastodon/model/system_interface_mastodon.lnt
+INFO  LNT SI invariants OK for EVALUATION/mastodon/runs/campaign_2026-09-30b/run/tc_ue_kill.aut
+WARNING  browser: accepting untrusted TLS certificates (concrete_domain.browser.accept_insecure_certs)
+INFO  HTMLExecutor initialized with base URL: https://mastodon.localhost
+WARNING  reset_sut() failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1129)>
+INFO    @env:MASTODON_PW -> (value from the environment, not logged)
+INFO    @env:MASTODON_PW -> (value from the environment, not logged)
+INFO    checkpoint ADD — advance (concrete steps done)
+INFO    UE_KILL: realised by the System Interface's own steps (timing: none); nothing injected
+INFO    UE_KILL injected and confirmed
+INFO  wait() timed out waiting for #//li[contains(@class,'_comp_number_fields__item')][contains(.,'Posts')] on https://mastodon.localhost/home
+INFO  wait() timed out waiting for #//li[contains(@class,'_comp_number_fields__item')][contains(.,'Posts')] on https://mastodon.localhost/home
+INFO    observation selects 'CONFIRM !COMMITTED !N1 !IN_HOME !ON_PROFILE !POST_A' from [('el_post_count', 'posts\n1'), ('el_profile_posts', 'bob\n@bob\nnow\n\n@alice ioco note a \nhttps://\nexample.com\n\nexample.com\nexample domain\n0\n0\n0'), ('el_home_column', 'bob\n@bob\nnow\n@alice ioco note a \nhttps://\nexample.com\nexample.com\nexample domain\n0')]
+INFO    OUTPUT CONFIRM !COMMITTED !N1 !IN_HOME !ON_PROFILE !POST_A (matched prior OBSERVE)
+INFO    CONFIRM oracle OK: CountBand, HomeState, ProfileState agree with 'CONFIRM !COMMITTED !N1 !IN_HOME !ON_PROFILE !POST_A' on [('el_post_count', 'posts\n1'), ('el_profile_posts', 'bob\n@bob\nnow\n\n@alice ioco note a \nhttps://\nexample.com\n\nexample.com\nexample domain\n0\n0\n0'), ('el_home_column', 'bob\n@bob\nnow\n@alice ioco note a \nhttps://\nexample.com\nexample.com\nexample domain\n0')]
+INFO  Verdict transition: :PASS: -> PASS
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : EVALUATION/mastodon/runs/campaign_2026-09-30b/run/tc_ue_kill.aut
+--------------------------------------------------
+
+Verdict: [92mPASS[0m (tc_ue_kill.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  ADD                              ok
+  UE_KILL                          ok
+  CLICK                            ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'posts\n1'}
+  OBSERVE                          ok  captured={'observe': 'bob\n@bob\nnow\n\n@alice ioco note a \nhttps://\nexample.com\n\nexample.com\nexample domain\n0\n0\n0'}
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'bob\n@bob\nnow\n@alice ioco note a \nhttps://\nexample.com\nexample.com\nexample domain\n0'}
+  CONFIRM                          ok  captured={'post_a': 'bob\n@bob\nnow\n@alice ioco note a \nhttps://\nexample.com\nexample.com\nexample domain\n0'}
+  :PASS:                           PASS
+
+Captured values (g_dict):
+  post_a: bob
+@bob
+now
+@alice ioco note a 
+https://
+example.com
+example.com
+example domain
+0
+  _last_observed: bob
+@bob
+now
+@alice ioco note a 
+https://
+example.com
+example.com
+example domain
+0

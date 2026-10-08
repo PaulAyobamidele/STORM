@@ -1,0 +1,69 @@
+module tp_storage_media (foodyou_types) is
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId, IDE : EntryId in
+        IDF := defaultF;
+        IDE := entry_2;                 -- food_of (entry_2) = food_oil = defaultF
+        disrupt
+            disrupt
+                -- Log one entry so there is a diary row to read.
+                SEARCH_FOOD   (IDF, LOCAL);
+                FOOD_INFO     (IDF, ?any Calorie);
+                ADD_ENTRY     (BREAKFAST, IDF, VALID);
+                CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF)
+            by
+                -- The fault fired BEFORE the read it is meant to interrupt. The
+                -- medium stays broken for the rest of the run, so the read this
+                -- purpose is about can no longer be exercised: not this trace.
+                STORAGE_MEDIA;
+                loop TP_REFUSE end loop
+            end disrupt;
+            disrupt
+                VIEW_DIARY (IDE);
+                DIARY_INFO (IDE, IDF);
+                loop TP_REFUSE end loop
+            by
+                STORAGE_MEDIA;
+                STORAGE_ERROR_SHOWN;
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- Any OTHER fault. NETWORK_DEGRADED is omitted deliberately: a
+            -- synchronisation gate neither disruptor ever offers.
+            alt
+                EXTAPI_FAIL
+            []  UE1_KILL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module

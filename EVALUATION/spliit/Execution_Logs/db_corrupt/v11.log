@@ -1,0 +1,72 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 16 gates from /Users/ayobamidele/text-conc/EVALUATION/spliit/model/system_interface_spliit.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/spliit/Test_Cases/tc_db_corrupt.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:3002
+INFO  SUT state reset via /admin/reset
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/spliit/Test_Cases/tc_db_corrupt.aut
+--------------------------------------------------
+INFO    checkpoint ADD — advance (concrete steps done)
+INFO    CONFIRM oracle OK: SpendBand, LogState agree with 'CONFIRM !COMMITTED !S1 !LOGGED !EXP_A' on [('el_total_spending', '$40.00'), ('el_activity_latest', 'today\n11:04 pm\nexpense “groceries a” created by someone.')]
+INFO    checkpoint CONFIRM — advance (concrete steps done)
+INFO    checkpoint VIEW — advance (concrete steps done)
+INFO  Disruption activated and confirmed: DB_CORRUPT
+INFO    DB_CORRUPT injected and confirmed
+INFO  wait() timed out waiting for #//p[contains(@id,'form-item-message')] | //*[@role='alert'] on http://localhost:3002/groups/u7WyCsPh4yS-DFmlY2q9o/expenses/N-Ku1TK5obbrRup5tTsmF/edit
+ERROR  State 35 waits for OBSERVE !EL_CORRUPT_NOTICE — it never appeared and this state does NOT permit quiescence. The specification required an output here and none appeared: CONFORMANCE FAILURE.
+WARNING    verify_restored: no probe declared — fault state assumed, not verified
+INFO  Disruption restored and confirmed cleared: DB_CORRUPT
+
+Verdict: [91mFAIL[0m (tc_db_corrupt.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  CLICK                            ok
+  ADD                              ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '$40.00'}
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'today\n11:04 pm\nexpense “groceries a” created by someone.'}
+  CONFIRM                          ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  VIEW                             ok
+  DB_CORRUPT                       ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          FAIL  -- OBSERVE !EL_CORRUPT_NOTICE: the specification required this observable and it never appeared
+
+Captured values (g_dict):
+  _last_observed: today
+11:04 pm
+expense “groceries a” created by someone.
+--- fault state after the walk:
+trigger=0
+db_paused=false
+proxy_faults={"active_faults":{}}

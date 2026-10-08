@@ -1,0 +1,157 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from /Users/ayobamidele/text-conc/EVALUATION/moodle/model/system_interface_moodle.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/app1_write_fail/tc_app1_write_fail.2.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:8080
+WARNING  no screen_anchors in concrete_domain.yml — the screen belief cannot be verified against the SUT
+WARNING  reset_sut() failed: HTTP Error 404: Not Found
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO  Disruption activated and confirmed: APP1_WRITE_FAIL
+INFO    APP1_WRITE_FAIL pre-injected before the walk (timing: pre)
+INFO    checkpoint VIEW_QUIZ — advance (concrete steps done)
+INFO    //form[contains(@action,'startattempt.php')]//button[@type='submit']: JS click did not navigate — the form's default action was cancelled; submitting the form directly
+INFO    checkpoint START_ATTEMPT — advance (concrete steps done)
+INFO    checkpoint SAVE_ATTEMPT — advance (concrete steps done)
+INFO    //form[@id='frm-finishattempt']//button[@type='submit'] | //body[not(.//form[@id='frm-finishattempt']//button[@type='submit'])]: JS click did not navigate — the form's default action was cancelled; submitting the form directly
+INFO    checkpoint PROCESS_ATTEMPT — advance (concrete steps done)
+INFO    APP1_WRITE_FAIL already active (pre-injected)
+INFO    APP1_WRITE_FAIL injected and confirmed
+INFO    checkpoint WRITE_ERROR_SHOWN — advance (concrete steps done)
+INFO  Verdict transition: :PASS: -> PASS
+INFO  Disruption restored and confirmed cleared: APP1_WRITE_FAIL
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/app1_write_fail/tc_app1_write_fail.2.aut
+--------------------------------------------------
+
+Verdict: [92mPASS[0m (tc_app1_write_fail.2.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  VIEW_QUIZ                        ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  START_ATTEMPT                    ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  SAVE_ATTEMPT                     ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  PROCESS_ATTEMPT                  ok
+  WAIT_FOR                         ok
+  APP1_WRITE_FAIL                  ok
+  OBSERVE                          ok  captured={'observe': "skip to main content\nmoodlesut\nhome\ndashboard\nmy courses\nsd\nopen course index\nmodel_quiz\nan error occurred while processing your responses (error writing to database (error: storm injected fault on m_quiz_attempts context: pl/pgsql function storm_fault_raise() line 2 at raise update m_quiz_attempts set quiz = $1,userid = $2,attempt = $3,uniqueid = $4,layout = $5,currentpage = $6,preview = $7,state = $8,timestart = $9,timefinish = $10,timemodified = $11,timemodifiedoffline = $12,timecheckstate = $13,sumgrades = $14,gradednotificationsenttime = $15 where id=$16 [array ( 'quiz' =&gt; '1', 'userid' =&gt; '3', 'attempt' =&gt; '1', 'uniqueid' =&gt; '501', 'layout' =&gt; '1,0', 'currentpage' =&gt; '0', 'preview' =&gt; '0', 'state' =&gt; 'finished', 'timestart' =&gt; '1790906756', 'timefinish' =&gt; 1790906764, 'timemodified' =&gt; 1790906764, 'timemodifiedoffline' =&gt; '0', 'timecheckstate' =&gt; null, 'sumgrades' =&gt; 1.0, 'gradednotificationsenttime' =&gt; 1790906764, 0 =&gt; '501', )])). click continue to return to the page you were on and try again.\nmore information about this error\ndebug info: error: storm injected fault on m_quiz_attempts\ncontext: pl/pgsql function storm_fault_raise() line 2 at raise\nupdate m_quiz_attempts set quiz = $1,userid = $2,attempt = $3,uniqueid = $4,layout = $5,currentpage = $6,preview = $7,state = $8,timestart = $9,timefinish = $10,timemodified = $11,timemodifiedoffline = $12,timecheckstate = $13,sumgrades = $14,gradednotificationsenttime = $15 where id=$16\n[array (\n'quiz' => '1',\n'userid' => '3',\n'attempt' => '1',\n'uniqueid' => '501',\n'layout' => '1,0',\n'currentpage' => '0',\n'preview' => '0',\n'state' => 'finished',\n'timestart' => '1790906756',\n'timefinish' => 1790906764,\n'timemodified' => 1790906764,\n'timemodifiedoffline' => '0',\n'timecheckstate' => null,\n'sumgrades' => 1.0,\n'gradednotificationsenttime' => 1790906764,\n0 => '501',\n)]\nerror code: errorprocessingresponses\n×\ndismiss this notification\nstack trace:\nline 2175 of /mod/quiz/classes/quiz_attempt.php: core\\exception\\moodle_exception thrown\nline 96 of /mod/quiz/processattempt.php: call to mod_quiz\\quiz_attempt->process_attempt()\n×\ndismiss this notification\ncontinue\n0.097834 secs\nram: 8.4 mb\nram peak: 9.4 mb\nincluded 805 files\ncontexts for which filters were loaded: 1\nfilters created: 12\npieces of content filtered: 2\nstrings filtered: 0\nget_string calls: 272\ndb reads/writes: 47/4\ndb queries time: 0.01524 secs\nticks: 10 user: 4sys: 2 cuser: 0 csys: 0\nload average: 5.50\nsession (core\\session\\file): 4.1 kb\nsession wait: 0.000 secs\nmode cache item static h m primary store h m s i/o\nreq adhoc/filter_activitynames default_request 3 1 3 -\napp core/capabilities ** static accel. ** 442 2 default_application 2 0 0 156.9 kb\napp core/config ** static accel. ** 29 18 default_application 18 0 0 22.2 kb\nses core/coursecat default_session 2 0 1 -\nses core/courseeditorstate default_session 2 0 1 -\napp core/coursehiddengroups ** static accel. ** 2 1 default_application 1 0 0 0.0 kb\napp core/coursemodinfo default_application 2 0 0 2.0 kb\napp core/databasemeta ** static accel. ** 9 18 default_application 18 0 0 79.9 kb\napp core/eventinvalidation ** static accel. ** 0 4 default_application 0 4 0\napp core/fontawesomeiconmapping ** static accel. ** 0 1 default_application 1 0 0 25.8 kb\napp core/htmlpurifier default_application 0 3 3 2.3 kb\napp core/langmenu ** static accel. ** 2 1 default_application 1 0 0 0.0 kb\napp core/message_processors_enabled ** static accel. ** 0 1 default_application 1 0 0 0.0 kb\nses core/navigation_cache default_session 1 0 1 -\napp core/plugin_functions ** static accel. ** 0 18 default_application 18 0 0 3.5 kb\napp core/plugin_manager default_application 3 0 0 84.8 kb\napp core/questiondata default_application 1 0 0 2.3 kb\napp core/roledefs ** static accel. ** 0 1 default_application 1 0 0 2.8 kb\napp core/string ** static accel. ** 284 46 default_application 46 0 0 1082.1 kb\nreq core/tags default_request 0 2 2 -\napp core/user_group_groupings ** static accel. ** 2 1 default_application 1 0 0 0.0 kb\napp core/yuimodules default_application 3 0 0 13.9 kb\napp mod_assign/overrides default_application 1 0 0 0.0 kb\napp mod_quiz/overrides default_application 2 0 0 0.0 kb\napp quizaccess_seb/configkey ** static accel. ** 0 1 default_application 0 1 0\napp quizaccess_seb/quizsettings ** static accel. ** 0 2 default_application 0 2 0\napp tool_usertours/tourdata ** static accel. ** 0 1 default_application 1 0 0 4.0 kb\nstore name cache store h m s i/o\n** static accel. ** 770 116 0 -\ndefault_application cachestore_file 121 10 3 1482.5 kb\ndefault_request cachestore_static 3 3 5 -\ndefault_session cachestore_session 5 0 3 -\ntotal 899 129 11 1482.5 kb\nthis page is: general type: incourse. context quiz: model_quiz (context id 14). page type site-index."}
+  WRITE_ERROR_SHOWN                ok
+  :PASS:                           PASS
+
+Captured values (g_dict):
+  CRS_0: 2
+  QUIZ_CMID: 1
+  ASSIGN_CMID: 2
+  STUDENT_ID: 3
+  _last_observed: skip to main content
+moodlesut
+home
+dashboard
+my courses
+sd
+open course index
+model_quiz
+an error occurred while processing your responses (error writing to database (error: storm injected fault on m_quiz_attempts context: pl/pgsql function storm_fault_raise() line 2 at raise update m_quiz_attempts set quiz = $1,userid = $2,attempt = $3,uniqueid = $4,layout = $5,currentpage = $6,preview = $7,state = $8,timestart = $9,timefinish = $10,timemodified = $11,timemodifiedoffline = $12,timecheckstate = $13,sumgrades = $14,gradednotificationsenttime = $15 where id=$16 [array ( 'quiz' =&gt; '1', 'userid' =&gt; '3', 'attempt' =&gt; '1', 'uniqueid' =&gt; '501', 'layout' =&gt; '1,0', 'currentpage' =&gt; '0', 'preview' =&gt; '0', 'state' =&gt; 'finished', 'timestart' =&gt; '1790906756', 'timefinish' =&gt; 1790906764, 'timemodified' =&gt; 1790906764, 'timemodifiedoffline' =&gt; '0', 'timecheckstate' =&gt; null, 'sumgrades' =&gt; 1.0, 'gradednotificationsenttime' =&gt; 1790906764, 0 =&gt; '501', )])). click continue to return to the page you were on and try again.
+more information about this error
+debug info: error: storm injected fault on m_quiz_attempts
+context: pl/pgsql function storm_fault_raise() line 2 at raise
+update m_quiz_attempts set quiz = $1,userid = $2,attempt = $3,uniqueid = $4,layout = $5,currentpage = $6,preview = $7,state = $8,timestart = $9,timefinish = $10,timemodified = $11,timemodifiedoffline = $12,timecheckstate = $13,sumgrades = $14,gradednotificationsenttime = $15 where id=$16
+[array (
+'quiz' => '1',
+'userid' => '3',
+'attempt' => '1',
+'uniqueid' => '501',
+'layout' => '1,0',
+'currentpage' => '0',
+'preview' => '0',
+'state' => 'finished',
+'timestart' => '1790906756',
+'timefinish' => 1790906764,
+'timemodified' => 1790906764,
+'timemodifiedoffline' => '0',
+'timecheckstate' => null,
+'sumgrades' => 1.0,
+'gradednotificationsenttime' => 1790906764,
+0 => '501',
+)]
+error code: errorprocessingresponses
+×
+dismiss this notification
+stack trace:
+line 2175 of /mod/quiz/classes/quiz_attempt.php: core\exception\moodle_exception thrown
+line 96 of /mod/quiz/processattempt.php: call to mod_quiz\quiz_attempt->process_attempt()
+×
+dismiss this notification
+continue
+0.097834 secs
+ram: 8.4 mb
+ram peak: 9.4 mb
+included 805 files
+contexts for which filters were loaded: 1
+filters created: 12
+pieces of content filtered: 2
+strings filtered: 0
+get_string calls: 272
+db reads/writes: 47/4
+db queries time: 0.01524 secs
+ticks: 10 user: 4sys: 2 cuser: 0 csys: 0
+load average: 5.50
+session (core\session\file): 4.1 kb
+session wait: 0.000 secs
+mode cache item static h m primary store h m s i/o
+req adhoc/filter_activitynames default_request 3 1 3 -
+app core/capabilities ** static accel. ** 442 2 default_application 2 0 0 156.9 kb
+app core/config ** static accel. ** 29 18 default_application 18 0 0 22.2 kb
+ses core/coursecat default_session 2 0 1 -
+ses core/courseeditorstate default_session 2 0 1 -
+app core/coursehiddengroups ** static accel. ** 2 1 default_application 1 0 0 0.0 kb
+app core/coursemodinfo default_application 2 0 0 2.0 kb
+app core/databasemeta ** static accel. ** 9 18 default_application 18 0 0 79.9 kb
+app core/eventinvalidation ** static accel. ** 0 4 default_application 0 4 0
+app core/fontawesomeiconmapping ** static accel. ** 0 1 default_application 1 0 0 25.8 kb
+app core/htmlpurifier default_application 0 3 3 2.3 kb
+app core/langmenu ** static accel. ** 2 1 default_application 1 0 0 0.0 kb
+app core/message_processors_enabled ** static accel. ** 0 1 default_application 1 0 0 0.0 kb
+ses core/navigation_cache default_session 1 0 1 -
+app core/plugin_functions ** static accel. ** 0 18 default_application 18 0 0 3.5 kb
+app core/plugin_manager default_application 3 0 0 84.8 kb
+app core/questiondata default_application 1 0 0 2.3 kb
+app core/roledefs ** static accel. ** 0 1 default_application 1 0 0 2.8 kb
+app core/string ** static accel. ** 284 46 default_application 46 0 0 1082.1 kb
+req core/tags default_request 0 2 2 -
+app core/user_group_groupings ** static accel. ** 2 1 default_application 1 0 0 0.0 kb
+app core/yuimodules default_application 3 0 0 13.9 kb
+app mod_assign/overrides default_application 1 0 0 0.0 kb
+app mod_quiz/overrides default_application 2 0 0 0.0 kb
+app quizaccess_seb/configkey ** static accel. ** 0 1 default_application 0 1 0
+app quizaccess_seb/quizsettings ** static accel. ** 0 2 default_application 0 2 0
+app tool_usertours/tourdata ** static accel. ** 0 1 default_application 1 0 0 4.0 kb
+store name cache store h m s i/o
+** static accel. ** 770 116 0 -
+default_application cachestore_file 121 10 3 1482.5 kb
+default_request cachestore_static 3 3 5 -
+default_session cachestore_session 5 0 3 -
+total 899 129 11 1482.5 kb
+this page is: general type: incourse. context quiz: model_quiz (context id 14). page type site-index.

@@ -1,0 +1,10 @@
+foodyou_cache_stale.ctg	1237 states, 2230 transitions 
+foodyou_db_corrupt.ctg	784 states, 1365 transitions 
+foodyou_disruption_db.ctg	1794 states, 3165 transitions 
+foodyou_extapi_fail.ctg	876 states, 1517 transitions 
+foodyou_happy.ctg	1707 states, 3014 transitions 
+foodyou_input_invalid.ctg	1691 states, 2985 transitions 
+foodyou_storage_full.ctg	1794 states, 3165 transitions 
+foodyou_storage_media.ctg	2534 states, 4490 transitions 
+foodyou_storage_media_strict.ctg	2895 states, 6396 transitions 
+foodyou_ue1_kill.ctg	1794 states, 3165 transitions 

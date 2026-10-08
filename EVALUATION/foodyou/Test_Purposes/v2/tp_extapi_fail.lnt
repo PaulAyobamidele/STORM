@@ -1,0 +1,86 @@
+module tp_extapi_fail (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   App -- EXTAPI_FAIL: the external API fails during a remote search.
+
+   THE APP MUST: surface a warning. It may not hang, and it may not invent
+   nutrition data to fill the gap. Degrading visibly is the specified
+   behaviour; degrading silently is the counter-example.
+
+   The specification places the fault as an interrupt of the whole external
+   lookup --
+
+       disrupt SEARCH_FOOD (?fid, EXTERNAL); FOOD_INFO (fid, ?kcal)
+       by      EXTAPI_FAIL; EXTAPI_WARNING end disrupt
+
+   -- so it may strike either side of SEARCH_FOOD, and this purpose mirrors
+   that shape rather than pinning a position the model does not fix.
+
+   ACCEPT   the external lookup is interrupted and the app shows the warning.
+   REFUSE   the lookup COMPLETES -- the API answered, so the fault never fired
+            and this trace belongs to the nominal purpose; and any OTHER fault
+            interrupting the run.
+
+   Observable owed: EXTAPI_WARNING.
+
+   NOTE on coverage: with the present fixture this purpose cannot reach a
+   verdict. Every branch searches defaultF = Corn germ oil, a Swiss Food
+   Composition Database product that returns 0 results from Open Food Facts --
+   confirmed by the app's own source count and by the catalogue API. Until the
+   external branch is pointed at a product the catalogue carries, runs of this
+   purpose are INCONCLUSIVE by construction, not PASS.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD (IDF, EXTERNAL);
+            FOOD_INFO   (IDF, ?any Calorie);
+            loop TP_REFUSE end loop
+        by
+            alt
+                EXTAPI_FAIL;
+                EXTAPI_WARNING;
+                loop TP_ACCEPT end loop
+            []
+                -- Any OTHER fault. NETWORK_DEGRADED is omitted deliberately:
+                -- a synchronisation gate neither disruptor ever offers.
+                alt
+                    UE1_KILL
+                []  DISRUPTION_DB
+                []  DB_CORRUPT
+                []  STORAGE_FULL
+                []  STORAGE_MEDIA
+                []  CACHE_STALE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt
+        end disrupt
+    end var
+
+end process
+
+end module

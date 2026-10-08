@@ -14,7 +14,7 @@ This repository holds the STORM tool and the six case studies used to evaluate i
 - **Verified fault injection.** Each disruption is injected through a declared mechanism (HTTP, shell, SQL, adb). A probe confirms it took effect, and it is restored after the run. A run whose fault could not be confirmed gets no verdict.
 - **Honest verdicts.** PASS, FAIL or INCONCLUSIVE come from walking the test case. Silence is a FAIL only where the test case forbids it. A run the tester could not complete is reported separately as UNEXECUTABLE and is never counted as a verdict.
 - **Web and Android.** Selenium drives web applications; Appium (UiAutomator2) drives Android applications.
-- **Reusable templates.** A behaviour template and a System Interface template are instantiated per application with one command.
+- **Reusable templates.** A behaviour template and a System Interface template capture the structure shared by every case study (`framework/template/`).
 
 ## How it works
 
@@ -41,24 +41,25 @@ framework/
                        check_controllability.py, coverage_report.py,
                        classify_failure.py, eval_tables.py
   tests/               unit tests (pytest)
+  template/            behaviour, System Interface, test-purpose and
+                       configuration templates
 EVALUATION/
-  template/            behaviour, interface, purpose and configuration templates
   <app>/               one directory per case study:
     model/               specification, System Interface, composition (LNT)
     Test_Purposes/       tp_*.lnt; compiled/ holds them as .aut and .bcg
     CTG/                 complete test graph per purpose (.ctg.aut, .ctg.bcg),
                          ctg_sizes.tsv; v1/ for FoodYou's first campaign
-    Test_Cases/          test cases as walked (tc_*.aut, variants/);
+    Test_Cases/          test cases as walked (variants/<purpose>/tc_*.N.aut);
                          as_generated*/ holds them exactly as TESTOR produced
                          them (.aut, .bcg)
-    Generation/          generator inputs, logs, timings and model sizes
+    Execution_Logs/      one execution log per test case (<purpose>/vN.log)
+    Verdicts/            one verdict row per test case (variants_<purpose>.log)
+    Generation/          generator inputs, timings and model sizes
                          as run on the CADP host
-    Execution_Evidence/  captures and walk logs, where kept
     testor/              <app>.io, generate_tc_all.sh
     properties/          concrete_domain.yml, type_description.yml,
                          disruption_mapping.yml
     setup/               our patches and configuration for the application
-    variants_*.log       one verdict row per test case
 ```
 
 ## Requirements
@@ -85,48 +86,42 @@ Check the installation:
 
 ## Quick start
 
-**1. Create a new case study from the template.**
+The steps below use the Mastodon case study; every case study has the same layout.
+
+**1. Check the models agree.**
 
 ```sh
-sh EVALUATION/template/new_system.sh myapp
+.venv/bin/python framework/scripts/check_alphabet.py EVALUATION/mastodon
 ```
 
-This copies every template file into `EVALUATION/myapp/`, renames it, and prints the number of HOLE markers left to fill. Each HOLE comment in the copied files says what to put there.
-
-**2. Check the models agree.**
+**2. Generate test cases** on the machine that holds the CADP licence:
 
 ```sh
-.venv/bin/python framework/scripts/check_alphabet.py EVALUATION/myapp
-```
-
-**3. Generate test cases** on the machine that holds the CADP licence:
-
-```sh
-cd EVALUATION/myapp/testor
+cd EVALUATION/mastodon/testor
 sh generate_tc_all.sh
 ```
 
-This writes the test cases to `Test_Cases/variants/<purpose>/`, the size of the composed model, and `gen_times.tsv` (generation time per purpose).
+This writes the test cases to `Test_Cases/variants/<purpose>/`, the size of the composed model, and `gen_times.tsv` (generation time per purpose). The cases used in the evaluation are already in the repository.
 
-**4. Execute a test case.** Web example:
+**3. Execute a test case** against a running Mastodon (see [Setting up the case studies](#setting-up-the-case-studies)):
 
 ```sh
 PYTHONPATH=framework .venv/bin/python framework/scripts/run.py \
-  --aut EVALUATION/myapp/Test_Cases/tc_nominal.aut \
-  --platform html --url http://localhost:3000 \
-  --system-interface   EVALUATION/myapp/model/system_interface_myapp.lnt \
-  --concrete-domain    EVALUATION/myapp/properties/concrete_domain.yml \
-  --type-description   EVALUATION/myapp/properties/type_description.yml \
-  --disruption-mapping EVALUATION/myapp/properties/disruption_mapping.yml \
+  --aut EVALUATION/mastodon/Test_Cases/tc_app_write_fail.aut \
+  --platform html --url https://mastodon.localhost \
+  --system-interface   EVALUATION/mastodon/model/system_interface_mastodon.lnt \
+  --concrete-domain    EVALUATION/mastodon/properties/concrete_domain.yml \
+  --type-description   EVALUATION/mastodon/properties/type_description.yml \
+  --disruption-mapping EVALUATION/mastodon/properties/disruption_mapping.yml \
   --timeout 10 --report
 ```
 
 Use `--platform android` for an Android application. The command prints the verdict. The exit code is 2 when the run was UNEXECUTABLE.
 
-**5. Tabulate a campaign.**
+**4. Tabulate a campaign.**
 
 ```sh
-.venv/bin/python framework/scripts/eval_tables.py EVALUATION/myapp --latex
+.venv/bin/python framework/scripts/eval_tables.py EVALUATION/mastodon --latex
 ```
 
 ## Case studies
@@ -289,6 +284,45 @@ sh EVALUATION/mastodon/run_suite.sh mycampaign
 ```
 
 The override moves Mastodon's ports out of the way and adds a Caddy proxy that serves `https://mastodon.localhost` with a local certificate, because Mastodon's production mode requires HTTPS. The browser accepts that certificate. `seed.sh` clears every fault, removes bob's posts, and verifies the clean state before each case.
+
+## Following a verdict
+
+Every verdict in the evaluation can be traced through three linked files. Example: Mastodon, test purpose `app_write_fail`, test case 1.
+
+**1. Test case:** what must happen. [`EVALUATION/mastodon/Test_Cases/variants/app_write_fail/tc_app_write_fail.1.aut`](EVALUATION/mastodon/Test_Cases/variants/app_write_fail/tc_app_write_fail.1.aut)
+
+```
+des (0, 34, 34)
+(19, "ADD !POST_B !PUBLIC !VALID", 20)      user posts B
+(20, APP_WRITE_FAIL, 21)                    the fault is injected here
+(21, "CLICK !SEL_POST_BUTTON", 22)          click Post
+(22, "WAIT_FOR !EL_WRITE_ERROR", 23)        an error message is owed
+```
+
+**2. Execution log:** what actually happened. [`EVALUATION/mastodon/Execution_Logs/app_write_fail/v1.log`](EVALUATION/mastodon/Execution_Logs/app_write_fail/v1.log)
+
+```
+APP_WRITE_FAIL injected and confirmed
+State 22 waits for WAIT_FOR !EL_WRITE_ERROR — it never appeared and this
+  state does NOT permit quiescence ... CONFORMANCE FAILURE
+Disruption restored and confirmed cleared: APP_WRITE_FAIL
+Verdict: FAIL
+```
+
+**3. Verdict row:** one line per test case. [`EVALUATION/mastodon/Verdicts/variants_app_write_fail.log`](EVALUATION/mastodon/Verdicts/variants_app_write_fail.log)
+
+```
+VARIANT  STATES  TRANSITIONS  TIME_S  VERDICT  NOTE
+1        34      34           15      FAIL     injected=1 restored=1  State 22 waits for WAIT_FOR !EL_WRITE_ERROR …
+```
+
+How the three connect:
+
+- **Test case → log:** the state numbers line up. The log's "State 22" is the test case's state 22.
+- **Log → row:** the row repeats the verdict and the injection status, and its NOTE quotes the log's failure line.
+- **Row → table:** the row's states and transitions match the test case's header. Totalling a purpose's rows gives its line in the paper's results tables (`framework/scripts/eval_tables.py` does this).
+
+Every case study uses the same three folders. For FoodYou, the reported campaign is the first one (v1); the material of its later model is in `v2/` sub-folders. Logs written before the tool took its current name had the old name in their banner line; that line was renamed and nothing else in the logs was changed.
 
 ## Verdicts
 

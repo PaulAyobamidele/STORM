@@ -1,0 +1,79 @@
+module tp_db_corrupt (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   Database -- DB_CORRUPT: a stored record is missing a required
+            field.
+
+   THE APP MUST: DETECT the corruption and say so. It may not render the
+   damaged record as though it were sound -- a missing energy field shown as
+   0 kcal, or as a blank that the diary then treats as zero, is the
+   counter-example, because the user cannot tell a real value from a lost one.
+
+   The specification places the fault as an interrupt of the local lookup --
+
+       disrupt SEARCH_FOOD (?fid, LOCAL); FOOD_INFO (fid, ?kcal)
+       by      DB_CORRUPT; DB_CORRUPT_DETECTED end disrupt
+
+   -- so it may strike either side of SEARCH_FOOD, and this purpose mirrors
+   that rather than pinning a position the model leaves open.
+
+   ACCEPT   the local lookup is interrupted and the app reports the corruption.
+   REFUSE   the lookup COMPLETES -- the record was sound, so the fault never
+            fired; and any OTHER fault interrupting the run.
+
+   Observable owed: DB_CORRUPT_DETECTED.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD (IDF, LOCAL);
+            FOOD_INFO   (IDF, ?any Calorie);
+            loop TP_REFUSE end loop
+        by
+            alt
+                DB_CORRUPT;
+                DB_CORRUPT_DETECTED;
+                loop TP_ACCEPT end loop
+            []
+                -- Any OTHER fault. NETWORK_DEGRADED is omitted deliberately:
+                -- a synchronisation gate neither disruptor ever offers.
+                alt
+                    EXTAPI_FAIL
+                []  UE1_KILL
+                []  DISRUPTION_DB
+                []  STORAGE_FULL
+                []  STORAGE_MEDIA
+                []  CACHE_STALE
+                end alt;
+                loop TP_REFUSE end loop
+            end alt
+        end disrupt
+    end var
+
+end process
+
+end module

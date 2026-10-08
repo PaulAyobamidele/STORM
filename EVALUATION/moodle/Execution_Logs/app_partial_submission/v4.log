@@ -1,0 +1,62 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from /Users/ayobamidele/text-conc/EVALUATION/moodle/model/system_interface_moodle.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/app_partial_submission/tc_app_partial_submission.4.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:8080
+WARNING  no screen_anchors in concrete_domain.yml — the screen belief cannot be verified against the SUT
+WARNING  reset_sut() failed: HTTP Error 404: Not Found
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO  Disruption activated and confirmed: APP_PARTIAL_SUBMISSION
+INFO    APP_PARTIAL_SUBMISSION pre-injected before the walk (timing: pre)
+INFO    checkpoint VIEW_ASSIGN — advance (concrete steps done)
+INFO    checkpoint SAVE_SUBMISSION — advance (concrete steps done)
+INFO    APP_PARTIAL_SUBMISSION already active (pre-injected)
+INFO    APP_PARTIAL_SUBMISSION injected and confirmed
+INFO    checkpoint WRITE_ERROR_SHOWN — advance (concrete steps done)
+INFO    SUBMISSION_STATUS oracle OK: SubmissionStatus agree with 'SUBMISSION_STATUS !ASN_0 !NO_SUBMISSION' on [('sel_submission_status', 'no submissions have been made yet')]
+INFO    checkpoint SUBMISSION_STATUS — advance (concrete steps done)
+INFO  Verdict transition: :PASS: -> PASS
+INFO  Disruption restored and confirmed cleared: APP_PARTIAL_SUBMISSION
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/app_partial_submission/tc_app_partial_submission.4.aut
+--------------------------------------------------
+
+Verdict: [92mPASS[0m (tc_app_partial_submission.4.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  VIEW_ASSIGN                      ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  SAVE_SUBMISSION                  ok
+  APP_PARTIAL_SUBMISSION           ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': "skip to main content\nmoodlesut\nhome\ndashboard\nmy courses\nsd\nopen course index\nmod\ngeneral\nmodel_assignment\nmodel_assignment\nerror writing to database\nmore information about this error\ndebug info: error: storm injected fault on m_assignsubmission_onlinetext\ncontext: pl/pgsql function storm_fault_raise() line 2 at raise\ninsert into m_assignsubmission_onlinetext (onlinetext,onlineformat,submission,assignment) values($1,$2,$3,$4) returning id\n[array (\n'onlinetext' => 'revision-placeholder',\n'onlineformat' => '0',\n'submission' => '772',\n'assignment' => '1',\n)]\nerror code: dmlwriteexception\n×\ndismiss this notification\nstack trace:\nline 500 of /lib/dml/moodle_database.php: dml_write_exception thrown\nline 293 of /lib/dml/moodle_read_slave_trait.php: call to moodle_database->query_end()\nline 358 of /lib/dml/pgsql_native_moodle_database.php: call to pgsql_native_moodle_database->read_slave_query_end()\nline 1149 of /lib/dml/pgsql_native_moodle_database.php: call to pgsql_native_moodle_database->query_end()\nline 1197 of /lib/dml/pgsql_native_moodle_database.php: call to pgsql_native_moodle_database->insert_record_raw()\nline 305 of /mod/assign/submission/onlinetext/locallib.php: call to pgsql_native_moodle_database->insert_record()\nline 7682 of /mod/assign/locallib.php: call to assign_submission_onlinetext->save()\nline 7767 of /mod/assign/locallib.php: call to assign->save_submission()\nline 531 of /mod/assign/locallib.php: call to assign->process_save_submission()\nline 55 of /mod/assign/view.php: call to assign->view()\n×\ndismiss this notification\ncontinue\n0.119103 secs\nram: 8.5 mb\nram peak: 9.5 mb\nincluded 843 files\ncontexts for which filters were loaded: 1\nfilters created: 12\npieces of content filtered: 1\nstrings filtered: 0\nget_string calls: 279\ndb reads/writes: 64/2\ndb queries time: 0.01977 secs\nticks: 12 user: 6sys: 1 cuser: 0 csys: 0\nload average: 3.15\nsession (core\\session\\file): 4.0 kb\nsession wait: 0.000 secs\nmode cache item static h m primary store h m s i/o\nreq adhoc/filter_activitynames default_request 0 1 3 -\napp core/capabilities ** static accel. ** 352 2 default_application 2 0 0 156.9 kb\napp core/config ** static accel. ** 34 28 default_application 28 0 0 22.7 kb\nses core/coursecat default_session 2 0 1 -\nses core/courseeditorstate default_session 2 0 1 -\napp core/coursehiddengroups ** static accel. ** 2 1 default_application 1 0 0 0.0 kb\napp core/coursemodinfo default_application 2 0 0 2.0 kb\napp core/databasemeta ** static accel. ** 20 18 default_application 18 0 0 72.6 kb\napp core/eventinvalidation ** static accel. ** 0 4 default_application 0 4 0\napp core/fontawesomeiconmapping ** static accel. ** 0 1 default_application 1 0 0 25.8 kb\napp core/htmlpurifier default_application 0 2 2 1.5 kb\napp core/langmenu ** static accel. ** 2 1 default_application 1 0 0 0.0 kb\napp core/message_processors_enabled ** static accel. ** 0 1 default_application 1 0 0 0.0 kb\nses core/navigation_cache default_session 1 0 1 -\napp core/observers ** static accel. ** 0 2 default_application 2 0 0 22.8 kb\napp core/plugin_functions ** static accel. ** 0 19 default_application 19 0 0 3.5 kb\napp core/plugin_manager default_application 3 0 0 84.8 kb\napp core/roledefs ** static accel. ** 0 1 default_application 1 0 0 2.8 kb\napp core/string ** static accel. ** 287 49 default_application 49 0 0 1123.5 kb\nreq core/tags default_request 0 2 2 -\napp core/user_group_groupings ** static accel. ** 2 1 default_application 1 0 0 0.0 kb\napp core/yuimodules default_application 3 0 0 13.9 kb\napp mod_assign/overrides default_application 1 0 0 0.0 kb\napp mod_quiz/overrides default_application 2 0 0 0.0 kb\napp tool_usertours/tourdata ** static accel. ** 0 1 default_application 1 0 0 4.0 kb\nstore name cache store h m s i/o\n** static accel. ** 699 129 0 -\ndefault_application cachestore_file 136 6 2 1536.9 kb\ndefault_request cachestore_static 0 3 5 -\ndefault_session cachestore_session 5 0 3 -\ntotal 840 138 10 1536.9 kb\nthis page is: general type: incourse. context assignment: model_assignment (context id 15). page type mod-assign-view."}
+  WRITE_ERROR_SHOWN                ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'no submissions have been made yet'}
+  SUBMISSION_STATUS                ok
+  :PASS:                           PASS
+
+Captured values (g_dict):
+  CRS_0: 2
+  QUIZ_CMID: 1
+  ASSIGN_CMID: 2
+  STUDENT_ID: 3
+  _last_observed: no submissions have been made yet

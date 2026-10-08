@@ -1,0 +1,54 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from /Users/ayobamidele/text-conc/EVALUATION/moodle/model/system_interface_moodle.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/infra_cron_dead/tc_infra_cron_dead.7.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:8080
+WARNING  no screen_anchors in concrete_domain.yml — the screen belief cannot be verified against the SUT
+WARNING  reset_sut() failed: HTTP Error 404: Not Found
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    checkpoint VIEW_QUIZ — advance (concrete steps done)
+INFO    //form[contains(@action,'startattempt.php')]//button[@type='submit']: JS click did not navigate — the form's default action was cancelled; submitting the form directly
+INFO    checkpoint START_ATTEMPT — advance (concrete steps done)
+INFO    Captured: att_0 = in progress
+INFO    OUTPUT ATTEMPT_STATE !ATT_0 !SUBMITTED
+ERROR  ATTEMPT_STATE mismatch — AttemptStatus: AUT expects SUBMITTED, observed 'in progress' classifies as IN_PROGRESS
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/infra_cron_dead/tc_infra_cron_dead.7.aut
+--------------------------------------------------
+
+Verdict: [91mFAIL[0m (tc_infra_cron_dead.7.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  VIEW_QUIZ                        ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  START_ATTEMPT                    ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'in progress'}
+  ATTEMPT_STATE                    ok  captured={'att_0': 'in progress'}
+  ATTEMPT_STATE                    FAIL  -- AttemptStatus 'in progress' classifies as IN_PROGRESS, expected SUBMITTED
+
+Captured values (g_dict):
+  CRS_0: 2
+  QUIZ_CMID: 1
+  ASSIGN_CMID: 2
+  STUDENT_ID: 3
+  _last_observed: in progress
+  att_0: in progress

@@ -1,5 +1,31 @@
 module tp_storage_media (foodyou_types) is
 
+(* ===========================================================================
+   TARGET   Infra -- STORAGE_MEDIA: the storage medium errors on a read.
+
+   THE APP MUST: surface a storage error. It may not present a wrong entry, and
+   it may not present a partially-read one as though it were whole. A read
+   failure the user never sees is the counter-example.
+
+   The specification places the fault as an interrupt of the diary read --
+
+       disrupt VIEW_DIARY (?eid); DIARY_INFO (?eid, ?fid)
+       by      STORAGE_MEDIA; STORAGE_ERROR_SHOWN end disrupt
+
+   ACCEPT   the diary read is interrupted and the app shows the storage error.
+   REFUSE   the read COMPLETES -- the medium was healthy, so the fault never
+            fired; and any OTHER fault interrupting the run.
+
+   Observable owed: STORAGE_ERROR_SHOWN.
+
+   WHY AN ENTRY IS LOGGED FIRST: a diary read needs something to read. The
+   System Interface guards the diary branches on a row actually existing, so
+   without this prefix the composed model has no reachable VIEW_DIARY and the
+   purpose would select nothing. IDE is pinned to entry_2 because
+   food_of (entry_2) = food_oil = defaultF, keeping one food threaded through
+   the whole trace so the oracle can correlate what it observes.
+   =========================================================================== *)
+
 process MAIN [
     SEARCH_FOOD         : SearchChannel,
     FOOD_INFO           : FoodInfoChannel,
@@ -27,19 +53,11 @@ process MAIN [
         IDF := defaultF;
         IDE := entry_2;                 -- food_of (entry_2) = food_oil = defaultF
         disrupt
-            disrupt
-                -- Log one entry so there is a diary row to read.
-                SEARCH_FOOD   (IDF, LOCAL);
-                FOOD_INFO     (IDF, ?any Calorie);
-                ADD_ENTRY     (BREAKFAST, IDF, VALID);
-                CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF)
-            by
-                -- The fault fired BEFORE the read it is meant to interrupt. The
-                -- medium stays broken for the rest of the run, so the read this
-                -- purpose is about can no longer be exercised: not this trace.
-                STORAGE_MEDIA;
-                loop TP_REFUSE end loop
-            end disrupt;
+            -- Log one entry so there is a diary row to read.
+            SEARCH_FOOD   (IDF, LOCAL);
+            FOOD_INFO     (IDF, ?any Calorie);
+            ADD_ENTRY     (BREAKFAST, IDF, VALID);
+            CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF);
             disrupt
                 VIEW_DIARY (IDE);
                 DIARY_INFO (IDE, IDF);

@@ -1,0 +1,41 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from /Users/ayobamidele/text-conc/EVALUATION/moodle/model/system_interface_moodle.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/app_grade_stale_sub/tc_app_grade_stale_sub.23.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:8080
+WARNING  no screen_anchors in concrete_domain.yml — the screen belief cannot be verified against the SUT
+WARNING  reset_sut() failed: HTTP Error 404: Not Found
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    checkpoint OPEN_GRADING — advance (concrete steps done)
+ERROR  wait_for timed out: "(//div[contains(@class,'assignsubmission_onlinetext')]//div[not(.//div)])[1]" (gate=(structural step))
+ERROR  expected observable never appeared at (structural step): "(//div[contains(@class,'assignsubmission_onlinetext')]//div[not(.//div)])[1]"
+INFO    stimulus could not be applied -> UNEXECUTABLE (not a verdict)
+ERROR  State 9 waits for WAIT_FOR !SEL_GRADING_SUBMISSION_TEXT — it never appeared and this state does NOT permit quiescence. The specification required an output here and none appeared: CONFORMANCE FAILURE.
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/app_grade_stale_sub/tc_app_grade_stale_sub.23.aut
+--------------------------------------------------
+
+Verdict: [91mFAIL[0m (tc_app_grade_stale_sub.23.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OPEN_GRADING                     ok
+  NAVIGATE                         ok
+  WAIT_FOR                         FAIL  -- WAIT_FOR !SEL_GRADING_SUBMISSION_TEXT: the specification required this observable and it never appeared
+
+Captured values (g_dict):
+  CRS_0: 2
+  QUIZ_CMID: 1
+  ASSIGN_CMID: 2
+  STUDENT_ID: 3

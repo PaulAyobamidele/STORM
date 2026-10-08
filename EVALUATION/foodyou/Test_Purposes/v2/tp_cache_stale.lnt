@@ -1,0 +1,81 @@
+module tp_cache_stale (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   App -- CACHE_STALE: the cached nutrition value has drifted from
+            its source.
+
+   THE APP MUST: return the AUTHORITATIVE nutrition, not the stale cached
+   figure. The database is the source of truth; a cache that has drifted must
+   be revalidated, not served.
+
+   The specification states this directly, and places the fault BEFORE the
+   read rather than as an interrupt of it --
+
+       CACHE_STALE;
+       SEARCH_FOOD (?fid, LOCAL);
+       FOOD_INFO (fid, ?kcal)
+
+   -- so the accept path here is linear, matching the model.
+
+   ACCEPT   the cache is stale, a local search is performed, and FOOD_INFO
+            reports a calorie value.
+   REFUSE   any OTHER fault interrupting the run.
+
+   Observable owed: FOOD_INFO (IDF, ?kcal). This needs no dedicated response
+   gate: the concretization checks the reported value against the app's OWN
+   Product table, so a stale figure is caught by comparison with the
+   authoritative one. That check IS the revalidation test, and it is exact
+   rather than a string match.
+
+   This is the sharpest of the eight. The others ask whether the app reports a
+   failure; this one asks whether the number it reports is TRUE.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            CACHE_STALE;
+            SEARCH_FOOD (IDF, LOCAL);
+            FOOD_INFO   (IDF, ?any Calorie);
+            loop TP_ACCEPT end loop
+        by
+            -- Any OTHER fault. NETWORK_DEGRADED is omitted deliberately: a
+            -- synchronisation gate neither disruptor ever offers.
+            alt
+                EXTAPI_FAIL
+            []  UE1_KILL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_FULL
+            []  STORAGE_MEDIA
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module

@@ -1,0 +1,82 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 16 gates from /Users/ayobamidele/text-conc/EVALUATION/spliit/model/system_interface_spliit.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/spliit/Test_Cases/tc_app_cache_stale.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:3002
+INFO  SUT state reset via /admin/reset
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/spliit/Test_Cases/tc_app_cache_stale.aut
+--------------------------------------------------
+INFO    checkpoint ADD — advance (concrete steps done)
+INFO    CONFIRM oracle OK: SpendBand, LogState agree with 'CONFIRM !COMMITTED !S1 !LOGGED !EXP_B' on [('el_total_spending', '$40.00'), ('el_activity_latest', 'today\n10:57 pm\nexpense “bus pass b” created by someone.')]
+INFO    checkpoint CONFIRM — advance (concrete steps done)
+INFO    APP_CACHE_STALE: realised by the System Interface's own steps (timing: none); nothing injected
+INFO    APP_CACHE_STALE injected and confirmed
+INFO    checkpoint ADD — advance (concrete steps done)
+ERROR  CONFIRM mismatch — SpendBand: AUT expects S2, observed '$40.00' classifies as S1
+ERROR  CONFIRM mismatch — LogState: AUT expects LOGGED, observed 'today\n10:57 pm\nexpense “bus pass b” created by someone.' classifies as UNLOGGED
+
+Verdict: [91mFAIL[0m (tc_app_cache_stale.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  CLICK                            ok
+  ADD                              ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '$40.00'}
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'today\n10:57 pm\nexpense “bus pass b” created by someone.'}
+  CONFIRM                          ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  APP_CACHE_STALE                  ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  CLICK                            ok
+  ADD                              ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '$40.00'}
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'today\n10:57 pm\nexpense “bus pass b” created by someone.'}
+  CONFIRM                          FAIL  -- SpendBand '$40.00' classifies as S1, expected S2; LogState 'today\n10:57 pm\nexpense “bus pass b” created by someone.' classifies as UNLOGGED, expected LOGGED
+
+Captured values (g_dict):
+  _last_observed: today
+10:57 pm
+expense “bus pass b” created by someone.
+--- fault state after the walk:
+trigger=0
+db_paused=false
+proxy_faults={"active_faults":{}}

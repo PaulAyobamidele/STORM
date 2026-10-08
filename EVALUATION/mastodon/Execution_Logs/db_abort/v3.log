@@ -1,0 +1,57 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from EVALUATION/mastodon/runs/campaign_2026-09-30b/snapshot/mastodon/model/system_interface_mastodon.lnt
+INFO  LNT SI invariants OK for EVALUATION/mastodon/runs/campaign_2026-09-30b/run/tc_db_abort.aut
+WARNING  browser: accepting untrusted TLS certificates (concrete_domain.browser.accept_insecure_certs)
+INFO  HTMLExecutor initialized with base URL: https://mastodon.localhost
+WARNING  reset_sut() failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1129)>
+INFO    @env:MASTODON_PW -> (value from the environment, not logged)
+INFO    @env:MASTODON_PW -> (value from the environment, not logged)
+INFO    checkpoint ADD — advance (concrete steps done)
+INFO  Disruption activated and confirmed: DB_ABORT
+INFO    DB_ABORT injected and confirmed
+INFO    checkpoint WRITE_ERROR_SHOWN — advance (concrete steps done)
+INFO    CONFIRM oracle OK: CountBand, HomeState, ProfileState agree with 'CONFIRM !ROLLED_BACK !N0 !NOT_IN_HOME !OFF_PROFILE !POST_A' on [('el_post_count', 'posts\n0'), ('el_profile_posts', 'no posts here!'), ('el_home_column', 'alice\n@alice\n1d\nhello 2\n0')]
+INFO    checkpoint CONFIRM — advance (concrete steps done)
+INFO  Verdict transition: :PASS: -> PASS
+INFO  Disruption restored and confirmed cleared: DB_ABORT
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : EVALUATION/mastodon/runs/campaign_2026-09-30b/run/tc_db_abort.aut
+--------------------------------------------------
+
+Verdict: [92mPASS[0m (tc_db_abort.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  TYPE_INTO                        ok
+  ADD                              ok
+  DB_ABORT                         ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': '500'}
+  WRITE_ERROR_SHOWN                ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'posts\n0'}
+  OBSERVE                          ok  captured={'observe': 'no posts here!'}
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  OBSERVE                          ok  captured={'observe': 'alice\n@alice\n1d\nhello 2\n0'}
+  CONFIRM                          ok
+  :PASS:                           PASS
+
+Captured values (g_dict):
+  _last_observed: alice
+@alice
+1d
+hello 2
+0

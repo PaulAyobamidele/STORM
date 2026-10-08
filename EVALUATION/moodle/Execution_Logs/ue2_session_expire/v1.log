@@ -1,0 +1,87 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from /Users/ayobamidele/text-conc/EVALUATION/moodle/model/system_interface_moodle.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/ue2_session_expire/tc_ue2_session_expire.1.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:8080
+WARNING  no screen_anchors in concrete_domain.yml — the screen belief cannot be verified against the SUT
+WARNING  reset_sut() failed: HTTP Error 404: Not Found
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    checkpoint ENROL — advance (concrete steps done)
+INFO  Disruption activated and confirmed: UE2_SESSION_EXPIRE
+INFO    UE2_SESSION_EXPIRE injected and confirmed
+INFO    checkpoint SESSION_ERROR_SHOWN — advance (concrete steps done)
+INFO  Verdict transition: :PASS: -> PASS
+INFO  Disruption restored and confirmed cleared: UE2_SESSION_EXPIRE
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/ue2_session_expire/tc_ue2_session_expire.1.aut
+--------------------------------------------------
+
+Verdict: [92mPASS[0m (tc_ue2_session_expire.1.aut)
+
+Execution Report
+==================================================
+  NAVIGATE                         ok
+  TYPE_INTO                        ok
+  TYPE_INTO                        ok
+  CLICK                            ok
+  WAIT_FOR                         ok
+  NAVIGATE                         ok
+  WAIT_FOR                         ok
+  ENROL                            ok
+  UE2_SESSION_EXPIRE               ok
+  NAVIGATE                         ok
+  OBSERVE                          ok  captured={'observe': 'skip to main content\nlog in to moodle sut\nyour session has timed out. please log in again. \nusername\npassword\nlog in\nlost password?\nsome courses may allow guest access\naccess as a guest\ncookies notice\n0.054711 secs\nram: 4.1 mb\nram peak: 5.1 mb\nincluded 373 files\ncontexts for which filters were loaded: 0\nfilters created: 6\npieces of content filtered: 0\nstrings filtered: 0\nget_string calls: 44\ndb reads/writes: 6/1\ndb queries time: 0.00416 secs\nticks: 6 user: 2sys: 0 cuser: 0 csys: 0\nload average: 3.48\nsession (core\\session\\file): 733 bytes\nsession wait: 0.000 secs\nmode cache item static h m primary store h m s i/o\napp core/capabilities ** static accel. ** 2 2 default_application 2 0 0 156.9 kb\napp core/config ** static accel. ** 14 9 default_application 9 0 0 21.3 kb\napp core/databasemeta ** static accel. ** 1 4 default_application 4 0 0 16.9 kb\napp core/fontawesomeiconmapping ** static accel. ** 0 1 default_application 1 0 0 25.8 kb\napp core/langmenu ** static accel. ** 1 1 default_application 1 0 0 0.0 kb\nses core/navigation_cache default_session 0 0 1 -\napp core/plugin_functions ** static accel. ** 0 8 default_application 8 0 0 0.1 kb\napp core/plugin_manager default_application 1 0 0 16.0 kb\napp core/string ** static accel. ** 64 8 default_application 8 0 0 397.6 kb\napp core/yuimodules default_application 3 0 0 13.9 kb\nstore name cache store h m s i/o\n** static accel. ** 82 33 0 -\ndefault_application cachestore_file 37 0 0 648.7 kb\ndefault_session cachestore_session 0 0 1 -\ntotal 119 33 1 648.7 kb\nthis page is: general type: login. context system (context id 1). page type login-index.'}
+  SESSION_ERROR_SHOWN              ok
+  :PASS:                           PASS
+
+Captured values (g_dict):
+  CRS_0: 2
+  QUIZ_CMID: 1
+  ASSIGN_CMID: 2
+  STUDENT_ID: 3
+  _last_observed: skip to main content
+log in to moodle sut
+your session has timed out. please log in again. 
+username
+password
+log in
+lost password?
+some courses may allow guest access
+access as a guest
+cookies notice
+0.054711 secs
+ram: 4.1 mb
+ram peak: 5.1 mb
+included 373 files
+contexts for which filters were loaded: 0
+filters created: 6
+pieces of content filtered: 0
+strings filtered: 0
+get_string calls: 44
+db reads/writes: 6/1
+db queries time: 0.00416 secs
+ticks: 6 user: 2sys: 0 cuser: 0 csys: 0
+load average: 3.48
+session (core\session\file): 733 bytes
+session wait: 0.000 secs
+mode cache item static h m primary store h m s i/o
+app core/capabilities ** static accel. ** 2 2 default_application 2 0 0 156.9 kb
+app core/config ** static accel. ** 14 9 default_application 9 0 0 21.3 kb
+app core/databasemeta ** static accel. ** 1 4 default_application 4 0 0 16.9 kb
+app core/fontawesomeiconmapping ** static accel. ** 0 1 default_application 1 0 0 25.8 kb
+app core/langmenu ** static accel. ** 1 1 default_application 1 0 0 0.0 kb
+ses core/navigation_cache default_session 0 0 1 -
+app core/plugin_functions ** static accel. ** 0 8 default_application 8 0 0 0.1 kb
+app core/plugin_manager default_application 1 0 0 16.0 kb
+app core/string ** static accel. ** 64 8 default_application 8 0 0 397.6 kb
+app core/yuimodules default_application 3 0 0 13.9 kb
+store name cache store h m s i/o
+** static accel. ** 82 33 0 -
+default_application cachestore_file 37 0 0 648.7 kb
+default_session cachestore_session 0 0 1 -
+total 119 33 1 648.7 kb
+this page is: general type: login. context system (context id 1). page type login-index.

@@ -1,0 +1,33 @@
+/Users/ayobamidele/text-conc/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+INFO  LNT SI parsed: 22 gates from /Users/ayobamidele/text-conc/EVALUATION/moodle/model/system_interface_moodle.lnt
+INFO  LNT SI invariants OK for /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/ue1_lose_conn_midattempt/tc_ue1_lose_conn_midattempt.5.aut
+INFO  HTMLExecutor initialized with base URL: http://localhost:8080
+WARNING  no screen_anchors in concrete_domain.yml — the screen belief cannot be verified against the SUT
+WARNING  reset_sut() failed: HTTP Error 404: Not Found
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO    static bindings seeded: CRS_0=2, QUIZ_CMID=1, ASSIGN_CMID=2, STUDENT_ID=3
+INFO  Disruption activated and confirmed: UE1_LOSE_CONN
+INFO    UE1_LOSE_CONN injected and confirmed
+INFO  wait() timed out waiting for #//div[@id='connection-error'] on http://localhost:8080/
+INFO  State 1 waits for OBSERVE !SEL_CONNECTION_ERROR — it never appeared, and this state PERMITS quiescence (delta offered), so no output was required: INCONCLUSIVE, not a conformance FAIL.
+INFO  Disruption restored and confirmed cleared: UE1_LOSE_CONN
+
+STORM Concretization — Graph Walker
+Platform : html
+Fault    : none
+AUT      : /Users/ayobamidele/text-conc/EVALUATION/moodle/Test_Cases/variants/ue1_lose_conn_midattempt/tc_ue1_lose_conn_midattempt.5.aut
+--------------------------------------------------
+
+Verdict: [93mINCONC[0m (tc_ue1_lose_conn_midattempt.5.aut)
+
+Execution Report
+==================================================
+  UE1_LOSE_CONN                    ok
+  OBSERVE                          INCONC  -- INCONCLUSIVE (quiescence permitted): OBSERVE !SEL_CONNECTION_ERROR never appeared
+
+Captured values (g_dict):
+  CRS_0: 2
+  QUIZ_CMID: 1
+  ASSIGN_CMID: 2
+  STUDENT_ID: 3

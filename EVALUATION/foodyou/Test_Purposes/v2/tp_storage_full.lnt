@@ -1,0 +1,79 @@
+module tp_storage_full (foodyou_types) is
+
+(* ===========================================================================
+   TARGET   Infra -- STORAGE_FULL: the write fails for lack of storage.
+
+   THE APP MUST: report the failure and leave the daily total EXACTLY as it
+   was. A full disk is not a licence to lose track of what is logged: the app
+   may refuse the write, but it may not refuse it and move the total anyway.
+
+   ACCEPT   the entry is submitted, storage cannot take it, and the app
+            reports ROLLED_BACK with the total unchanged.
+   REFUSE   CONFIRM_TOTAL (COMMITTED, ...) -- storage had room after all, so
+            the fault never fired; and any OTHER fault interrupting the run.
+
+   Observable owed: CONFIRM_TOTAL (ROLLED_BACK, ...), checked by the band
+   oracle AND the exact-sum ledger.
+
+   NOTE for the concretization layer: this fault, DISRUPTION_DB and UE1_KILL
+   have historically been injected with byte-identical SQL, and none of them
+   actually failed a write. Verify the injector distinguishes them before
+   quoting any verdict from this purpose -- a fault that does not manifest
+   makes the run INCONCLUSIVE, not PASS.
+   =========================================================================== *)
+
+process MAIN [
+    SEARCH_FOOD         : SearchChannel,
+    FOOD_INFO           : FoodInfoChannel,
+    ADD_ENTRY           : AddEntryChannel,
+    CONFIRM_TOTAL       : TotalChannel,
+    VIEW_DIARY          : ViewDiaryChannel,
+    DIARY_INFO          : DiaryInfoChannel,
+    REMOVE_ENTRY        : RemoveEntryChannel,
+    EXTAPI_FAIL         : none,
+    EXTAPI_WARNING      : none,
+    UE1_KILL            : none,
+    DISRUPTION_DB       : none,
+    DB_CORRUPT          : none,
+    DB_CORRUPT_DETECTED : none,
+    STORAGE_FULL        : none,
+    STORAGE_MEDIA       : none,
+    STORAGE_ERROR_SHOWN : none,
+    CACHE_STALE         : none,
+    NETWORK_DEGRADED    : none,
+    TP_ACCEPT           : none,
+    TP_REFUSE           : none
+] is
+
+    var IDF : FoodId in
+        IDF := defaultF;
+        disrupt
+            SEARCH_FOOD (IDF, LOCAL);
+            FOOD_INFO   (IDF, ?any Calorie);
+            ADD_ENTRY   (BREAKFAST, IDF, VALID);
+            disrupt
+                CONFIRM_TOTAL (COMMITTED, ?any DailyTotal, IDF);
+                loop TP_REFUSE end loop
+            by
+                STORAGE_FULL;
+                CONFIRM_TOTAL (ROLLED_BACK, ?any DailyTotal, IDF);
+                loop TP_ACCEPT end loop
+            end disrupt
+        by
+            -- Any OTHER fault. NETWORK_DEGRADED is omitted deliberately: it is
+            -- a synchronisation gate that neither disruptor ever offers.
+            alt
+                EXTAPI_FAIL
+            []  UE1_KILL
+            []  DISRUPTION_DB
+            []  DB_CORRUPT
+            []  STORAGE_MEDIA
+            []  CACHE_STALE
+            end alt;
+            loop TP_REFUSE end loop
+        end disrupt
+    end var
+
+end process
+
+end module
